@@ -12,47 +12,53 @@ class NewRecipe extends StatefulWidget{
 class _NewRecipe extends State<NewRecipe>{
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Neues Rezept hinzufügen"),
-      ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            child: ContainerRedesign(
-              title: "Allgemein",
-              children: <Widget>[
-                ListTile(
-                  leading: Padding(
-                    padding: EdgeInsets.only(bottom: 20.0),
-                    child: Icon(OMIcons.fastfood),
-                  ),
-                  title: TextField(
-                      autofocus: true,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Name",
-                      ),
-                      maxLength: 30,
-                      maxLengthEnforced: true
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(Icons.subject),
-                  title: TextField(
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Beschreibe dein Rezept..."
+    return Hero(
+      tag: 'add_recipe',
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Neues Rezept hinzufügen"),
+        ),
+        body: Column(
+          children: <Widget>[
+            Container(
+              child: ContainerRedesign(
+                title: "Allgemein",
+                children: <Widget>[
+                  ListTile(
+                    leading: Padding(
+                      padding: EdgeInsets.only(bottom: 20.0),
+                      child: Icon(OMIcons.fastfood),
                     ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    maxLength: 200,
+                    title: TextField(
+                        autofocus: true,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Name",
+                        ),
+                        maxLength: 30,
+                        maxLengthEnforced: true
+                    ),
                   ),
-                )
-              ],
-            ),
-          )
-        ],
+                  ListTile(
+                    leading: Padding(
+                      padding: EdgeInsets.only(bottom: 20.0),
+                      child: Icon(OMIcons.subject),
+                    ),
+                    title: TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Beschreibe dein Rezept..."
+                      ),
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      maxLength: 200,
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

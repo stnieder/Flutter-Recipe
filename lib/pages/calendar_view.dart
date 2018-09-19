@@ -14,10 +14,16 @@ class _CalendarView extends State<CalendarView>{
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        new Calendar()
-      ],
+    return Scaffold(
+      body: Calendar(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF4285F4),
+        elevation: 4.0,
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.pushNamed(context, '/');
+        }
+      )
     );
   }
 

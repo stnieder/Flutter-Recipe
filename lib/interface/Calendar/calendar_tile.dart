@@ -44,7 +44,7 @@ class CalendarTile extends StatelessWidget {
           decoration: isSelected
               ? new BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.blue[900],
+            color:Color(0xFF4285F4) //Google Logo --> Blue
           )
               : new BoxDecoration(),
           alignment: Alignment.center,

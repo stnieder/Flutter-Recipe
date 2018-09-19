@@ -34,76 +34,59 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
     "Einkaufsliste"
   ];
 
-  final List<dynamic> _new = [
-    '/add_recipe',
-    '/',
-    '/'
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        bottom: PreferredSize(
-            child: LoadingBar(),
-            preferredSize: Size.fromRadius(10.0)
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        title: Padding(
-          padding: EdgeInsets.only(top: 30.0),
-          child: Text(_appTitles[_currentTab], style: TextStyle(color: Colors.black, fontFamily: "Google-Sans", fontSize: 26.0, fontWeight: FontWeight.w100)),
-        )
-      ),
-      body: _tabs[_currentTab],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentTab,
-        fixedColor: Colors.blue[600],
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(OMIcons.book),
-            title: const Text(
-              'Rezeptbuch',
-              style: TextStyle(fontFamily: 'Google-Sans', fontWeight: FontWeight.w600),
+        appBar: AppBar(
+            centerTitle: false,
+            bottom: PreferredSize(
+                child: LoadingBar(),
+                preferredSize: Size.fromRadius(10.0)
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            title: Padding(
+              padding: EdgeInsets.only(top: 30.0),
+              child: Text(_appTitles[_currentTab], style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: "Google-Sans",
+                  fontSize: 26.0,
+                  fontWeight: FontWeight.w100)),
             )
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(OMIcons.calendarToday),
-              title: const Text(
-                'Kalender',
-                style: TextStyle(fontFamily: 'Google-Sans', fontWeight: FontWeight.w600),
-              )
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(OMIcons.shoppingBasket),
-              title: const Text(
-                'Einkaufsliste',
-                style: TextStyle(fontFamily: 'Google-Sans', fontWeight: FontWeight.w600),
-              )
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue[600],
-        elevation: 4.0,
-        child: Icon(Icons.add),
-        onPressed: (){
-          Navigator.pushNamed(context, _new[_currentTab]);
-        },
-      )
+        ),
+        body: _tabs[_currentTab],
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: onTabTapped,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _currentTab,
+          fixedColor: Colors.blue[600],
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(OMIcons.book),
+                title: const Text(
+                  'Rezeptbuch',
+                  style: TextStyle(
+                      fontFamily: 'Google-Sans', fontWeight: FontWeight.w600),
+                )
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(OMIcons.calendarToday),
+                title: const Text(
+                  'Kalender',
+                  style: TextStyle(
+                      fontFamily: 'Google-Sans', fontWeight: FontWeight.w600),
+                )
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(OMIcons.shoppingBasket),
+                title: const Text(
+                  'Einkaufsliste',
+                  style: TextStyle(
+                      fontFamily: 'Google-Sans', fontWeight: FontWeight.w600),
+                )
+            )
+          ],
+        )
     );
   }
 
