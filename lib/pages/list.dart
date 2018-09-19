@@ -12,7 +12,9 @@ class _List extends State<Lists>{
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: new Center(child: Text("List")),
+      body: new Center(
+          child: Text("List")
+      ),
     );
   }
 

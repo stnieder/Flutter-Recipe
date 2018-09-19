@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 import 'bottom_sheets.dart';
-import 'new_recipe.dart';
 
-import 'interface/BubbleIndicator.dart';
-import 'interface/FancyButton.dart';
 import 'interface/LoadingBar.dart';
 
 import 'pages/calendar_view.dart';
@@ -76,21 +74,21 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         fixedColor: Colors.blue[600],
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
+            icon: Icon(OMIcons.book),
             title: const Text(
               'Rezeptbuch',
               style: TextStyle(fontFamily: 'Google-Sans', fontWeight: FontWeight.w600),
             )
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today),
+              icon: Icon(OMIcons.calendarToday),
               title: const Text(
                 'Kalender',
                 style: TextStyle(fontFamily: 'Google-Sans', fontWeight: FontWeight.w600),
               )
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_basket),
+              icon: Icon(OMIcons.shoppingBasket),
               title: const Text(
                 'Einkaufsliste',
                 style: TextStyle(fontFamily: 'Google-Sans', fontWeight: FontWeight.w600),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_calendar/flutter_calendar.dart';
+import 'package:recipe/interface/Calendar/flutter_calendar.dart';
 
 class CalendarView extends StatefulWidget{
   @override
@@ -16,14 +16,7 @@ class _CalendarView extends State<CalendarView>{
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        new Calendar(
-          onDateSelected: (DateTime date){
-            setState(() {
-              selectedDate = date;
-            });
-          },
-        ),
-        Text(""+selectedDate.toString())
+        new Calendar()
       ],
     );
   }
