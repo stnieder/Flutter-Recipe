@@ -25,6 +25,7 @@ dependencies:
   date_utils: ^0.1.0
   flutter_calendar:
     git: https://github.com/apptreesoftware/flutter_calendar.git
+  image_picker: ^0.4.10
 
 dev_dependencies:
   flutter_test:
