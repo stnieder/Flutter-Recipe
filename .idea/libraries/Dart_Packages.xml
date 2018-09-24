@@ -65,6 +65,13 @@
             </list>
           </value>
         </entry>
+        <entry key="cupertino_icons">
+          <value>
+            <list>
+              <option value="/opt/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.2/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="date_utils">
           <value>
             <list>
@@ -83,6 +90,13 @@
           <value>
             <list>
               <option value="/opt/flutter/.pub-cache/git/flutter_calendar-ffe1dbab87de453448d1224d8e7858b4afc98522/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_list_drag_and_drop">
+          <value>
+            <list>
+              <option value="/opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_list_drag_and_drop-0.1.5/lib" />
             </list>
           </value>
         </entry>
@@ -366,13 +380,6 @@
             </list>
           </value>
         </entry>
-        <entry key="swipedetector">
-          <value>
-            <list>
-              <option value="/opt/flutter/.pub-cache/hosted/pub.dartlang.org/swipedetector-1.2.0/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="synchronized">
           <value>
             <list>
@@ -463,7 +470,9 @@
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/convert-2.0.2/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-2.0.6/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/csslib-0.14.5/lib" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.2/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/date_utils-0.1.0/lib" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_list_drag_and_drop-0.1.5/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/front_end-0.1.4/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/glob-1.1.7/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/html-0.13.3+3/lib" />
@@ -502,7 +511,6 @@
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.9.3/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/stream_channel-1.6.8/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.0.4/lib" />
-      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/swipedetector-1.2.0/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/synchronized-1.5.2/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.0.1/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/test-1.3.0/lib" />

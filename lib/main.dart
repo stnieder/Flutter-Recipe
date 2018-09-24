@@ -12,7 +12,7 @@ class Recipe extends StatelessWidget {
       title: 'Rezeptbuch',
       theme: new ThemeData(
         backgroundColor: Colors.white,
-          primarySwatch: Colors.blue
+        primarySwatch: Colors.blue
       ),
       initialRoute: '/',
       routes: {

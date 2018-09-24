@@ -26,7 +26,7 @@ dependencies:
   flutter_calendar:
     git: https://github.com/apptreesoftware/flutter_calendar.git
   image_picker: ^0.4.10
-  swipedetector: ^1.2.0
+  flutter_list_drag_and_drop: ^0.1.5
 
 dev_dependencies:
   flutter_test:

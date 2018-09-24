@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'interface/CustomShowDialog.dart';
 
 class Dialogs{
+  final personenAnzahlController = new TextEditingController();
 
   closeDialog(BuildContext context){
     return showDialog(
@@ -41,6 +42,60 @@ class Dialogs{
             ],
           );
         }
+    );
+  }
+
+  personenAnzahl(BuildContext context){
+
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context){
+        return CustomAlertDialog(
+          title: Text("Personenanzahl pro Portion"),
+          content: Container(
+            height: 78.0,
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(1.0)
+            ),
+            child: TextFormField(
+              controller: personenAnzahlController,
+              keyboardType: TextInputType.number,
+            )
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                "Abbrechen",
+                style: TextStyle(
+                  color: Color(0xFFdb3236),
+                  fontFamily: "Google-Sans",
+                  fontSize: 14.0
+                ),
+              ),
+              highlightColor: Color(0xFFdb3236).withOpacity(0.2),
+              onPressed: ()=>Navigator.pop(context, personenAnzahlController.text),
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              splashColor: Colors.transparent
+            ),
+            FlatButton(
+              child: Text(
+                "Ok",
+                style: TextStyle(
+                    color: Color(0xFF4285F4),
+                    fontFamily: "Google-Sans",
+                    fontSize: 14.0
+                ),
+              ),
+              highlightColor: Color(0xFF419df4).withOpacity(0.2),
+              onPressed: ()=>Navigator.pop(context),
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              splashColor: Colors.transparent
+            )
+          ],
+        );
+      }
     );
   }
 

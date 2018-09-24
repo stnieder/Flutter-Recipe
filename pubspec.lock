@@ -64,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.5"
+  cupertino_icons:
+    dependency: transitive
+    description:
+      name: cupertino_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   date_utils:
     dependency: "direct main"
     description:
@@ -85,6 +92,13 @@ packages:
       url: "https://github.com/apptreesoftware/flutter_calendar.git"
     source: git
     version: "0.0.3"
+  flutter_list_drag_and_drop:
+    dependency: "direct main"
+    description:
+      name: flutter_list_drag_and_drop
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -361,13 +375,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-  swipedetector:
-    dependency: "direct main"
-    description:
-      name: swipedetector
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
   synchronized:
     dependency: transitive
     description:

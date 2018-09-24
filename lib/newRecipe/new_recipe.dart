@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:swipedetector/swipedetector.dart';
+import 'package:flutter_list_drag_and_drop/drag_and_drop_list.dart';
 
 import 'package:recipe/interface/CircularImage.dart';
+import 'package:recipe/interface/lightMaterial.dart';
 import 'package:recipe/Dialogs.dart';
 
 class NewRecipe extends StatefulWidget{
@@ -32,6 +34,14 @@ class _NewRecipe extends State<NewRecipe>{
   final TextEditingController zNamenController = new TextEditingController();
 
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+
+  final TextEditingController stepDescriptionController = new TextEditingController();
+  GlobalKey<FormState> stepDescriptionKey = new GlobalKey<FormState>();
+  double descriptionHeight = 0.0;
+  List<String> stepDescription = [];
+  int descriptionCounter = 0;
+
+  int personenAnzahl;
 
   @override
   void initState(){
@@ -103,13 +113,17 @@ class _NewRecipe extends State<NewRecipe>{
               ),
               InkWell(
                 borderRadius: BorderRadius.circular(10.0),
-                onTap: (){
-                  //dialog mit eingabe der personenanzahl
+                onTap: () async{
+                  var returnedNumber = await dialogs.personenAnzahl(context);
+                  print(returnedNumber);
                 },
                 child: Column(
                   children: <Widget>[
                     Icon(OMIcons.group),
-                    Center(child: Text("-"))
+                    Center(child: Text(personenAnzahl == null
+                      ? "-"
+                      : personenAnzahl
+                    ))
                   ],
                 ),
               ),
@@ -379,7 +393,90 @@ class _NewRecipe extends State<NewRecipe>{
                   ),
                 ],
               ),
-              Divider()
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.only(top: 10.0, left: 10.0, bottom: 0.0),
+                      child: Text(
+                        "Zubereitung",
+                        style: TextStyle(
+                            fontFamily: "Google-Sans",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13.0,
+                            color: Colors.grey[500]
+                        ),
+                      )
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Form(
+                        child: ListTile(
+                          leading: IconButton(
+                            icon: Icon(Icons.clear),
+                            onPressed: (){},
+                          ),
+                          title: TextFormField(
+                            controller: stepDescriptionController,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Ein Schritt nach dem Anderen"
+                            ),
+                            validator: (value){
+                              if(value.isEmpty){
+                                return "Bitte Text eingeben";
+                              }
+                            },
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.check),
+                            onPressed: (){
+                              if(stepDescriptionKey.currentState.validate()){
+                                descriptionHeight+=20.0;
+                                stepDescription.add(stepDescriptionController.text);
+                                stepDescriptionController.clear();
+                                setState(() {});
+                              }
+                            },
+                          ),
+                        ),
+                        key: stepDescriptionKey,
+                      ),
+                      Container(
+                        height: descriptionHeight,
+                        child: DragAndDropList(
+                          stepDescription,
+                          itemBuilder: (BuildContext ctxt, item){
+                            return new SizedBox(
+                              child: new Card(
+                                child: new ListTile(
+                                  leading: CircleAvatar(
+                                    child: Text(""),
+                                  ),
+                                  title: Text(item),
+                                ),
+                              ),
+                            );
+                          },
+                          onDragFinish: (before, after){
+                            String data = stepDescription[before];
+                            stepDescription.removeAt(before);
+                            stepDescription.insert(after, data);
+                            setState(() {});
+                          },
+                          canBeDraggedTo: (one, two) => true,
+                          dragElevation: 6.0,
+                        ),
+                      )
+                    ],
+                  ),
+                  Divider()
+                ],
+              )
             ],
           )
         ],
@@ -413,5 +510,11 @@ class _NewRecipe extends State<NewRecipe>{
         zNumber.removeAt(index);
       });
     }
+  }
+
+  List<Color> getAvatarColor(){
+    LightMaterialColors lightMaterialColors = new LightMaterialColors();
+    Random rdm = new Random();
+    return lightMaterialColors.getLightColor(rdm.nextInt(14));
   }
 }
