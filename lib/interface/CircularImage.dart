@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'package:outline_material_icons/outline_material_icons.dart';
+
 class CircularImage extends StatefulWidget{
   File _image;
 
@@ -30,15 +32,17 @@ class _CircularImage extends State<CircularImage>{
   @override
   Widget build(BuildContext context) {
     return new Container(
-      width: 190.0,
-      height: 190.0,
+      width: 100.0,
+      height: 100.0,
+      child: Icon(OMIcons.addAPhoto, color: Colors.white, size: 20.0),
       decoration: new BoxDecoration(
-        shape: BoxShape.circle,
         image: new DecorationImage(
-          fit: BoxFit.fill,
-          image: new FileImage(_image)
-        )
-    )
+          colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+          image: new FileImage(_image),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+      ),
     );
   }
 }

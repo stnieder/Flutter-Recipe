@@ -115,10 +115,9 @@ class _ContainerRedesign extends State<ContainerRedesign>{
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(top: 10.0, left: 10.0, bottom: 0.0),
-            child: GestureDetector(
-              child: Text(
-                title,
-                style: TextStyle(
+            child: Text(
+              title,
+              style: TextStyle(
                   fontFamily: "Google-Sans",
                   fontWeight: FontWeight.w500,
                   fontSize: (expanded
@@ -126,13 +125,7 @@ class _ContainerRedesign extends State<ContainerRedesign>{
                       : 14.0
                   ),
                   color: Colors.grey[500]
-                ),
               ),
-              onTap: (){
-                setState(() {
-                  expanded = !expanded;
-                });
-              },
             )
           ),
           childrenWidgets(),
