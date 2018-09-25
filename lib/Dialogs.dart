@@ -46,11 +46,12 @@ class Dialogs{
   }
 
   personenAnzahl(BuildContext context){
+    int anzahl = 0;
 
     return showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (BuildContext context){
+      builder: (BuildContext ctxt){
         return CustomAlertDialog(
           title: Text("Personenanzahl pro Portion"),
           content: Container(
@@ -59,8 +60,12 @@ class Dialogs{
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(1.0)
             ),
-            child: TextFormField(
+            child: TextField(
               controller: personenAnzahlController,
+              onChanged: (text){
+                anzahl = int.parse(text);
+              },
+
               keyboardType: TextInputType.number,
             )
           ),
@@ -75,7 +80,7 @@ class Dialogs{
                 ),
               ),
               highlightColor: Color(0xFFdb3236).withOpacity(0.2),
-              onPressed: ()=>Navigator.pop(context, personenAnzahlController.text),
+              onPressed: ()=>Navigator.pop(ctxt, anzahl),
               shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
               splashColor: Colors.transparent
             ),
@@ -83,13 +88,22 @@ class Dialogs{
               child: Text(
                 "Ok",
                 style: TextStyle(
-                    color: Color(0xFF4285F4),
+                    color: (anzahl == 0
+                      ? Color(0xFFAAAFB4)
+                      : Color(0xFF4285F4)
+                    ),
                     fontFamily: "Google-Sans",
                     fontSize: 14.0
                 ),
               ),
-              highlightColor: Color(0xFF419df4).withOpacity(0.2),
-              onPressed: ()=>Navigator.pop(context),
+              highlightColor: (anzahl == 0
+                ? Color(0xFFAAAFB4).withOpacity(0.3)
+                : Color(0xFF419df4).withOpacity(0.2)
+              ),
+              onPressed: (anzahl == 0
+                ? (){}
+                : ()=> Navigator.pop(context, anzahl)
+              ),
               shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
               splashColor: Colors.transparent
             )
@@ -103,7 +117,7 @@ class Dialogs{
     return showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context){
+      builder: (BuildContext ctxt){
         return CustomAlertDialog(
           title: Text("Foto ändern"),
           content: Container(
@@ -120,16 +134,16 @@ class Dialogs{
                 InkWell(
                   child: Padding(
                     padding: EdgeInsets.only(left: 10.0, right: 150.0, bottom: 10.0, top: 10.0),
-                    child: Text("Foto machen"),
+                    child: Text("Pick a photo"),
                   ),
-                  onTap: ()=> Navigator.pop(context, "machen"),
+                  onTap: ()=> Navigator.pop(ctxt, "pick"),
                 ),
                 InkWell(
                   child: Padding(
                     padding: EdgeInsets.only(left: 10.0, right: 150.0, bottom: 10.0, top: 10.0),
-                    child: Text("Foto auswählen"),
+                    child: Text("Take a photo"),
                   ),
-                  onTap: ()=> Navigator.pop(context, "auswählen"),
+                  onTap: ()=> Navigator.pop(ctxt, "take"),
                 ),
 
               ],
@@ -146,7 +160,7 @@ class Dialogs{
                 ),
               ),
               highlightColor: Color(0xFF419df4).withOpacity(0.2),
-              onPressed: ()=>Navigator.pop(context),
+              onPressed: ()=>Navigator.pop(ctxt),
               shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
               splashColor: Colors.transparent
             )
