@@ -32,6 +32,7 @@ class DBHelper{
         "id integer primary key AUTOINCREMENT, " +
         "name varchar, " +
         "definition text, "+
+        "workDuration varchar, " +
         "favorite integer default 0, "+
         "timestamp text"+
       ")"

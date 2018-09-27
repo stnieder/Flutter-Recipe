@@ -7,12 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
-
-import 'package:recipe/interface/DurationDialog.dart'; //made by Chris Harris https://pub.dartlang.org/packages/flutter_duration_picker
-
 import 'package:recipe/interface/CircularImage.dart';
 import 'package:recipe/Dialogs.dart';
 
@@ -24,30 +18,28 @@ class NewRecipe extends StatefulWidget{
 class _NewRecipe extends State<NewRecipe>{
   Dialogs dialogs = new Dialogs();
 
-  ScrollController scrollController = new ScrollController();
+  //MainPage
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   File _image;
-  Duration setDuration;
+  double personenAnzahl;
 
+  //Zutaten
+  double zutatHeight;
+  List<double> numberList = [];
+  List<String> mass = ["kg","g","l","ml","TL","EL"];
+  List<String> massList = [];
+  List<String> nameList = [];
   String selectedMass;
-  List<String> masses = ["kg", "g", "l", "mg", "TL", "EL"];
+  TextEditingController nameController = new TextEditingController();
+  TextEditingController numberController = new TextEditingController();
 
-  List<double> zNumber = [];
-  List<String> zMass = [];
-  List<String> zNamen = [];
-  double zutatenHeight = 0.0;
 
-  final TextEditingController zNumberController = new TextEditingController();
-  final TextEditingController zNamenController = new TextEditingController();
-
-  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-
+  //Zubereitung
   final TextEditingController stepDescriptionController = new TextEditingController();
   GlobalKey<FormState> stepDescriptionKey = new GlobalKey<FormState>();
   double descriptionHeight = 0.0;
   List<String> stepDescription = [];
   int descriptionCounter = 0;
-
-  int personenAnzahl;
 
   @override
   void initState(){
@@ -92,7 +84,6 @@ class _NewRecipe extends State<NewRecipe>{
         ),
       ),
       body: ListView(
-
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(top: 10.0, bottom: 20.0, left: 179.0, right: 179.0),
@@ -107,8 +98,8 @@ class _NewRecipe extends State<NewRecipe>{
               ),
               onTap: () async{
                 String takePhoto = await dialogs.takePhoto(context);
-                if(takePhoto == "take") getImage(ImageSource.camera);
-                else if(takePhoto == "pick") getImage(ImageSource.gallery);
+                if(takePhoto == "machen") getImage(ImageSource.camera);
+                else if(takePhoto == "auswählen") getImage(ImageSource.gallery);
               },
             ),
           ),
@@ -121,37 +112,28 @@ class _NewRecipe extends State<NewRecipe>{
               InkWell(
                 borderRadius: BorderRadius.circular(10.0),
                 onTap: () async{
-                  personenAnzahl = await dialogs.personenAnzahl(context);
-                  setState((){});
+                  var returnedNumber = await dialogs.personenAnzahl(context);
+                  print(returnedNumber);
                 },
                 child: Column(
                   children: <Widget>[
                     Icon(OMIcons.group),
                     Center(child: Text(personenAnzahl == null
                         ? "-"
-                        : personenAnzahl.toString()
+                        : personenAnzahl
                     ))
                   ],
                 ),
               ),
               InkWell(
                 borderRadius: BorderRadius.circular(10.0),
-                onTap: () async{
-                  setDuration = await showDurationPicker(
-                      context: context,
-                      initialTime: new Duration(minutes: 20)
-                  );
-                  setState(() {});
+                onTap: (){
+                  //dialog mit eingabe der zeit der zubereitung
                 },
                 child: Column(
                   children: <Widget>[
                     Icon(OMIcons.avTimer),
-                    Center(
-                      child: Text(setDuration == null
-                        ? "-"
-                        : setDuration.inMinutes.toString() + "min"
-                      ),
-                    )
+                    Center(child: Text("-"))
                   ],
                 ),
               ),
@@ -159,10 +141,6 @@ class _NewRecipe extends State<NewRecipe>{
                 padding: EdgeInsets.only(right: 20.0),
               )
             ],
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20.0, right: 20.0),
-            child: Divider(),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,9 +213,9 @@ class _NewRecipe extends State<NewRecipe>{
                     leading: IconButton(
                       icon: Icon(Icons.close),
                       onPressed: (){
-                        zNumberController.clear();
+                        numberController.clear();
                         selectedMass = null;
-                        zNamenController.clear();
+                        numberController.clear();
                         setState(() {
                         });
                       },
@@ -250,7 +228,7 @@ class _NewRecipe extends State<NewRecipe>{
                             child: Padding(
                               padding: EdgeInsets.only(top: 8.0, right: 5.0),
                               child: TextFormField(
-                                controller: zNumberController,
+                                controller: numberController,
                                 decoration: InputDecoration(
                                     border: UnderlineInputBorder(
                                       borderRadius: BorderRadius.all(Radius.circular(2.0)),
@@ -268,7 +246,7 @@ class _NewRecipe extends State<NewRecipe>{
                         ),
                         Container(
                           child: new DropdownButton(
-                            items: masses.map((String value){
+                            items: mass.map((String value){
                               return new DropdownMenuItem<String>(
                                 value: value,
                                 child: new Text(
@@ -290,7 +268,7 @@ class _NewRecipe extends State<NewRecipe>{
                           child: Container(
                             width: 100.0,
                             child: TextFormField(
-                                controller: zNamenController,
+                                controller: numberController,
                                 decoration: InputDecoration(
                                     contentPadding: EdgeInsets.only(bottom: 5.0),
                                     enabledBorder: UnderlineInputBorder(
@@ -309,28 +287,31 @@ class _NewRecipe extends State<NewRecipe>{
                       icon: Icon(Icons.check),
                       onPressed: (){
                         setState(() {
-                          zutatenHeight += 50.0;
-                          zNumber.add(double.parse(zNumberController.text));
-                          zNumberController.clear();
+                          zutatHeight += 50.0;
+                          numberList.add(double.parse(numberController.text));
+                          numberController.clear();
 
-                          zMass.add(selectedMass);
+                          massList.add(selectedMass);
                           selectedMass == null;
 
-                          zNamen.add(zNamenController.text);
-                          zNamenController.clear();
+                          numberList.add(double.parse(numberController.text));
+                          numberController.clear();
                         });
                       },
                     ),
                   ),
+                  Divider(
+
+                  ),
                   Container(
-                    height: zutatenHeight,
+                    height: zutatHeight+6,
                     child:ListView.builder(
                       scrollDirection: Axis.vertical,
-                      itemCount: zNamen.length,
+                      itemCount: numberList.length,
                       itemBuilder: (BuildContext ctxt, int index){
-                        final name = zNamen[index];
-                        final number = zNumber[index];
-                        final mass = zMass[index];
+                        final name = nameList[index];
+                        final number = numberList[index];
+                        final mass = massList[index];
 
                         return Dismissible(
                           background: Container(
@@ -353,7 +334,7 @@ class _NewRecipe extends State<NewRecipe>{
                                 leading: IconButton(
                                   icon: Icon(Icons.remove),
                                   onPressed: (){
-                                    reduceZNumber(index);
+                                    reducenumberList(index);
                                   },
                                 ),
                                 title: Row(
@@ -367,38 +348,37 @@ class _NewRecipe extends State<NewRecipe>{
                                 trailing: IconButton(
                                     icon: Icon(Icons.add),
                                     onPressed: (){
-                                      zNumber[index]++;
+                                      numberList[index]++;
                                     }
                                 ),
                               ),
                             ],
                           ),
-                          direction: (zNamenController.text.isEmpty
+                          direction: (numberController.text.isEmpty
                               ? DismissDirection.horizontal
                               : DismissDirection.startToEnd
                           ),
                           onDismissed: (direction){
                             if(direction == DismissDirection.startToEnd){
                               setState(() {
-                                reduceZNumber(index);
+                                reducenumberList(index);
 
-                                zNamen.removeAt(index);
-                                zMass.removeAt(index);
-                                zNumber.removeAt(index);
+                                numberList.removeAt(index);
+                                massList.removeAt(index);
+                                numberList.removeAt(index);
                               });
                             } else if(direction == DismissDirection.endToStart){
-                              if(zNamenController.text.isNotEmpty){
+                              if(numberController.text.isNotEmpty){
                                 showBottomSnack("Dismissed abortion");
-                              } else if(zNamenController.text.isEmpty){
-                                zNamenController.text = zNamen[index];
-                                zNumberController.text = zNumber[index].toString();
-                                selectedMass = zMass[index];
+                              } else if(numberController.text.isEmpty){
+                                numberController.text = numberList[index].toString();
+                                selectedMass = massList[index];
 
-                                zNamen.removeAt(index);
-                                zMass.removeAt(index);
-                                zNumber.removeAt(index);
+                                numberList.removeAt(index);
+                                massList.removeAt(index);
+                                numberList.removeAt(index);
 
-                                reduceZNumber(index);
+                                reducenumberList(index);
                               }
 
                               setState(() {});
@@ -407,9 +387,6 @@ class _NewRecipe extends State<NewRecipe>{
                         );
                       },
                     ),
-                  ),
-                  Divider(
-
                   ),
                 ],
               ),
@@ -470,14 +447,14 @@ class _NewRecipe extends State<NewRecipe>{
                         height: descriptionHeight,
                         child: DragAndDropList(
                           stepDescription.length,
-                          itemBuilder: (BuildContext ctxt, item){
+                          itemBuilder: (BuildContext ctxt, index){
                             return new SizedBox(
                               child: new Card(
                                 child: new ListTile(
                                   leading: CircleAvatar(
-                                    child: Text((item+1).toString()),
+                                    child: Text(index.toString()),
                                   ),
-                                  title: Text(stepDescription[item]),
+                                  title: Text(stepDescription[index]),
                                 ),
                               ),
                             );
@@ -505,11 +482,8 @@ class _NewRecipe extends State<NewRecipe>{
   }
 
   Future getImage(ImageSource imageSource) async{
+    var takePhoto = await dialogs.takePhoto(context);
     var image = await ImagePicker.pickImage(source: imageSource);
-    /*Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path;
-    String name = basename(path);
-    image = await image.copy("$path/$name");*/
     setState(() {
       _image = image;
     });
@@ -523,14 +497,14 @@ class _NewRecipe extends State<NewRecipe>{
     );
   }
 
-  void reduceZNumber(int index){
-    if(zNumber[index] > 0.0){
-      zNumber[index]--;
-    } else if(zNumber[index] == 0.0){
+  void reducenumberList(int index){
+    if(numberList[index] > 0.0){
+      numberList[index]--;
+    } else if(numberList[index] == 0.0){
       setState(() {
-        zNamen.removeAt(index);
-        zMass.removeAt(index);
-        zNumber.removeAt(index);
+        numberList.removeAt(index);
+        massList.removeAt(index);
+        numberList.removeAt(index);
       });
     }
   }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
-import 'bottom_sheets.dart';
-
 import 'interface/LoadingBar.dart';
 
 import 'pages/calendar_view.dart';
@@ -18,7 +16,6 @@ class Recipebook extends StatefulWidget{
 }
 
 class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
-  BottomSheets bottomSheets = new BottomSheets();
   bool visible = false;
 
   int _currentTab = 0;

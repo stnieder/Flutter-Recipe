@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 
 import 'interface/CustomShowDialog.dart';
 
@@ -110,6 +111,68 @@ class Dialogs{
           ],
         );
       }
+    );
+  }
+
+  cookingTime(BuildContext context){
+    Duration _duration = Duration(hours: 0, minutes: 0);
+
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext ctxt){
+          return CustomAlertDialog(
+            title: Text("Arbeitszeit: "),
+            content: Container(
+              child: DurationPicker(
+                duration: _duration,
+                onChange: (value){
+                  _duration = value;
+                },
+                snapToMins: 1.0,
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text(
+                    "Abbrechen",
+                    style: TextStyle(
+                        color: Color(0xFFdb3236),
+                        fontFamily: "Google-Sans",
+                        fontSize: 14.0
+                    ),
+                  ),
+                  highlightColor: Color(0xFFdb3236).withOpacity(0.2),
+                  onPressed: ()=>Navigator.pop(ctxt),
+                  shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                  splashColor: Colors.transparent
+              ),
+              FlatButton(
+                  child: Text(
+                    "Ok",
+                    style: TextStyle(
+                        color: (_duration == (Duration(hours: 0, minutes: 0))
+                            ? Color(0xFFAAAFB4)
+                            : Color(0xFF4285F4)
+                        ),
+                        fontFamily: "Google-Sans",
+                        fontSize: 14.0
+                    ),
+                  ),
+                  highlightColor: (_duration == (Duration(hours: 0, minutes: 0))
+                      ? Color(0xFFAAAFB4).withOpacity(0.3)
+                      : Color(0xFF419df4).withOpacity(0.2)
+                  ),
+                  onPressed: (_duration == (Duration(hours: 0, minutes: 0))
+                      ? (){}
+                      : ()=> Navigator.pop(context, _duration)
+                  ),
+                  shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                  splashColor: Colors.transparent
+              )
+            ],
+          );
+        }
     );
   }
 

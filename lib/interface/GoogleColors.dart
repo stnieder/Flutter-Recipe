@@ -12,8 +12,11 @@ class GoogleMaterialColors{
     Color(0xFFa142f4) //Purple
   ];
 
+  Color getLightColor(int number){
+    return colorList[number];
+  }
 
-  List<Color> getLightColor(int number){
+  List<Color> getColorList(int number){
     List<Color> returnColor = [colorList[number], colorList[number].withOpacity(0.2)];
     return returnColor;
   }

@@ -93,6 +93,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_duration_picker">
+          <value>
+            <list>
+              <option value="/opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_duration_picker-1.0.3/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_test">
           <value>
             <list>
@@ -465,6 +472,7 @@
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/csslib-0.14.5/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/date_utils-0.1.0/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/dragable_flutter_list-1.0.1/lib" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_duration_picker-1.0.3/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/front_end-0.1.4/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/glob-1.1.7/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/html-0.13.3+3/lib" />
