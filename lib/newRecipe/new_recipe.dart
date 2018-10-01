@@ -1,20 +1,27 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
-import 'dart:math';
 import 'package:dragable_flutter_list/dragable_flutter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:recipe/database/database.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:recipe/interface/DurationDialog.dart'; //made by Chris Harris https://pub.dartlang.org/packages/flutter_duration_picker
 
 import 'package:recipe/interface/CircularImage.dart';
+import 'package:recipe/interface/GoogleColors.dart';
+
 import 'package:recipe/Dialogs.dart';
+
+import 'package:recipe/model/Ingredients.dart';
+import 'package:recipe/model/Recipe_Ingredient.dart';
+import 'package:recipe/model/Recipe_Steps.dart';
+import 'package:recipe/model/Recipes.dart';
+import 'package:recipe/model/StepDescription.dart';
 
 class NewRecipe extends StatefulWidget{
   @override
@@ -23,31 +30,38 @@ class NewRecipe extends StatefulWidget{
 
 class _NewRecipe extends State<NewRecipe>{
   Dialogs dialogs = new Dialogs();
+  DBHelper db = new DBHelper();
+  GoogleMaterialColors materialColors = new GoogleMaterialColors();
 
-  ScrollController scrollController = new ScrollController();
-  File _image;
+  //MainPage
+  bool personenError = false;
+  bool durationError = false;
   Duration setDuration;
+  File _image;  
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+  int personenAnzahl;  
 
-  String selectedMass;
-  List<String> masses = ["kg", "g", "l", "mg", "TL", "EL"];
+  //Allgemein
+  final TextEditingController recipeName = new TextEditingController();
+  final TextEditingController recipeDescription = new TextEditingController();
 
+  //Zutaten
+  double zutatenHeight = 0.0;
+  final TextEditingController zNumberController = new TextEditingController();
+  final TextEditingController zNamenController = new TextEditingController();
+  List<String> masses = ["Stk.", "kg", "g", "l", "mg", "TL", "EL"];
   List<double> zNumber = [];
   List<String> zMass = [];
   List<String> zNamen = [];
-  double zutatenHeight = 0.0;
+  String selectedMass;    
 
-  final TextEditingController zNumberController = new TextEditingController();
-  final TextEditingController zNamenController = new TextEditingController();
-
-  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-
-  final TextEditingController stepDescriptionController = new TextEditingController();
-  GlobalKey<FormState> stepDescriptionKey = new GlobalKey<FormState>();
+  //Zubereitung
   double descriptionHeight = 0.0;
-  List<String> stepDescription = [];
+  final TextEditingController stepDescriptionController = new TextEditingController();
+  GlobalKey<FormState> stepDescriptionKey = new GlobalKey<FormState>();  
   int descriptionCounter = 0;
+  List<String> stepDescription = [];
 
-  int personenAnzahl;
 
   @override
   void initState(){
@@ -63,7 +77,10 @@ class _NewRecipe extends State<NewRecipe>{
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            onPressed: (){},
+            onPressed: () async{
+              Navigator.pop(context, "saved");
+              await saveRecipe();
+            },
             icon: Icon(
               Icons.check,
               color: Colors.green[400],
@@ -118,43 +135,68 @@ class _NewRecipe extends State<NewRecipe>{
               Padding(
                 padding: EdgeInsets.only(left: 20.0),
               ),
-              InkWell(
-                borderRadius: BorderRadius.circular(10.0),
-                onTap: () async{
-                  personenAnzahl = await dialogs.personenAnzahl(context);
-                  setState((){});
-                },
-                child: Column(
-                  children: <Widget>[
-                    Icon(OMIcons.group),
-                    Center(child: Text(personenAnzahl == null
-                        ? "-"
-                        : personenAnzahl.toString()
-                    ))
-                  ],
+              Container(
+                decoration: BoxDecoration(
+                  color: (personenError
+                    ? materialColors.getLightColor(3).withOpacity(0.3) //Red
+                    : null
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  shape: BoxShape.rectangle
                 ),
-              ),
-              InkWell(
-                borderRadius: BorderRadius.circular(10.0),
-                onTap: () async{
-                  setDuration = await showDurationPicker(
-                      context: context,
-                      initialTime: new Duration(minutes: 20)
-                  );
-                  setState(() {});
-                },
-                child: Column(
-                  children: <Widget>[
-                    Icon(OMIcons.avTimer),
-                    Center(
-                      child: Text(setDuration == null
-                        ? "-"
-                        : setDuration.inMinutes.toString() + "min"
-                      ),
-                    )
-                  ],
+                height: 40.0,
+                width: 40.0,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(10.0),
+                  onTap: () async{
+                    personenAnzahl = await dialogs.personenAnzahl(context);   
+                    setState((){});
+                  },
+                  child: Column(                                    
+                    children: <Widget>[
+                      Icon(OMIcons.group),
+                      Center(child: Text(personenAnzahl == null
+                          ? "-"
+                          : personenAnzahl.toString()
+                      ))
+                    ],
+                  ),
                 ),
-              ),
+              ),   
+              Container(
+                decoration: BoxDecoration(
+                  color: (durationError
+                    ? materialColors.getLightColor(3).withOpacity(0.3) //Red
+                    : null
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  shape: BoxShape.rectangle
+                ),
+                height: 40.0,
+                width: 40.0,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(10.0),
+                  onTap: () async{
+                    setDuration = await showDurationPicker(
+                        context: context,
+                        initialTime: new Duration(minutes: 20)
+                    );
+                    setState(() {});
+                  },
+                  child: Column(
+                    children: <Widget>[
+                      Icon(OMIcons.avTimer),
+                      Center(
+                        child: Text(setDuration == null
+                          ? "-"
+                          : setDuration.inMinutes.toString() + "min"
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),            
+              
               Padding(
                 padding: EdgeInsets.only(right: 20.0),
               )
@@ -188,6 +230,7 @@ class _NewRecipe extends State<NewRecipe>{
                     ),
                     title: TextField(
                         autofocus: true,
+                        controller: recipeName,
                         decoration: InputDecoration(
                           hintText: "Name",
                         ),
@@ -201,6 +244,7 @@ class _NewRecipe extends State<NewRecipe>{
                       child: Icon(OMIcons.subject),
                     ),
                     title: TextField(
+                      controller: recipeDescription,
                       decoration: InputDecoration(
                           hintText: "Beschreibe dein Rezept..."
                       ),
@@ -309,12 +353,12 @@ class _NewRecipe extends State<NewRecipe>{
                       icon: Icon(Icons.check),
                       onPressed: (){
                         setState(() {
-                          zutatenHeight += 50.0;
+                          zutatenHeight += 56.0;
                           zNumber.add(double.parse(zNumberController.text));
                           zNumberController.clear();
 
                           zMass.add(selectedMass);
-                          selectedMass == null;
+                          selectedMass = null;
 
                           zNamen.add(zNamenController.text);
                           zNamenController.clear();
@@ -408,9 +452,7 @@ class _NewRecipe extends State<NewRecipe>{
                       },
                     ),
                   ),
-                  Divider(
-
-                  ),
+                  Divider(),
                 ],
               ),
             ],
@@ -449,6 +491,8 @@ class _NewRecipe extends State<NewRecipe>{
                             validator: (value){
                               if(value.isEmpty){
                                 return "Bitte Text eingeben";
+                              } else if(zNamen.length == 0){
+                                return "Zutaten sind notwendig";
                               }
                             },
                           ),
@@ -456,7 +500,7 @@ class _NewRecipe extends State<NewRecipe>{
                             icon: Icon(Icons.check),
                             onPressed: (){
                               if(stepDescriptionKey.currentState.validate()){
-                                descriptionHeight+=20.0;
+                                descriptionHeight+=56.0;
                                 stepDescription.add(stepDescriptionController.text);
                                 stepDescriptionController.clear();
                                 setState(() {});
@@ -505,13 +549,10 @@ class _NewRecipe extends State<NewRecipe>{
   }
 
   Future getImage(ImageSource imageSource) async{
-    var image = await ImagePicker.pickImage(source: imageSource);
-    /*Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path;
-    String name = basename(path);
-    image = await image.copy("$path/$name");*/
+    File newImage = await ImagePicker.pickImage(source: imageSource);
+
     setState(() {
-      _image = image;
+      _image = newImage;
     });
   }
 
@@ -533,5 +574,108 @@ class _NewRecipe extends State<NewRecipe>{
         zNumber.removeAt(index);
       });
     }
+  }
+
+  errorMessage(String input){
+    if(input == "p"){ //personenAnzahl is empty
+      personenError = true;
+    } else if(input == "d"){ //duration is empty
+      durationError = true;
+    } else if(input == "zN"){
+      showBottomSnack("Es werden Zutaten für ein Rezept benötigt.");
+    } else if(input == "s"){
+      showBottomSnack("Die Zubereitungs-Schritte sind nötig.");
+    }
+  }
+
+  controlInput() async{
+    bool returnValue = true; //true --> Rezept speichern
+    if(personenAnzahl == null) {
+      returnValue = false;
+      errorMessage("p");
+    }
+    if(setDuration == null) {
+      returnValue = false;
+      errorMessage("d");
+    }
+    if(zNamen.length == 0) {
+      returnValue = false;
+      errorMessage("zN");
+    }
+    if(stepDescription.length == 0) {
+      returnValue = false;
+      errorMessage("s");
+    }
+    return returnValue;
+  }
+
+  Future saveRecStepsIDs(int recipeID, int stepsID) async{
+    RecipeSteps ids = new RecipeSteps();
+    ids.id_recipes = recipeID;
+    ids.id_steps = stepsID;
+
+    ids = await db.insertRecipeSteps(ids);
+  }
+
+  Future saveSteps(int recipeID) async{
+    StepsDB steps = new StepsDB();
+    int count = stepDescription.length;
+    for(int i=0; i< count; i++){
+      steps.number = i;
+      steps.description = stepDescription[i];
+      steps = await db.insertSteps(steps);
+
+      await saveRecStepsIDs(recipeID, steps.id);
+    }
+  }
+
+  Future saveRecIngreIDs(int recipeID, int ingredientID) async{
+    RecIngre ids = new RecIngre();
+    ids.id_recipes = recipeID;
+    ids.id_ingredients = ingredientID;
+
+    await db.insertRecIngre(ids);
+  }
+
+
+  Future saveIngredients(int recipeID) async{
+    IngredientsDB ingredients = new IngredientsDB();
+    int count = zNamen.length;
+    for(int i = 0; i < count; i++){
+      ingredients.name = zNamen[i];
+      ingredients.number = zNumber[i];
+      ingredients.measure = zMass[i];
+
+      ingredients = await db.insertIngre(ingredients);
+
+      await saveRecIngreIDs(recipeID, ingredients.id);
+    }
+  }
+
+  Future saveRecipe() async{
+    if(controlInput() == false){
+      showBottomSnack("Bitte alle nötigen Parameter ausfüllen");
+    } else {
+      print("${recipeName.text}");
+      await db.create();   
+
+      Directory directory = await getApplicationDocumentsDirectory();
+      String path = directory.path;
+      File newImage = await _image.copy('$path/${recipeName.text}.png');
+      var base64_encoded = base64.encode(newImage.readAsBytesSync());
+      
+      RecipesDB recipe = new RecipesDB();
+      recipe.name = recipeName.text;
+      recipe.definition = recipeDescription.text;
+      recipe.duration = setDuration.inMinutes.toString();
+      recipe.timestamp = DateTime.now().toString();
+      recipe.favorite = 0;
+
+      recipe = await db.insertRecipe(recipe);
+
+      await saveIngredients(recipe.id);
+      await saveSteps(recipe.id);
+      showBottomSnack("Rezept erfolgreich gespeichert");
+    }    
   }
 }

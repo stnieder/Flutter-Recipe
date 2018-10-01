@@ -1,0 +1,930 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/lib/interface" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="24bec8cd-1ce5-49e9-9b6e-69c76808e3a5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/model/Recipe_Steps.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/model/StepDescription.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/stack.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/database/database.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/database.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Ingredients.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/Ingredients.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Recipe_Ingredient.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/Recipe_Ingredient.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Recipes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/Recipes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/newRecipe/newRecipeGit.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/newRecipe/new_recipe.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/newRecipe/new_recipe.dart" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path="$PROJECT_DIR$/.idea/shelf/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-1576476862">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="30" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.10" value="1" />
+          <entry key="project.open.time.11" value="8" />
+          <entry key="project.open.time.12" value="3" />
+          <entry key="project.open.time.13" value="6" />
+          <entry key="project.open.time.14" value="6" />
+          <entry key="project.open.time.15" value="3" />
+          <entry key="project.open.time.16" value="1" />
+          <entry key="project.open.time.22" value="1" />
+          <entry key="project.opened" value="30" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="dart" value="326" />
+          <entry key="java" value="1" />
+          <entry key="plist" value="1" />
+          <entry key="svg" value="4" />
+          <entry key="yaml" value="31" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Dart" value="326" />
+          <entry key="JAVA" value="1" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="SVG" value="4" />
+          <entry key="YAML" value="31" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="dart" value="64297" />
+          <entry key="ft" value="528" />
+          <entry key="plist" value="54" />
+          <entry key="txt" value="376" />
+          <entry key="yaml" value="654" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Dart" value="64297" />
+          <entry key="PLAIN_TEXT" value="430" />
+          <entry key="VTL" value="528" />
+          <entry key="YAML" value="654" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/newRecipe/new_recipe.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="339">
+              <caret line="578" column="45" lean-forward="true" selection-start-line="578" selection-start-column="45" selection-end-line="578" selection-end-column="45" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/database/database.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1635">
+              <caret line="119" column="48" selection-start-line="119" selection-start-column="48" selection-end-line="119" selection-end-column="48" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Gradle Kotlin DSL Build Script" />
+        <option value="Dart File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>maxP</find>
+      <find>day</find>
+      <find>white</find>
+      <find>tile</find>
+      <find>nameandIcon</find>
+      <find>_tabs</find>
+      <find>padding</find>
+      <find>rec</find>
+      <find>zutatenH</find>
+      <find>.withOpacity(0.3);</find>
+      <find>snack</find>
+      <find>context</find>
+      <find>0.3</find>
+      <find>getImage</find>
+      <find>zNamenController</find>
+      <find>zutatenHeight</find>
+      <find>textformfield</find>
+      <find>zutatHeight</find>
+      <find>zNumberController</find>
+      <find>reducenumberList</find>
+      <find>size</find>
+      <find>bool</find>
+      <find>zNumber</find>
+      <find>zNamen</find>
+      <find>zMass</find>
+      <find>nameListController</find>
+      <find>DragA</find>
+      <find>+6</find>
+      <find>FlatButton</find>
+      <find>Zuberi</find>
+    </findStrings>
+    <replaceStrings>
+      <replace />
+      <replace>reduceNumber</replace>
+      <replace>numberList</replace>
+      <replace>massList</replace>
+      <replace>numberController</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/lib/interface/Calendar.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/Calendar/CalendarTile.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/Calendar/Calendar.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/Calendar/flutter_calendar.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/Calendar/calendar_tile.dart" />
+        <option value="$PROJECT_DIR$/lib/pages/shopping_list.dart" />
+        <option value="$PROJECT_DIR$/lib/pages/calendar_view.dart" />
+        <option value="$PROJECT_DIR$/lib/new_recipe.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/nameDialog.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/closeDialog.dart" />
+        <option value="$PROJECT_DIR$/ios/Runner/Info.plist" />
+        <option value="$PROJECT_DIR$/lib/interface/CustomShowDialog.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/ContainerDesign.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/CircularImage.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/itemCalls.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/zutatenItems.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/LayoutSizeChangeNotification.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/CustomDismissbleButtons/ActionItems.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/CustomDismissbleButtons/OnSlide.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/CustomDismissbleButtons/LayoutSizeChangeNotification.dart" />
+        <option value="$PROJECT_DIR$/lib/dis.dart" />
+        <option value="$PROJECT_DIR$/lib/main.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/zutaten.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/zubereitung.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/allgemein.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/recipe2.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/Zubereitung.dart" />
+        <option value="$PROJECT_DIR$/lib/simple.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/lightMaterial.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/pageIndicator.dart" />
+        <option value="$PROJECT_DIR$/lib/pages/list.dart" />
+        <option value="$PROJECT_DIR$/lib/recipebook.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/GoogleColors.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/PageIndicator.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/CompletionSteps.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/Allgemein.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/Zutaten.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/newRecipeGit.dart" />
+        <option value="$PROJECT_DIR$/pubspec.yaml" />
+        <option value="$PROJECT_DIR$/lib/Dialogs.dart" />
+        <option value="$PROJECT_DIR$/lib/interface/DurationDialog.dart" />
+        <option value="$PROJECT_DIR$/lib/model/Recipe_Description.dart" />
+        <option value="$PROJECT_DIR$/lib/model/Descriptions.dart" />
+        <option value="$PROJECT_DIR$/lib/stack.dart" />
+        <option value="$PROJECT_DIR$/lib/model/Recipes.dart" />
+        <option value="$PROJECT_DIR$/lib/model/StepDescription.dart" />
+        <option value="$PROJECT_DIR$/lib/model/Recipe_Steps.dart" />
+        <option value="$PROJECT_DIR$/lib/model/Ingredients.dart" />
+        <option value="$PROJECT_DIR$/lib/model/Recipe_Ingredient.dart" />
+        <option value="$PROJECT_DIR$/lib/database/database.dart" />
+        <option value="$PROJECT_DIR$/lib/newRecipe/new_recipe.dart" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="4">
+    <option name="x" value="67" />
+    <option name="y" value="25" />
+    <option name="width" value="927" />
+    <option name="height" value="1053" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="recipe" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="database" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="interface" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="newRecipe" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538134123973" />
+    <property name="dart.analysis.tool.window.force.activate" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="last_opened_file_path" value="/opt/flutter/bin/cache/artifacts/engine/android-arm/flutter.jar!/" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="fileTemplates" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib/interface/CustomDismissbleButtons" />
+      <recent name="$PROJECT_DIR$/lib/newRecipe" />
+      <recent name="$PROJECT_DIR$/lib/interface/Calendar" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/font" />
+      <recent name="$PROJECT_DIR$/icons" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="24bec8cd-1ce5-49e9-9b6e-69c76808e3a5" name="Default Changelist" comment="" />
+      <created>1536959226800</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1536959226800</updated>
+      <workItem from="1536959248425" duration="5237000" />
+      <workItem from="1536964514684" duration="199000" />
+      <workItem from="1537027045728" duration="5611000" />
+      <workItem from="1537089675348" duration="4952000" />
+      <workItem from="1537096201088" duration="9978000" />
+      <workItem from="1537117146664" duration="300000" />
+      <workItem from="1537117499567" duration="15257000" />
+      <workItem from="1537135824976" duration="4341000" />
+      <workItem from="1537185564875" duration="3795000" />
+      <workItem from="1537200114874" duration="10725000" />
+      <workItem from="1537276125604" duration="6370000" />
+      <workItem from="1537294749512" duration="3526000" />
+      <workItem from="1537298349579" duration="100000" />
+      <workItem from="1537363551530" duration="10453000" />
+      <workItem from="1537443359659" duration="6812000" />
+      <workItem from="1537533379020" duration="9049000" />
+      <workItem from="1537693830895" duration="14633000" />
+      <workItem from="1537782620703" duration="15958000" />
+      <workItem from="1537808314674" duration="5004000" />
+      <workItem from="1537874061692" duration="7251000" />
+      <workItem from="1537884906165" duration="3247000" />
+      <workItem from="1537971009456" duration="106000" />
+      <workItem from="1537971151416" duration="13105000" />
+      <workItem from="1538073591633" duration="3666000" />
+      <workItem from="1538077890805" duration="4087000" />
+      <workItem from="1538082374127" duration="1934000" />
+      <workItem from="1538130135155" duration="4046000" />
+      <workItem from="1538135959157" duration="740000" />
+      <workItem from="1538137458181" duration="1190000" />
+      <workItem from="1538139413200" duration="60000" />
+    </task>
+    <task id="LOCAL-00001" summary="Added flutter_calendar of &quot;apptreesoftware&quot;">
+      <created>1537298431294</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1537298431294</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added calendar style">
+      <created>1537368331234</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1537368331234</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Hero animation on new recipe page">
+      <created>1537374002146</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1537374002146</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added and styled CustomAlertDialog to new_recipe page">
+      <created>1537542424353</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1537542424353</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Dismissable ingredients">
+      <created>1537790838936</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1537790838936</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added &quot;Step-by-Step&quot;-description with draggable content">
+      <created>1537798686605</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1537798686605</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added &quot;Step-by-Step&quot;-description with draggable content">
+      <created>1537874576188</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1537874576188</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Split &quot;New-Recipe&quot;-Page and new Color theme">
+      <created>1537881311206</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1537881311206</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added DurationPicker made by Chris Harris">
+      <created>1538081967503</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1538081967503</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="171732000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="67" y="25" width="927" height="1053" extended-state="4" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2905789" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Build Variants" order="3" side_tool="true" />
+      <window_info id="Image Layers" order="4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Captures" order="6" weight="0.3291714" />
+      <window_info id="Capture Tool" order="7" />
+      <window_info id="UI Designer" order="8" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.46054053" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4971623" weight="0.51137596" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.399137" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3264865" />
+      <window_info anchor="bottom" id="Dart Analysis" order="7" weight="0.30810812" />
+      <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50283766" side_tool="true" weight="0.34669557" />
+      <window_info anchor="bottom" id="Logcat" order="10" weight="0.32864866" />
+      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="12" weight="0.46054053" />
+      <window_info anchor="bottom" id="Inspection Results" order="13" weight="0.32972974" />
+      <window_info anchor="bottom" id="Messages" order="14" weight="0.3264865" />
+      <window_info anchor="bottom" id="Terminal" order="15" weight="0.32756758" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Flutter Outline" order="5" />
+      <window_info anchor="right" id="Flutter Inspector" order="6" weight="0.32872164" />
+      <window_info anchor="right" id="Maven Projects" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Theme Preview" order="9" />
+      <window_info anchor="right" id="Database" order="10" weight="0.3291714" />
+      <window_info anchor="right" id="Device File Explorer" order="11" side_tool="true" weight="0.3291714" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14167129" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Build Variants" order="3" side_tool="true" />
+      <window_info id="Image Layers" order="4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Captures" order="6" weight="0.3291714" />
+      <window_info id="Capture Tool" order="7" />
+      <window_info id="UI Designer" order="8" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.46054053" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4971623" weight="0.51243246" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.399137" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3264865" />
+      <window_info anchor="bottom" id="Dart Analysis" order="7" weight="0.30810812" />
+      <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50283766" side_tool="true" weight="0.34669557" />
+      <window_info anchor="bottom" id="Logcat" order="10" weight="0.32864866" />
+      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="12" weight="0.46054053" />
+      <window_info anchor="bottom" id="Inspection Results" order="13" weight="0.32972974" />
+      <window_info anchor="bottom" id="Messages" order="14" weight="0.3264865" />
+      <window_info anchor="bottom" id="Terminal" order="15" weight="0.32756758" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Flutter Outline" order="5" />
+      <window_info anchor="right" id="Flutter Inspector" order="6" weight="0.32872164" />
+      <window_info anchor="right" id="Maven Projects" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Theme Preview" order="9" />
+      <window_info anchor="right" id="Database" order="10" weight="0.3291714" />
+      <window_info anchor="right" id="Device File Explorer" order="11" side_tool="true" weight="0.3291714" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added flutter_calendar of &quot;apptreesoftware&quot;" />
+    <MESSAGE value="Added calendar style" />
+    <MESSAGE value="Hero animation on new recipe page" />
+    <MESSAGE value="Added and styled CustomAlertDialog to new_recipe page" />
+    <MESSAGE value="Dismissable ingredients" />
+    <MESSAGE value="Added &quot;Step-by-Step&quot;-description with draggable content" />
+    <MESSAGE value="Split &quot;New-Recipe&quot;-Page and new Color theme" />
+    <MESSAGE value="Added DurationPicker made by Chris Harris" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added DurationPicker made by Chris Harris" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/lib/interface/Calendar/flutter_calendar.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="243" lean-forward="true" selection-start-line="243" selection-end-line="243" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interface/Calendar/calendar_tile.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="46" column="58" selection-start-line="46" selection-start-column="58" selection-end-line="46" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/pages/shopping_list.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="41" selection-start-line="20" selection-start-column="41" selection-end-line="20" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ios/Runner/Info.plist">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="533">
+          <caret line="48" column="32" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/closeDialog.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/pages/calendar_view.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="25" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/flutter/packages/flutter/lib/src/material/input_border.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11">
+          <caret line="158" column="21" selection-start-line="158" selection-start-column="21" selection-end-line="158" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/flutter/packages/flutter/lib/src/rendering/object.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="1506" column="11" selection-start-line="1506" selection-start-column="11" selection-end-line="1506" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interface/CustomShowDialog.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="180" column="34" selection-start-line="180" selection-start-column="34" selection-end-line="180" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interface/CircularImage.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/nameDialog.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/itemCalls.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/zutatenItems.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/interface/CustomDismissbleButtons/ActionItems.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/interface/CustomDismissbleButtons/OnSlide.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/interface/CustomDismissbleButtons/LayoutSizeChangeNotification.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/dis.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/interface/ContainerDesign.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/main.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="1" lean-forward="true" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/zubereitung.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/zutaten.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/allgemein.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/recipe2.dart" />
+    <entry file="file:///opt/flutter/packages/flutter/lib/src/widgets/framework.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="1298" column="9" selection-start-line="1298" selection-start-column="9" selection-end-line="1298" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="9" column="3" lean-forward="true" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/simple.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/pages/list.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="29" lean-forward="true" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interface/BubbleIndicator.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/bottom_sheets.dart" />
+    <entry file="file://$PROJECT_DIR$/lib/recipebook.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" column="17" lean-forward="true" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/flutter/packages/flutter/lib/src/widgets/transitions.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="41" column="14" selection-start-line="41" selection-start-column="14" selection-end-line="41" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interface/PageIndicator.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="31" column="27" selection-start-line="31" selection-start-column="27" selection-end-line="31" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/CompletionSteps.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="40" column="25" lean-forward="true" selection-start-line="40" selection-start-column="25" selection-end-line="40" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/Allgemein.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="634">
+          <caret line="48" column="21" selection-start-line="48" selection-start-column="21" selection-end-line="48" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/Zutaten.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="13" column="2" lean-forward="true" selection-start-line="13" selection-start-column="2" selection-end-line="20" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/newRecipeGit.dart" />
+    <entry file="file://$PROJECT_DIR$/pubspec.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="29" column="35" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interface/GoogleColors.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/Zubereitung.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Dialogs.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="107" column="14" selection-start-line="107" selection-start-column="14" selection-end-line="108" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interface/DurationDialog.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="495" selection-start-line="495" selection-end-line="495" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interface/LoadingBar.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="59" column="122" selection-start-line="59" selection-start-column="87" selection-end-line="59" selection-end-column="122" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/stack.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="32" column="43" lean-forward="true" selection-start-line="32" selection-start-column="43" selection-end-line="35" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-0.12.0/lib/src/database.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="317" column="13" selection-start-line="317" selection-start-column="13" selection-end-line="317" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/model/Ingredients.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="12" column="32" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/model/Recipe_Steps.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="10" column="32" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/model/StepDescription.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="6" lean-forward="true" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/model/Recipes.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="33" column="20" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/model/Recipe_Ingredient.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="3" lean-forward="true" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/newRecipe/new_recipe.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="578" column="45" lean-forward="true" selection-start-line="578" selection-start-column="45" selection-end-line="578" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/database/database.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1635">
+          <caret line="119" column="48" selection-start-line="119" selection-start-column="48" selection-end-line="119" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Android</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>10</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>recipe_android</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Dart Packages</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

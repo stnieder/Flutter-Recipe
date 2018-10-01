@@ -28,6 +28,7 @@ dependencies:
   image_picker: ^0.4.10
   dragable_flutter_list: ^1.0.1
   flutter_duration_picker: "^1.0.0"
+  side_header_list_view: ^0.0.4
 
 dev_dependencies:
   flutter_test:

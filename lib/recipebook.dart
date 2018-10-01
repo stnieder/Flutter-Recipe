@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:recipe/database/database.dart';
 
 import 'interface/LoadingBar.dart';
 
@@ -16,6 +17,8 @@ class Recipebook extends StatefulWidget{
 }
 
 class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
+  var dbHelper = new DBHelper();
+
   bool visible = false;
 
   int _currentTab = 0;
@@ -30,6 +33,12 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
     "Termine",
     "Einkaufsliste"
   ];
+
+  @override
+    void initState() {
+      super.initState();
+      dbHelper.create();
+    }
 
   @override
   Widget build(BuildContext context) {

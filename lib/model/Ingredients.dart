@@ -1,15 +1,14 @@
-import 'dart:convert';
-
 class IngredientsDB{
   IngredientsDB();
 
-  int id, number;
+  int id;
+  double number;
   String name, measure;
 
   static final columns = ["id", "name", "number", "measure"];
 
-  Map toMap(){
-    Map map = {
+  Map<String, dynamic> toMap(){
+    Map<String, dynamic> map = {
       "name": name,
       "number": number,
       "measure": measure,

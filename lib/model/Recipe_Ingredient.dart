@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class RecIngre{
   RecIngre();
 
@@ -7,10 +5,10 @@ class RecIngre{
 
   static final columns = ["id", "id_ingredients", "id_ingredients"];
 
-  Map toMap(){
-    Map map = {
+  Map<String, dynamic> toMap(){
+    Map<String, dynamic> map = {
       "id_recipes": id_recipes,
-      "number": id_ingredients
+      "id_ingredients": id_ingredients
     };
 
     if(id != null){

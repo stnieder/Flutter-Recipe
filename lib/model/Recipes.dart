@@ -3,17 +3,21 @@ import 'dart:convert';
 class RecipesDB{
   RecipesDB();
 
-  int id, favorite;
-  String name, definition, timestamp;
+  int id, favorite, backgroundColor;
+  dynamic image;
+  String name, definition, timestamp, duration;
 
-  static final columns = ["id", "name", "definition", "favorite", "timestamp"];
+  static final columns = ["id", "name", "definition","duration", "favorite", "timestamp", "image", "backgroundColor"];
 
-  Map toMap(){
-    Map map = {
+  Map<String, dynamic> toMap(){
+    Map<String, dynamic> map = {
       "name": name,
-      "definition": definition,
+      "definition": definition,      
+      "duration": duration,
       "favorite": favorite,
-      "timestamp": timestamp
+      "timestamp": timestamp,
+      "image": image,
+      "backgroundColor": backgroundColor
     };
 
     if(id != null){
@@ -29,10 +33,21 @@ class RecipesDB{
     recipes.id = map["id"];
     recipes.name = map["name"];
     recipes.definition = map["definition"];
+    recipes.duration = map["duration"];
     recipes.favorite = map["favorite"];
     recipes.timestamp = map["timestamp"];
+    recipes.image = map["image"];
+    recipes.backgroundColor = map["backgroundColor"];
 
     return recipes;
   }
+}
 
+
+class Recipes{
+  int id, favorite, backgroundColor;
+  dynamic image;
+  String name, definition, timestamp, duration;
+
+  Recipes(this.name, this.definition, this.duration, this.favorite, this.timestamp, this.image, this.backgroundColor);
 }

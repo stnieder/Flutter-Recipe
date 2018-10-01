@@ -1,6 +1,8 @@
 import 'dart:async';
-import 'dart:io' as io;
+import 'dart:io';
 import 'package:path/path.dart';
+import 'package:recipe/model/Recipe_Steps.dart';
+import 'package:recipe/model/StepDescription.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -16,7 +18,8 @@ class DBHelper{
   * Create the database
   * */
   Future create() async{
-    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    await Sqflite.devSetDebugModeOn(true);
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "recipebook.db");
     _db = await openDatabase(path, version: 1, onCreate: this._create);
   }
@@ -32,9 +35,11 @@ class DBHelper{
         "id integer primary key AUTOINCREMENT, " +
         "name varchar, " +
         "definition text, "+
-        "workDuration varchar, " +
+        "duration varchar, " +
         "favorite integer default 0, "+
-        "timestamp text"+
+        "timestamp text, "+
+        "image real, "+
+        "backgroundColor integer "+
       ")"
     );
 
@@ -48,6 +53,15 @@ class DBHelper{
       ")"
     );
 
+    //Create steps table
+    await db.execute(
+      "CREATE TABLE steps(" +
+        "id integer primary key AUTOINCREMENT, " +
+        "number integer, "
+        "description text "+
+      ")"
+    );
+
     //Create table between recipes and ingredients
     await db.execute(
       "CREATE TABLE recipeIngredients(" +
@@ -55,6 +69,15 @@ class DBHelper{
         "id_recipes real, "+
         "id_ingredients real "+
       ")"
+    );
+
+    //Create table between recipes and descriptions
+    await db.execute(
+        "CREATE TABLE recipeSteps(" +
+          "id integer primary key AUTOINCREMENT, " +
+          "id_recipes real, "+
+          "id_steps real "+
+        ")"
     );
 
     print("Created all tables");
@@ -85,35 +108,52 @@ class DBHelper{
     return ingre;
   }
 
-  Future<RecIngre> insertIngreRec(RecIngre recIngre) async{
+  Future<StepsDB> insertSteps(StepsDB steps) async{
+    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM steps WHERE description = ?", [steps.description]));
+    if(count == 0){
+      steps.id = await _db.insert("steps", steps.toMap());
+    } else {
+      await _db.update("steps", steps.toMap(), where:  "id = ?", whereArgs: [steps.id]);
+    }
+    return steps;
+  }
+
+  Future<RecIngre> insertRecIngre(RecIngre recIngre) async{
     var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM recipeIngredients WHERE id_recipes = ?", [recIngre.id_recipes]));
     if(count == 0){
-      recIngre.id = await _db.insert("recipes", recIngre.toMap());
+      recIngre.id = await _db.insert("recipeIngredients", recIngre.toMap());
     } else {
       await _db.update("recipeIngredients", recIngre.toMap(), where: "id = ?", whereArgs: [recIngre.id]);
     }
     return recIngre;
   }
 
-  //Get all Recipes
-  Future<RecipesDB> get_AllRecipes() async{
-    List<Map> results = await _db.query("recipes", columns: RecipesDB.columns);
-    var rowNumber = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM recipes"));
-    var count = rowNumber;
-    RecipesDB recipes;
-
-    for(int i=0; i<=count; i++){
-      recipes = RecipesDB.fromMap(results[i]);
+  Future<RecipeSteps> insertRecipeSteps(RecipeSteps recSteps) async{
+    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM recipeSteps WHERE id_recipes = ?", [recSteps.id_recipes]));
+    if(count == 0){
+      recSteps.id = await _db.insert("recipeSteps", recSteps.toMap());
+    } else {
+      await _db.update("recipeSteps", recSteps.toMap(), where: "id = ?", whereArgs: [recSteps.id]);
     }
+    return recSteps;
+  }
 
+  //Get all Recipes
+  Future<List<Recipes>> getRecipes() async{
+    List<Map> list = await _db.rawQuery("SELECT * FROM recipes");
+    List<Recipes> recipes = new List();
+    for(int i =0; i < list.length; i++){
+      recipes.add(new Recipes(list[i]["name"], list[i]["definition"], list[i]["duration"], list[i]["favorite"], list[i]["timestamp"], list[i]["image"], list[i]["backgroundColor"]));      
+    }
+    print("------------------------------------------Anzahl Rezepte: "+recipes.length.toString());
     return recipes;
   }
 
   //Get Ingredients of specific recipe
-  Future<IngredientsDB> get_AllIngredients(int id) async{
+  Future<IngredientsDB> getIngredients(int recipesID) async{
     List<Map> results = await _db.query("ingredients", columns: RecipesDB.columns);
-    String sql = "SELECT COUNT(*) FROM ingredients WHERE ingredients.id = ? AND recipeIngredients.id_recipes = ?";
-    var rowNumber = Sqflite.firstIntValue(await _db.rawQuery(sql,['recipeIngredients.id_ingredients', 'recipes.id']));
+    String sql = "SELECT * FROM ingredients WHERE ingredients.id = ? AND recipeIngredients.id_recipes = ?";
+    var rowNumber = Sqflite.firstIntValue(await _db.rawQuery(sql,['recipeIngredients.id_ingredients', recipesID]));
     var count = rowNumber;
     IngredientsDB ingredients;
 
@@ -124,7 +164,18 @@ class DBHelper{
     return ingredients;
   }
 
+  //Get Steps of specific recipe
+  Future<StepsDB> getSteps(int recipesID) async{
+    List<Map> results= await _db.query("steps", columns: RecipesDB.columns);
+    String sql = "SELECT * FROM steps WHERE steps.id = ? AND recipes.id = ?";
+    var rowNumber = Sqflite.firstIntValue(await _db.rawQuery(sql, ["recipeSteps.id_steps", recipesID]));
+    var count = rowNumber;
 
+    StepsDB steps;
+    for(int i=0; i<=count; i++){
+      steps = StepsDB.fromMap(results[i]);
+    }
 
-
+    return steps;
+  }
 }

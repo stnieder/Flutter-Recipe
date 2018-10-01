@@ -7,7 +7,7 @@ void main() => runApp(new Recipe());
 
 class Recipe extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
     return new MaterialApp(
       title: 'Rezeptbuch',
       theme: new ThemeData(

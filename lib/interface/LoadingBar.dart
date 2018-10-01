@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class LoadingBar extends StatefulWidget{
   @override
@@ -26,8 +25,6 @@ class _LoadingBar extends State<LoadingBar> with TickerProviderStateMixin{
   Animation<double> _greenAnimationWidth;
   Animation<double> _blueAnimationWidth;
   Animation<double> _yellowAnimationWidth;
-
-  Curve _curve = Curves.easeInOut;
 
   @override
   void initState() {

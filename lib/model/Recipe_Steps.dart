@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-class RecDesc{
-  RecDesc();
+class RecipeSteps{
+  RecipeSteps();
 
-  int id, id_recipes, id_descriptions;
+  int id, id_recipes, id_steps;
 
-  static final columns = ["id", "id_ingredients", "id_descriptions"];
+  static final columns = ["id", "id_ingredients", "id_steps"];
 
-  Map toMap(){
-    Map map = {
+  Map<String, dynamic> toMap(){
+    Map<String, dynamic> map = {
       "id_recipes": id_recipes,
-      "id_descriptions": id_descriptions
+      "id_steps": id_steps
     };
 
     if(id != null){
@@ -21,10 +21,10 @@ class RecDesc{
   }
 
   static fromMap(Map map){
-    RecDesc recDesc = new RecDesc();
+    RecipeSteps recipeSteps = new RecipeSteps();
 
-    recDesc.id = map["id"];
-    recDesc.id_recipes = map["id_recipes"];
-    recDesc.id_descriptions = map["id_descriptions"];
+    recipeSteps.id = map["id"];
+    recipeSteps.id_recipes = map["id_recipes"];
+    recipeSteps.id_steps = map["id_steps"];
   }
 }

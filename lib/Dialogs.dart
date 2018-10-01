@@ -81,7 +81,7 @@ class Dialogs{
                 ),
               ),
               highlightColor: Color(0xFFdb3236).withOpacity(0.2),
-              onPressed: ()=>Navigator.pop(ctxt, anzahl),
+              onPressed: ()=>Navigator.pop(ctxt),
               shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
               splashColor: Colors.transparent
             ),
