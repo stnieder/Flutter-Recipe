@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:flutter/foundation.dart';
 
 class RecipesDB{
   RecipesDB();
@@ -49,5 +49,14 @@ class Recipes{
   dynamic image;
   String name, definition, timestamp, duration;
 
-  Recipes(this.name, this.definition, this.duration, this.favorite, this.timestamp, this.image, this.backgroundColor);
+  Recipes(
+    this.id, 
+    this.name, 
+    this.definition, 
+    this.duration, 
+    this.favorite, 
+    this.timestamp, 
+    this.image, 
+    this.backgroundColor
+  );
 }

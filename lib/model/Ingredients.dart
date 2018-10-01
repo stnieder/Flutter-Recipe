@@ -30,3 +30,12 @@ class IngredientsDB{
     ingre.measure = map["measure"];
   }
 }
+
+class Ingredients{
+
+  int id;
+  double number;
+  String name, measure;
+
+  Ingredients(this.id, this.name, this.number, this.measure);
+}

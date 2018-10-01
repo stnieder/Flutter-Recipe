@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
+import 'dart:math';
 import 'package:dragable_flutter_list/dragable_flutter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -32,6 +33,7 @@ class _NewRecipe extends State<NewRecipe>{
   Dialogs dialogs = new Dialogs();
   DBHelper db = new DBHelper();
   GoogleMaterialColors materialColors = new GoogleMaterialColors();
+  Color usedColor;
 
   //MainPage
   bool personenError = false;
@@ -66,12 +68,13 @@ class _NewRecipe extends State<NewRecipe>{
   @override
   void initState(){
     super.initState();
+
+    Random random = new Random();
+    usedColor = materialColors.getLightColor(random.nextInt(5));
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -360,6 +363,7 @@ class _NewRecipe extends State<NewRecipe>{
                           zMass.add(selectedMass);
                           selectedMass = null;
 
+                          print("Name der Zutate: "+zNamenController.text);
                           zNamen.add(zNamenController.text);
                           zNamenController.clear();
                         });
@@ -404,14 +408,14 @@ class _NewRecipe extends State<NewRecipe>{
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                        number.toString()+mass+" "+name[index]
+                                        number.toString()+mass+" "+name
                                     )
                                   ],
                                 ),
                                 trailing: IconButton(
                                     icon: Icon(Icons.add),
                                     onPressed: (){
-                                      zNumber[index]++;
+                                      zNumber[index] = zNumber[index] + 1;
                                     }
                                 ),
                               ),
@@ -611,8 +615,8 @@ class _NewRecipe extends State<NewRecipe>{
 
   Future saveRecStepsIDs(int recipeID, int stepsID) async{
     RecipeSteps ids = new RecipeSteps();
-    ids.id_recipes = recipeID;
-    ids.id_steps = stepsID;
+    ids.idRecipes = recipeID;
+    ids.idSteps = stepsID;
 
     ids = await db.insertRecipeSteps(ids);
   }
@@ -621,7 +625,7 @@ class _NewRecipe extends State<NewRecipe>{
     StepsDB steps = new StepsDB();
     int count = stepDescription.length;
     for(int i=0; i< count; i++){
-      steps.number = i;
+      steps.number = (i + 1);
       steps.description = stepDescription[i];
       steps = await db.insertSteps(steps);
 
@@ -631,8 +635,8 @@ class _NewRecipe extends State<NewRecipe>{
 
   Future saveRecIngreIDs(int recipeID, int ingredientID) async{
     RecIngre ids = new RecIngre();
-    ids.id_recipes = recipeID;
-    ids.id_ingredients = ingredientID;
+    ids.idRecipes = recipeID;
+    ids.idIngredients = ingredientID;
 
     await db.insertRecIngre(ids);
   }
@@ -662,7 +666,7 @@ class _NewRecipe extends State<NewRecipe>{
       Directory directory = await getApplicationDocumentsDirectory();
       String path = directory.path;
       File newImage = await _image.copy('$path/${recipeName.text}.png');
-      var base64_encoded = base64.encode(newImage.readAsBytesSync());
+      var base64Encoded = base64.encode(newImage.readAsBytesSync());
       
       RecipesDB recipe = new RecipesDB();
       recipe.name = recipeName.text;
@@ -670,6 +674,8 @@ class _NewRecipe extends State<NewRecipe>{
       recipe.duration = setDuration.inMinutes.toString();
       recipe.timestamp = DateTime.now().toString();
       recipe.favorite = 0;
+      recipe.image = base64Encoded;
+      recipe.backgroundColor = usedColor.hashCode;
 
       recipe = await db.insertRecipe(recipe);
 

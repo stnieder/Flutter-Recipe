@@ -1,14 +1,14 @@
 class RecIngre{
   RecIngre();
 
-  int id, id_recipes, id_ingredients;
+  int id, idRecipes, idIngredients;
 
-  static final columns = ["id", "id_ingredients", "id_ingredients"];
+  static final columns = ["id", "idRecipes", "idIngredients"];
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
-      "id_recipes": id_recipes,
-      "id_ingredients": id_ingredients
+      "idRecipes": idRecipes,
+      "idIngredients": idIngredients
     };
 
     if(id != null){
@@ -22,7 +22,7 @@ class RecIngre{
     RecIngre recIngre = new RecIngre();
 
     recIngre.id = map["id"];
-    recIngre.id_recipes = map["id_recipes"];
-    recIngre.id_ingredients = map["id_ingredients"];
+    recIngre.idRecipes = map["idRecipes"];
+    recIngre.idIngredients = map["idIngredients"];
   }
 }

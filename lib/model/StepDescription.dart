@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class StepsDB{
   StepsDB();
 
@@ -29,4 +27,11 @@ class StepsDB{
     stepsDB.number = map["number"];
     stepsDB.description = map["description"];
   }
+}
+
+class Steps{
+  int id, number;
+  String description;
+
+  Steps(this.id, this.number, this.description);
 }

@@ -1,16 +1,14 @@
-import 'dart:convert';
-
 class RecipeSteps{
   RecipeSteps();
 
-  int id, id_recipes, id_steps;
+  int id, idRecipes, idSteps;
 
-  static final columns = ["id", "id_ingredients", "id_steps"];
+  static final columns = ["id", "idRecipes", "idSteps"];
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
-      "id_recipes": id_recipes,
-      "id_steps": id_steps
+      "idRecipes": idRecipes,
+      "idSteps": idSteps
     };
 
     if(id != null){
@@ -24,7 +22,7 @@ class RecipeSteps{
     RecipeSteps recipeSteps = new RecipeSteps();
 
     recipeSteps.id = map["id"];
-    recipeSteps.id_recipes = map["id_recipes"];
-    recipeSteps.id_steps = map["id_steps"];
+    recipeSteps.idRecipes = map["idRecipes"];
+    recipeSteps.idSteps = map["idSteps"];
   }
 }

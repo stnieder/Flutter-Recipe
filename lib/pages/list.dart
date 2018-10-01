@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -10,6 +8,7 @@ import 'package:side_header_list_view/side_header_list_view.dart';
 import 'package:recipe/database/database.dart';
 import 'package:recipe/interface/GoogleColors.dart';
 import 'package:recipe/model/Recipes.dart';
+import 'package:recipe/recipe/recipeDetails.dart';
 
 
 Future<List<Recipes>> fetchRecipes() async{
@@ -59,32 +58,38 @@ class _List extends State<Lists>{
                               child: Text("1"),                                   
                               backgroundColor: colors.getLightColor(5),       
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 15.0, left: 7.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "${snapshot.data[index].name}",
-                                    style: TextStyle(
-                                      fontSize: 15.0,
-                                      fontFamily: "Google-Sans",
-                                      color: Colors.black
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Text(
-                                      "${snapshot.data[index].definition}",
+                            InkWell(
+                              onTap: ()=>Navigator.push(
+                                context, 
+                                MaterialPageRoute(builder: (context) => RecipeDetails("${snapshot.data[index].name}"))
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 15.0, left: 7.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "${snapshot.data[index].name}",
                                       style: TextStyle(
-                                        color: Colors.black.withOpacity(0.5)
+                                        fontSize: 15.0,
+                                        fontFamily: "Google-Sans",
+                                        color: Colors.black
                                       ),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
                                     ),
-                                    width: 265.0,
-                                  ),
-                                  
-                                ],
+                                    Container(
+                                      child: Text(
+                                        "${snapshot.data[index].definition}",
+                                        style: TextStyle(
+                                          color: Colors.black.withOpacity(0.5)
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                      width: 265.0,
+                                    ),
+                                    
+                                  ],
+                                ),
                               ),
                             ),
                             IconButton(
