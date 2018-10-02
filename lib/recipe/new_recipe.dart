@@ -666,7 +666,7 @@ class _NewRecipe extends State<NewRecipe>{
       Directory directory = await getApplicationDocumentsDirectory();
       String path = directory.path;
       File newImage = await _image.copy('$path/${recipeName.text}.png');
-      var base64Encoded = base64.encode(newImage.readAsBytesSync());
+      String base64Encoded = base64Encode(newImage.readAsBytesSync());
       
       RecipesDB recipe = new RecipesDB();
       recipe.name = recipeName.text;
@@ -675,7 +675,7 @@ class _NewRecipe extends State<NewRecipe>{
       recipe.timestamp = DateTime.now().toString();
       recipe.favorite = 0;
       recipe.image = base64Encoded;
-      recipe.backgroundColor = usedColor.hashCode;
+      recipe.backgroundColor = usedColor.toString();
 
       recipe = await db.insertRecipe(recipe);
 

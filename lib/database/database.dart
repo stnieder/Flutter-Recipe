@@ -39,7 +39,7 @@ class DBHelper{
         "favorite integer default 0, "+
         "timestamp text, "+
         "image real, "+
-        "backgroundColor integer "+
+        "backgroundColor text "+
       ")"
     );
 
@@ -151,16 +151,11 @@ class DBHelper{
 
   //Get Specific Recipe
   Future<List<Recipes>> getSpecRecipe(String recipeName) async{
-    List<Map> list = await _db.query("recipes", columns: RecipesDB.columns, where: "name", whereArgs: [recipeName]);
+    List<Map> list = await _db.rawQuery("SELECT * FROM recipes WHERE name = ?", [recipeName]);
     List<Recipes> recipes = new List();
-    if(list.length > 1){
-      recipes.add(new Recipes(list[0]["id"],list[0]["name"], list[0]["definition"], list[0]["duration"], list[0]["favorite"], list[0]["timestamp"], list[0]["image"], list[0]["backgroundColor"]));
-    } 
-    else if(list.length == 1){ 
-      for(int i =0; i < list.length; i++){
-        recipes.add(new Recipes(list[i]["id"], list[i]["name"], list[i]["definition"], list[i]["duration"], list[i]["favorite"], list[i]["timestamp"], list[i]["image"], list[i]["backgroundColor"]));      
-      }
-    }    
+    for(int i =0; i < list.length; i++){
+      recipes.add(new Recipes(list[i]["id"], list[i]["name"], list[i]["definition"], list[i]["duration"], list[i]["favorite"], list[i]["timestamp"], list[i]["image"], list[i]["backgroundColor"]));      
+    }   
     return recipes;
   }
 

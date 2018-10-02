@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 class RecipesDB{
   RecipesDB();
 
-  int id, favorite, backgroundColor;
+  int id, favorite;
   dynamic image;
-  String name, definition, timestamp, duration;
+  String name, definition, timestamp, duration, backgroundColor;
 
   static final columns = ["id", "name", "definition","duration", "favorite", "timestamp", "image", "backgroundColor"];
 
@@ -45,9 +45,9 @@ class RecipesDB{
 
 
 class Recipes{
-  int id, favorite, backgroundColor;
+  int id, favorite;
   dynamic image;
-  String name, definition, timestamp, duration;
+  String name, definition, timestamp, duration, backgroundColor;
 
   Recipes(
     this.id, 

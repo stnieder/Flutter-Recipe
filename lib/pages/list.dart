@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:side_header_list_view/side_header_list_view.dart';
+import 'package:pigment/pigment.dart';
 
 import 'package:recipe/database/database.dart';
 import 'package:recipe/interface/GoogleColors.dart';
@@ -28,6 +29,7 @@ class Lists extends StatefulWidget{
 class _List extends State<Lists>{
   GoogleMaterialColors colors = new GoogleMaterialColors();
   Random random = new Random(); 
+  Color usedColor; 
 
   @override
     void initState() {
@@ -45,18 +47,23 @@ class _List extends State<Lists>{
             if (snapshot.hasData) {
               return new SideHeaderListView(
                 itemCount: snapshot.data.length,
-                itemExtend: 150.0,
                 headerBuilder: (BuildContext context, int index){
                   return new Text(snapshot.data[index].name[0]);
                 },
                 itemBuilder: (BuildContext context, int index){
+                  
+                  String stringColor = snapshot.data[index].backgroundColor;
+                  String valueString = stringColor.split('(0x')[1].split(')')[0];
+                  int value = int.parse(valueString, radix: 16);
+                  Color usedColor = new Color(value);
+
                   return Container(
                     child: Card(   
                         child: Row(
                           children: <Widget>[
                             CircleAvatar(
                               child: Text("1"),                                   
-                              backgroundColor: colors.getLightColor(5),       
+                              backgroundColor: usedColor
                             ),
                             InkWell(
                               onTap: ()=>Navigator.push(
