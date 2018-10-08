@@ -50,13 +50,15 @@ class Recipes{
   String name, definition, timestamp, duration, backgroundColor;
 
   Recipes(
-    this.id, 
-    this.name, 
-    this.definition, 
-    this.duration, 
-    this.favorite, 
-    this.timestamp, 
-    this.image, 
-    this.backgroundColor
+    {
+      @required this.id, 
+      this.name, 
+      this.definition, 
+      this.duration, 
+      this.favorite, 
+      this.timestamp, 
+      this.image, 
+      this.backgroundColor
+    }
   );
 }

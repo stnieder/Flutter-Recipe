@@ -1,10 +1,10 @@
+
 import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:side_header_list_view/side_header_list_view.dart';
-import 'package:pigment/pigment.dart';
 
 import 'package:recipe/database/database.dart';
 import 'package:recipe/interface/GoogleColors.dart';
@@ -50,6 +50,7 @@ class _List extends State<Lists>{
                 headerBuilder: (BuildContext context, int index){
                   return new Text(snapshot.data[index].name[0]);
                 },
+                itemExtend: 70.0,
                 itemBuilder: (BuildContext context, int index){
                   
                   String stringColor = snapshot.data[index].backgroundColor;
@@ -57,13 +58,20 @@ class _List extends State<Lists>{
                   int value = int.parse(valueString, radix: 16);
                   Color usedColor = new Color(value);
 
+                  
+
                   return Container(
                     child: Card(   
                         child: Row(
                           children: <Widget>[
                             CircleAvatar(
-                              child: Text("1"),                                   
-                              backgroundColor: usedColor
+                              child: Text(
+                                "1",
+                                style: TextStyle(
+                                  color: usedColor.withGreen(160).withAlpha(1000)
+                                ),
+                              ),
+                              backgroundColor: usedColor.withOpacity(0.3)
                             ),
                             InkWell(
                               onTap: ()=>Navigator.push(

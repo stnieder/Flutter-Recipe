@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:math';
@@ -7,6 +6,7 @@ import 'package:dragable_flutter_list/dragable_flutter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:recipe/database/database.dart';
 import 'package:path_provider/path_provider.dart';
@@ -38,6 +38,8 @@ class _NewRecipe extends State<NewRecipe>{
   //MainPage
   bool personenError = false;
   bool durationError = false;
+  bool zutatenError = false;
+  bool zubError = false;
   Duration setDuration;
   File _image;  
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
@@ -80,8 +82,7 @@ class _NewRecipe extends State<NewRecipe>{
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            onPressed: () async{
-              Navigator.pop(context, "saved");
+            onPressed: () async{              
               await saveRecipe();
             },
             icon: Icon(
@@ -153,6 +154,7 @@ class _NewRecipe extends State<NewRecipe>{
                   borderRadius: BorderRadius.circular(10.0),
                   onTap: () async{
                     personenAnzahl = await dialogs.personenAnzahl(context);   
+                    if(personenAnzahl == null) personenError = true;
                     setState((){});
                   },
                   child: Column(                                    
@@ -184,6 +186,7 @@ class _NewRecipe extends State<NewRecipe>{
                         context: context,
                         initialTime: new Duration(minutes: 20)
                     );
+                    if(setDuration == null) durationError = true;
                     setState(() {});
                   },
                   child: Column(
@@ -238,7 +241,8 @@ class _NewRecipe extends State<NewRecipe>{
                           hintText: "Name",
                         ),
                         maxLength: 30,
-                        maxLengthEnforced: true
+                        maxLengthEnforced: true,
+                        
                     ),
                   ),
                   ListTile(
@@ -282,11 +286,7 @@ class _NewRecipe extends State<NewRecipe>{
                     leading: IconButton(
                       icon: Icon(Icons.close),
                       onPressed: (){
-                        zNumberController.clear();
-                        selectedMass = null;
-                        zNamenController.clear();
-                        setState(() {
-                        });
+                        changeIngredient("c", 0);
                       },
                       tooltip: "leeren",
                     ),
@@ -355,18 +355,7 @@ class _NewRecipe extends State<NewRecipe>{
                       tooltip: "hinzufügen",
                       icon: Icon(Icons.check),
                       onPressed: (){
-                        setState(() {
-                          zutatenHeight += 56.0;
-                          zNumber.add(double.parse(zNumberController.text));
-                          zNumberController.clear();
-
-                          zMass.add(selectedMass);
-                          selectedMass = null;
-
-                          print("Name der Zutate: "+zNamenController.text);
-                          zNamen.add(zNamenController.text);
-                          zNamenController.clear();
-                        });
+                        changeIngredient("a", 0);
                       },
                     ),
                   ),
@@ -401,7 +390,7 @@ class _NewRecipe extends State<NewRecipe>{
                                 leading: IconButton(
                                   icon: Icon(Icons.remove),
                                   onPressed: (){
-                                    reduceZNumber(index);
+                                    changeIngreNumber("m", index);
                                   },
                                 ),
                                 title: Row(
@@ -415,7 +404,7 @@ class _NewRecipe extends State<NewRecipe>{
                                 trailing: IconButton(
                                     icon: Icon(Icons.add),
                                     onPressed: (){
-                                      zNumber[index] = zNumber[index] + 1;
+                                      changeIngreNumber("m", index);
                                     }
                                 ),
                               ),
@@ -427,29 +416,9 @@ class _NewRecipe extends State<NewRecipe>{
                           ),
                           onDismissed: (direction){
                             if(direction == DismissDirection.startToEnd){
-                              setState(() {
-                                reduceZNumber(index);
-
-                                zNamen.removeAt(index);
-                                zMass.removeAt(index);
-                                zNumber.removeAt(index);
-                              });
+                              changeIngredient("d", index);
                             } else if(direction == DismissDirection.endToStart){
-                              if(zNamenController.text.isNotEmpty){
-                                showBottomSnack("Dismissed abortion");
-                              } else if(zNamenController.text.isEmpty){
-                                zNamenController.text = zNamen[index];
-                                zNumberController.text = zNumber[index].toString();
-                                selectedMass = zMass[index];
-
-                                zNamen.removeAt(index);
-                                zMass.removeAt(index);
-                                zNumber.removeAt(index);
-
-                                reduceZNumber(index);
-                              }
-
-                              setState(() {});
+                              changeIngredient("e", index);
                             }
                           },
                         );
@@ -504,10 +473,7 @@ class _NewRecipe extends State<NewRecipe>{
                             icon: Icon(Icons.check),
                             onPressed: (){
                               if(stepDescriptionKey.currentState.validate()){
-                                descriptionHeight+=56.0;
-                                stepDescription.add(stepDescriptionController.text);
-                                stepDescriptionController.clear();
-                                setState(() {});
+                                changeDescription("a", 0);
                               }
                             },
                           ),
@@ -519,13 +485,50 @@ class _NewRecipe extends State<NewRecipe>{
                         child: DragAndDropList(
                           stepDescription.length,
                           itemBuilder: (BuildContext ctxt, item){
-                            return new SizedBox(
-                              child: new Card(
-                                child: new ListTile(
-                                  leading: CircleAvatar(
-                                    child: Text((item+1).toString()),
-                                  ),
-                                  title: Text(stepDescription[item]),
+                            return new SizedBox(                                 
+                              child: new Dismissible(
+                                key: Key(item.toString()),
+                                background: Container(
+                                  alignment: Alignment.centerLeft,
+                                  padding: EdgeInsets.only(left: 20.0),
+                                  color: Colors.redAccent,
+                                  child: Icon(OMIcons.delete, color: Colors.white),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundColor: materialColors.getLightColor(Random().nextInt(5)).withOpacity(0.3),
+                                        child: Text(
+                                          (item+1).toString(),
+                                          style: TextStyle(
+                                            color: materialColors.getLightColor(Random().nextInt(5)).withGreen(160).withAlpha(1000)
+                                          ),
+                                        ),
+                                      ),
+                                      title: Text(
+                                        stepDescription[item]
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                direction: (recipeDescription.text.isEmpty
+                                  ? DismissDirection.horizontal
+                                  : DismissDirection.startToEnd
+                                ),
+                                onDismissed: (direction){
+                                  if(direction == DismissDirection.startToEnd){
+                                    changeDescription("d", item);
+                                  } else if(direction == DismissDirection.endToStart){
+                                    changeDescription("e", item);
+                                  }
+                                },
+                                secondaryBackground: Container(
+                                  alignment: Alignment.centerRight,
+                                  padding: EdgeInsets.only(right: 20.0),
+                                  color: Colors.orangeAccent,
+                                  child: Icon(OMIcons.edit, color: Colors.white),
                                 ),
                               ),
                             );
@@ -561,23 +564,94 @@ class _NewRecipe extends State<NewRecipe>{
   }
 
   void showBottomSnack(String value){
-    _scaffoldKey.currentState.showSnackBar(
-        new SnackBar(
-          content: Text(value),
-        )
+    Fluttertoast.showToast(
+      msg: value,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIos: 2,      
     );
   }
 
-  void reduceZNumber(int index){
-    if(zNumber[index] > 0.0){
-      zNumber[index]--;
-    } else if(zNumber[index] == 0.0){
-      setState(() {
+  void changeDescription(String status, int index){
+    if(status == "d"){ //delete
+      showBottomSnack("Removed "+stepDescription[index]);
+      descriptionHeight-=56.0;
+      stepDescription.removeAt(index);      
+    } else if(status == "e"){ //edit
+      stepDescriptionController.text = stepDescription[index];
+      stepDescription.removeAt(index);
+    } else if(status == "a"){ //add
+      descriptionHeight += 56.0;
+      stepDescription.add(stepDescriptionController.text);
+      stepDescriptionController.clear();
+    }
+
+    setState(() {});
+  }
+
+  void changeIngreNumber(String status,int index){
+    if(status == "p") { //plus 1
+      zNumber[index]++;
+    } else if(status == "m"){ //minus 1
+      if(zNumber[index] > 0.0){
+        zNumber[index]--;
+      } else if(zNumber[index] == 0.0){
+        changeIngredient("d", index);
+      }
+    }
+
+    setState(() {});
+  }
+
+
+  void addIngredients(){
+    zutatenHeight += 56.0;
+    zNumber.add(double.parse(zNumberController.text));
+    zNumberController.clear();
+
+    zMass.add(selectedMass);
+    selectedMass = null;
+
+    print("Name der Zutate: "+zNamenController.text);
+    zNamen.add(zNamenController.text);
+    zNamenController.clear();
+  }
+
+
+  void changeIngredient(String status, int index){
+    if(status == "d"){ //delete
+
+      zutatenHeight -= 56.0;
+      zNamen.removeAt(index);
+      zMass.removeAt(index);
+      zNumber.removeAt(index);
+    } else if(status == "e"){ //edit
+      if(zNamenController.text.isEmpty){
+        zNamenController.text = zNamen[index];
+        zNumberController.text = zNumber[index].toString();
+        selectedMass = zMass[index];
+
         zNamen.removeAt(index);
         zMass.removeAt(index);
         zNumber.removeAt(index);
-      });
+      }    
+    } else if(status == "c"){ //clear controller
+      zNumberController.clear();
+      selectedMass = null;
+      zNamenController.clear();
+    } else if(status == "a"){ //add
+      zutatenHeight += 56.0;
+      zNumber.add(double.parse(zNumberController.text));
+      zNumberController.clear();
+
+      zMass.add(selectedMass);
+      selectedMass = null;
+
+      zNamen.add(zNamenController.text);
+      zNamenController.clear();
     }
+
+    setState(() {});
   }
 
   errorMessage(String input){
@@ -590,26 +664,27 @@ class _NewRecipe extends State<NewRecipe>{
     } else if(input == "s"){
       showBottomSnack("Die Zubereitungs-Schritte sind nötig.");
     }
+    setState(() {});
   }
 
   controlInput() async{
     bool returnValue = true; //true --> Rezept speichern
     if(personenAnzahl == null) {
       returnValue = false;
-      errorMessage("p");
+      await errorMessage("p");
     }
     if(setDuration == null) {
       returnValue = false;
-      errorMessage("d");
+      await errorMessage("d");
     }
     if(zNamen.length == 0) {
       returnValue = false;
-      errorMessage("zN");
+      await errorMessage("zN");
     }
     if(stepDescription.length == 0) {
       returnValue = false;
-      errorMessage("s");
-    }
+      await errorMessage("s");
+    }    
     return returnValue;
   }
 
@@ -660,21 +735,25 @@ class _NewRecipe extends State<NewRecipe>{
     if(controlInput() == false){
       showBottomSnack("Bitte alle nötigen Parameter ausfüllen");
     } else {
-      print("${recipeName.text}");
-      await db.create();   
 
-      Directory directory = await getApplicationDocumentsDirectory();
-      String path = directory.path;
-      File newImage = await _image.copy('$path/${recipeName.text}.png');
-      String base64Encoded = base64Encode(newImage.readAsBytesSync());
+      await db.create();        
       
       RecipesDB recipe = new RecipesDB();
       recipe.name = recipeName.text;
       recipe.definition = recipeDescription.text;
       recipe.duration = setDuration.inMinutes.toString();
       recipe.timestamp = DateTime.now().toString();
-      recipe.favorite = 0;
-      recipe.image = base64Encoded;
+      recipe.favorite = 0;      
+      
+      if(_image != null){
+        Directory directory = await getApplicationDocumentsDirectory();
+        String path = directory.path;  
+        await _image.copy('$path/${recipeName.text}.png');
+        recipe.image = '$path/$recipeName.text.png';
+      } else {
+        recipe.image = "no image";
+      }
+
       recipe.backgroundColor = usedColor.toString();
 
       recipe = await db.insertRecipe(recipe);
@@ -682,6 +761,7 @@ class _NewRecipe extends State<NewRecipe>{
       await saveIngredients(recipe.id);
       await saveSteps(recipe.id);
       showBottomSnack("Rezept erfolgreich gespeichert");
+      Navigator.pop(context, "saved");
     }    
   }
 }

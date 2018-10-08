@@ -19,7 +19,7 @@ class Dialogs{
               child: Padding(
                 padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0, bottom: 0.0),
                 child: new Text(
-                  "Deine Änderungen wurden nicht gespeichert",
+                  "Dein Rezept wird nicht gespeichert",
                   style: TextStyle(
                       fontSize: 14.0
                   ),
@@ -47,7 +47,7 @@ class Dialogs{
   }
 
   personenAnzahl(BuildContext context){
-    int anzahl = 0;
+    int anzahl;
 
     return showDialog(
       context: context,
@@ -66,7 +66,6 @@ class Dialogs{
               onChanged: (text){
                 anzahl = int.parse(text);
               },
-
               keyboardType: TextInputType.number,
             )
           ),
@@ -89,7 +88,7 @@ class Dialogs{
               child: Text(
                 "Ok",
                 style: TextStyle(
-                    color: (anzahl == 0
+                    color: (anzahl == null
                       ? Color(0xFFAAAFB4)
                       : Color(0xFF4285F4)
                     ),
@@ -97,11 +96,11 @@ class Dialogs{
                     fontSize: 14.0
                 ),
               ),
-              highlightColor: (anzahl == 0
+              highlightColor: (anzahl == null
                 ? Color(0xFFAAAFB4).withOpacity(0.3)
                 : Color(0xFF419df4).withOpacity(0.2)
               ),
-              onPressed: (anzahl == 0
+              onPressed: (anzahl == null
                 ? (){}
                 : ()=> Navigator.pop(context, anzahl)
               ),
@@ -115,7 +114,7 @@ class Dialogs{
   }
 
   cookingTime(BuildContext context){
-    Duration _duration = Duration(hours: 0, minutes: 0);
+    Duration _duration;
 
     return showDialog(
         context: context,
@@ -129,7 +128,7 @@ class Dialogs{
                 onChange: (value){
                   _duration = value;
                 },
-                snapToMins: 1.0,
+                snapToMins: 5.0,
               ),
             ),
             actions: <Widget>[
@@ -151,7 +150,7 @@ class Dialogs{
                   child: Text(
                     "Ok",
                     style: TextStyle(
-                        color: (_duration == (Duration(hours: 0, minutes: 0))
+                        color: (_duration == null
                             ? Color(0xFFAAAFB4)
                             : Color(0xFF4285F4)
                         ),
@@ -159,11 +158,11 @@ class Dialogs{
                         fontSize: 14.0
                     ),
                   ),
-                  highlightColor: (_duration == (Duration(hours: 0, minutes: 0))
+                  highlightColor: (_duration == null
                       ? Color(0xFFAAAFB4).withOpacity(0.3)
                       : Color(0xFF419df4).withOpacity(0.2)
                   ),
-                  onPressed: (_duration == (Duration(hours: 0, minutes: 0))
+                  onPressed: (_duration == null
                       ? (){}
                       : ()=> Navigator.pop(context, _duration)
                   ),
