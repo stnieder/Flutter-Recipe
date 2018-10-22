@@ -4,12 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:sliver_fab/sliver_fab.dart';
 import 'package:recipe/database/database.dart';
 import 'package:recipe/model/Ingredients.dart';
+import 'package:recipe/model/StepDescription.dart';
 
-Future<List<Ingredients>> fetchIngredients(String name){
-  var dbHelper = new DBHelper();
-  Future<List<Ingredients>> ingredients = dbHelper.getIngredients(name);
-  return ingredients;
-}
 
 class RecipeDetails extends StatefulWidget{
   String recipeName;
@@ -26,6 +22,7 @@ class _RecipeDetails extends State<RecipeDetails>{
   _RecipeDetails(this.details);
   
   String recipe;
+  int portionen=1;
 
   @override
     void initState() {
@@ -34,51 +31,113 @@ class _RecipeDetails extends State<RecipeDetails>{
 
   @override
   Widget build(BuildContext context) {
-    recipe = details.recipeName;    
+    recipe = details.recipeName;        
 
     return new Scaffold(
-      body: FutureBuilder<List<Ingredients>>(
-        future: fetchIngredients(recipe),
-        builder: (context, snapshot){
-          Widget zutaten  = CircularProgressIndicator();
-          if(snapshot.hasData){
-            zutaten = ListView.builder(              
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index){
-                return Text(snapshot.data[index].number.toString() + snapshot.data[index].measure + " " + snapshot.data[index].name);
-              },
-            );
-          } else if(snapshot.hasError){
-            zutaten = Text("Keine Daten gefunden");
-          }
-
-          return SliverFab(
-                expandedHeight: 256.0,
-                floatingActionButton: FloatingActionButton(
-                  backgroundColor: Colors.red[300],
-                  child: Icon(Icons.favorite_border, color: Colors.white),                  
-                  onPressed: (){
-                    Scaffold.of(context).showSnackBar(
-                      new SnackBar(content: new Text("You clicked FAB!"))
-                    );
-                  },
-                ),               
-                slivers: <Widget>[
-                  SliverAppBar(
-                    expandedHeight: 256.0,
-                    flexibleSpace: FlexibleSpaceBar(
-                      title: new Text(recipe),
-                    ),
-                    pinned: true,
-                  ),
-                  SliverPadding(
-                    padding: EdgeInsets.only(top: 30.0),
-                    sliver: zutaten,
-                  )
-                ],
-              );
-        },
+      appBar: AppBar(
+        title: Text(recipe),
       ),
+      body: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.remove),
+                onPressed: (){
+                  setState((){
+                    if(portionen > 1)
+                    portionen--;
+                  });
+                },
+              ),
+              Text(
+                portionen == 1
+                  ? "1 Portion"
+                  : portionen.toString()+" Portionen"
+              ),
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: (){
+                  setState((){
+                    portionen++;
+                  });
+                },
+              )
+            ],
+          ),
+          Expanded(
+            child: FutureBuilder(
+              future: fetchIngredients(),
+              initialData: [],
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                if(snapshot.hasData){
+                  return new ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index){
+                      return Row(
+                        children: <Widget>[
+                          Text(snapshot.data[index].number.toString()),
+                          Text(snapshot.data[index].measure),
+                          Text(snapshot.data[index].name)
+                        ],
+                      );
+                    },
+                  );
+                } else if(snapshot.hasError){
+                  return new Text("Keine Daten vorhanden.");
+                }
+                return new CircularProgressIndicator();
+              },
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder(
+              future: fetchSteps(),
+              initialData: [],
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                if(snapshot.hasData){
+                  return new ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index){
+                      return Row(
+                        children: <Widget>[
+                          Text(snapshot.data[index].number.toString()),
+                          Text(snapshot.data[index].description)
+                        ],
+                      );                      
+                    },
+                  );
+                } else if(snapshot.hasError){
+                  return new Text("Keine Daten vorhanden.");
+                }
+                return new CircularProgressIndicator();
+              },
+            ),
+          )
+        ],
+      )
     );
+  }
+
+  Future<List<Ingredients>> fetchIngredients() async{
+    DBHelper dbHelper = new DBHelper();
+    var parsedIngredients = await dbHelper.getIngredients(recipe);
+    List<Ingredients> ingredients = List<Ingredients>();    
+    for(int i=0; i< parsedIngredients.length; i++){
+      ingredients.add(parsedIngredients[i]);           
+    }    
+    print("Ingredients-Anzahl: "+ingredients.length.toString());
+    return ingredients;
+  }
+
+  Future<List<Steps>> fetchSteps() async{
+    DBHelper dbHelper = new DBHelper();
+    var parsedSteps = await dbHelper.getSteps(recipe);
+    List<Steps> steps = List<Steps>();
+    for(int i=0; i < parsedSteps.length; i++){
+      steps.add(parsedSteps[i]);
+    }
+    print("Steps-Anzahl: "+steps.length.toString());
+    return steps;
   }
 }

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:dragable_flutter_list/dragable_flutter_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -50,7 +51,7 @@ class _NewRecipe extends State<NewRecipe>{
   final TextEditingController recipeDescription = new TextEditingController();
 
   //Zutaten
-  double zutatenHeight = 0.0;
+  double ingredientHeight = 0.0;
   final TextEditingController zNumberController = new TextEditingController();
   final TextEditingController zNamenController = new TextEditingController();
   List<String> masses = ["Stk.", "kg", "g", "l", "mg", "TL", "EL"];
@@ -360,7 +361,7 @@ class _NewRecipe extends State<NewRecipe>{
                     ),
                   ),
                   Container(
-                    height: zutatenHeight,
+                    height: ingredientHeight,
                     child:ListView.builder(
                       scrollDirection: Axis.vertical,
                       itemCount: zNamen.length,
@@ -461,6 +462,9 @@ class _NewRecipe extends State<NewRecipe>{
                                 border: InputBorder.none,
                                 hintText: "Ein Schritt nach dem Anderen"
                             ),
+                            inputFormatters: [
+                              new BlacklistingTextInputFormatter(new RegExp('[\\.|\\,]')),
+                            ],
                             validator: (value){
                               if(value.isEmpty){
                                 return "Bitte Text eingeben";
@@ -494,24 +498,19 @@ class _NewRecipe extends State<NewRecipe>{
                                   color: Colors.redAccent,
                                   child: Icon(OMIcons.delete, color: Colors.white),
                                 ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundColor: materialColors.getLightColor(Random().nextInt(5)).withOpacity(0.3),
-                                        child: Text(
-                                          (item+1).toString(),
-                                          style: TextStyle(
-                                            color: materialColors.getLightColor(Random().nextInt(5)).withGreen(160).withAlpha(1000)
-                                          ),
-                                        ),
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundColor: usedColor.withOpacity(0.3),
+                                    child: Text(
+                                      (item+1).toString(),
+                                      style: TextStyle(
+                                        color: usedColor.withGreen(160).withAlpha(1000)
                                       ),
-                                      title: Text(
-                                        stepDescription[item]
-                                      ),
-                                    )
-                                  ],
+                                    ),
+                                  ),
+                                  title: Text(
+                                    stepDescription[item].toString()
+                                  ),
                                 ),
                                 direction: (recipeDescription.text.isEmpty
                                   ? DismissDirection.horizontal
@@ -563,26 +562,26 @@ class _NewRecipe extends State<NewRecipe>{
     });
   }
 
-  void showBottomSnack(String value){
+  void showBottomSnack(String value, ToastGravity toastGravity){
     Fluttertoast.showToast(
       msg: value,
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIos: 2,      
+      gravity: toastGravity,
+      timeInSecForIos: 2,            
     );
   }
 
   void changeDescription(String status, int index){
     if(status == "d"){ //delete
-      showBottomSnack("Removed "+stepDescription[index]);
+      showBottomSnack("Removed "+stepDescription[index], ToastGravity.BOTTOM);
       descriptionHeight-=56.0;
       stepDescription.removeAt(index);      
     } else if(status == "e"){ //edit
       stepDescriptionController.text = stepDescription[index];
       stepDescription.removeAt(index);
-    } else if(status == "a"){ //add
+    } else if(status == "a"){ //add      
+      stepDescription.add(stepDescriptionController.text.toString());
       descriptionHeight += 56.0;
-      stepDescription.add(stepDescriptionController.text);
       stepDescriptionController.clear();
     }
 
@@ -605,23 +604,27 @@ class _NewRecipe extends State<NewRecipe>{
 
 
   void addIngredients(){
-    zutatenHeight += 56.0;
-    zNumber.add(double.parse(zNumberController.text));
-    zNumberController.clear();
+    if(zNamenController.text.trim().isEmpty || zNumberController.text.toString().trim().isEmpty || selectedMass == null){
+      errorMessage("zN");
+    } else {
+      ingredientHeight += 56.0;
+      zNumber.add(double.parse(zNumberController.text));
+      zNumberController.clear();
 
-    zMass.add(selectedMass);
-    selectedMass = null;
+      zMass.add(selectedMass);
+      selectedMass = null;
 
-    print("Name der Zutate: "+zNamenController.text);
-    zNamen.add(zNamenController.text);
-    zNamenController.clear();
+      print("Name der Zutate: "+zNamenController.text);
+      zNamen.add(zNamenController.text);
+      zNamenController.clear();
+    }    
   }
 
 
   void changeIngredient(String status, int index){
     if(status == "d"){ //delete
 
-      zutatenHeight -= 56.0;
+      ingredientHeight -= 56.0;
       zNamen.removeAt(index);
       zMass.removeAt(index);
       zNumber.removeAt(index);
@@ -640,7 +643,7 @@ class _NewRecipe extends State<NewRecipe>{
       selectedMass = null;
       zNamenController.clear();
     } else if(status == "a"){ //add
-      zutatenHeight += 56.0;
+      ingredientHeight += 56.0;
       zNumber.add(double.parse(zNumberController.text));
       zNumberController.clear();
 
@@ -660,9 +663,9 @@ class _NewRecipe extends State<NewRecipe>{
     } else if(input == "d"){ //duration is empty
       durationError = true;
     } else if(input == "zN"){
-      showBottomSnack("Es werden Zutaten für ein Rezept benötigt.");
+      showBottomSnack("Es werden Zutaten für ein Rezept benötigt.", ToastGravity.CENTER);
     } else if(input == "s"){
-      showBottomSnack("Die Zubereitungs-Schritte sind nötig.");
+      showBottomSnack("Die Zubereitungs-Schritte sind nötig.", ToastGravity.CENTER);
     }
     setState(() {});
   }
@@ -696,16 +699,13 @@ class _NewRecipe extends State<NewRecipe>{
     ids = await db.insertRecipeSteps(ids);
   }
 
-  Future saveSteps(int recipeID) async{
+  Future saveSteps(int recipeID, int i) async{
     StepsDB steps = new StepsDB();
-    int count = stepDescription.length;
-    for(int i=0; i< count; i++){
-      steps.number = (i + 1);
-      steps.description = stepDescription[i];
-      steps = await db.insertSteps(steps);
+    steps.number = (i + 1);
+    steps.description = stepDescription[i];
+    steps = await db.insertSteps(steps);
 
-      await saveRecStepsIDs(recipeID, steps.id);
-    }
+    await saveRecStepsIDs(recipeID, steps.id);
   }
 
   Future saveRecIngreIDs(int recipeID, int ingredientID) async{
@@ -717,27 +717,25 @@ class _NewRecipe extends State<NewRecipe>{
   }
 
 
-  Future saveIngredients(int recipeID) async{
+  Future saveIngredients(int recipeID, int i) async{
     IngredientsDB ingredients = new IngredientsDB();
-    int count = zNamen.length;
-    for(int i = 0; i < count; i++){
-      ingredients.name = zNamen[i];
-      ingredients.number = zNumber[i];
-      ingredients.measure = zMass[i];
+    ingredients.name = zNamen[i];
+    ingredients.number = zNumber[i].toString();
+    ingredients.measure = zMass[i];
 
-      ingredients = await db.insertIngre(ingredients);
+    print("IngreName: "+ingredients.name);
 
-      await saveRecIngreIDs(recipeID, ingredients.id);
-    }
+    ingredients = await db.insertIngre(ingredients);
+
+    await saveRecIngreIDs(recipeID, ingredients.id);
   }
 
   Future saveRecipe() async{
     if(controlInput() == false){
-      showBottomSnack("Bitte alle nötigen Parameter ausfüllen");
+      showBottomSnack("Bitte alle nötigen Parameter ausfüllen", ToastGravity.CENTER);
     } else {
 
-      await db.create();        
-      
+      await db.create();
       RecipesDB recipe = new RecipesDB();
       recipe.name = recipeName.text;
       recipe.definition = recipeDescription.text;
@@ -749,7 +747,7 @@ class _NewRecipe extends State<NewRecipe>{
         Directory directory = await getApplicationDocumentsDirectory();
         String path = directory.path;  
         await _image.copy('$path/${recipeName.text}.png');
-        recipe.image = '$path/$recipeName.text.png';
+        recipe.image = '$path/${recipeName.text}.png';
       } else {
         recipe.image = "no image";
       }
@@ -758,10 +756,20 @@ class _NewRecipe extends State<NewRecipe>{
 
       recipe = await db.insertRecipe(recipe);
 
-      await saveIngredients(recipe.id);
-      await saveSteps(recipe.id);
-      showBottomSnack("Rezept erfolgreich gespeichert");
-      Navigator.pop(context, "saved");
+      print("RecipeID: "+recipe.id.toString());
+      if(recipe.id == null) await db.deleteLatest();
+      else {
+        for(int i=0; i < zNamen.length; i++){
+          await saveIngredients(recipe.id, i);
+        }        
+
+        for(int i=0; i < stepDescription.length; i++){
+          await saveSteps(recipe.id, i);
+        }        
+        
+        Navigator.pop(context, "saved");
+        showBottomSnack("Rezept erfolgreich gespeichert", ToastGravity.BOTTOM);
+      }      
     }    
   }
 }

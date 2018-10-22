@@ -2,8 +2,7 @@ class IngredientsDB{
   IngredientsDB();
 
   int id;
-  double number;
-  String name, measure;
+  String name, measure, number;
 
   static final columns = ["id", "name", "number", "measure"];
 
@@ -34,8 +33,7 @@ class IngredientsDB{
 class Ingredients{
 
   int id;
-  double number;
-  String name, measure;
+  String name, measure, number;
 
   Ingredients(this.id, this.name, this.number, this.measure);
 }

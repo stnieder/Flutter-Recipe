@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 
 class GrowingIcon extends StatefulWidget{
-  Icon icon;
-  Icon changedIcon;
+  IconData defaultIcon;
+  IconData changeToIcon;
   Color iconColor;
-  bool splash;
-  void onPressed;  
+  int favorite; 
+  double startSize;
+  double endSize;
 
   GrowingIcon({
-    this.icon, 
-    this.changedIcon,
-    this.iconColor, 
-    this.splash,
-    @required this.onPressed
-  }) : assert(icon != null),
-       assert(iconColor != null),
-       assert(splash != null);
+    this.defaultIcon, 
+    this.changeToIcon,
+    this.favorite,
+    this.iconColor,
+    this.startSize,
+    this.endSize
+  }) : assert(defaultIcon != null),
+       assert(changeToIcon != null),
+       assert(iconColor != null);
 
   @override
     State<StatefulWidget> createState() {
@@ -28,11 +30,12 @@ class _GrowingIcon extends State<GrowingIcon> with TickerProviderStateMixin{
   GrowingIcon growingIcon;
   _GrowingIcon(this.growingIcon);
 
-  double defaultSize = 25.0;
-  double growingSize = 30.0;
+  bool favorite;
+  Icon iconButtonIcon;
 
   AnimationController animationController;
   Animation<double> growingAnimation;  
+  Animation<Icon> changeAnimation;
 
   @override
     void initState() {
@@ -48,7 +51,7 @@ class _GrowingIcon extends State<GrowingIcon> with TickerProviderStateMixin{
           }
         });
 
-      growingAnimation = Tween(begin: defaultSize, end: growingSize).animate(CurvedAnimation(parent: animationController, curve: Curves.linear));    
+      growingAnimation = Tween(begin: growingIcon.startSize, end: growingIcon.endSize).animate(CurvedAnimation(parent: animationController, curve: Curves.linear));          
     }
 
   @override
@@ -58,25 +61,18 @@ class _GrowingIcon extends State<GrowingIcon> with TickerProviderStateMixin{
     }
 
   Widget growingIconButton(){
+    
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child){
-        return IconButton(
-          icon: growingIcon.icon,
+        return Icon(
+          (
+            growingIcon.favorite == 0
+              ? growingIcon.defaultIcon
+              : growingIcon.changeToIcon
+          ),
           color: growingIcon.iconColor,
-          highlightColor: (growingIcon.splash
-            ? Colors.grey[100]
-            : Colors.transparent
-          ),
-          splashColor: (growingIcon.splash
-            ? Colors.grey[500]
-            : Colors.transparent
-          ),
-          iconSize: growingAnimation.value,
-          onPressed: (){
-            animationController.forward();
-            growingIcon.onPressed;
-          },
+          size: growingAnimation.value,          
         );
       },
     );

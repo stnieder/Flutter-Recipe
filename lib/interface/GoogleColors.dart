@@ -7,7 +7,10 @@ class GoogleMaterialColors{
     Color(0xFFfbbc04), //Yellow
     Color(0xFF4285f4), //Blue
     Color(0xFFea4335), //Red
-    Color(0xFFa142f4) //Purple
+    Color(0xFFa142f4), //Purple
+    Color(0xFF399ca4), //Teal
+    Color(0xFFc68338), //Dark Orange
+    Color(0xFFb74a8e) // Dark Purple
   ];
 
   Color getLightColor(int number){

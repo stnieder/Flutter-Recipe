@@ -3,7 +3,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:recipe/interface/GrowingIcon.dart';
 import 'package:side_header_list_view/side_header_list_view.dart';
 
 import 'package:recipe/database/database.dart';
@@ -27,6 +28,7 @@ class Lists extends StatefulWidget{
 }
 
 class _List extends State<Lists>{
+  DBHelper db = new DBHelper();
   GoogleMaterialColors colors = new GoogleMaterialColors();
   Random random = new Random(); 
   Color usedColor; 
@@ -44,8 +46,14 @@ class _List extends State<Lists>{
         child: new FutureBuilder<List<Recipes>>(
           future: fetchRecipes(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
+            if (snapshot.hasError) {
+              return new Text("Zurzeit sind keine Daten vorhanden.");
+            }
+            else if (snapshot.hasData) {
               return new SideHeaderListView(
+                hasSameHeader: (int a, int b){
+                  return snapshot.data[a].name[0] == snapshot.data[b].name[0];
+                },
                 itemCount: snapshot.data.length,
                 headerBuilder: (BuildContext context, int index){
                   return new Text(snapshot.data[index].name[0]);
@@ -58,22 +66,28 @@ class _List extends State<Lists>{
                   int value = int.parse(valueString, radix: 16);
                   Color usedColor = new Color(value);
 
-                  
+                  int favoriteDB = snapshot.data[index].favorite;
+                  bool favorite;
+                  if(favoriteDB == 0) favorite = false;
+                  else if(favoriteDB == 1) favorite = true;
+                  print("Favorite "+favorite.toString());
 
                   return Container(
-                    child: Card(   
-                        child: Row(
+                    child: Row(
                           children: <Widget>[
                             CircleAvatar(
                               child: Text(
-                                "1",
+                                snapshot.data[index].name[0].toUpperCase(),
                                 style: TextStyle(
-                                  color: usedColor.withGreen(160).withAlpha(1000)
+                                  color: usedColor.withGreen(100).withAlpha(500),
+                                  fontWeight: FontWeight.w500
                                 ),
                               ),
-                              backgroundColor: usedColor.withOpacity(0.3)
+                              backgroundColor: usedColor.withOpacity(0.2)
                             ),
                             InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
                               onTap: ()=>Navigator.push(
                                 context, 
                                 MaterialPageRoute(builder: (context) => RecipeDetails("${snapshot.data[index].name}"))
@@ -90,44 +104,16 @@ class _List extends State<Lists>{
                                         fontFamily: "Google-Sans",
                                         color: Colors.black
                                       ),
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        "${snapshot.data[index].definition}",
-                                        style: TextStyle(
-                                          color: Colors.black.withOpacity(0.5)
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                      ),
-                                      width: 265.0,
-                                    ),
-                                    
+                                    ),                                    
                                   ],
                                 ),
                               ),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                OMIcons.favoriteBorder,
-                                color: Colors.red,
-                              ),
-                              onPressed: (){
-                                
-                              },
                             )
                           ],
                       ),
-                    ),
-                    height: 80.0,
                   );
                 },
-                hasSameHeader: (int a, int b){
-                  return snapshot.data[a].name == snapshot.data[b].name;
-                },
               );
-            } else if (snapshot.hasError) {
-              return new Text("Zurzeit sind keine Daten vorhanden.");
             }
             return new Container(alignment: AlignmentDirectional.center,child: new CircularProgressIndicator(),);
           },
@@ -137,11 +123,19 @@ class _List extends State<Lists>{
         backgroundColor: Color(0xFF0F9D58),
         elevation: 4.0,
         child: Icon(Icons.add),
-        heroTag: 'add_recipe',
         onPressed: (){
           Navigator.pushNamed(context, '/add_recipe');
         },
       )
+    );
+  }
+
+  void showBottomSnack(String value, ToastGravity toastGravity){
+    Fluttertoast.showToast(
+      msg: value,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: toastGravity,
+      timeInSecForIos: 2,            
     );
   }
 }
