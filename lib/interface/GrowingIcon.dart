@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class GrowingIcon extends StatefulWidget{
-  IconData defaultIcon;
-  IconData changeToIcon;
-  Color iconColor;
-  int favorite; 
-  double startSize;
-  double endSize;
+  final IconData defaultIcon;
+  final IconData changeToIcon;
+  final Color iconColor;
+  final int favorite; 
+  final double startSize;
+  final double endSize;
 
   GrowingIcon({
     this.defaultIcon, 

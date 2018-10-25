@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sliver_fab/sliver_fab.dart';
 import 'package:recipe/database/database.dart';
 import 'package:recipe/model/Ingredients.dart';
 import 'package:recipe/model/StepDescription.dart';
 
 
 class RecipeDetails extends StatefulWidget{
-  String recipeName;
+  final String recipeName;
   RecipeDetails(this.recipeName);
 
   @override
@@ -76,7 +75,7 @@ class _RecipeDetails extends State<RecipeDetails>{
                     itemBuilder: (BuildContext context, int index){
                       return Row(
                         children: <Widget>[
-                          Text(snapshot.data[index].number.toString()),
+                          Text((double.parse(snapshot.data[index].number)*portionen).toString()),
                           Text(snapshot.data[index].measure),
                           Text(snapshot.data[index].name)
                         ],
@@ -96,7 +95,7 @@ class _RecipeDetails extends State<RecipeDetails>{
               initialData: [],
               builder: (BuildContext context, AsyncSnapshot snapshot){
                 if(snapshot.hasData){
-                  return new ListView.builder(
+                  return new ListView.builder(                    
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index){
                       return Row(

@@ -15,7 +15,31 @@ class _CalendarView extends State<CalendarView>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Calendar(),
+      body: NestedScrollView(   
+        headerSliverBuilder: (BuildContext context, bool innerBoxisScrolled){
+          return <Widget>[
+            SliverAppBar(
+              backgroundColor: Color(0xFFfafafa),
+              centerTitle: true,
+              expandedHeight: 56.0,
+              floating: false,
+              pinned: true,              
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  "Einkaufsliste", 
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: "Google-Sans",
+                      fontSize: 19.0,
+                      fontWeight: FontWeight.w200
+                  )
+                ), 
+              )
+            )
+          ];
+        },
+        body: new Calendar(),
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF4285F4),
         elevation: 4.0,

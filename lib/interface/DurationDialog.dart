@@ -19,8 +19,6 @@ const double _kPiByTwo = math.pi / 2;
 
 const double _kCircleTop = _kPiByTwo;
 const double _kCircleBottom = 3 * math.pi / 2;
-const double _kCircleRight = 0.0;
-const double _kCircleRightComplete = _kTwoPi;
 const double _kCircleLeft = math.pi;
 
 class _DialPainter extends CustomPainter {
@@ -89,7 +87,7 @@ class _DialPainter extends CustomPainter {
     TextPainter textDurationValuePainter = new TextPainter(
         textAlign: TextAlign.center,
         text: new TextSpan(
-            text: '${hours}${(pctTheta * 60).round()}',
+            text: hours+'${(pctTheta * 60).round()}',
             style: Theme.of(context)
                 .textTheme
                 .display3

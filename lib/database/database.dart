@@ -18,7 +18,6 @@ class DBHelper{
   * Create the database
   * */
   Future create() async{
-    await Sqflite.devSetDebugModeOn(true);
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "recipebook.db");
     _db = await openDatabase(path, version: 1, onCreate: this._create);
