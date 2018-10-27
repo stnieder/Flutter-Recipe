@@ -8,9 +8,9 @@ import 'package:recipe/database/database.dart';
 import 'package:recipe/interface/GoogleColors.dart';
 import 'package:recipe/interface/SideHeaderViewList.dart';
 import 'package:recipe/interface/HexToColor.dart';
-import 'package:recipe/interface/SearchBox.dart';
+import 'package:recipe/interface/Search/SearchBox.dart';
+import 'package:recipe/interface/Search/search.dart';
 import 'package:recipe/model/Recipes.dart';
-import 'package:recipe/pages/search.dart';
 import 'package:side_header_list_view/side_header_list_view.dart';
 
 
@@ -55,6 +55,7 @@ class _List extends State<Lists>{
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      resizeToAvoidBottomPadding: false,
         body: NestedScrollView(          
           headerSliverBuilder: (BuildContext context, bool innerBoxisScrolled){
             return <Widget>[
@@ -70,6 +71,9 @@ class _List extends State<Lists>{
                   addBorder: true,
                   elevation: 4.0,
                   height: 40.0,
+                  onChanged: (String text){
+                    print(text);
+                  },
                   width: 450.0,
                   hintText: "Rezepte suchen",
                   leadingButton: IconButton(

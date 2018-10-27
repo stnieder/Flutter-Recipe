@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 
+import 'SearchTransition.dart';
+
 class SearchBox extends StatefulWidget{    
   final bool addBorder;
   final bool autofocus;
   final Widget navigateToPage;
   final double elevation;
   final double height;
-  final IconButton leadingButton;
+  final Widget leadingButton;
   final double width;
-  final List<IconButton> trailingButton;
+  final List<Widget> trailingButton;
   final String hintText;
   final TextEditingController searchController;
   final onChanged;
+  final Color backgroundColor;
 
   SearchBox({
     @required this.leadingButton,
@@ -25,6 +28,7 @@ class SearchBox extends StatefulWidget{
     this.searchController,
     this.onChanged,
     this.navigateToPage,
+    this.backgroundColor
   });
 
   @override
@@ -55,39 +59,59 @@ class _SearchBox extends State<SearchBox>{
   
   @override
     Widget build(BuildContext context) {
-      return Card(        
+      return Card(  
+        color: widget.backgroundColor,      
         child: Container(          
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              widget.leadingButton,
+              Padding(
+                padding: EdgeInsets.only(top: 2.0),
+                child: widget.leadingButton,
+              ),
               Flexible(                
                 child: InkWell(
                   onTap: () {
                     if(widget.navigateToPage != null){
                       Navigator.push(
                         context, 
-                        MaterialPageRoute(builder: (context) => widget.navigateToPage)
+                        SearchTransition(widget: widget.navigateToPage)
                       );
                       print("Search");
                     } else {
                       FocusScope.of(context).requestFocus(focusNode);
                     }
                   },
-                  child: IgnorePointer(                    
-                    child: TextField(                    
-                      controller: widget.searchController,                      
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: (widget.hintText == null
-                          ? ""
-                          : widget.hintText
+                  child: (widget.navigateToPage == null
+                    ? TextField(   
+                          autofocus: widget.autofocus,                 
+                          controller: widget.searchController,                      
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: (widget.hintText == null
+                              ? ""
+                              : widget.hintText
+                            )
+                          ),
+                          focusNode: focusNode,
+                          onChanged: widget.onChanged,
                         )
-                      ),
-                      focusNode: focusNode,
-                      onChanged: widget.onChanged,                   
-                    ),
+                    : IgnorePointer(                    
+                        child: TextField(   
+                          autofocus: widget.autofocus,                 
+                          controller: widget.searchController,                      
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: (widget.hintText == null
+                              ? ""
+                              : widget.hintText
+                            )
+                          ),
+                          focusNode: focusNode,
+                          onChanged: widget.onChanged,                   
+                        ),
+                      )
                   ),
                 ),
               ),

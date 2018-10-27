@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:recipe/model/Recipes.dart';
 import 'package:recipe/model/Ingredients.dart';
 import 'package:recipe/model/Recipe_Ingredient.dart';
+import 'package:recipe/model/SearchHistory.dart';
 
 class DBHelper{
   static Database _db;
@@ -79,6 +80,13 @@ class DBHelper{
         ")"
     );
 
+    await db.execute(
+      "CREATE TABLE searchHistory("+
+        " id integer primary key AUTOINCREMENT, " +
+        " searchedFor varchar "+
+      ")"
+    );
+
     print("Created all tables");
   }
 
@@ -141,6 +149,17 @@ class DBHelper{
     return recSteps;
   }
 
+  Future<HistoryDB> insertHistory(HistoryDB history) async{
+    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM searchHistory WHERE term = ?", [history.term]));
+    if(count == 0){
+      history.id = await _db.insert("searchHistory", history.toMap());
+    } else {
+      await _db.update("searchHistory", history.toMap(), where: "term = ?", whereArgs: [history.term]);
+    }
+
+    return history;
+  }
+
   //Get all Recipes
   Future<List<Recipes>> getRecipes() async{
     List<Map> list = await _db.rawQuery("SELECT * FROM recipes");
@@ -182,6 +201,15 @@ class DBHelper{
       steps.add(new Steps(list[i]["id"], list[i]["number"], list[i]["description"]));
     }
     return steps;
+  }
+
+  Future<List<History>> getHistory() async{
+    List<Map> list = await _db.rawQuery("SELECT * FROM searchHistory");
+    List<History> history = new List();
+    for(int i=0; i<list.length; i++){
+      history.add(new History(list[i]["id"], list[i]["term"], list[i]["timestamp"]));
+    }
+    return history;
   }
 
   //Update favorite recipe
