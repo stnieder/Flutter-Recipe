@@ -14,7 +14,7 @@ class _GoogleDivider extends State<GoogleDivider>{
         padding: EdgeInsets.only(left: 45.0, right: 5.0),
         child: Divider(
           color: Colors.black45,
-          height: 1.0,
+          height: 0.5,
         ),
       );
     }

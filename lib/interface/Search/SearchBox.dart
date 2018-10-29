@@ -5,16 +5,15 @@ import 'SearchTransition.dart';
 class SearchBox extends StatefulWidget{    
   final bool addBorder;
   final bool autofocus;
-  final Widget navigateToPage;
   final double elevation;
   final double height;
   final Widget leadingButton;
   final double width;
   final List<Widget> trailingButton;
   final String hintText;
-  final TextEditingController searchController;
-  final onChanged;
+  final onTextFieldPressed;
   final Color backgroundColor;
+  final TextEditingController searchController;
 
   SearchBox({
     @required this.leadingButton,
@@ -25,10 +24,9 @@ class SearchBox extends StatefulWidget{
     this.height,
     this.width,
     this.hintText,
-    this.searchController,
-    this.onChanged,
-    this.navigateToPage,
-    this.backgroundColor
+    this.onTextFieldPressed,
+    this.backgroundColor,
+    this.searchController
   });
 
   @override
@@ -40,14 +38,16 @@ class SearchBox extends StatefulWidget{
 class _SearchBox extends State<SearchBox>{
 
   List<Widget> trailingList = new List();
-  final FocusNode focusNode = FocusNode();  
+  final FocusNode focusNode = FocusNode(); 
 
   @override
     void initState() {
       super.initState();
-      for(int i=0; i<widget.trailingButton.length; i++){
-        trailingList.add(widget.trailingButton[i]);
-      }
+      if(widget.trailingButton != null){
+        for(int i=0; i<widget.trailingButton.length; i++){
+          trailingList.add(widget.trailingButton[i]);
+        }
+      }      
     }
 
   @override
@@ -72,18 +72,8 @@ class _SearchBox extends State<SearchBox>{
               ),
               Flexible(                
                 child: InkWell(
-                  onTap: () {
-                    if(widget.navigateToPage != null){
-                      Navigator.push(
-                        context, 
-                        SearchTransition(widget: widget.navigateToPage)
-                      );
-                      print("Search");
-                    } else {
-                      FocusScope.of(context).requestFocus(focusNode);
-                    }
-                  },
-                  child: (widget.navigateToPage == null
+                  onTap: widget.onTextFieldPressed,
+                  child: (widget.onTextFieldPressed == null
                     ? TextField(   
                           autofocus: widget.autofocus,                 
                           controller: widget.searchController,                      
@@ -92,10 +82,12 @@ class _SearchBox extends State<SearchBox>{
                             hintText: (widget.hintText == null
                               ? ""
                               : widget.hintText
+                            ),
+                            hintStyle: TextStyle(
+                              fontFamily: "Google-Sans"
                             )
                           ),
-                          focusNode: focusNode,
-                          onChanged: widget.onChanged,
+                          focusNode: focusNode
                         )
                     : IgnorePointer(                    
                         child: TextField(   
@@ -108,15 +100,17 @@ class _SearchBox extends State<SearchBox>{
                               : widget.hintText
                             )
                           ),
-                          focusNode: focusNode,
-                          onChanged: widget.onChanged,                   
+                          focusNode: focusNode,                  
                         ),
                       )
                   ),
                 ),
               ),
-              Row(
-                children: trailingList,
+              (widget.trailingButton == null
+                ? Container()
+                : Row(
+                    children: trailingList,
+                  )
               )
             ],
           ),

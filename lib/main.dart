@@ -14,9 +14,12 @@ class Recipe extends StatelessWidget {
     //changeStatusColor(); 
     return new MaterialApp(      
       title: 'Rezeptbuch',
-      theme: new ThemeData(
+      theme: new ThemeData(        
         backgroundColor: Colors.white,
-        primarySwatch: Colors.blue
+        primarySwatch: Colors.blue,        
+        iconTheme: IconThemeData(
+          color: Colors.black54          
+        )
       ),
       initialRoute: '/',
       routes: {

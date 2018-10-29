@@ -165,19 +165,25 @@ class DBHelper{
     List<Map> list = await _db.rawQuery("SELECT * FROM recipes");
     List<Recipes> recipes = new List();
     for(int i =0; i < list.length; i++){
-      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"],duration:  list[i]["duration"], favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));      
+      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"],duration:  list[i]["duration"], favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
     }
     return recipes;
-  }
+  }  
 
   //Get Specific Recipe
   Future<List<Recipes>> getSpecRecipe(String recipeName) async{
-    List<Map> list = await _db.rawQuery("SELECT id FROM recipes WHERE name = '?'", [recipeName]);
+    List<Map> list = await _db.rawQuery("SELECT * FROM recipes WHERE name = ?", [recipeName]);
+    print("Length SpecRecipe: "+list.length.toString());
     List<Recipes> recipes = new List();
     for(int i =0; i < list.length; i++){
-      recipes.add(new Recipes(id: list[i]["id"]));      
+      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"],duration:  list[i]["duration"], favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
     }   
     return recipes;
+  }
+
+  Future<int> countRecipes() async{
+    List<Map> list = await _db.rawQuery("SELECT * FROM recipes");
+    return list.length;
   }
 
   //Get Ingredients of specific recipe
@@ -212,12 +218,28 @@ class DBHelper{
     return history;
   }
 
+  /*
+  * Filter with specific parameter
+  */
+
+  //Filter with recipe name
+  Future<List<Recipes>> filterRecipes(String recipe) async{
+    String sql = "SELECT * FROM recipes WHERE name LIKE '%"+recipe+"%'";
+    List<Map> list = await _db.rawQuery(sql);
+    List<Recipes> recipes = new List();
+    for(int i =0; i < list.length; i++){
+      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"],duration:  list[i]["duration"], favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));      
+    }
+    return recipes;
+  }
+
+
   //Update favorite recipe
-  Future<int> updateFavorite(int recipeID, int newFavorite) async{
-    String sql = "UPDATE recipes SET favorite = ? WHERE id = ?";
+  Future<int> updateFavorite(String recipeName, int newFavorite) async{
+    String sql = "UPDATE recipes SET favorite = ? WHERE name = ?";
     return await _db.rawUpdate(
       sql,
-      [newFavorite, recipeID]
+      [newFavorite, recipeName]
     );
   }
 }

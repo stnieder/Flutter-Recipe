@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe/interface/GoogleColors.dart';
 
 class Shopping extends StatefulWidget{
   @override
@@ -8,6 +9,7 @@ class Shopping extends StatefulWidget{
 }
 
 class _Shopping extends State<Shopping>{
+  GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +40,9 @@ class _Shopping extends State<Shopping>{
         body: new Center(child: Text("Shopping")),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFFDB4437),
-        elevation: 4.0,
+        backgroundColor: googleMaterialColors.primaryColor(),
         child: Icon(Icons.add),
+        elevation: 4.0,        
         onPressed: () {
           Navigator.pushNamed(context, '/');
         },

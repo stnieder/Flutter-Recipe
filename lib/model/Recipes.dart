@@ -4,7 +4,7 @@ class RecipesDB{
   RecipesDB();
 
   int id, favorite;
-  dynamic image;
+  String image;
   String name, definition, timestamp, duration, backgroundColor;
 
   static final columns = ["id", "name", "definition","duration", "favorite", "timestamp", "image", "backgroundColor"];
@@ -46,7 +46,7 @@ class RecipesDB{
 
 class Recipes{
   int id, favorite;
-  dynamic image;
+  String image;
   String name, definition, timestamp, duration, backgroundColor;
 
   Recipes(
