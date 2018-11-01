@@ -83,7 +83,8 @@ class DBHelper{
     await db.execute(
       "CREATE TABLE searchHistory("+
         " id integer primary key AUTOINCREMENT, " +
-        " searchedFor varchar "+
+        " term varchar, " +
+        " timestamp text "+
       ")"
     );
 

@@ -1,22 +1,17 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'package:side_header_list_view/side_header_list_view.dart';
 
 
 import 'package:recipe/Constants.dart';
 
 import 'package:recipe/database/database.dart';
 
+import 'package:recipe/interface/Custom_SideHeaderListView.dart';
 import 'package:recipe/interface/GoogleColors.dart';
 import 'package:recipe/interface/HexToColor.dart';
-import 'package:recipe/interface/Search/SearchBox.dart';
-import 'package:recipe/interface/Search/search.dart';
-import 'package:recipe/interface/Search/SearchTransition.dart';
 import 'package:recipe/interface/SelectableItems.dart';
 
 import 'package:recipe/model/Recipes.dart';
@@ -56,11 +51,13 @@ class _List extends State<Lists>{
   String searchCondition;
   TextEditingController searchController = new TextEditingController();
 
-  final GlobalKey _menuKey = new GlobalKey();
+  final GlobalKey<ScaffoldState> _drawerKey = new GlobalKey<ScaffoldState>();
+  Color listTileColor;
 
   @override
     void initState() {
       super.initState();
+      listTileColor = googleMaterialColors.primaryColor().withOpacity(0.2);
     }
 
   @override
@@ -78,68 +75,121 @@ class _List extends State<Lists>{
       ),          
       resizeToAvoidBottomPadding: true,
       body: new Container(
-          child: new FutureBuilder<List<Recipes>>(
-            future: fetchRecipes(searchPerformed, searchCondition),
-            builder: (context, snapshot) {   
-              if (snapshot.hasData) {
-                return SideHeaderListView(
-                  hasSameHeader: (int a, int b){
-                    return snapshot.data[a].name[0] == snapshot.data[b].name[0];
-                  },
-                  itemCount: snapshot.data.length,
-                  headerBuilder: (BuildContext context, int index){
-                    return new Padding(
-                      padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
-                      child: Container(
-                        width: 10.0,
-                        child: Text(
-                          snapshot.data[index].name[0].toUpperCase(),
-                          style: TextStyle(
-                            color: googleMaterialColors.primaryColor().withGreen(120),                        
-                            fontFamily: "Google-Sans",
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w600
-                          ),
+        child: new FutureBuilder<List<Recipes>>(
+          initialData: [],            
+          future: fetchRecipes(searchPerformed, searchCondition),
+          builder: (context, snapshot) {   
+            if (snapshot.hasData) {
+              return SideHeaderListView(                  
+                hasSameHeader: (int a, int b){
+                  return snapshot.data[a].name[0] == snapshot.data[b].name[0];
+                },
+                itemCount: snapshot.data.length,
+                headerBuilder: (BuildContext context, int index){
+                  return new Padding(
+                    padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
+                    child: Container(
+                      width: 10.0,
+                      child: Text(
+                        snapshot.data[index].name[0].toUpperCase(),
+                        style: TextStyle(
+                          color: googleMaterialColors.primaryColor().withGreen(120),                        
+                          fontFamily: "Google-Sans",
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w600
                         ),
                       ),
-                    );
-                  },
-                  itemExtend: 70.0,
-                  itemBuilder: (BuildContext context, int index){
-                                        
-                    Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);                    
-                    String image = snapshot.data[index].image;
-                    print("Image: "+image);
-                    return CustomWidget(
-                      color: usedColor,
-                      name: snapshot.data[index].name,
-                      index: index,
-                      image: image,
-                      longPressEnabled: longPressFlag,                      
-                      callback: () {
-                        if (indexList.contains(snapshot.data[index].name)) {
-                          indexList.remove(snapshot.data[index].name);
-                        } else {
-                          indexList.add(snapshot.data[index].name);
-                        }
+                    ),
+                  );
+                },
+                itemExtend: 70.0,
+                itemBuilder: (BuildContext context, int index){
+                                      
+                  Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);                    
+                  String image = snapshot.data[index].image;
+                  print("Image: "+image);
+                  return CustomWidget(
+                    color: usedColor,
+                    name: snapshot.data[index].name,
+                    index: index,
+                    image: image,
+                    longPressEnabled: longPressFlag,                                            
+                    callback: () {
+                      if (indexList.contains(snapshot.data[index].name)) {
+                        indexList.remove(snapshot.data[index].name);
+                      } else {
+                        indexList.add(snapshot.data[index].name);
+                      }
 
-                        longPress();
-                      },
-                    );
-                  },
-                );
-              } else if(!snapshot.hasData) {
-                return Center(
-                  child: Text("Keine Daten vorhanden"),                  
-                );
-              } else if (snapshot.hasError) {
-                return new Text("${snapshot.error}");
-              }                 
-              return new Container(alignment: AlignmentDirectional.center,child: new CircularProgressIndicator(),);
-            },
-          ),
-        ),   
-
+                      longPress();
+                    },
+                  );
+                },
+              );
+            } else if(!snapshot.hasData) {
+              return Center(
+                child: Text("Keine Daten vorhanden"),                  
+              );
+            } else if (snapshot.hasError) {
+              return new Text("${snapshot.error}");
+            }                 
+            return new Container(alignment: AlignmentDirectional.center,child: new CircularProgressIndicator(),);
+          },
+        ),
+      ),   
+      drawer: Drawer(        
+        child: ListView(
+          children: <Widget>[
+            GestureDetector(
+              onPanDown: (DragDownDetails dragdown){
+                setState(() {
+                  listTileColor = googleMaterialColors.primaryColor().withOpacity(0.05);
+                });
+              },
+              onPanCancel: (){
+                setState(() {
+                  listTileColor = googleMaterialColors.primaryColor().withOpacity(0.2);
+                });
+              },
+              child: Padding(
+                padding: EdgeInsets.only(left: 10.0),
+                child: Container(                
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 1.0, left: 15.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.memory, 
+                          color: googleMaterialColors.primaryColor()
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 20.0),
+                          child: Text(
+                            "Just text",
+                            style: TextStyle(
+                              color: googleMaterialColors.primaryColor(),
+                              fontWeight: FontWeight.w600
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(32.0),
+                      topLeft: Radius.circular(32.0)
+                    ),
+                    color: listTileColor,                  
+                  ),
+                  height: 40.0,
+                  width: 150.0,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: googleMaterialColors.primaryColor(),
         elevation: 4.0,
@@ -147,7 +197,8 @@ class _List extends State<Lists>{
         onPressed: (){
           Navigator.pushNamed(context, '/add_recipe');
         },
-      )
+      ),
+      key: _drawerKey,
     );
   }
 
@@ -170,13 +221,14 @@ class _List extends State<Lists>{
     });
   }
 
-  void searchOperation() async{
-    var searchText = await Navigator.push(
-      context,
-      SearchTransition(widget: SearchPage())
-    );
-    if(searchText != null){
-      print(searchText);
+  void searchOperation(String searchText) async{    
+    if(searchText != null && searchText != ""){
+      setState(() {
+        searchCondition = searchText;
+        searchController.text = searchCondition;
+        fetchRecipes(true, searchText);
+        searchPerformed = true;
+      });
     }
   }
 
@@ -184,89 +236,22 @@ class _List extends State<Lists>{
     return AppBar(
       backgroundColor: Colors.white.withOpacity(0.0),
       elevation: 0.0,
-      centerTitle: false,
-      actions: <Widget>[],
-      title: Padding(
-        padding: EdgeInsets.only(bottom: 1.0),
-        child: SearchBox(
-          autofocus: false,
-          addBorder: true,
-          elevation: 4.0,
-          height: 40.0,
-          width: 450.0,
-          hintText: (longPressFlag
-            ? "LongPressEnabled"
-            : "Rezepte suchen"
-          ),
-          leadingButton: IconButton(
-            icon: (searchPerformed
-              ? Icon(
-                  Icons.arrow_back,
-                  color: Colors.black45,
-                )
-              : Icon(
-                  Icons.search,
-                  color: Colors.black45,
-                )
-            ),
-            onPressed: (){
-              if(searchPerformed == true){
-                setState(() {
-                  searchPerformed = false;
-                  searchController.text = "";
-                });
-              }
-            },
-          ),
-          onTextFieldPressed: searchOperation,
-          searchController: searchController,
-          trailingButton: [ 
-            new PopupMenuButton( 
-              tooltip: "Weitere Optionen",                 
-              child: Icon(Icons.more_vert, color: Colors.black45),
-              key: _menuKey,
-
-              itemBuilder: (_) => <PopupMenuItem<String>>[
-                new PopupMenuItem<String>(                      
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 15.0),
-                        child: Icon(Icons.sync, size: 20.0, color: Colors.black45,),
-                      ),
-                      Text(
-                        Constants.listPopUp[1],
-                        style: TextStyle(
-                          fontSize: 15.0
-                        ),
-                      ),
-                    ],
-                  ), 
-                  value: Constants.listPopUp[1]
-                ),
-                new PopupMenuItem<String>(
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 15.0),
-                        child: Icon(Icons.check_circle_outline, size: 20.0, color: Colors.black45,),
-                      ),
-                      Text(
-                        Constants.listPopUp[2],
-                        style: TextStyle(
-                          fontSize: 15.0
-                        ),
-                      ),
-                    ],
-                  ), 
-                  value: Constants.listPopUp[2]
-                )
-              ],
-              onSelected: (String text)=>popUpMenu(text)
-            ) 
-          ]
-        )
-      ),      
+      centerTitle: true,
+      leading: IconButton(
+        icon: Icon(
+          Icons.menu,
+          color: Colors.black54,
+        ),
+        onPressed: (){
+          _drawerKey.currentState.openDrawer();
+        },
+      ),
+      title: Text(
+        "Rezeptbuch",
+        style: TextStyle(
+          fontFamily: "Google-Sans"
+        ),
+      ),
     );
   }
 
@@ -296,7 +281,7 @@ class _List extends State<Lists>{
           setState(() {
             indexList.clear();
             longPressFlag = false;
-            longPress();                     
+            longPress();                 
 
             searchController = new TextEditingController();
           });

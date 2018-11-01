@@ -17,7 +17,7 @@ class GoogleMaterialColors{
   }
 
   Color primaryColor(){
-    return Color(0xFF4285f4).withRed(0).withGreen(100); //Blue
+    return Color(0xFF4285f4).withRed(0).withGreen(115); //Blue
   }
 
   List<Color> getColorList(int number){

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:recipe/interface/Calendar/flutter_calendar.dart';
+import 'package:recipe/interface/GoogleColors.dart';
 
 class CalendarView extends StatefulWidget{
   @override
@@ -11,6 +12,7 @@ class CalendarView extends StatefulWidget{
 
 class _CalendarView extends State<CalendarView>{
   DateTime selectedDate;
+  GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class _CalendarView extends State<CalendarView>{
         body: new Calendar(),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF4285F4),
+        backgroundColor: googleMaterialColors.primaryColor(),
         elevation: 4.0,
         child: Icon(Icons.add),
         onPressed: () {

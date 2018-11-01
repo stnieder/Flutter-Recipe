@@ -756,7 +756,6 @@ class _NewRecipe extends State<NewRecipe>{
 
       recipe = await db.insertRecipe(recipe);
 
-      print("RecipeID: "+recipe.id.toString());
       if(recipe.id == null) await db.deleteLatest();
       else {
         for(int i=0; i < zNamen.length; i++){
