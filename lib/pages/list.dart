@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:recipe/Constants.dart';
 
 import 'package:recipe/database/database.dart';
+import 'package:recipe/interface/CustomListTile.dart';
 
 import 'package:recipe/interface/Custom_SideHeaderListView.dart';
 import 'package:recipe/interface/GoogleColors.dart';
@@ -46,24 +47,29 @@ class _List extends State<Lists>{
 
   bool longPressFlag = false;
   List<String> indexList = new List();
-  
-  bool searchPerformed = false;
-  String searchCondition;
-  TextEditingController searchController = new TextEditingController();
 
   final GlobalKey<ScaffoldState> _drawerKey = new GlobalKey<ScaffoldState>();
   Color listTileColor;
 
+  bool searchActive = false;
+  TextEditingController searchController = new TextEditingController();
+  bool searchPerformed = false;  
+  FocusNode searchFocus = new FocusNode();
+  String searchCondition;
+
+  List<String> recipeNames = new List();
+  
+
   @override
     void initState() {
       super.initState();
-      listTileColor = googleMaterialColors.primaryColor().withOpacity(0.2);
+      listTileColor = googleMaterialColors.primaryColor().withOpacity(0.2);       
     }
 
   @override
   void dispose() {
     super.dispose();
-    searchController.dispose();
+    searchController.dispose();    
   }
 
   @override
@@ -71,18 +77,26 @@ class _List extends State<Lists>{
     return new Scaffold(  
       appBar: (longPressFlag
         ? longPressedAppBar()
-        : defaultAppBar()
+        : (searchActive
+          ? searchAppBar()
+          : defaultAppBar()
+        )
       ),          
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomPadding: false,
       body: new Container(
         child: new FutureBuilder<List<Recipes>>(
           initialData: [],            
           future: fetchRecipes(searchPerformed, searchCondition),
           builder: (context, snapshot) {   
             if (snapshot.hasData) {
+              if(snapshot.data.length == 0){
+                return Center(
+                  child: Text("Keine Daten gefunden"),
+                );
+              }
               return SideHeaderListView(                  
                 hasSameHeader: (int a, int b){
-                  return snapshot.data[a].name[0] == snapshot.data[b].name[0];
+                  if(searchController.text.isEmpty) return snapshot.data[a].name[0] == snapshot.data[b].name[0];                  
                 },
                 itemCount: snapshot.data.length,
                 headerBuilder: (BuildContext context, int index){
@@ -107,10 +121,16 @@ class _List extends State<Lists>{
                                       
                   Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);                    
                   String image = snapshot.data[index].image;
+                  
+
                   print("Image: "+image);
                   return CustomWidget(
                     color: usedColor,
                     name: snapshot.data[index].name,
+                    title: (searchController.text.isEmpty
+                      ? Text(snapshot.data[index].name)
+                      : recipeName(searchCondition, snapshot.data[index].name)
+                    ),
                     index: index,
                     image: image,
                     longPressEnabled: longPressFlag,                                            
@@ -140,63 +160,25 @@ class _List extends State<Lists>{
       drawer: Drawer(        
         child: ListView(
           children: <Widget>[
-            GestureDetector(
-              onPanDown: (DragDownDetails dragdown){
-                setState(() {
-                  listTileColor = googleMaterialColors.primaryColor().withOpacity(0.05);
-                });
-              },
-              onPanCancel: (){
-                setState(() {
-                  listTileColor = googleMaterialColors.primaryColor().withOpacity(0.2);
-                });
-              },
-              child: Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Container(                
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 1.0, left: 15.0),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.memory, 
-                          color: googleMaterialColors.primaryColor()
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            "Just text",
-                            style: TextStyle(
-                              color: googleMaterialColors.primaryColor(),
-                              fontWeight: FontWeight.w600
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(32.0),
-                      topLeft: Radius.circular(32.0)
-                    ),
-                    color: listTileColor,                  
-                  ),
-                  height: 40.0,
-                  width: 150.0,
-                ),
-              ),
+            CustomListTile(
+              label: "Just",
+              leading: Icons.memory,
+              mainColor: googleMaterialColors.primaryColor(),
+              trailing: "116",
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: googleMaterialColors.primaryColor(),
-        elevation: 4.0,
-        child: Icon(Icons.add),
-        onPressed: (){
-          Navigator.pushNamed(context, '/add_recipe');
-        },
+      floatingActionButton: (searchActive
+        ? Container()
+        : FloatingActionButton(
+            backgroundColor: googleMaterialColors.primaryColor(),
+            elevation: 4.0,
+            child: Icon(Icons.add),
+            onPressed: (){
+              Navigator.pushNamed(context, '/add_recipe');
+            },
+          )
       ),
       key: _drawerKey,
     );
@@ -229,12 +211,78 @@ class _List extends State<Lists>{
         fetchRecipes(true, searchText);
         searchPerformed = true;
       });
+    } else {
+      setState((){
+        searchCondition = "";
+        searchController.text = "";
+        fetchRecipes(false, null);
+        searchPerformed = false;
+        searchActive = false;
+      });
     }
+  }
+
+  Widget recipeName(String searchCondition, String name){
+    Widget wholeName;
+    List<Widget> letters = [];
+
+    //Save name
+    String oldName = name;
+
+    //Make the search case insensitive
+    name = name.toUpperCase().trim();
+    searchCondition = searchCondition.toUpperCase().trim();
+
+    if(name.contains(searchCondition)){
+      int start = name.indexOf(searchCondition);
+      int end = start + searchCondition.length;
+
+      if(start != 0){
+        //undo the case insensitive        
+        Text firstPart = Text(
+          oldName.substring(0, start)
+        );
+        letters.add(firstPart);
+
+        Text searchedFor = Text(
+          oldName.substring(start,end),
+          style: TextStyle(
+            fontWeight: FontWeight.bold
+          )
+        );
+        letters.add(searchedFor);
+
+        Text endPart = Text(
+          oldName.substring(end, name.length)
+        );
+        letters.add(endPart);
+      }
+    }
+    
+    wholeName = Row(
+      children: letters
+    );
+
+    return wholeName;
   }
 
   Widget defaultAppBar(){
     return AppBar(
-      backgroundColor: Colors.white.withOpacity(0.0),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.search, color: Colors.black54),
+          onPressed: (){
+            setState(() {
+              searchActive = true;
+            });
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.more_vert, color: Colors.black54),
+          onPressed: (){},
+        )        
+      ],
+      backgroundColor: Color(0xFFfafafa),
       elevation: 0.0,
       centerTitle: true,
       leading: IconButton(
@@ -249,7 +297,49 @@ class _List extends State<Lists>{
       title: Text(
         "Rezeptbuch",
         style: TextStyle(
-          fontFamily: "Google-Sans"
+          color: Colors.black54,
+          fontFamily: "Google-Sans",
+          fontSize: 17.0
+        ),
+      ),
+    );
+  }
+
+  Widget searchAppBar(){
+    return AppBar(
+      backgroundColor: Color(0xFFfafafa),
+      elevation: 6.0,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          color: Colors.black54,
+        ),
+        onPressed:(){
+          setState(() {
+            searchActive = false;
+            searchOperation(null);
+          }); 
+        }
+      ),
+      title: TextField(        
+        autofocus: true,
+        cursorColor: googleMaterialColors.primaryColor(),
+        cursorRadius: Radius.circular(16.0),
+        cursorWidth: 2.0,
+        textCapitalization: TextCapitalization.words,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: "Rezepte suchen",
+          hintStyle: TextStyle(
+            fontFamily: "Google-Sans"
+          )
+        ),
+        onSubmitted: (String input){
+          searchOperation(input);
+        },
+        style: TextStyle(
+          color: Colors.black54,
+          fontFamily: "Google-Sans"          
         ),
       ),
     );

@@ -7,6 +7,7 @@ class CustomWidget extends StatefulWidget {
   final bool longPressEnabled;
   final VoidCallback callback;
   final String name;
+  final Widget title;
   final Color color;
   final String image;
 
@@ -17,6 +18,7 @@ class CustomWidget extends StatefulWidget {
       this.longPressEnabled, 
       this.callback, 
       this.name, 
+      this.title,
       this.color,
       this.image
     }
@@ -92,14 +94,7 @@ class _CustomWidgetState extends State<CustomWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  widget.name,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontFamily: "Google-Sans",
-                    color: Colors.black
-                  ),
-                ),
+                widget.title
               ],
             ),
           ),
