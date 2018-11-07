@@ -1,21 +1,16 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:Time2Eat/Constants.dart';
+import 'package:Time2Eat/database/database.dart';
+import 'package:Time2Eat/interface/CustomListTile.dart';
+import 'package:Time2Eat/interface/Custom_SideHeaderListView.dart';
+import 'package:Time2Eat/interface/GoogleColors.dart';
+import 'package:Time2Eat/interface/HexToColor.dart';
+import 'package:Time2Eat/interface/SelectableItems.dart';
+import 'package:Time2Eat/model/Recipes.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-
-import '../Constants.dart';
-
-import '../database/database.dart';
-import '../interface/CustomListTile.dart';
-
-import '../interface/Custom_SideHeaderListView.dart';
-import '../interface/GoogleColors.dart';
-import '../interface/HexToColor.dart';
-import '../interface/SelectableItems.dart';
-
-import '../model/Recipes.dart';
 
 
 
@@ -161,7 +156,7 @@ class _List extends State<Lists>{
         child: ListView(
           children: <Widget>[
             CustomListTile(
-              label: "Just",
+              textLabel: "Just",
               leading: Icons.memory,
               mainColor: googleMaterialColors.primaryColor(),
               trailing: "116",

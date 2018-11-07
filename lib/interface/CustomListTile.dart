@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/diagnostics.dart';
 
 class CustomListTile extends StatefulWidget{
   final Color mainColor;
-  final String label;
+  final String textLabel;
   final IconData leading;
   final String trailing;
+  final VoidCallback onTap;
 
   CustomListTile({
     @required this.mainColor,
-    @required this.label,
+    @required this.textLabel,
     @required this.leading,
+    this.onTap,
     this.trailing
   });
 
@@ -19,7 +22,7 @@ class CustomListTile extends StatefulWidget{
     }
 }
 
-class _ListTile extends State<CustomListTile> with TickerProviderStateMixin{
+class _ListTile extends State<CustomListTile> with TickerProviderStateMixin implements AutomaticKeepAlive{
   bool selected = false;
   bool pressed = false;
 
@@ -48,7 +51,7 @@ class _ListTile extends State<CustomListTile> with TickerProviderStateMixin{
   @override
     Widget build(BuildContext context) {
       return GestureDetector(
-        onTap: (){
+        onTapUp: (TapUpDetails details){
           setState(() {
             if(selected){
               _colorController.reverse();
@@ -57,7 +60,8 @@ class _ListTile extends State<CustomListTile> with TickerProviderStateMixin{
               _colorController.forward();
               _decorationController.forward();
             }
-            selected = !selected;            
+            selected = !selected;  
+            widget.onTap();          
           });
         },        
         child: Padding(
@@ -71,13 +75,16 @@ class _ListTile extends State<CustomListTile> with TickerProviderStateMixin{
                     widget.leading, 
                     color: colorTransition.value
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.0,right: 150.0),
-                    child: Text(
-                      widget.label,
-                      style: TextStyle(
-                        color: colorTransition.value,
-                        fontWeight: FontWeight.w600
+                  Container(
+                    width: 200.0,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        widget.textLabel,
+                        style: TextStyle(
+                          color: colorTransition.value,
+                          fontWeight: FontWeight.w600
+                        ),
                       ),
                     ),
                   ),
@@ -106,4 +113,42 @@ class _ListTile extends State<CustomListTile> with TickerProviderStateMixin{
         ),
       );
     }
+
+  @override
+  // TODO: implement child
+  Widget get child => null;
+
+  @override
+  StatefulElement createElement() {
+    // TODO: implement createElement
+    return null;
+  }
+
+  @override
+  createState() {
+    // TODO: implement createState
+    return null;
+  }
+
+  @override
+  List<DiagnosticsNode> debugDescribeChildren() {
+    // TODO: implement debugDescribeChildren
+    return null;
+  }
+
+  @override
+  // TODO: implement key
+  Key get key => null;
+
+  @override
+  String toStringDeep({String prefixLineOne = '', String prefixOtherLines, DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+    // TODO: implement toStringDeep
+    return null;
+  }
+
+  @override
+  String toStringShallow({String joiner = ', ', DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+    // TODO: implement toStringShallow
+    return null;
+  }
 }

@@ -49,5 +49,4 @@ class _Shopping extends State<Shopping>{
       )
     );
   }
-
 }

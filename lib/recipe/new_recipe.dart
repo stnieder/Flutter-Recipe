@@ -287,15 +287,16 @@ class _NewRecipe extends State<NewRecipe>{
                       padding: EdgeInsets.only(bottom: 20.0),
                       child: Icon(OMIcons.fastfood),
                     ),
-                    title: TextField(
-                        autofocus: true,
+                    title: TextFormField(
+                        autocorrect: true,
+                        autovalidate: true,
                         controller: recipeName,
                         decoration: InputDecoration(
                           hintText: "Name",
                         ),
                         maxLength: 30,
                         maxLengthEnforced: true,
-                        
+                        validator: (value) => checkRecipe(value) ? "Recipe already taken" : null,
                     ),
                   ),
                   ListTile(
@@ -303,14 +304,18 @@ class _NewRecipe extends State<NewRecipe>{
                       padding: EdgeInsets.only(bottom: 20.0),
                       child: Icon(OMIcons.subject),
                     ),
-                    title: TextField(
+                    title: TextFormField(
                       controller: recipeDescription,
                       decoration: InputDecoration(
                           hintText: "Beschreibe dein Rezept..."
                       ),
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
-                      maxLength: 200,
+                      maxLength: 75,
+                      validator: (String text){
+                        int count = checkRecipe(text);
+                        if (count > 0) return "Exists";
+                      },
                     ),
                   )
                 ],
@@ -825,5 +830,23 @@ class _NewRecipe extends State<NewRecipe>{
         showBottomSnack("Rezept erfolgreich gespeichert", ToastGravity.BOTTOM);
       }      
     }    
+  }
+
+  bool _recExist = false;
+  checkRecipe<bool>(String name) {
+    db.create().then((nothing){
+      db.checkRecipe(name).then((val){
+        if(val > 0) {
+          setState(() {
+            _recExist = true;
+          });
+        } else {          
+          setState(() {
+            _recExist = false;
+          });
+        }
+      });
+    });
+    return _recExist;
   }
 }
