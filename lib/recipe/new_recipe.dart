@@ -356,8 +356,6 @@ class _NewRecipe extends State<NewRecipe>{
                             child: Padding(
                               padding: EdgeInsets.only(top: 8.0, right: 5.0),
                               child: TextFormField(
-                                autocorrect: true,
-                                autovalidate: true,
                                 controller: zNumberController,
                                 decoration: InputDecoration(
                                     border: UnderlineInputBorder(                                      
@@ -370,13 +368,16 @@ class _NewRecipe extends State<NewRecipe>{
                                         style: BorderStyle.solid
                                       ),
                                     ),
-                                    hintText: "2.0"
+                                    hintText: "2.0",                                    
                                 ),
+                                inputFormatters: [
+                                  new BlacklistingTextInputFormatter(new RegExp('[\\,]')),
+                                ],
                                 key: numberIngredientKey,
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,
                                 validator: (String text){
-                                  if(text.isEmpty) return;
+                                  if(text.trim().isEmpty) errorMessage("zN");
                                 }                                
                               ),
                             )
@@ -411,13 +412,12 @@ class _NewRecipe extends State<NewRecipe>{
                                   enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.black12, style: BorderStyle.solid),
                                   ),
-                                  errorText: null,
                                   hintText: "Bezeichnung"
                               ),
                               key: nameIngredientKey,
                               keyboardType: TextInputType.text,                              
                               validator: (String text){
-                                if(text.isEmpty) return;
+                                if(text.trim().length == 0) errorMessage("zN");
                               },
                             ),
                           ),
@@ -428,7 +428,8 @@ class _NewRecipe extends State<NewRecipe>{
                       tooltip: "hinzufügen",
                       icon: Icon(Icons.check),
                       onPressed: (){                        
-                        if(nameIngredientKey.currentState.validate() && numberIngredientKey.currentState.validate() && selectedMass != null) addIngredients();
+                        if(zNamenController.text.trim().length != 0 && zNumberController.text.trim().length != 0 && selectedMass != null) addIngredients();
+                        else errorMessage("zN");
                       },
                     ),
                   ),
@@ -534,22 +535,19 @@ class _NewRecipe extends State<NewRecipe>{
                                 border: InputBorder.none,
                                 hintText: "Ein Schritt nach dem Anderen"
                             ),
-                            inputFormatters: [
-                              new BlacklistingTextInputFormatter(new RegExp('[\\.|\\,]')),
-                            ],
                             validator: (value){
-                              if(value.isEmpty){
-                                return "Bitte Text eingeben";
-                              } else if(zNamen.length == 0){
-                                return "Zutaten sind notwendig";
-                              }
+                              if(value.trim().isEmpty){
+                                errorMessage("s");
+                              } 
                             },
                           ),
                           trailing: IconButton(
                             icon: Icon(Icons.check),
                             onPressed: (){
-                              if(stepDescriptionKey.currentState.validate()){
+                              if(stepDescriptionController.text.trim().length != 0){
                                 changeDescription("a", 0);
+                              } else {
+                                errorMessage("s");
                               }
                             },
                           ),
@@ -738,9 +736,9 @@ class _NewRecipe extends State<NewRecipe>{
     } else if(input == "d"){ //duration is empty
       durationError = true;
     } else if(input == "zN"){
-      showBottomSnack("Es werden Zutaten für ein Rezept benötigt.", ToastGravity.CENTER);
+      showBottomSnack("Zutat kann nicht leer sein.", ToastGravity.CENTER);
     } else if(input == "s"){
-      showBottomSnack("Die Zubereitungs-Schritte sind nötig.", ToastGravity.CENTER);
+      showBottomSnack("Zubereitung darf nicht leer sein.", ToastGravity.CENTER);
     }
     setState(() {});
   }
