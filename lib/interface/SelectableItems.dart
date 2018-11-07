@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recipe/interface/GoogleColors.dart';
-import 'package:recipe/recipe/recipeDetails.dart';
+import '../interface/GoogleColors.dart';
+import '../recipe/recipeDetails.dart';
 
 class CustomWidget extends StatefulWidget {
   final int index;

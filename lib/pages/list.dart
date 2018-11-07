@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 
-import 'package:recipe/Constants.dart';
+import '../Constants.dart';
 
-import 'package:recipe/database/database.dart';
-import 'package:recipe/interface/CustomListTile.dart';
+import '../database/database.dart';
+import '../interface/CustomListTile.dart';
 
-import 'package:recipe/interface/Custom_SideHeaderListView.dart';
-import 'package:recipe/interface/GoogleColors.dart';
-import 'package:recipe/interface/HexToColor.dart';
-import 'package:recipe/interface/SelectableItems.dart';
+import '../interface/Custom_SideHeaderListView.dart';
+import '../interface/GoogleColors.dart';
+import '../interface/HexToColor.dart';
+import '../interface/SelectableItems.dart';
 
-import 'package:recipe/model/Recipes.dart';
+import '../model/Recipes.dart';
 
 
 

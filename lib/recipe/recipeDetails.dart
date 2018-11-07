@@ -1,15 +1,14 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:recipe/database/database.dart';
-import 'package:recipe/interface/GoogleColors.dart';
-import 'package:recipe/interface/HexToColor.dart';
-import 'package:recipe/model/Ingredients.dart';
-import 'package:recipe/model/Recipes.dart';
-import 'package:recipe/model/StepDescription.dart';
-import 'package:recipe/recipe/new_recipe.dart';
+import '../database/database.dart';
+import '../interface/GoogleColors.dart';
+import '../interface/HexToColor.dart';
+import '../model/Ingredients.dart';
+import '../model/Recipes.dart';
+import '../model/StepDescription.dart';
+import '../recipe/new_recipe.dart';
 
 
 class RecipeDetails extends StatefulWidget{

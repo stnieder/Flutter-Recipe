@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
-import 'package:recipe/interface/Calendar/calendar_tile.dart';
+import '../Calendar/calendar_tile.dart';
 import 'package:date_utils/date_utils.dart';
 
 typedef DayBuilder(BuildContext context, DateTime day);

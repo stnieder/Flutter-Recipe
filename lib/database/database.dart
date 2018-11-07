@@ -1,15 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:path/path.dart';
-import 'package:recipe/model/Recipe_Steps.dart';
-import 'package:recipe/model/StepDescription.dart';
+import '../model/Recipe_Steps.dart';
+import '../model/StepDescription.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:recipe/model/Recipes.dart';
-import 'package:recipe/model/Ingredients.dart';
-import 'package:recipe/model/Recipe_Ingredient.dart';
-import 'package:recipe/model/SearchHistory.dart';
+import '../model/Recipes.dart';
+import '../model/Ingredients.dart';
+import '../model/Recipe_Ingredient.dart';
 
 class DBHelper{
   static Database _db;
@@ -94,23 +93,8 @@ class DBHelper{
 
 
   /*
-  * Transaction
-  */
-  Future startTransaction(dynamic) async{
-    await _db.transaction((txn) async{
-
-    });
-  }
-
-
-  /*
   * Insert values into the database
   */
-
-  //Insert data as transaction
-  Future insertTransaction() async{
-
-  }
 
   Future<RecipesDB> insertRecipe(RecipesDB recipe) async{
     var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM recipes WHERE id = ?", [recipe.id]));    
@@ -209,15 +193,6 @@ class DBHelper{
       steps.add(new Steps(list[i]["id"], list[i]["number"], list[i]["description"]));
     }
     return steps;
-  }
-
-  Future<List<History>> getHistory() async{
-    List<Map> list = await _db.rawQuery("SELECT * FROM searchHistory");
-    List<History> history = new List();
-    for(int i=0; i<list.length; i++){
-      history.add(new History(list[i]["id"], list[i]["term"], list[i]["timestamp"]));
-    }
-    return history;
   }
 
   /*

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:recipe/database/database.dart';
+import '../database/database.dart';
 
-import 'package:recipe/pages/calendar_view.dart';
-import 'package:recipe/pages/list.dart';
-import 'package:recipe/pages/shopping_list.dart';
+import '../pages/calendar_view.dart';
+import '../pages/list.dart';
+import '../pages/shopping_list.dart';
 
 
 class Recipebook extends StatefulWidget{

@@ -9,21 +9,21 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:recipe/database/database.dart';
+import '../database/database.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:recipe/interface/DurationDialog.dart'; //made by Chris Harris https://pub.dartlang.org/packages/flutter_duration_picker
+import '../interface/DurationDialog.dart'; //made by Chris Harris https://pub.dartlang.org/packages/flutter_duration_picker
 
-import 'package:recipe/interface/CircularImage.dart';
-import 'package:recipe/interface/GoogleColors.dart';
+import '../interface/CircularImage.dart';
+import '../interface/GoogleColors.dart';
 
-import 'package:recipe/Dialogs.dart';
+import '../Dialogs.dart';
 
-import 'package:recipe/model/Ingredients.dart';
-import 'package:recipe/model/Recipe_Ingredient.dart';
-import 'package:recipe/model/Recipe_Steps.dart';
-import 'package:recipe/model/Recipes.dart';
-import 'package:recipe/model/StepDescription.dart';
+import '../model/Ingredients.dart';
+import '../model/Recipe_Ingredient.dart';
+import '../model/Recipe_Steps.dart';
+import '../model/Recipes.dart';
+import '../model/StepDescription.dart';
 
 class NewRecipe extends StatefulWidget{
   //Main

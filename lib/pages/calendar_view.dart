@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:recipe/interface/Calendar/flutter_calendar.dart';
-import 'package:recipe/interface/GoogleColors.dart';
+import '../interface/Calendar/flutter_calendar.dart';
+import '../interface/GoogleColors.dart';
 
 class CalendarView extends StatefulWidget{
   @override

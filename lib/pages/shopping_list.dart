@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe/interface/GoogleColors.dart';
+import '../interface/GoogleColors.dart';
 
 class Shopping extends StatefulWidget{
   @override

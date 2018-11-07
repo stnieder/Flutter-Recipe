@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:date_utils/date_utils.dart';
-import 'package:recipe/interface/GoogleColors.dart';
+import '../GoogleColors.dart';
 
 class CalendarTile extends StatelessWidget {
   final VoidCallback onDateSelected;
