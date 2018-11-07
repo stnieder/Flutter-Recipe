@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:recipe/database/database.dart';
 import 'package:recipe/interface/GoogleColors.dart';
+import 'package:recipe/interface/HexToColor.dart';
 import 'package:recipe/model/Ingredients.dart';
 import 'package:recipe/model/Recipes.dart';
 import 'package:recipe/model/StepDescription.dart';
+import 'package:recipe/recipe/new_recipe.dart';
 
 
 class RecipeDetails extends StatefulWidget{
@@ -21,11 +24,24 @@ class RecipeDetails extends StatefulWidget{
 
 class _RecipeDetails extends State<RecipeDetails>{
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
+  ConvertColor convertColor = new ConvertColor();
 
-  
+  int id;  
   String recipeName = "";
+  String description;
+  Duration duration;
+  String imagePath;
+  Color backgroundColor;
   int portionen=1;
-  bool titleVisibility = false;
+  bool titleVisibility = false;  
+
+  //Zutaten
+  List<double> numberList = new List();
+  List<String> measureList = new List();
+  List<String> nameList = new List();
+
+  //Zubereitung
+  List<String> stepsList = new List();
 
   @override
     void initState() {
@@ -40,7 +56,6 @@ class _RecipeDetails extends State<RecipeDetails>{
         actions: <Widget>[
           FutureBuilder(
             future: fetchRecipe(),
-            initialData: [],
             builder: (BuildContext context, AsyncSnapshot snapshot){
               if(snapshot.hasData){
 
@@ -79,7 +94,12 @@ class _RecipeDetails extends State<RecipeDetails>{
             ? 0.0
             : 1.0
           ),
-          child: Text(recipeName),
+          child: Text(
+            recipeName,
+            style: TextStyle(
+              color: Colors.black54
+            ),
+          ),
         ),
       ),
       body: Column(
@@ -115,25 +135,31 @@ class _RecipeDetails extends State<RecipeDetails>{
             initialData: [],
             builder: (BuildContext context, AsyncSnapshot snapshot){
               if(snapshot.hasData){
-                List<Text> numberList = new List();
-                List<Text> measureList = new List();
-                List<Text> nameList = new List();
+                List<Text> widget_numberList = new List();
+                List<Text> widget_measureList = new List();
+                List<Text> widget_nameList = new List();
 
                 List<Widget> ingredients = new List();
 
                 for(int i=0; i < snapshot.data.length; i++){
-                  numberList.add(Text((double.parse(snapshot.data[i].number)*portionen).toString()));
-                  measureList.add(Text(snapshot.data[i].measure));
-                  nameList.add(Text(snapshot.data[i].name));
+                  //For this view
+                  widget_numberList.add(Text((double.parse(snapshot.data[i].number)*portionen).toString()));
+                  widget_measureList.add(Text(snapshot.data[i].measure));
+                  widget_nameList.add(Text(snapshot.data[i].name));
+
+                  //For the edit view
+                  nameList.add(snapshot.data[i].name);
+                  numberList.add(double.parse(snapshot.data[i].number));
+                  measureList.add(snapshot.data[i].measure);
                 }
                 
-                for(int i=0; i< numberList.length; i++){
+                for(int i=0; i< widget_numberList.length; i++){
                   ingredients.add(
                     Row(
                       children: <Widget>[
-                        numberList[i],
-                        measureList[i],
-                        nameList[i]
+                        widget_numberList[i],
+                        widget_measureList[i],
+                        widget_nameList[i]
                       ],
                     )
                   );
@@ -155,22 +181,25 @@ class _RecipeDetails extends State<RecipeDetails>{
             initialData: [],
             builder: (BuildContext context, AsyncSnapshot snapshot){
               if(snapshot.hasData){
-                List<Text> numberList = new List();
-                List<Text> descriptionList = new List();
-
+                List<Text> widget_numberList = new List();
+                List<Text> widget_descriptionList = new List();
                 List<Widget> steps = new List();
 
                 for(int i=0; i < snapshot.data.length; i++){
-                  numberList.add(Text(snapshot.data[i].number.toString()));
-                  descriptionList.add(Text(snapshot.data[i].description));
+                  //For this view
+                  widget_numberList.add(Text(snapshot.data[i].number.toString()));
+                  widget_descriptionList.add(Text(snapshot.data[i].description));
+
+                  //For edit view
+                  stepsList.add(snapshot.data[i].description);
                 }
                 
                 for(int i=0; i< numberList.length; i++){
                   steps.add(
                     Row(
                       children: <Widget>[
-                        numberList[i],
-                        descriptionList[i]
+                        widget_numberList[i],
+                        widget_descriptionList[i]
                       ],
                     )
                   );
@@ -193,7 +222,9 @@ class _RecipeDetails extends State<RecipeDetails>{
         child: Icon(
           OMIcons.create
         ),
-        onPressed: (){},
+        onPressed: (){
+          editRecipe();
+        },
       ),
       
     );
@@ -205,7 +236,12 @@ class _RecipeDetails extends State<RecipeDetails>{
     List<Recipes> recipe = List<Recipes>();
     for(int i=0; i < parsedRecipe.length; i++){
       recipe.add(parsedRecipe[i]);
-    }
+      id = recipe[i].id;
+      description = recipe[i].definition;
+      duration = new Duration(minutes: int.parse(recipe[i].duration));
+      imagePath = recipe[i].image;
+      backgroundColor = convertColor.convertToColor(recipe[i].backgroundColor);      
+    }    
     return recipe;
   }
 
@@ -238,5 +274,26 @@ class _RecipeDetails extends State<RecipeDetails>{
     }
     print("Steps-Anzahl: "+steps.length.toString());
     return steps;
+  }
+
+  Future editRecipe() async{
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => new NewRecipe(
+          //TODO(1): Daten aus der Datenbank noch in der Variablen speichern
+          recipeID: id,
+          name: recipeName,
+          description: description,
+          duration: duration,
+          backgroundColor: backgroundColor,
+          imagePath: imagePath,
+          numberList: numberList,
+          measureList: measureList,
+          nameList: nameList,
+          stepsList: stepsList,
+        )
+      )
+    );
   }
 }

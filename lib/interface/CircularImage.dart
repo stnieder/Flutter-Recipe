@@ -5,45 +5,41 @@ import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class CircularImage extends StatefulWidget{
-  final File _image;
+  final String imagePath;
 
   CircularImage(
-    this._image
+    this.imagePath
   );
 
 
   @override
   State<StatefulWidget> createState() {
-    return _CircularImage(
-      _image
-    );
+    return _CircularImage();
   }
 }
 
 
 class _CircularImage extends State<CircularImage>{
-  File _image;
-
-  _CircularImage(
-    this._image,
-  );
-
-
-  @override
-  Widget build(BuildContext context) {
+  
+  Widget circularImage(){
     return new Container(
-      width: 100.0,
-      height: 100.0,
-      child: Icon(OMIcons.addAPhoto, color: Colors.white, size: 20.0),
+      width: 40.0,
+      height: 40.0,
       decoration: new BoxDecoration(
         image: new DecorationImage(
           colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-          image: new FileImage(_image),
+          image: AssetImage(widget.imagePath),
           fit: BoxFit.cover,
         ),
         borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
       ),
     );
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return circularImage();
   }
 }
 

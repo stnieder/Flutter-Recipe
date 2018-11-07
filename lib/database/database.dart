@@ -80,14 +80,6 @@ class DBHelper{
         ")"
     );
 
-    await db.execute(
-      "CREATE TABLE searchHistory("+
-        " id integer primary key AUTOINCREMENT, " +
-        " term varchar, " +
-        " timestamp text "+
-      ")"
-    );
-
     print("Created all tables");
   }
 
@@ -121,44 +113,53 @@ class DBHelper{
   }
 
   Future<RecipesDB> insertRecipe(RecipesDB recipe) async{
-    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM recipes WHERE name = ?", [recipe.name]));
+    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM recipes WHERE id = ?", [recipe.id]));    
     if(count == 0){
       recipe.id = await _db.insert("recipes", recipe.toMap());
     } else {
       await _db.update("recipes", recipe.toMap(), where: "id = ?", whereArgs: [recipe.id]);
-    }
+    }    
     return recipe;
   }
 
   Future<IngredientsDB> insertIngre(IngredientsDB ingre) async{
-    ingre.id = await _db.insert("ingredients", ingre.toMap());
+    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM ingredients, recipes, recipeIngredients WHERE ingredients.id = ? AND ingredients.id = recipeIngredients.idIngredients AND recipeIngredients.idRecipes = recipes.id", [ingre.id]));    
+    if(count == 0){
+      ingre.id = await _db.insert("ingredients", ingre.toMap());
+    } else {
+      await _db.update("ingredients", ingre.toMap(), where: "id = ?", whereArgs: [ingre.id]);
+    }
     return ingre;
   }
 
   Future<StepsDB> insertSteps(StepsDB steps) async{
-    steps.id = await _db.insert("steps", steps.toMap());
+    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM steps, recipes, recipeSteps WHERE steps.id = ? AND steps.id = recipeSteps.idSteps AND recipeSteps.idRecipes = recipes.id"));
+    if(count == 0){
+      steps.id = await _db.insert("steps", steps.toMap());
+    } else {
+      await _db.update("steps", steps.toMap(), where: "id = ?", whereArgs: [steps.id]);
+    }
     return steps;
   }
 
   Future<RecIngre> insertRecIngre(RecIngre recIngre) async{
-    recIngre.id = await _db.insert("recipeIngredients", recIngre.toMap());    
+    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM recipeIngredients WHERE id = ?", [recIngre.id]));
+    if(count == 0){
+      recIngre.id = await _db.insert("recipeIngredients", recIngre.toMap());
+    } else {
+      await _db.update("recipeIngredients", recIngre.toMap(), where: "id = ?", whereArgs: [recIngre.id]);
+    }
     return recIngre;
   }
 
   Future<RecipeSteps> insertRecipeSteps(RecipeSteps recSteps) async{
-    recSteps.id = await _db.insert("recipeSteps", recSteps.toMap());   
-    return recSteps;
-  }
-
-  Future<HistoryDB> insertHistory(HistoryDB history) async{
-    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM searchHistory WHERE term = ?", [history.term]));
+    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM recipeSteps WHERE id = ?", [recSteps.id]));
     if(count == 0){
-      history.id = await _db.insert("searchHistory", history.toMap());
+      recSteps.id = await _db.insert("recipeSteps", recSteps.toMap());   
     } else {
-      await _db.update("searchHistory", history.toMap(), where: "term = ?", whereArgs: [history.term]);
-    }
-
-    return history;
+      await _db.update("recipeSteps", recSteps.toMap(), where: "id = ?", whereArgs: [recSteps.id]);
+    }    
+    return recSteps;
   }
 
   //Get all Recipes

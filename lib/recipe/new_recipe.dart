@@ -26,6 +26,37 @@ import 'package:recipe/model/Recipes.dart';
 import 'package:recipe/model/StepDescription.dart';
 
 class NewRecipe extends StatefulWidget{
+  //Main
+  final int recipeID;
+  final String name;
+  final String description;
+  final Duration duration;
+  final String imagePath;
+  final Color backgroundColor;
+
+  //Zutaten
+  final List<double> numberList;
+  final List<String> measureList;
+  final List<String> nameList;
+
+  //Zubereitung
+  final List<String> stepsList;
+
+  NewRecipe(
+    {
+       this.recipeID,
+       this.name,
+       this.description,
+       this.duration,
+       this.imagePath,
+       this.backgroundColor,
+       this.numberList,
+       this.measureList,
+       this.nameList,
+       this.stepsList
+    }
+  );
+
   @override
   State<StatefulWidget> createState() => _NewRecipe();
 }
@@ -35,6 +66,7 @@ class _NewRecipe extends State<NewRecipe>{
   DBHelper db = new DBHelper();
   GoogleMaterialColors materialColors = new GoogleMaterialColors();
   Color usedColor;
+  bool edit = false;
 
   //MainPage
   bool personenError = false;
@@ -42,7 +74,7 @@ class _NewRecipe extends State<NewRecipe>{
   bool zutatenError = false;
   bool zubError = false;
   Duration setDuration;
-  File _image;  
+  String _image;  
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   int personenAnzahl;  
 
@@ -72,8 +104,21 @@ class _NewRecipe extends State<NewRecipe>{
   void initState(){
     super.initState();
 
-    Random random = new Random();
-    usedColor = materialColors.getLightColor(random.nextInt(5));
+    if(widget.name == null){
+      Random random = new Random();
+      usedColor = materialColors.getLightColor(random.nextInt(5));
+    } else if(widget.name != null){
+      recipeName.text = widget.name;
+      recipeDescription.text = widget.description;
+      setDuration = widget.duration;
+      _image = widget.imagePath;
+      usedColor = widget.backgroundColor;
+      ingredientHeight = 56.0 * widget.numberList.length;
+      zNumber = widget.numberList;
+      zMass = widget.measureList;
+      zNamen = widget.nameList;
+      stepDescription = widget.stepsList;
+    }
   }
 
   @override
@@ -141,14 +186,6 @@ class _NewRecipe extends State<NewRecipe>{
                 padding: EdgeInsets.only(left: 20.0),
               ),
               Container(
-                decoration: BoxDecoration(
-                  color: (personenError
-                    ? materialColors.getLightColor(3).withOpacity(0.3) //Red
-                    : null
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                  shape: BoxShape.rectangle
-                ),
                 height: 40.0,
                 width: 40.0,
                 child: InkWell(
@@ -160,11 +197,26 @@ class _NewRecipe extends State<NewRecipe>{
                   },
                   child: Column(                                    
                     children: <Widget>[
-                      Icon(OMIcons.group),
-                      Center(child: Text(personenAnzahl == null
-                          ? "-"
-                          : personenAnzahl.toString()
-                      ))
+                      Icon(
+                        OMIcons.group,
+                        color: (personenError
+                          ? materialColors.getLightColor(2)//Red
+                          : Colors.black54
+                        ),
+                      ),
+                      Center(child: 
+                        Text(
+                          (personenAnzahl == null
+                            ? "-"
+                            : personenAnzahl.toString()),
+                          style: new TextStyle(
+                            color: (personenError
+                              ? materialColors.getLightColor(2)//Red
+                              : Colors.black54
+                            )
+                          ),
+                        )
+                      )
                     ],
                   ),
                 ),
@@ -172,7 +224,7 @@ class _NewRecipe extends State<NewRecipe>{
               Container(
                 decoration: BoxDecoration(
                   color: (durationError
-                    ? materialColors.getLightColor(3).withOpacity(0.3) //Red
+                    ? materialColors.getLightColor(2).withOpacity(0.8)//Red
                     : null
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -538,7 +590,10 @@ class _NewRecipe extends State<NewRecipe>{
                             stepDescription.insert(after, data);
                             setState(() {});
                           },
-                          canBeDraggedTo: (one, two) => true,
+                          canBeDraggedTo: (stepDescription.length > 1
+                            ? (one, two) => false
+                            : (one, two) => true
+                          ),
                           dragElevation: 6.0,
                         ),
                       )
@@ -558,7 +613,7 @@ class _NewRecipe extends State<NewRecipe>{
     File newImage = await ImagePicker.pickImage(source: imageSource);
 
     setState(() {
-      _image = newImage;
+      _image = newImage.path;
     });
   }
 
@@ -745,8 +800,8 @@ class _NewRecipe extends State<NewRecipe>{
       
       if(_image != null){
         Directory directory = await getApplicationDocumentsDirectory();
-        String path = directory.path;  
-        await _image.copy('$path/${recipeName.text}.png');
+        String path = directory.path;
+        await File(_image).copy('$path/${recipeName.text}.png');
         recipe.image = '$path/${recipeName.text}.png';
       } else {
         recipe.image = "no image";
