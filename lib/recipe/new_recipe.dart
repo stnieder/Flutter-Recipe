@@ -90,7 +90,11 @@ class _NewRecipe extends State<NewRecipe>{
   List<double> zNumber = [];
   List<String> zMass = [];
   List<String> zNamen = [];
-  String selectedMass;    
+  String selectedMass;  
+  Color numberIngredientColor = Colors.blueAccent;
+
+  final GlobalKey<FormFieldState> numberIngredientKey = new GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> nameIngredientKey = new GlobalKey<FormFieldState>();
 
   //Zubereitung
   double descriptionHeight = 0.0;
@@ -312,10 +316,7 @@ class _NewRecipe extends State<NewRecipe>{
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       maxLength: 75,
-                      validator: (String text){
-                        int count = checkRecipe(text);
-                        if (count > 0) return "Exists";
-                      },
+                      validator: (String text){},
                     ),
                   )
                 ],
@@ -355,19 +356,28 @@ class _NewRecipe extends State<NewRecipe>{
                             child: Padding(
                               padding: EdgeInsets.only(top: 8.0, right: 5.0),
                               child: TextFormField(
+                                autocorrect: true,
+                                autovalidate: true,
                                 controller: zNumberController,
                                 decoration: InputDecoration(
-                                    border: UnderlineInputBorder(
+                                    border: UnderlineInputBorder(                                      
                                       borderRadius: BorderRadius.all(Radius.circular(2.0)),
                                     ),
                                     contentPadding: EdgeInsets.only(bottom: 5.0),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.black12, style: BorderStyle.solid),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide( 
+                                        color: Colors.blue,
+                                        style: BorderStyle.solid
+                                      ),
                                     ),
                                     hintText: "2.0"
                                 ),
-                                textAlign: TextAlign.center,
+                                key: numberIngredientKey,
                                 keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                validator: (String text){
+                                  if(text.isEmpty) return;
+                                }                                
                               ),
                             )
                         ),
@@ -395,15 +405,20 @@ class _NewRecipe extends State<NewRecipe>{
                           child: Container(
                             width: 100.0,
                             child: TextFormField(
-                                controller: zNamenController,
-                                decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(bottom: 5.0),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.black12, style: BorderStyle.solid),
-                                    ),
-                                    hintText: "Bezeichnung"
-                                ),
-                                keyboardType: TextInputType.text
+                              controller: zNamenController,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(bottom: 5.0),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black12, style: BorderStyle.solid),
+                                  ),
+                                  errorText: null,
+                                  hintText: "Bezeichnung"
+                              ),
+                              key: nameIngredientKey,
+                              keyboardType: TextInputType.text,                              
+                              validator: (String text){
+                                if(text.isEmpty) return;
+                              },
                             ),
                           ),
                         )
@@ -412,8 +427,8 @@ class _NewRecipe extends State<NewRecipe>{
                     trailing: IconButton(
                       tooltip: "hinzufügen",
                       icon: Icon(Icons.check),
-                      onPressed: (){
-                        changeIngredient("a", 0);
+                      onPressed: (){                        
+                        if(nameIngredientKey.currentState.validate() && numberIngredientKey.currentState.validate() && selectedMass != null) addIngredients();
                       },
                     ),
                   ),
