@@ -95,36 +95,37 @@ class _List extends State<Lists>{
                 },
                 itemCount: snapshot.data.length,
                 headerBuilder: (BuildContext context, int index){
-                  return new Padding(
-                    padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
-                    child: Container(
-                      width: 10.0,
-                      child: Text(
-                        snapshot.data[index].name[0].toUpperCase(),
-                        style: TextStyle(
-                          color: googleMaterialColors.primaryColor().withGreen(120),                        
-                          fontFamily: "Google-Sans",
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w600
+                  if(searchActive == true){
+
+                    return new Padding(
+                      padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
+                      child: Container(
+                        width: 10.0,
+                        child: Text(
+                          snapshot.data[index].name[0].toUpperCase(),
+                          style: TextStyle(
+                            color: googleMaterialColors.primaryColor().withGreen(120),                        
+                            fontFamily: "Google-Sans",
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w600
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 },
                 itemExtend: 70.0,
                 itemBuilder: (BuildContext context, int index){
                                       
                   Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);                    
                   String image = snapshot.data[index].image;
-                  
 
-                  print("Image: "+image);
                   return CustomWidget(
                     color: usedColor,
                     name: snapshot.data[index].name,
                     title: (searchController.text.isEmpty
-                      ? Text(snapshot.data[index].name)
-                      : recipeName(searchCondition, snapshot.data[index].name)
+                      ? recipeName(searchCondition, snapshot.data[index].name)
+                      : Text(snapshot.data[index].name)
                     ),
                     index: index,
                     image: image,

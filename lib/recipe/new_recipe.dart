@@ -73,6 +73,7 @@ class _NewRecipe extends State<NewRecipe>{
   bool durationError = false;
   bool zutatenError = false;
   bool zubError = false;
+  bool recipeTaken = false;
   Duration setDuration;
   String _image;  
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
@@ -80,7 +81,7 @@ class _NewRecipe extends State<NewRecipe>{
 
   //Allgemein
   final TextEditingController recipeName = new TextEditingController();
-  final TextEditingController recipeDescription = new TextEditingController();
+  final TextEditingController recipeDescription = new TextEditingController();  
 
   //Zutaten
   double ingredientHeight = 0.0;
@@ -196,8 +197,15 @@ class _NewRecipe extends State<NewRecipe>{
                   borderRadius: BorderRadius.circular(10.0),
                   onTap: () async{
                     personenAnzahl = await dialogs.personenAnzahl(context);   
-                    if(personenAnzahl == null) personenError = true;
-                    setState((){});
+                    if(personenAnzahl == null){
+                      setState(() {
+                        personenError = true;
+                      });
+                    } else {
+                      setState(() {
+                        personenError = false;
+                      });
+                    }
                   },
                   child: Column(                                    
                     children: <Widget>[
@@ -226,14 +234,6 @@ class _NewRecipe extends State<NewRecipe>{
                 ),
               ),   
               Container(
-                decoration: BoxDecoration(
-                  color: (durationError
-                    ? materialColors.getLightColor(2).withOpacity(0.8)//Red
-                    : null
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                  shape: BoxShape.rectangle
-                ),
                 height: 40.0,
                 width: 40.0,
                 child: InkWell(
@@ -244,15 +244,29 @@ class _NewRecipe extends State<NewRecipe>{
                         initialTime: new Duration(minutes: 20)
                     );
                     if(setDuration == null) durationError = true;
+                    else durationError = false;
                     setState(() {});
                   },
                   child: Column(
                     children: <Widget>[
-                      Icon(OMIcons.avTimer),
+                      Icon(
+                        OMIcons.avTimer,
+                        color: (durationError
+                          ? materialColors.getLightColor(2).withOpacity(0.8)//Red
+                          : null
+                        )
+                      ),
                       Center(
-                        child: Text(setDuration == null
-                          ? "-"
-                          : setDuration.inMinutes.toString() + "min"
+                        child: Text(
+                          (setDuration == null
+                            ? "-"
+                            : setDuration.inMinutes.toString() + "min"),
+                          style: TextStyle(
+                            color: (durationError
+                              ? materialColors.getLightColor(2).withOpacity(0.8)//Red
+                              : null
+                            )
+                          ),
                         ),
                       )
                     ],
@@ -296,11 +310,13 @@ class _NewRecipe extends State<NewRecipe>{
                         autovalidate: true,
                         controller: recipeName,
                         decoration: InputDecoration(
-                          hintText: "Name",
+                          hintText: "* Name",
                         ),
                         maxLength: 30,
                         maxLengthEnforced: true,
-                        validator: (value) => checkRecipe(value) ? "Recipe already taken" : null,
+                        validator: (value) => checkRecipe(value) 
+                          ? "Recipe already taken"
+                          : null
                     ),
                   ),
                   ListTile(
@@ -330,12 +346,15 @@ class _NewRecipe extends State<NewRecipe>{
               Padding(
                   padding: EdgeInsets.only(top: 10.0, left: 10.0, bottom: 0.0),
                   child: Text(
-                    "Zutaten",
+                    "* Zutaten",
                     style: TextStyle(
                         fontFamily: "Google-Sans",
                         fontWeight: FontWeight.w500,
                         fontSize: 13.0,
-                        color: Colors.grey[500]
+                        color: (zutatenError == false || (zNumberController.text.length != 0 && selectedMass != null && zNamenController.text.length != 0)
+                          ? Colors.grey[500]
+                          : Colors.red
+                        )
                     ),
                   )
               ),
@@ -410,7 +429,9 @@ class _NewRecipe extends State<NewRecipe>{
                               decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(bottom: 5.0),
                                   enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.black12, style: BorderStyle.solid),
+                                    borderSide: BorderSide(
+                                      color: Colors.black12, style: BorderStyle.solid
+                                    ),
                                   ),
                                   hintText: "Bezeichnung"
                               ),
@@ -512,12 +533,15 @@ class _NewRecipe extends State<NewRecipe>{
                   Padding(
                       padding: EdgeInsets.only(top: 10.0, left: 10.0, bottom: 0.0),
                       child: Text(
-                        "Zubereitung",
+                        "* Zubereitung",
                         style: TextStyle(
                             fontFamily: "Google-Sans",
                             fontWeight: FontWeight.w500,
                             fontSize: 13.0,
-                            color: Colors.grey[500]
+                            color: (zubError == false || stepDescriptionController.text.length != 0
+                              ? Colors.grey[500]
+                              : Colors.red
+                            )
                         ),
                       )
                   ),
@@ -546,8 +570,14 @@ class _NewRecipe extends State<NewRecipe>{
                             onPressed: (){
                               if(stepDescriptionController.text.trim().length != 0){
                                 changeDescription("a", 0);
-                              } else {
+                                setState(() {
+                                  zubError = false;
+                                });
+                              } else {                                
                                 errorMessage("s");
+                                setState(() {
+                                  zubError = true;
+                                });
                               }
                             },
                           ),
@@ -665,9 +695,9 @@ class _NewRecipe extends State<NewRecipe>{
     if(status == "p") { //plus 1
       zNumber[index]++;
     } else if(status == "m"){ //minus 1
-      if(zNumber[index] > 0.0){
+      if(zNumber[index] > 1.0){
         zNumber[index]--;
-      } else if(zNumber[index] == 0.0){
+      } else if(zNumber[index] == 1.0){
         changeIngredient("d", index);
       }
     }
@@ -703,6 +733,8 @@ class _NewRecipe extends State<NewRecipe>{
       zNumber.removeAt(index);
     } else if(status == "e"){ //edit
       if(zNamenController.text.isEmpty){
+        ingredientHeight -= 56.0;
+
         zNamenController.text = zNamen[index];
         zNumberController.text = zNumber[index].toString();
         selectedMass = zMass[index];
@@ -735,10 +767,15 @@ class _NewRecipe extends State<NewRecipe>{
       personenError = true;
     } else if(input == "d"){ //duration is empty
       durationError = true;
-    } else if(input == "zN"){
-      showBottomSnack("Zutat kann nicht leer sein.", ToastGravity.CENTER);
-    } else if(input == "s"){
-      showBottomSnack("Zubereitung darf nicht leer sein.", ToastGravity.CENTER);
+    } else if(input == "zN"){ // no ingredient
+      zutatenError = true;
+      showBottomSnack("Zutat kann nicht leer sein.", ToastGravity.BOTTOM);
+    } else if(input == "s"){ // no steps
+      zubError = true;
+      showBottomSnack("Zubereitung darf nicht leer sein.", ToastGravity.BOTTOM);
+    } else if(input == "t"){ //Recipe name already taken
+      recipeTaken = true;
+      showBottomSnack("Ein Rezept mit diesem Namen ist schon vorhanden.", ToastGravity.BOTTOM);
     }
     setState(() {});
   }
@@ -760,7 +797,11 @@ class _NewRecipe extends State<NewRecipe>{
     if(stepDescription.length == 0) {
       returnValue = false;
       await errorMessage("s");
-    }    
+    }  
+    if(recipeTaken == true)  {
+      returnValue = false;
+      await errorMessage("t");
+    }
     return returnValue;
   }
 
@@ -804,9 +845,7 @@ class _NewRecipe extends State<NewRecipe>{
   }
 
   Future saveRecipe() async{
-    if(controlInput() == false){
-      showBottomSnack("Bitte alle nötigen Parameter ausfüllen", ToastGravity.CENTER);
-    } else {
+    if(await controlInput() != false){
 
       await db.create();
       RecipesDB recipe = new RecipesDB();
@@ -852,10 +891,12 @@ class _NewRecipe extends State<NewRecipe>{
         if(val > 0) {
           setState(() {
             _recExist = true;
+            recipeTaken = true;
           });
         } else {          
           setState(() {
             _recExist = false;
+            recipeTaken = false;
           });
         }
       });

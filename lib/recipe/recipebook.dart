@@ -407,12 +407,33 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
                 if (snapshot.hasData) {
                   if(snapshot.data.length == 0){
                     return Center(
-                      child: Text("Keine Daten gefunden"),
+                      child:Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            child: Text("Ich habe deine Rezepte gesucht"),
+                            width: 200.0,
+                          ),
+                          Container(
+                            width: 200.0,
+                            height: 200.0,
+                            child: Image.asset("images/emptyState.jpg"),
+                          ),
+                          Container(                            
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 75.0),
+                              child: Text("Habe leider keine gefunden."),
+                            ),
+                            width: 300.0,
+                          )
+                        ],
+                      )
                     );
                   }
                   return SideHeaderListView(                  
                     hasSameHeader: (int a, int b){
-                      if(searchController.text.isEmpty) return snapshot.data[a].name[0] == snapshot.data[b].name[0];                  
+                      return snapshot.data[a].name[0] == snapshot.data[b].name[0];                  
                     },
                     itemCount: snapshot.data.length,
                     headerBuilder: (BuildContext context, int index){
