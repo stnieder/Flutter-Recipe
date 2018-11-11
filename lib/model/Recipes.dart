@@ -5,15 +5,16 @@ class RecipesDB{
 
   int id, favorite;
   String image;
-  String name, definition, timestamp, duration, backgroundColor;
+  String name, definition, timestamp, duration, people, backgroundColor;
 
-  static final columns = ["id", "name", "definition","duration", "favorite", "timestamp", "image", "backgroundColor"];
+  static final columns = ["id", "name", "definition","duration", "people", "favorite", "timestamp", "image", "backgroundColor"];
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
       "name": name,
       "definition": definition,      
       "duration": duration,
+      "people": people,
       "favorite": favorite,
       "timestamp": timestamp,
       "image": image,
@@ -34,6 +35,7 @@ class RecipesDB{
     recipes.name = map["name"];
     recipes.definition = map["definition"];
     recipes.duration = map["duration"];
+    recipes.people = map["people"];
     recipes.favorite = map["favorite"];
     recipes.timestamp = map["timestamp"];
     recipes.image = map["image"];
@@ -47,14 +49,15 @@ class RecipesDB{
 class Recipes{
   int id, favorite;
   String image;
-  String name, definition, timestamp, duration, backgroundColor;
+  String name, definition, timestamp, duration, people, backgroundColor;
 
   Recipes(
     {
       @required this.id, 
       this.name, 
       this.definition, 
-      this.duration, 
+      this.duration,
+      this.people,
       this.favorite, 
       this.timestamp, 
       this.image, 

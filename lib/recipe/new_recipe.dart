@@ -123,6 +123,7 @@ class _NewRecipe extends State<NewRecipe>{
       zMass = widget.measureList;
       zNamen = widget.nameList;
       stepDescription = widget.stepsList;
+      edit = true;
     }
   }
 
@@ -315,7 +316,7 @@ class _NewRecipe extends State<NewRecipe>{
                         maxLength: 30,
                         maxLengthEnforced: true,
                         validator: (value) => checkRecipe(value) 
-                          ? "Recipe already taken"
+                          ? (edit ? null : "Dieser Name ist schon vergeben")
                           : null
                     ),
                   ),
@@ -852,6 +853,7 @@ class _NewRecipe extends State<NewRecipe>{
       recipe.name = recipeName.text;
       recipe.definition = recipeDescription.text;
       recipe.duration = setDuration.inMinutes.toString();
+      recipe.people = personenAnzahl.toString();
       recipe.timestamp = DateTime.now().toString();
       recipe.favorite = 0;      
       

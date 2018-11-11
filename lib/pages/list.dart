@@ -52,9 +52,6 @@ class _List extends State<Lists>{
   FocusNode searchFocus = new FocusNode();
   String searchCondition;
 
-  List<String> recipeNames = new List();
-  
-
   @override
     void initState() {
       super.initState();
@@ -95,24 +92,21 @@ class _List extends State<Lists>{
                 },
                 itemCount: snapshot.data.length,
                 headerBuilder: (BuildContext context, int index){
-                  if(searchActive == true){
-
-                    return new Padding(
-                      padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
-                      child: Container(
-                        width: 10.0,
-                        child: Text(
-                          snapshot.data[index].name[0].toUpperCase(),
-                          style: TextStyle(
-                            color: googleMaterialColors.primaryColor().withGreen(120),                        
-                            fontFamily: "Google-Sans",
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w600
-                          ),
+                  return new Padding(
+                    padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
+                    child: Container(
+                      width: 10.0,
+                      child: Text(
+                        snapshot.data[index].name[0].toUpperCase(),
+                        style: TextStyle(
+                          color: googleMaterialColors.primaryColor().withGreen(120),                        
+                          fontFamily: "Google-Sans",
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w600
                         ),
                       ),
-                    );
-                  }
+                    ),
+                  );
                 },
                 itemExtend: 70.0,
                 itemBuilder: (BuildContext context, int index){
@@ -120,15 +114,16 @@ class _List extends State<Lists>{
                   Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);                    
                   String image = snapshot.data[index].image;
 
-                  return CustomWidget(
+                  return SelectableItems(
                     color: usedColor,
                     name: snapshot.data[index].name,
                     title: (searchController.text.isEmpty
-                      ? recipeName(searchCondition, snapshot.data[index].name)
-                      : Text(snapshot.data[index].name)
+                      ? Text(snapshot.data[index].name)
+                      : recipeName(searchCondition, snapshot.data[index].name)
                     ),
                     index: index,
                     image: image,
+                    isSelected: indexList.contains(snapshot.data[index].name),
                     longPressEnabled: longPressFlag,                                            
                     callback: () {
                       if (indexList.contains(snapshot.data[index].name)) {
@@ -219,6 +214,7 @@ class _List extends State<Lists>{
   }
 
   Widget recipeName(String searchCondition, String name){
+    print("Searched for: "+searchCondition);
     Widget wholeName;
     List<Widget> letters = [];
 
@@ -251,7 +247,7 @@ class _List extends State<Lists>{
         Text endPart = Text(
           oldName.substring(end, name.length)
         );
-        letters.add(endPart);
+        letters.add(endPart);        
       }
     }
     
@@ -365,9 +361,7 @@ class _List extends State<Lists>{
         ),
         onPressed: (){
           setState(() {
-            indexList.clear();
-            longPressFlag = false;
-            longPress();                 
+            print("Length List: "+indexList.length.toString());
 
             searchController = new TextEditingController();
           });

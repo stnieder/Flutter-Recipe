@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:Time2Eat/model/Recipe_Shopping.dart';
+import 'package:Time2Eat/model/Shopping.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import '../database/database.dart';
 import '../interface/GoogleColors.dart';
@@ -29,9 +32,10 @@ class _RecipeDetails extends State<RecipeDetails>{
   String recipeName = "";
   String description;
   Duration duration;
+  double peopleDB;
+  int currentPeople = 1;
   String imagePath;
   Color backgroundColor;
-  int portionen=1;
   bool titleVisibility = false;  
 
   //Zutaten
@@ -103,27 +107,70 @@ class _RecipeDetails extends State<RecipeDetails>{
       ),
       body: Column(
         children: <Widget>[
+          CircleAvatar(
+            child: (imagePath == "no image"
+                ? Container(
+              decoration: new BoxDecoration(
+                image: new DecorationImage(
+                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                  image: AssetImage(imagePath),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+              ),
+            )
+                : Text(
+                    recipeName[0].toUpperCase(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "Google-Sans",
+                        fontSize: 35.0,
+                        fontWeight: FontWeight.w400
+                    ),
+                  )
+            ),
+            maxRadius: 40.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 30.0, left: 5.0),
+                child: Text(
+                  recipeName,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: "Google-Sans",
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.w300
+                  ),
+                ),
+              )
+            ],
+          ),
+          Divider(),
           Row(
             children: <Widget>[
               IconButton(
                 icon: Icon(Icons.remove),
                 onPressed: (){
-                  setState((){
-                    if(portionen > 1)
-                    portionen--;
-                  });
+                  if(currentPeople > 1){
+                    setState((){
+                      currentPeople--;
+                    });
+                  }
                 },
               ),
               Text(
-                portionen == 1
-                  ? "1 Portion"
-                  : portionen.toString()+" Portionen"
+                  currentPeople == 1
+                  ? "1 Person"
+                  : currentPeople.toString()+" Personen"
               ),
               IconButton(
                 icon: Icon(Icons.add),
                 onPressed: (){
                   setState((){
-                    portionen++;
+                    currentPeople++;
                   });
                 },
               )
@@ -142,7 +189,7 @@ class _RecipeDetails extends State<RecipeDetails>{
 
                 for(int i=0; i < snapshot.data.length; i++){
                   //For this view
-                  widget_numberList.add(Text((double.parse(snapshot.data[i].number)*portionen).toString()));
+                  widget_numberList.add(Text(((double.parse(snapshot.data[i].number)/peopleDB)*currentPeople).toString()));
                   widget_measureList.add(Text(snapshot.data[i].measure));
                   widget_nameList.add(Text(snapshot.data[i].name));
 
@@ -229,6 +276,32 @@ class _RecipeDetails extends State<RecipeDetails>{
     );
   }
 
+  Future saveRecShopping(int shoppingID, DBHelper dbHelper) async{
+
+    RecipeShopping recipeShopping = new RecipeShopping();
+    recipeShopping.idShopping = shoppingID;
+    recipeShopping.idRecipes = id;
+
+    recipeShopping = await dbHelper.insertRecipeShopping(recipeShopping);
+  }
+
+  Future saveShopping() async{
+    DBHelper dbHelper = new DBHelper();
+    await dbHelper.create();
+
+    ShoppingDB shopping = new ShoppingDB();
+    for(int i=0; i<nameList.length; i++){
+      shopping.item = nameList[i];
+      shopping.number = numberList[i].toString();
+      shopping.measure = measureList[i];
+      shopping.checked = 0; // 0 means false
+      shopping = await dbHelper.insertShopping(shopping);
+
+      await saveRecShopping(shopping.id, dbHelper);
+    }
+    showBottomSnack("Zutaten wurden zur Einkaufsliste hinzugefügt", ToastGravity.BOTTOM);
+  }
+
   Future<List<Recipes>> fetchRecipe() async{
     DBHelper dbHelper = new DBHelper();
     var parsedRecipe = await dbHelper.getSpecRecipe(recipeName);
@@ -238,6 +311,7 @@ class _RecipeDetails extends State<RecipeDetails>{
       id = recipe[i].id;
       description = recipe[i].definition;
       duration = new Duration(minutes: int.parse(recipe[i].duration));
+      peopleDB = double.parse(recipe[i].people);
       imagePath = recipe[i].image;
       backgroundColor = convertColor.convertToColor(recipe[i].backgroundColor);      
     }    
@@ -258,7 +332,7 @@ class _RecipeDetails extends State<RecipeDetails>{
     var parsedIngredients = await dbHelper.getIngredients(recipeName);
     List<Ingredients> ingredients = List<Ingredients>();    
     for(int i=0; i< parsedIngredients.length; i++){
-      ingredients.add(parsedIngredients[i]);           
+      ingredients.add(parsedIngredients[i]);
     }    
     print("Ingredients-Anzahl: "+ingredients.length.toString());
     return ingredients;
@@ -266,6 +340,7 @@ class _RecipeDetails extends State<RecipeDetails>{
 
   Future<List<Steps>> fetchSteps() async{
     DBHelper dbHelper = new DBHelper();
+    await dbHelper.create();
     var parsedSteps = await dbHelper.getSteps(recipeName);
     List<Steps> steps = List<Steps>();
     for(int i=0; i < parsedSteps.length; i++){
@@ -280,7 +355,6 @@ class _RecipeDetails extends State<RecipeDetails>{
       context,
       MaterialPageRoute(
         builder: (_) => new NewRecipe(
-          //TODO(1): Daten aus der Datenbank noch in der Variablen speichern
           recipeID: id,
           name: recipeName,
           description: description,
@@ -293,6 +367,16 @@ class _RecipeDetails extends State<RecipeDetails>{
           stepsList: stepsList,
         )
       )
+    );
+  }
+
+
+  void showBottomSnack(String value, ToastGravity toastGravity){
+    Fluttertoast.showToast(
+      msg: value,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: toastGravity,
+      timeInSecForIos: 2,
     );
   }
 }

@@ -1,7 +1,21 @@
+import 'package:Time2Eat/database/database.dart';
+import 'package:Time2Eat/model/Recipes.dart';
+import 'package:Time2Eat/model/Termine.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../interface/Calendar/flutter_calendar.dart';
 import '../interface/GoogleColors.dart';
+
+
+Future<List> fetcheTermine(String date) async{
+  var dbHelper = DBHelper();
+  await dbHelper.create();
+
+  Future<List> termine = dbHelper.getTermine(date);
+  return termine;
+}
+
 
 class CalendarView extends StatefulWidget{
   @override
@@ -11,51 +25,109 @@ class CalendarView extends StatefulWidget{
 }
 
 class _CalendarView extends State<CalendarView>{
-  DateTime selectedDate;
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
 
-  final GlobalKey<ScaffoldState> _drawerKey = new GlobalKey<ScaffoldState>();
+  String selectedDate;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _defaultAppBar(),
-      body: new Calendar(),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: googleMaterialColors.primaryColor(),
-        elevation: 4.0,
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushNamed(context, '/');
-        }
-      )
+    selectedDate = _dateOnly(DateTime.now());
+    return Column(
+      children: <Widget>[
+        new Calendar(
+          onDateSelected: (DateTime dateTime){
+            print("Date now: "+selectedDate.toString());
+            selectedDate = _dateOnly(dateTime);
+            print("Selected: "+selectedDate.toString());
+          },
+        ),
+        Container(
+          child: FutureBuilder<List>(
+            builder: (context, snapshot){
+              if(snapshot.hasData){
+                if(snapshot.data.length > 0){
+                  return ListView.builder(
+                    itemBuilder: (BuildContext context, int index){
+                      return new Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          CircleAvatar(
+                            child: (snapshot.data[index].image != "no image"
+                              ? Container(
+                                width: 40.0,
+                                height: 40.0,
+                                decoration: new BoxDecoration(
+                                  image: new DecorationImage(
+                                    colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                                    image: AssetImage(snapshot.data[index].image),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                                ),
+                              )
+                              : Text(
+                                snapshot.data[index].name[0].toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 21.0,
+                                  fontWeight: FontWeight.w400
+                                ),
+                              )
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                                snapshot.data[index].name
+                            ),
+                          ),
+                          Align(
+                            child: Text(
+                              snapshot.data[index].termin
+                            ),
+                            alignment: Alignment.centerRight,
+                          )
+                        ],
+                      );
+                    },
+                    itemCount: snapshot.data.length,
+                  );  
+                } else if(snapshot.data.length == 0){
+                  return new Column(
+                    children: <Widget>[
+                      Text(
+                        "Alles erledigt.",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold
+                        ),
+                      )
+                    ],
+                  );  
+                }                
+              } else if(snapshot.hasError){
+                return Center(
+                  child: Text("${snapshot.error}"),
+                );
+              }
+              return new Center(
+                child: new CircularProgressIndicator(),
+              );
+            },
+            future: fetcheTermine(selectedDate),
+            initialData: [],
+          ),
+        )
+      ],
     );
   }
 
 
-  AppBar _defaultAppBar(){
-    return AppBar(
-      backgroundColor: Color(0xFFfafafa),
-      elevation: 0.0,
-      centerTitle: true,
-      leading: IconButton(
-        icon: Icon(
-          Icons.menu,
-          color: Colors.black54,
-        ),
-        onPressed: (){
-          _drawerKey.currentState.openDrawer();
-        },
-      ),
-      title: Text(
-        "Einkaufsliste",
-        style: TextStyle(
-          color: Colors.black54,
-          fontFamily: "Google-Sans",
-          fontSize: 17.0
-        ),
-      ),
-    );
+  _dateOnly(DateTime date){
+    DateTime returnDate = DateTime(date.year, date.month, date.day);
+    DateFormat formatter = new DateFormat('yyyy-MM-dd');
+    String formatted = formatter.format(returnDate);
+    return formatted;
   }
-
 }

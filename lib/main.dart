@@ -31,7 +31,7 @@ class Recipe extends StatelessWidget {
 
   changeStatusColor() async{
     try {
-      await FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
+      await FlutterStatusbarcolor.setStatusBarColor(Colors.white);
       FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
       FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
     } on PlatformException catch (e) {
