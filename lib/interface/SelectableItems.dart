@@ -2,89 +2,99 @@ import 'package:flutter/material.dart';
 import '../interface/GoogleColors.dart';
 import '../recipe/recipeDetails.dart';
 
-class CustomWidget extends StatefulWidget {
+class SelectableItems extends StatefulWidget {
   final int index;
   final bool longPressEnabled;
+  final bool isSelected;
   final VoidCallback callback;
   final String name;
   final Widget title;
   final Color color;
   final String image;
 
-  const CustomWidget(
+  SelectableItems(
     {
-      Key key, 
+      key: Key,
       this.index, 
-      this.longPressEnabled, 
+      this.longPressEnabled,
+      this.isSelected = false,
       this.callback, 
       this.name, 
       this.title,
       this.color,
       this.image
     }
-  ) : super(key: key);
+  ): super(key: key);
 
   @override
-  _CustomWidgetState createState() => new _CustomWidgetState();
+  State<StatefulWidget> createState() {
+    return new StateSelectableItem();
+  }
 }
 
-class _CustomWidgetState extends State<CustomWidget> {  
-  bool selected = false;  
+class StateSelectableItem extends State<SelectableItems> {
+  bool isSelected = false;
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
+
+  @override
+  void initState() {
+    if(widget.isSelected) isSelected = widget.isSelected;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return new GestureDetector(
         onLongPress: () {
           setState(() {
-            selected = !selected;
+            isSelected = !isSelected;
           });
           widget.callback();
         },
         onTap: () {
           if (widget.longPressEnabled) {
             setState(() {
-              selected = !selected;
+              isSelected = !isSelected;
             });
             widget.callback();
           } else {
             Navigator.push(
-              context, 
+              context,
               MaterialPageRoute(builder: (context)=>RecipeDetails(widget.name))
             );
           }
         },
         child: ListTile(
           leading: CircleAvatar(
-            child: (selected
+            child: (isSelected
               ? Icon(
-                  Icons.check,
-                  color: Colors.white,
-                )
+                Icons.check,
+                color: Colors.white,
+              )
               : (widget.image != "no image"
                 ? Container(
-                    width: 40.0,
-                    height: 40.0,
-                    decoration: new BoxDecoration(
-                      image: new DecorationImage(
-                        colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-                        image: AssetImage(widget.image),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                  width: 40.0,
+                  height: 40.0,
+                  decoration: new BoxDecoration(
+                    image: new DecorationImage(
+                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                      image: AssetImage(widget.image),
+                      fit: BoxFit.cover,
                     ),
-                  )
+                    borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                  ),
+                )
                 : Text(
-                    widget.name[0].toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 21.0,
-                      fontWeight: FontWeight.w400
-                    ),
-                  )
+                  widget.name[0].toUpperCase(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 21.0,
+                    fontWeight: FontWeight.w400
+                  ),
+                )
               )
             ),
-            backgroundColor: (selected
+            backgroundColor: (isSelected
               ? googleMaterialColors.primaryColor()
               : widget.color.withOpacity(1.00)
             )

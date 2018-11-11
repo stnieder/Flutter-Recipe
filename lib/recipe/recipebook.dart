@@ -1,4 +1,3 @@
-import 'package:Time2Eat/interface/ActiveDrawer.dart';
 import 'package:Time2Eat/recipe/new_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,8 +5,6 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../Constants.dart';
 import '../database/database.dart';
-import '../interface/Calendar/flutter_calendar.dart';
-import '../interface/CustomListTile.dart';
 import '../interface/Custom_SideHeaderListView.dart';
 import '../interface/GoogleColors.dart';
 import '../interface/HexToColor.dart';
@@ -30,24 +27,30 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
   var googleMaterialColors = new GoogleMaterialColors();
   final GlobalKey<ScaffoldState> _drawerKey = new GlobalKey<ScaffoldState>();
 
-  //Rezeptbuch page
+  //LongPress
   bool longPressFlag = false;
   List<String> indexList = new List();
+  Map<int, GlobalKey<StateSelectableItem>> map = new Map();
+  var key = new GlobalKey<StateSelectableItem>();
+
+  //Search
   bool searchActive = false;
   TextEditingController searchController = new TextEditingController();
-  bool searchPerformed = false;  
-  FocusNode searchFocus = new FocusNode();
+  bool searchPerformed = false;
   String searchCondition;
-  ConvertColor convertColor = new ConvertColor();  
 
+
+  ConvertColor convertColor = new ConvertColor();
+
+  //Body
   int _currentTab = 0;
 
+  //AppBar
   final List<String> _tabTitle =  [
     "Rezeptbuch",
     "Terminübersicht",
     "Einkaufsliste"
   ];
-
   List<FloatingActionButton> _fabs = new List();
 
   
@@ -157,7 +160,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
 
   void longPress() {
     setState(() {
-      if (indexList.isEmpty) {
+      if (indexList.length == 0) {
         longPressFlag = false;
       } else {
         longPressFlag = true;
@@ -252,6 +255,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
               searchActive = true;
             });
           },
+          tooltip: "Search",
         ),
         IconButton(
           icon: Icon(Icons.more_vert, color: Colors.black54),
@@ -261,14 +265,6 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
     } else if(currentPage == 1){
       iconButtons = [
         IconButton(
-          icon: Icon(Icons.search, color: Colors.black54),
-          onPressed: (){
-            setState(() {
-              searchActive = true;
-            });
-          },
-        ),
-        IconButton(
           icon: Icon(Icons.more_vert, color: Colors.black54),
           onPressed: (){},
         ) 
@@ -276,8 +272,9 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
     } else if(currentPage == 2){
       iconButtons = [
         IconButton(
-          icon: Icon(Icons.check_box_outline_blank, color: Colors.black54),
+          icon: Icon(Icons.check_circle_outline, color: Colors.black54),
           onPressed: (){},
+          tooltip: "Select all",
         ) 
       ];
     }
@@ -373,6 +370,10 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         ),
         onPressed: (){
           setState(() {
+            for(int i=0; i < map.length; i++){
+              var widget = this.map[0].currentState;
+              print(widget);
+            }
             indexList.clear();
             longPressFlag = false;
             longPress();                 
@@ -399,110 +400,117 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
   Widget pageView(int currentPage){
     switch (currentPage) {
       case 0:
-          return new Container(
-            child: new FutureBuilder<List<Recipes>>(
-              initialData: [],            
-              future: fetchRecipes(searchPerformed, searchCondition),
-              builder: (context, snapshot) {   
-                if (snapshot.hasData) {
-                  if(snapshot.data.length == 0){
-                    return Center(
-                      child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            child: Text("Ich habe deine Rezepte gesucht"),
-                            width: 200.0,
-                          ),
-                          Container(
-                            width: 200.0,
-                            height: 200.0,
-                            child: Image.asset("images/emptyState.jpg"),
-                          ),
-                          Container(                            
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 75.0),
-                              child: Text("Habe leider keine gefunden."),
-                            ),
-                            width: 300.0,
-                          )
-                        ],
-                      )
-                    );
-                  }
-                  return SideHeaderListView(                  
-                    hasSameHeader: (int a, int b){
-                      return snapshot.data[a].name[0] == snapshot.data[b].name[0];                  
-                    },
-                    itemCount: snapshot.data.length,
-                    headerBuilder: (BuildContext context, int index){
-                      return new Padding(
-                        padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
-                        child: Container(
-                          width: 10.0,
-                          child: Text(
-                            snapshot.data[index].name[0].toUpperCase(),
-                            style: TextStyle(
-                              color: googleMaterialColors.primaryColor().withGreen(120),                        
-                              fontFamily: "Google-Sans",
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w600
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    itemExtend: 70.0,
-                    itemBuilder: (BuildContext context, int index){
-                                          
-                      Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);                    
-                      String image = snapshot.data[index].image;
-                      
-
-                      print("Image: "+image);
-                      return CustomWidget(
-                        color: usedColor,
-                        name: snapshot.data[index].name,
-                        title: (searchController.text.isEmpty
-                          ? Text(snapshot.data[index].name)
-                          : recipeName(searchCondition, snapshot.data[index].name)
-                        ),
-                        index: index,
-                        image: image,
-                        longPressEnabled: longPressFlag,                                            
-                        callback: () {
-                          if (indexList.contains(snapshot.data[index].name)) {
-                            indexList.remove(snapshot.data[index].name);
-                          } else {
-                            indexList.add(snapshot.data[index].name);
-                          }
-                          longPress();
-                        },
-                      );
-                    },
-                  );
-                } else if(!snapshot.hasData) {
-                  return Center(
-                    child: Text("Keine Daten vorhanden"),                  
-                  );
-                } else if (snapshot.hasError) {
-                  return new Text("${snapshot.error}");
-                }                 
-                return new Container(alignment: AlignmentDirectional.center,child: new CircularProgressIndicator(),);
-              },
-            ),
-          );        
+          return listPage();
         break;
       case 1:
-          return Calendar();
+          return CalendarView();
         break;
 
       case 2:
-          return Center(
-            child: Text("Shopping List"),
-          );
+          return ShoppingPage();
         break;
     }
+  }
+
+
+  Widget listPage(){
+    return new Container(
+      child: new FutureBuilder<List<Recipes>>(
+        initialData: [],
+        future: fetchRecipes(searchPerformed, searchCondition),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if(snapshot.data.length == 0){
+              return Center(
+                child:Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      child: Text("Ich habe deine Rezepte gesucht"),
+                      width: 200.0,
+                    ),
+                    Container(
+                      width: 200.0,
+                      height: 200.0,
+                      child: Image.asset("images/emptyState.jpg"),
+                    ),
+                    Container(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 75.0),
+                        child: Text("Habe leider keine gefunden."),
+                      ),
+                      width: 300.0,
+                    )
+                  ],
+                )
+              );
+            }
+            return SideHeaderListView(
+              hasSameHeader: (int a, int b){
+                return snapshot.data[a].name[0] == snapshot.data[b].name[0];
+              },
+              itemCount: snapshot.data.length,
+              headerBuilder: (BuildContext context, int index){
+                return new Padding(
+                  padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
+                  child: Container(
+                    width: 10.0,
+                    child: Text(
+                      snapshot.data[index].name[0].toUpperCase(),
+                      style: TextStyle(
+                        color: googleMaterialColors.primaryColor().withGreen(120),
+                        fontFamily: "Google-Sans",
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w600
+                      ),
+                    ),
+                  ),
+                );
+              },
+              itemExtend: 70.0,
+              itemBuilder: (BuildContext context, int index){
+
+                Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);
+                String image = snapshot.data[index].image;
+
+                key = new GlobalKey<StateSelectableItem>();
+
+                map.putIfAbsent(index, () => key);
+
+                return SelectableItems(
+                  key: key,
+                  color: usedColor,
+                  name: snapshot.data[index].name,
+                  title: (searchController.text.isEmpty
+                    ? Text(snapshot.data[index].name)
+                    : recipeName(searchCondition, snapshot.data[index].name)
+                  ),
+                  index: index,
+                  image: image,
+                  isSelected: indexList.contains(snapshot.data[index].name),
+                  longPressEnabled: longPressFlag,
+                  callback: () {
+                    if (indexList.contains(snapshot.data[index].name)) {
+                      indexList.remove(snapshot.data[index].name);
+                    } else {
+                      indexList.add(snapshot.data[index].name);
+                    }
+                    longPress();
+                  },
+                );
+              },
+            );
+          } else if(!snapshot.hasData) {
+            return Center(
+              child: Text("Keine Daten vorhanden"),
+            );
+          } else if (snapshot.hasError) {
+            return new Text("${snapshot.error}");
+          }
+          return new Container(alignment: AlignmentDirectional.center,child: new CircularProgressIndicator(),);
+        },
+      ),
+    );
   }
 }
