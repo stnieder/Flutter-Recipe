@@ -1,3 +1,4 @@
+import 'package:Time2Eat/Termine/termin_selection.dart';
 import 'package:Time2Eat/recipe/new_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,6 +14,17 @@ import '../model/Recipes.dart';
 import '../pages/calendar_view.dart';
 import '../pages/list.dart';
 import '../pages/shopping_list.dart';
+
+
+Future<List<Recipes>> fetchRecipes(bool searched, String recipeName) async{
+  var dbHelper = DBHelper();
+  await dbHelper.create();
+  Future<List<Recipes>> recipes;
+  if(searched) recipes = dbHelper.filterRecipes(recipeName);
+  else recipes = dbHelper.getRecipes();
+
+  return recipes;
+}
 
 
 class Recipebook extends StatefulWidget{
@@ -78,13 +90,17 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         ),
         FloatingActionButton(
           //Add recipe
-          onPressed: (){},
+          onPressed: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder:  (context)=>RecipeSelection())
+            );
+          },
           child: Icon(
             Icons.add
           ),
         ),
         FloatingActionButton(
-          //Add some ingredients
           onPressed: (){},
           child: Icon(
             Icons.add
@@ -225,7 +241,8 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         Text searchedFor = Text(
           oldName.substring(start,end),
           style: TextStyle(
-            fontWeight: FontWeight.bold
+            color: googleMaterialColors.primaryColor(),
+            fontWeight: FontWeight.bold,
           )
         );
         letters.add(searchedFor);
@@ -422,28 +439,24 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           if (snapshot.hasData) {
             if(snapshot.data.length == 0){
               return Center(
-                child:Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      child: Text("Ich habe deine Rezepte gesucht"),
-                      width: 200.0,
-                    ),
-                    Container(
-                      width: 200.0,
-                      height: 200.0,
-                      child: Image.asset("images/emptyState.jpg"),
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 75.0),
-                        child: Text("Habe leider keine gefunden."),
+                  child:Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                          width: 200.0,
+                          height: 200.0,
+                          child: Text("hier kommt ein bild hinein")//Image.asset("images/nothingFound.png"),
                       ),
-                      width: 300.0,
-                    )
-                  ],
-                )
+                      Container(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 75.0),
+                          child: Text("Es wurden keine Rezepte gefunden."),
+                        ),
+                        width: 300.0,
+                      )
+                    ],
+                  )
               );
             }
             return SideHeaderListView(
@@ -452,21 +465,21 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
               },
               itemCount: snapshot.data.length,
               headerBuilder: (BuildContext context, int index){
-                return new Padding(
-                  padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
-                  child: Container(
-                    width: 10.0,
-                    child: Text(
-                      snapshot.data[index].name[0].toUpperCase(),
-                      style: TextStyle(
-                        color: googleMaterialColors.primaryColor().withGreen(120),
-                        fontFamily: "Google-Sans",
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w600
+                  return new Padding(
+                    padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
+                    child: Container(
+                      width: 10.0,
+                      child: Text(
+                        snapshot.data[index].name[0].toUpperCase(),
+                        style: TextStyle(
+                            color: googleMaterialColors.primaryColor().withGreen(120),
+                            fontFamily: "Google-Sans",
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w600
+                        ),
                       ),
                     ),
-                  ),
-                );
+                  );
               },
               itemExtend: 70.0,
               itemBuilder: (BuildContext context, int index){

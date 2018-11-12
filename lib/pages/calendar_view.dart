@@ -96,13 +96,19 @@ class _CalendarView extends State<CalendarView>{
                 } else if(snapshot.data.length == 0){
                   return new Column(
                     children: <Widget>[
-                      Text(
-                        "Alles erledigt.",
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold
+                      Image.asset('images/allDone.png'),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 3.0),
+                        child: Text(
+                          "Gut gemacht",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
-                      )
+                      ),
+                      Text(
+                        "Sie haben sich eindeutig eine Pause verdient."
+                      ),
                     ],
                   );  
                 }                

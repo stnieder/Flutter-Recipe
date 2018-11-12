@@ -49,7 +49,7 @@ class _RecipeDetails extends State<RecipeDetails>{
   @override
     void initState() {
       super.initState();      
-      recipeName = widget.recipeName; 
+      recipeName = widget.recipeName;
     }
 
   @override
@@ -187,9 +187,15 @@ class _RecipeDetails extends State<RecipeDetails>{
 
                 List<Widget> ingredients = new List();
 
+                double peopleNumber = 1.0;
+                fetchRecipe().then((list){
+                  peopleNumber = double.parse(list[0].people);
+                });
+
                 for(int i=0; i < snapshot.data.length; i++){
+
                   //For this view
-                  widget_numberList.add(Text(((double.parse(snapshot.data[i].number)/peopleDB)*currentPeople).toString()));
+                  widget_numberList.add(Text(((double.parse(snapshot.data[i].number)/peopleNumber)*currentPeople).toString()));
                   widget_measureList.add(Text(snapshot.data[i].measure));
                   widget_nameList.add(Text(snapshot.data[i].name));
 
@@ -222,6 +228,13 @@ class _RecipeDetails extends State<RecipeDetails>{
               return new CircularProgressIndicator();
             },
           ),
+          MaterialButton(
+            onPressed: (){
+              saveShopping();
+            },
+            child: Text("Zur Einkaufsliste hinzufügen"),
+            animationDuration: Duration(milliseconds: 200),
+          ),
           FutureBuilder(
             future: fetchSteps(),
             initialData: [],
@@ -240,7 +253,7 @@ class _RecipeDetails extends State<RecipeDetails>{
                   stepsList.add(snapshot.data[i].description);
                 }
                 
-                for(int i=0; i< numberList.length; i++){
+                for(int i=0; i< widget_numberList.length; i++){
                   steps.add(
                     Row(
                       children: <Widget>[

@@ -88,25 +88,27 @@ class _List extends State<Lists>{
               }
               return SideHeaderListView(                  
                 hasSameHeader: (int a, int b){
-                  if(searchController.text.isEmpty) return snapshot.data[a].name[0] == snapshot.data[b].name[0];                  
+                  return snapshot.data[a].name[0] == snapshot.data[b].name[0];
                 },
                 itemCount: snapshot.data.length,
                 headerBuilder: (BuildContext context, int index){
-                  return new Padding(
-                    padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
-                    child: Container(
-                      width: 10.0,
-                      child: Text(
-                        snapshot.data[index].name[0].toUpperCase(),
-                        style: TextStyle(
-                          color: googleMaterialColors.primaryColor().withGreen(120),                        
-                          fontFamily: "Google-Sans",
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w600
+                  if(searchController.text.length > 0){
+                    return new Padding(
+                      padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
+                      child: Container(
+                        width: 10.0,
+                        child: Text(
+                          snapshot.data[index].name[0].toUpperCase(),
+                          style: TextStyle(
+                            color: googleMaterialColors.primaryColor().withGreen(120),
+                            fontFamily: "Google-Sans",
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w600
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 },
                 itemExtend: 70.0,
                 itemBuilder: (BuildContext context, int index){
