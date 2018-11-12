@@ -53,12 +53,8 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
       body: Column(
         children: <Widget>[
           (selectedRecipes.length == 0
-            ?Container()
-            : AppBar(
-            title: Row(
-            children: selectedRecipes,
-      ),
-    )
+            ? Container()
+            : selectedAppBar()
           ),
           Flexible(
             child: new FutureBuilder<List<Recipes>>(
@@ -111,15 +107,18 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
                                 hasImage: (snapshot.data[index].image != "no image"),
                                 backgroundImage: AssetImage(backgroundImage),
                                 backgroundColor: backgroundColor,
-                                label: snapshot.data[index].name
+                                label: snapshot.data[index].name.toString()
                             ),
                             onTap: (){
                               setState(() {
+                                var count = controlSelection.indexOf(snapshot.data[index].name);
+                                selectedRecipes.removeAt(count);
                                 controlSelection.remove(snapshot.data[index].name);
                                 if(controlSelection.isEmpty) selectionActive = false;
                               });
                             },
                           );
+
                           setState(() {
                             selectedRecipes.add(selected);
                             print("Added. Counting now: "+selectedRecipes.length.toString());
@@ -237,6 +236,21 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
             color: Colors.white.withOpacity(0.7)
           ),
           hintText: "Suchen..."
+        ),
+      ),
+    );
+  }
+
+  selectedAppBar(){
+    return AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.white,
+      elevation: 1.0,
+      title: Padding(
+        padding: EdgeInsets.only(top: 4.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: selectedRecipes,
         ),
       ),
     );

@@ -12,18 +12,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="24bec8cd-1ce5-49e9-9b6e-69c76808e3a5" name="Default Changelist" comment="Minor changes">
-      <change afterPath="$PROJECT_DIR$/images/addCircular.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/allDone.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/nothingFound.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/interface/SelectedRecipe.dart" afterDir="false" />
+    <list default="true" id="24bec8cd-1ce5-49e9-9b6e-69c76808e3a5" name="Default Changelist" comment="finished Recipe selection">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Termine/termin_selection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Termine/termin_selection.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/calendar_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/calendar_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/list.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/recipe/recipeDetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recipe/recipeDetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Termine/termin_selection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Termine/RecipeSelection.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/recipe/recipebook.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recipe/recipebook.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
@@ -104,23 +96,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="recipebook.dart" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/recipe/recipebook.dart">
+      <file leaf-file-name="RecipeSelection.dart" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/Termine/RecipeSelection.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="433" column="25" lean-forward="true" selection-start-line="433" selection-start-column="25" selection-end-line="433" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#56#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="termin_selection.dart" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/Termine/termin_selection.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="117" column="83" lean-forward="true" selection-start-line="117" selection-start-column="83" selection-end-line="117" selection-end-column="83" />
+            <state relative-caret-position="182">
+              <caret line="116" column="79" selection-start-line="116" selection-start-column="79" selection-end-line="116" selection-end-column="79" />
               <folding>
                 <element signature="e#0#49#0" expanded="true" />
               </folding>
@@ -206,7 +186,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/lib/interface/CustomDismissbleButtons/ActionItems.dart" />
         <option value="$PROJECT_DIR$/lib/interface/CustomDismissbleButtons/OnSlide.dart" />
         <option value="$PROJECT_DIR$/lib/interface/CustomDismissbleButtons/LayoutSizeChangeNotification.dart" />
         <option value="$PROJECT_DIR$/lib/dis.dart" />
@@ -257,6 +236,7 @@
         <option value="$PROJECT_DIR$/lib/pages/list.dart" />
         <option value="$PROJECT_DIR$/lib/recipe/recipebook.dart" />
         <option value="$PROJECT_DIR$/lib/Termine/termin_selection.dart" />
+        <option value="$PROJECT_DIR$/lib/Termine/RecipeSelection.dart" />
       </list>
     </option>
   </component>
@@ -539,7 +519,14 @@
       <option name="project" value="LOCAL" />
       <updated>1541954977134</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Termine: added Recipe selection">
+      <created>1542056590578</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1542056590578</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -556,7 +543,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32608697" />
@@ -567,7 +553,7 @@
       <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5019369" side_tool="true" weight="0.3275488" />
       <window_info anchor="bottom" id="Dart Analysis" order="7" weight="0.3076087" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4971623" visible="true" weight="0.37852496" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4971623" visible="true" weight="0.37852496" />
       <window_info anchor="bottom" id="Version Control" order="12" weight="0.46054053" />
       <window_info anchor="bottom" id="Terminal" order="15" weight="0.32756758" />
       <window_info anchor="right" id="Flutter Outline" order="6" weight="0.3291714" />
@@ -575,7 +561,7 @@
       <window_info id="Captures" order="6" weight="0.3291714" />
       <window_info id="Capture Tool" order="7" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.42556724" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.42556724" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="11" side_tool="true" weight="0.3280363" />
       <window_info anchor="right" id="Theme Preview" order="9" />
@@ -690,7 +676,8 @@
     <MESSAGE value="Added DurationPicker made by Chris Harris" />
     <MESSAGE value="Added multiple selection" />
     <MESSAGE value="Minor changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor changes" />
+    <MESSAGE value="Termine: added Recipe selection" />
+    <option name="LAST_COMMIT_MESSAGE" value="Termine: added Recipe selection" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file:///opt/flutter/packages/flutter/lib/src/widgets/framework.dart">
@@ -948,16 +935,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/recipe/recipebook.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="433" column="25" lean-forward="true" selection-start-line="433" selection-start-column="25" selection-end-line="433" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/interface/HexToColor.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -975,10 +952,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Termine/termin_selection.dart">
+    <entry file="file://$PROJECT_DIR$/lib/recipe/recipebook.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="117" column="83" lean-forward="true" selection-start-line="117" selection-start-column="83" selection-end-line="117" selection-end-column="83" />
+        <state relative-caret-position="135">
+          <caret line="222" column="15" lean-forward="true" selection-start-line="222" selection-start-column="15" selection-end-line="222" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Termine/RecipeSelection.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="116" column="79" selection-start-line="116" selection-start-column="79" selection-end-line="116" selection-end-column="79" />
           <folding>
             <element signature="e#0#49#0" expanded="true" />
           </folding>

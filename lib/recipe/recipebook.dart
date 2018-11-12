@@ -1,4 +1,4 @@
-import 'package:Time2Eat/Termine/termin_selection.dart';
+import 'package:Time2Eat/Termine/RecipeSelection.dart';
 import 'package:Time2Eat/recipe/new_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
