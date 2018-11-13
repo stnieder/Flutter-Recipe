@@ -32,6 +32,8 @@ dependencies:
   sliver_fab: ^0.1.1
   fluttertoast: ^2.0.9
   flutter_statusbarcolor: any
+  flutter_sidekick: ^0.1.2
+
 
 
 dev_dependencies:

@@ -100,6 +100,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_sidekick">
+          <value>
+            <list>
+              <option value="/opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sidekick-0.1.2/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_statusbarcolor">
           <value>
             <list>
@@ -501,6 +508,7 @@
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/date_utils-0.1.0/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/dragable_flutter_list-1.0.1/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_duration_picker-1.0.3/lib" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sidekick-0.1.2/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_statusbarcolor-0.1.1/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-2.1.0/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/front_end-0.1.6/lib" />

@@ -1,11 +1,12 @@
 import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/interface/Custom_SideHeaderListView.dart';
 import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:Time2Eat/interface/HexToColor.dart';
 import 'package:Time2Eat/interface/SelectedRecipe.dart';
 import 'package:Time2Eat/model/Recipes.dart';
+
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 
 Future<List<Recipes>> fetchRecipes(bool searched, String recipeName) async{
@@ -19,7 +20,6 @@ Future<List<Recipes>> fetchRecipes(bool searched, String recipeName) async{
 }
 
 
-
 class RecipeSelection extends StatefulWidget {
   @override
   _RecipeSelection createState() => _RecipeSelection();
@@ -27,14 +27,16 @@ class RecipeSelection extends StatefulWidget {
 
 class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMixin{
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
+  ConvertColor convert = new ConvertColor();
 
   bool searchActive = false;
   bool searchPerformed = false;
   String searchCondition = "";
   TextEditingController searchController = new TextEditingController();
 
-  List<Widget> selectedRecipes = [];
-  List<String> controlSelection = new List();
+  List<String> selectedName = [];
+  List<Color> selectedColor = [];
+  List<String> selectedImage = [];
   bool selectionActive;
 
   @override
@@ -52,7 +54,7 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
       ),
       body: Column(
         children: <Widget>[
-          (selectedRecipes.length == 0
+          (!selectionActive
             ? Container()
             : selectedAppBar()
           ),
@@ -89,59 +91,40 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
                     itemBuilder: (BuildContext context, int index){
                       return InkWell(
                         onTap: (){
-                          String backgroundImage;
-                          Color backgroundColor;
                           ConvertColor convert = new ConvertColor();
 
-                          if(snapshot.data[index].image != "no image") {
-                            backgroundImage = snapshot.data[index].image;
-                            backgroundColor = null;
-                          }
-                          else {
-                            backgroundColor = convert.convertToColor(snapshot.data[index].backgroundColor);
-                            backgroundImage = null;
-                          }
+                          selectedName.add(snapshot.data[index].name);
+                          selectedColor.add(convert.convertToColor(snapshot.data[index].backgroundColor));
+                          selectedImage.add(snapshot.data[index].image);
 
-                          var selected = GestureDetector(
-                            child: SelectedRecipe(
-                                hasImage: (snapshot.data[index].image != "no image"),
-                                backgroundImage: AssetImage(backgroundImage),
-                                backgroundColor: backgroundColor,
-                                label: snapshot.data[index].name.toString()
-                            ),
-                            onTap: (){
-                              setState(() {
-                                var count = controlSelection.indexOf(snapshot.data[index].name);
-                                selectedRecipes.removeAt(count);
-                                controlSelection.remove(snapshot.data[index].name);
-                                if(controlSelection.isEmpty) selectionActive = false;
-                              });
-                            },
-                          );
+                          selectionActive = true;
 
                           setState(() {
-                            selectedRecipes.add(selected);
-                            print("Added. Counting now: "+selectedRecipes.length.toString());
-                            selectionActive = true;
-                            controlSelection.add(snapshot.data[index].name);
+                            searchController.text = "";
+                            searchCondition = "";
+                            fetchRecipes(false, null);
                           });
+
+                          print("SelectedRecipe label: "+snapshot.data[index].name);
                         },
-                        child: (selectionActive == false && !controlSelection.contains(snapshot.data[index].name)
-                          ? ListTile(
-                            leading: snapshot.data[index].image != "no image"
-                                ? Container(
-                              width: 40.0,
-                              height: 40.0,
-                              decoration: new BoxDecoration(
-                                image: new DecorationImage(
-                                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-                                  image: AssetImage(snapshot.data[index].image),
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                        child: (selectedName.contains(snapshot.data[index].name)
+                          ? Container()
+                          : ListTile(
+                          leading: snapshot.data[index].image != "no image"
+                              ? Container(
+                            width: 40.0,
+                            height: 40.0,
+                            decoration: new BoxDecoration(
+                              image: new DecorationImage(
+                                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                                image: AssetImage(snapshot.data[index].image),
+                                fit: BoxFit.cover,
                               ),
-                            )
-                                : Text(
+                              borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                            ),
+                          )
+                              : CircleAvatar(
+                            child: Text(
                               snapshot.data[index].name[0].toUpperCase(),
                               style: TextStyle(
                                   color: Colors.white,
@@ -149,18 +132,22 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
                                   fontWeight: FontWeight.w400
                               ),
                             ),
-                            title: Padding(
-                              padding: EdgeInsets.only(top: 0.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(snapshot.data[index].name)
-                                ],
-                              ),
+                            backgroundColor: convert.convertToColor(snapshot.data[index].backgroundColor),
+                          ),
+                          title: Padding(
+                            padding: EdgeInsets.only(top: 0.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                ( searchController.text.isEmpty
+                                    ? Text(snapshot.data[index].name)
+                                    : recipeName(searchCondition, snapshot.data[index].name)
+                                )
+                              ],
                             ),
-                          )
-                          : Container()
-                        ),
+                          ),
+                        )
+                        )
                       );
                     },
                   );
@@ -176,6 +163,15 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
             ),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: googleMaterialColors.primaryColor().withOpacity(0.9),
+        child: Icon(Icons.arrow_forward, color: Colors.white),
+        onPressed: (){
+          //Move on to termin selection
+          if(selectedName.length == 0) showBottomSnack("Sie haben noch kein Rezept ausgewählt", ToastGravity.BOTTOM);
+        },
+
       ),
     );
   }
@@ -223,7 +219,10 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
       leading: IconButton(
         onPressed: (){
           setState(() {
+            searchController.text = "";
+            searchCondition = "";
             searchActive = false;
+            fetchRecipes(false, null);
           });
         },
         icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -237,6 +236,7 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
           ),
           hintText: "Suchen..."
         ),
+        onChanged: (String text) => searchOperation(text),
       ),
     );
   }
@@ -245,14 +245,119 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
-      elevation: 1.0,
+      elevation: 0.5,
       title: Padding(
         padding: EdgeInsets.only(top: 4.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: selectedRecipes,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: selectedName.length,
+          itemBuilder: (BuildContext context, int index){
+            return returnRecipes(selectedName[index], selectedColor[index], selectedImage[index]);
+          },
         ),
       ),
+    );
+  }
+
+  void showBottomSnack(String value, ToastGravity toastGravity){
+    Fluttertoast.showToast(
+      msg: value,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: toastGravity,
+      timeInSecForIos: 2,
+    );
+  }
+
+  void searchOperation(String searchText) async{
+    if(searchText != null && searchText != ""){
+      setState(() {
+        searchCondition = searchText;
+        searchController.text = searchCondition;
+        fetchRecipes(true, searchText);
+        searchPerformed = true;
+      });
+    } else {
+      setState((){
+        searchCondition = "";
+        searchController.text = "";
+        fetchRecipes(false, null);
+        searchPerformed = false;
+      });
+    }
+  }
+
+  Widget recipeName(String searchCondition, String name){
+
+    Widget wholeName;
+    List<Widget> letters = [];
+
+    //Save name
+    String oldName = name;
+
+    //Make the search case insensitive
+    name = name.toUpperCase().trim();
+    searchCondition = searchCondition.toUpperCase().trim();
+
+    if(name.contains(searchCondition)){
+      int start = name.indexOf(searchCondition);
+      int end = start + searchCondition.length;
+
+      if(start != 0){
+        //undo the case insensitive
+        Text firstPart = Text(
+            oldName.substring(0, start)
+        );
+        letters.add(firstPart);
+
+        Text searchedFor = Text(
+            oldName.substring(start,end),
+            style: TextStyle(
+              color: googleMaterialColors.primaryColor(),
+              fontWeight: FontWeight.bold,
+            )
+        );
+        letters.add(searchedFor);
+
+        Text endPart = Text(
+            oldName.substring(end, name.length)
+        );
+        letters.add(endPart);
+      }
+    }
+
+    wholeName = Row(
+        children: letters
+    );
+
+    return wholeName;
+  }
+
+  returnRecipes(String label, Color backgroundColor, String imagePath){
+    return GestureDetector(
+      child: SelectedRecipe(
+          hasImage: (imagePath != "no image"),
+          backgroundImage: (imagePath == null
+              ? null
+              : AssetImage(imagePath)
+          ),
+          backgroundColor: (backgroundColor == null
+              ? null
+              : backgroundColor
+          ),
+          label: label
+      ),
+      onTap: (){
+        setState(() {
+          selectedName.remove(label);
+          selectedColor.remove(backgroundColor);
+          selectedImage.remove(imagePath);
+
+          if(selectedName.isEmpty) {
+            selectionActive = false;
+          }
+          searchController.text = "";
+        });
+      },
     );
   }
 }

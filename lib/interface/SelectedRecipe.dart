@@ -26,7 +26,6 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 65.0,
       child: Column(
         children: <Widget>[
           Container(
@@ -88,6 +87,8 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
           ),
         ],
       ),
+      height: 70.0,
+      width: 55.0
     );
   }
 }
