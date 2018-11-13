@@ -1,4 +1,5 @@
 import 'package:Time2Eat/database/database.dart';
+import 'package:Time2Eat/interface/DatePicker.dart';
 import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:Time2Eat/interface/HexToColor.dart';
 import 'package:Time2Eat/interface/SelectedRecipe.dart';
@@ -170,11 +171,16 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
         onPressed: (){
           //Move on to termin selection
           if(selectedName.length == 0) showBottomSnack("Sie haben noch kein Rezept ausgewählt", ToastGravity.BOTTOM);
+          else {
+            Navigator.pop(context, selectedName);
+          }
         },
 
       ),
     );
   }
+
+
 
 
   defaultAppBar(){
@@ -213,7 +219,7 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
   searchAppBar(){
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: googleMaterialColors.primaryColor().withOpacity(0.7),
+      backgroundColor: Colors.white,
       centerTitle: false,
       elevation: 6.0,
       leading: IconButton(
@@ -225,16 +231,16 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
             fetchRecipes(false, null);
           });
         },
-        icon: Icon(Icons.arrow_back, color: Colors.white),
+        icon: Icon(Icons.arrow_back, color: Colors.black45),
       ),
       title: TextField(
         cursorColor: Colors.white,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintStyle: TextStyle(
-            color: Colors.white.withOpacity(0.7)
+              color: Colors.black45
           ),
-          hintText: "Suchen..."
+          hintText: "Rezepte suchen",
         ),
         onChanged: (String text) => searchOperation(text),
       ),
@@ -320,6 +326,27 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
 
         Text endPart = Text(
             oldName.substring(end, name.length)
+        );
+        letters.add(endPart);
+      } else {
+        Text firstPart = Text(
+          oldName[0],
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          )
+        );
+        letters.add(firstPart);
+
+        Text middlePart = Text(
+          oldName.substring(1, end),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          )
+        );
+        letters.add(middlePart);
+
+        Text endPart = Text(
+          oldName.substring(end, name.length)
         );
         letters.add(endPart);
       }

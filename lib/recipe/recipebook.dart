@@ -1,7 +1,11 @@
 import 'package:Time2Eat/Termine/RecipeSelection.dart';
+import 'package:Time2Eat/interface/DatePicker.dart';
+import 'package:Time2Eat/model/Recipe_Termine.dart';
+import 'package:Time2Eat/model/Termine.dart';
 import 'package:Time2Eat/recipe/new_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../Constants.dart';
@@ -91,10 +95,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         FloatingActionButton(
           //Add recipe
           onPressed: (){
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder:  (context)=>RecipeSelection())
-            );
+            openTermin(context);
           },
           child: Icon(
             Icons.add
@@ -217,6 +218,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
     Different important widgets
   */
   Widget recipeName(String searchCondition, String name){
+
     Widget wholeName;
     List<Widget> letters = [];
 
@@ -232,30 +234,51 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       int end = start + searchCondition.length;
 
       if(start != 0){
-        //undo the case insensitive        
+        //undo the case insensitive
         Text firstPart = Text(
-          oldName.substring(0, start)
+            oldName.substring(0, start)
         );
         letters.add(firstPart);
 
         Text searchedFor = Text(
-          oldName.substring(start,end),
-          style: TextStyle(
-            color: googleMaterialColors.primaryColor(),
-            fontWeight: FontWeight.bold,
-          )
+            oldName.substring(start,end),
+            style: TextStyle(
+              color: googleMaterialColors.primaryColor(),
+              fontWeight: FontWeight.bold,
+            )
         );
         letters.add(searchedFor);
 
         Text endPart = Text(
-          oldName.substring(end, name.length)
+            oldName.substring(end, name.length)
+        );
+        letters.add(endPart);
+      } else {
+        Text firstPart = Text(
+            oldName[0],
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            )
+        );
+        letters.add(firstPart);
+
+        Text middlePart = Text(
+            oldName.substring(1, end),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            )
+        );
+        letters.add(middlePart);
+
+        Text endPart = Text(
+            oldName.substring(end, name.length)
         );
         letters.add(endPart);
       }
     }
-    
+
     wholeName = Row(
-      children: letters
+        children: letters
     );
 
     return wholeName;
@@ -525,5 +548,60 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         },
       ),
     );
+  }
+
+  openTermin(BuildContext context)async {
+    var returned = await Navigator.push(
+        context,
+        MaterialPageRoute(builder:  (context)=>RecipeSelection())
+    );
+    if(returned != null){
+      DateTime _date = DateTime.now();
+      final DateTime picked = await showMyDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(DateTime.now().year-2),
+          lastDate: DateTime(DateTime.now().year+50)
+      );
+
+      if(picked != null && picked !=  _date){
+        final dateFormat = new DateFormat('dd-MM-yyyy');
+        for(int i=0; i<returned.length; i++){
+          print("Returned: "+returned[i]);
+          await saveTermin(returned[i], dateFormat.format(picked));
+        }
+        showBottomSnack("Termin wurde erfolgreich gespeichert", ToastGravity.BOTTOM);
+      }
+    }
+  }
+
+  saveTermin(String recipe, String date)async{
+    DBHelper db = new DBHelper();
+    await db.create();
+
+
+    TermineDB termine = new TermineDB();
+
+    termine.termin = date;
+    termine = await db.insertTermine(termine);
+
+
+    RecipeTermine recipeTermine = new RecipeTermine();
+
+    recipeTermine.idRecipes = await fetchSpecRecipe(recipe);
+    recipeTermine.idTermine = termine.id;
+    recipeTermine = await db.insertRecipeTermine(recipeTermine);
+  }
+
+  fetchSpecRecipe(String recipeName)async {
+    DBHelper dbHelper = new DBHelper();
+    var parsedRecipe = await dbHelper.getSpecRecipe(recipeName);
+    List<Recipes> recipe = List<Recipes>();
+    int id;
+    for(int i=0; i < parsedRecipe.length; i++){
+      recipe.add(parsedRecipe[i]);
+      id = recipe[i].id;
+    }
+    return id;
   }
 }

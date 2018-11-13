@@ -13,6 +13,7 @@ Future<List> fetcheTermine(String date) async{
   await dbHelper.create();
 
   Future<List> termine = dbHelper.getTermine(date);
+  print("Terminanzahl: "+termine.toString());
   return termine;
 }
 
@@ -36,15 +37,17 @@ class _CalendarView extends State<CalendarView>{
       children: <Widget>[
         new Calendar(
           onDateSelected: (DateTime dateTime){
-            print("Date now: "+selectedDate.toString());
-            selectedDate = _dateOnly(dateTime);
-            print("Selected: "+selectedDate.toString());
+            setState(() {
+              print("Date now: "+selectedDate.toString());
+              selectedDate = _dateOnly(dateTime);
+              print("Selected: "+selectedDate.toString());
+            });
           },
         ),
         Container(
-          child: FutureBuilder<List>(
+          child: FutureBuilder(
             builder: (context, snapshot){
-              if(snapshot.hasData){
+              if(!snapshot.hasData){
                 if(snapshot.data.length > 0){
                   return ListView.builder(
                     itemBuilder: (BuildContext context, int index){
@@ -93,7 +96,7 @@ class _CalendarView extends State<CalendarView>{
                     },
                     itemCount: snapshot.data.length,
                   );  
-                } else if(snapshot.data.length == 0){
+                } else if(snapshot.hasData){
                   return new Column(
                     children: <Widget>[
                       Image.asset('images/allDone.png'),
