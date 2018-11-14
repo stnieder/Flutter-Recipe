@@ -550,6 +550,8 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
     );
   }
 
+
+
   openTermin(BuildContext context)async {
     var returned = await Navigator.push(
         context,
@@ -585,7 +587,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
     termine.termin = date;
     termine = await db.insertTermine(termine);
 
-
+    print("TerminID: "+termine.id.toString());
     RecipeTermine recipeTermine = new RecipeTermine();
 
     recipeTermine.idRecipes = await fetchSpecRecipe(recipe);

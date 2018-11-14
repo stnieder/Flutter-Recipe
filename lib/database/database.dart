@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:Time2Eat/model/RecipeTerminCombi.dart';
 import 'package:Time2Eat/model/Recipe_Shopping.dart';
 import 'package:Time2Eat/model/Recipe_Termine.dart';
 import 'package:Time2Eat/model/Shopping.dart';
@@ -145,6 +146,11 @@ class DBHelper{
     return count;
   }
 
+  Future<int> checkTermine(String date) async{
+    int count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM termine WHERE name = ?", [date]));
+    return count;
+  }
+
   Future<RecipesDB> insertRecipe(RecipesDB recipe) async{
     var count;
     if(recipe.id == null) count = 0;
@@ -192,7 +198,10 @@ class DBHelper{
   }
 
   Future<TermineDB> insertTermine(TermineDB termine) async{
-    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM termine WHERE termin = ?", [termine.termin]));
+    var count;
+    if(termine.id == null) count = 0;
+    else count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM termine WHERE termin = ?", [termine.termin]));
+    print("Termine Count: "+count.toString());
     if(count == 0){
       termine.id = await _db.insert("termine", termine.toMap());
     } else {
@@ -263,7 +272,6 @@ class DBHelper{
   //Get Specific Recipe
   Future<List<Recipes>> getSpecRecipe(String recipeName) async{
     List<Map> list = await _db.rawQuery("SELECT * FROM recipes WHERE name = ?", [recipeName]);
-    print("Length SpecRecipe: "+list.length.toString());
     List<Recipes> recipes = new List();
     for(int i =0; i < list.length; i++){
       recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"],duration:  list[i]["duration"], favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
@@ -311,14 +319,14 @@ class DBHelper{
   }
 
   //Get Termine of specific date
-  Future<List<dynamic>> getTermine(String date) async{
-    String sql = "SELECT termine.termin, recipes.name, recipes.image, recipes.id FROM termine, recipeTermine, recipes WHERE termine.termin = "+date+" AND termine.id = recipeTermine.idTermine AND recipeTermine.idRecipes = recipes.id";
+  Future<List> getTermine(String date) async{
+    String sql = "SELECT termine.termin, recipes.name, recipes.image FROM termine, recipeTermine, recipes WHERE termine.termin = '"+date+"' AND termine.id = recipeTermine.idTermine AND recipeTermine.idRecipes = recipes.id";
     List<Map> list = await _db.rawQuery(sql);
     List termine = new List();
     for (int i=0; i<list.length; i++) {
-      termine.add(new Termine(list[i]["id"], list[i]["termin"]));
-      termine.add(new Recipes(id: list[i]["id"], name: list[i]["name"], image: list[i]["image"]));
+      termine.add(new RecipeTerminCombi(list[i]["termin"], list[i]["name"], list[i]["image"]));
     }
+    print("TerminAnzahl: "+termine.length.toString());
     return termine;
   }
 
@@ -332,7 +340,7 @@ class DBHelper{
     List<Map> list = await _db.rawQuery(sql);
     List<Recipes> recipes = new List();
     for(int i =0; i < list.length; i++){
-      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"],duration:  list[i]["duration"], favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));      
+      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"],duration:  list[i]["duration"], favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
     }
     return recipes;
   }

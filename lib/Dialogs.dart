@@ -1,10 +1,13 @@
+import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
+import 'package:intl/intl.dart';
 
 import 'interface/CustomShowDialog.dart';
 
 class Dialogs{
   final personenAnzahlController = new TextEditingController();
+  GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
 
   closeDialog(BuildContext context){
     return showDialog(
@@ -74,23 +77,23 @@ class Dialogs{
               child: Text(
                 "Abbrechen",
                 style: TextStyle(
-                  color: Color(0xFFdb3236),
+                  color: googleMaterialColors.getLightColor(2),
                   fontFamily: "Google-Sans",
                   fontSize: 14.0
                 ),
               ),
-              highlightColor: Color(0xFFdb3236).withOpacity(0.2),
+              highlightColor: googleMaterialColors.getLightColor(2).withOpacity(0.2),
               onPressed: ()=>Navigator.pop(ctxt),
               shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
               splashColor: Colors.transparent
             ),
             FlatButton(
               child: Text(
-                "Ok",
+                "Speichern",
                 style: TextStyle(
                     color: (anzahl == null
                       ? Color(0xFFAAAFB4)
-                      : Color(0xFF4285F4)
+                      : googleMaterialColors.getLightColor(7)
                     ),
                     fontFamily: "Google-Sans",
                     fontSize: 14.0
@@ -98,7 +101,7 @@ class Dialogs{
               ),
               highlightColor: (anzahl == null
                 ? Color(0xFFAAAFB4).withOpacity(0.3)
-                : Color(0xFF419df4).withOpacity(0.2)
+                : googleMaterialColors.getLightColor(7).withOpacity(0.2)
               ),
               onPressed: (anzahl == null
                 ? (){}
@@ -136,23 +139,23 @@ class Dialogs{
                   child: Text(
                     "Abbrechen",
                     style: TextStyle(
-                        color: Color(0xFFdb3236),
+                        color: googleMaterialColors.getLightColor(2),
                         fontFamily: "Google-Sans",
                         fontSize: 14.0
                     ),
                   ),
-                  highlightColor: Color(0xFFdb3236).withOpacity(0.2),
+                  highlightColor: googleMaterialColors.getLightColor(2).withOpacity(0.2),
                   onPressed: ()=>Navigator.pop(ctxt),
                   shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
                   splashColor: Colors.transparent
               ),
               FlatButton(
                   child: Text(
-                    "Ok",
+                    "Speichern",
                     style: TextStyle(
                         color: (_duration == null
                             ? Color(0xFFAAAFB4)
-                            : Color(0xFF4285F4)
+                            : googleMaterialColors.getLightColor(7)
                         ),
                         fontFamily: "Google-Sans",
                         fontSize: 14.0
@@ -160,7 +163,7 @@ class Dialogs{
                   ),
                   highlightColor: (_duration == null
                       ? Color(0xFFAAAFB4).withOpacity(0.3)
-                      : Color(0xFF419df4).withOpacity(0.2)
+                      : googleMaterialColors.getLightColor(7).withOpacity(0.2)
                   ),
                   onPressed: (_duration == null
                       ? (){}
@@ -216,12 +219,12 @@ class Dialogs{
               child: Text(
                 "Abbrechen",
                 style: TextStyle(
-                    color: Color(0xFF4285F4),
+                    color: googleMaterialColors.getLightColor(2),
                     fontFamily: "Google-Sans",
                     fontSize: 14.0
                 ),
               ),
-              highlightColor: Color(0xFF419df4).withOpacity(0.2),
+              highlightColor: googleMaterialColors.getLightColor(2).withOpacity(0.2),
               onPressed: ()=>Navigator.pop(ctxt),
               shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
               splashColor: Colors.transparent
@@ -232,4 +235,87 @@ class Dialogs{
     );
   }
 
+  setNotification(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (_) => NotificationDialog()
+    );
+  }
+}
+
+class NotificationDialog extends StatefulWidget{
+
+
+
+  @override
+  State<StatefulWidget> createState() {
+    return _NotificationDialog();
+  }
+}
+
+class _NotificationDialog extends State<NotificationDialog>{
+  List<String> date = [
+    "Heute",
+    "Morgen",
+    "Nächsten " + DateFormat.E().format(DateTime.now()),
+    "Datum auswählen"
+  ];
+  DateFormat dayNumber = new DateFormat.d(Intl.systemLocale);
+  DateFormat dayName = new DateFormat("EEEEE", "de_DE");
+  String selectedDate;
+
+  _getContent(){
+    selectedDate = dayNumber.format(DateTime.now()) + " " + dayName.format(DateTime.now());
+    return SimpleDialog(
+      children: <Widget>[
+        Text(
+          "Erinnerung hinzufügen",
+          style: TextStyle(
+              fontFamily: "Google-Sans",
+              fontWeight: FontWeight.w400
+          ),
+        ),
+        Container(
+          child: new DropdownButton(
+            isDense: true,
+            hint: Text(selectedDate),
+            items: date.map((String value){
+              String item = value;
+              value = convertDate(value);
+              return new DropdownMenuItem(
+                value: value,
+                child: new Text(item),
+              );
+            }).toList(),
+            onChanged: (String dates) {
+              setState(() {
+                selectedDate = convertDate(dates);
+              });
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return _getContent();
+  }
+
+  convertDate(String value){
+    if (value == "Heute") {
+      String name = dayName.format(DateTime.now());
+      selectedDate = (dayNumber.format(DateTime.now()) + name);
+      print("Heute: "+selectedDate);
+      value = selectedDate;
+    } else if(value == "Morgen"){
+      String name = dayName.format(DateTime(0, 0, DateTime.now().day + 1));
+      selectedDate = (dayNumber.format(DateTime(0, 0, DateTime.now().day + 1)) + name);
+      print("Morgen: "+selectedDate);
+      value = selectedDate;
+    }
+    return value;
+  }
 }

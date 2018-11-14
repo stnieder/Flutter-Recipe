@@ -416,13 +416,13 @@ class SimpleDialogOption extends StatelessWidget {
 ///  * [Dialog], on which [SimpleDialog] and [AlertDialog] are based.
 ///  * [showDialog], which actually displays the dialog and returns its result.
 ///  * <https://material.google.com/components/dialogs.html#dialogs-simple-dialogs>
-class SimpleDialog extends StatelessWidget {
+class CustomSimpleDialog extends StatelessWidget {
   /// Creates a simple dialog.
   ///
   /// Typically used in conjunction with [showDialog].
   ///
   /// The [titlePadding] and [contentPadding] arguments must not be null.
-  const SimpleDialog({
+  const CustomSimpleDialog({
     Key key,
     this.title,
     this.titlePadding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),

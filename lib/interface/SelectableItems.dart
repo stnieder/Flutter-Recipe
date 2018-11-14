@@ -96,7 +96,7 @@ class StateSelectableItem extends State<SelectableItems> {
             ),
             backgroundColor: (isSelected
               ? googleMaterialColors.primaryColor()
-              : widget.color.withOpacity(1.00)
+              : widget.color
             )
           ),
           title: Padding(
