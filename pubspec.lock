@@ -83,29 +83,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_calendar:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: ffe1dbab87de453448d1224d8e7858b4afc98522
-      url: "https://github.com/apptreesoftware/flutter_calendar.git"
-    source: git
-    version: "0.0.3"
   flutter_duration_picker:
     dependency: "direct main"
     description:
       name: flutter_duration_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
-  flutter_sidekick:
-    dependency: "direct main"
-    description:
-      name: flutter_sidekick
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
+    version: "1.0.4"
   flutter_statusbarcolor:
     dependency: "direct main"
     description:
@@ -354,13 +338,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  sliver_fab:
-    dependency: "direct main"
-    description:
-      name: sliver_fab
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
   source_map_stack_trace:
     dependency: transitive
     description:

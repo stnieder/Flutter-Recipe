@@ -86,24 +86,10 @@
             </list>
           </value>
         </entry>
-        <entry key="flutter_calendar">
-          <value>
-            <list>
-              <option value="/opt/flutter/.pub-cache/git/flutter_calendar-ffe1dbab87de453448d1224d8e7858b4afc98522/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="flutter_duration_picker">
           <value>
             <list>
-              <option value="/opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_duration_picker-1.0.3/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="flutter_sidekick">
-          <value>
-            <list>
-              <option value="/opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sidekick-0.1.2/lib" />
+              <option value="/opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_duration_picker-1.0.4/lib" />
             </list>
           </value>
         </entry>
@@ -359,13 +345,6 @@
             </list>
           </value>
         </entry>
-        <entry key="sliver_fab">
-          <value>
-            <list>
-              <option value="/opt/flutter/.pub-cache/hosted/pub.dartlang.org/sliver_fab-0.1.1/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="source_map_stack_trace">
           <value>
             <list>
@@ -495,7 +474,6 @@
       </option>
     </properties>
     <CLASSES>
-      <root url="file:///opt/flutter/.pub-cache/git/flutter_calendar-ffe1dbab87de453448d1224d8e7858b4afc98522/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-0.33.0/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/args-1.5.0/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.0.8/lib" />
@@ -507,8 +485,7 @@
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/csslib-0.14.6/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/date_utils-0.1.0/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/dragable_flutter_list-1.0.1/lib" />
-      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_duration_picker-1.0.3/lib" />
-      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sidekick-0.1.2/lib" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_duration_picker-1.0.4/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_statusbarcolor-0.1.1/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-2.1.0/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/front_end-0.1.6/lib" />
@@ -543,7 +520,6 @@
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_static-0.2.8/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_web_socket-0.2.2+4/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/side_header_list_view-0.0.4/lib" />
-      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/sliver_fab-0.1.1/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/source_map_stack_trace-1.1.5/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/source_maps-0.10.8/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.4.1/lib" />

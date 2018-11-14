@@ -12,17 +12,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="24bec8cd-1ce5-49e9-9b6e-69c76808e3a5" name="Default Changelist" comment="Termine: Added date selection with custom DatePicker">
-      <change afterPath="$PROJECT_DIR$/lib/interface/TimePicker.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/model/RecipeTerminCombi.dart" afterDir="false" />
+    <list default="true" id="24bec8cd-1ce5-49e9-9b6e-69c76808e3a5" name="Default Changelist" comment="CalendarView: Added recipe display on selected dates">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Dialogs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Dialogs.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/database/database.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/database.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/interface/CustomShowDialog.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/CustomShowDialog.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/interface/GoogleColors.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/GoogleColors.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/interface/SelectableItems.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/SelectableItems.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/calendar_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/calendar_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/recipe/recipebook.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recipe/recipebook.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/addCircular.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/emptyState.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/nothingFound.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/nothingFound.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
@@ -103,14 +100,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Dialogs.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Dialogs.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/Dialogs.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="263" column="54" selection-start-line="263" selection-start-column="54" selection-end-line="263" selection-end-column="54" />
+            <state relative-caret-position="81">
+              <caret line="117" selection-start-line="117" selection-end-line="117" />
               <folding>
                 <element signature="e#0#54#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="flutter_calendar.dart" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/interface/Calendar/flutter_calendar.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="420">
+              <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -206,7 +212,6 @@
         <option value="$PROJECT_DIR$/lib/pages/list.dart" />
         <option value="$PROJECT_DIR$/lib/Termine/termin_selection.dart" />
         <option value="$PROJECT_DIR$/lib/interface/PreferredSizeDivider.dart" />
-        <option value="$PROJECT_DIR$/pubspec.yaml" />
         <option value="$PROJECT_DIR$/lib/interface/SelectedRecipe.dart" />
         <option value="$PROJECT_DIR$/lib/interface/MyDatePicker.dart" />
         <option value="$PROJECT_DIR$/lib/Termine/RecipeSelection.dart" />
@@ -223,6 +228,7 @@
         <option value="$PROJECT_DIR$/lib/pages/calendar_view.dart" />
         <option value="$PROJECT_DIR$/lib/interface/CustomShowDialog.dart" />
         <option value="$PROJECT_DIR$/lib/Dialogs.dart" />
+        <option value="$PROJECT_DIR$/pubspec.yaml" />
       </list>
     </option>
   </component>
@@ -232,7 +238,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="993" />
     <option name="y" value="25" />
     <option name="width" value="927" />
@@ -286,13 +292,8 @@
               <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
               <item name="recipe" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
-              <item name="recipe" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="interface" type="462c0819:PsiDirectoryNode" />
+              <item name="Calendar" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -315,15 +316,15 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/lib/interface/CustomDismissbleButtons" />
-      <recent name="$PROJECT_DIR$/lib/newRecipe" />
-      <recent name="$PROJECT_DIR$/lib/interface/Calendar" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/images" />
       <recent name="$PROJECT_DIR$/font" />
       <recent name="$PROJECT_DIR$/icons" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib/interface/CustomDismissbleButtons" />
+      <recent name="$PROJECT_DIR$/lib/newRecipe" />
+      <recent name="$PROJECT_DIR$/lib/interface/Calendar" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -531,7 +532,14 @@
       <option name="project" value="LOCAL" />
       <updated>1542122612905</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="CalendarView: Added recipe display on selected dates">
+      <created>1542224316548</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1542224316548</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -547,30 +555,31 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="993" y="25" width="927" height="1055" extended-state="4" />
-    <editor active="true" />
+    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32608697" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
-      <window_info id="Image Layers" order="4" />
       <window_info id="Build Variants" order="3" sideWeight="0.5008726" side_tool="true" weight="0.21416713" />
-      <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5019369" side_tool="true" weight="0.3275488" />
       <window_info anchor="bottom" id="Dart Analysis" order="7" weight="0.3076087" />
+      <window_info anchor="right" id="Flutter Outline" order="6" weight="0.3291714" />
+      <window_info anchor="bottom" id="Logcat" order="10" sideWeight="0.4980631" weight="0.3275488" />
+      <window_info id="Capture Tool" order="7" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Structure" order="1" sideWeight="0.5008726" side_tool="true" weight="0.21416713" />
+      <window_info anchor="right" id="Device File Explorer" order="12" side_tool="true" weight="0.3280363" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32608697" />
+      <window_info anchor="bottom" id="Messages" order="14" weight="0.3264642" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info id="Image Layers" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4971623" weight="0.4099783" />
       <window_info anchor="bottom" id="Version Control" order="12" weight="0.45986986" />
       <window_info anchor="bottom" id="Terminal" order="15" weight="0.3275488" />
-      <window_info anchor="right" id="Flutter Outline" order="6" weight="0.3291714" />
-      <window_info anchor="bottom" id="Logcat" order="10" sideWeight="0.4980631" weight="0.3275488" />
       <window_info id="Captures" order="6" weight="0.3291714" />
-      <window_info id="Capture Tool" order="7" />
-      <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4991274" weight="0.39568347" />
-      <window_info id="Structure" order="1" sideWeight="0.5008726" side_tool="true" weight="0.21416713" />
-      <window_info anchor="right" id="Device File Explorer" order="12" side_tool="true" weight="0.3280363" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4991274" visible="true" weight="0.39568347" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.45986986" />
       <window_info anchor="right" id="Theme Preview" order="9" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="right" id="Flutter Inspector" order="11" weight="0.32872164" />
       <window_info anchor="bottom" id="Inspection Results" order="13" weight="0.32972974" />
@@ -581,8 +590,6 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
       <window_info anchor="right" id="Database" order="10" weight="0.3291714" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.45986986" />
-      <window_info anchor="bottom" id="Messages" order="14" weight="0.3264642" />
       <window_info id="UI Designer" order="8" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -686,10 +693,10 @@
     <MESSAGE value="Termine: Recipe selection, minor changes" />
     <MESSAGE value="Termine: Added search function" />
     <MESSAGE value="Termine: Added date selection with custom DatePicker" />
-    <option name="LAST_COMMIT_MESSAGE" value="Termine: Added date selection with custom DatePicker" />
+    <MESSAGE value="CalendarView: Added recipe display on selected dates" />
+    <option name="LAST_COMMIT_MESSAGE" value="CalendarView: Added recipe display on selected dates" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib/newRecipe/CompletionSteps.dart" />
     <entry file="file://$PROJECT_DIR$/lib/newRecipe/Allgemein.dart" />
     <entry file="file://$PROJECT_DIR$/lib/newRecipe/Zutaten.dart" />
     <entry file="file://$PROJECT_DIR$/lib/newRecipe/newRecipeGit.dart" />
@@ -785,16 +792,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/SelectableItems.dart" />
-    <entry file="file://$PROJECT_DIR$/images/emptyState.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/nothingFound.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/interface/CircularReveal.dart" />
     <entry file="file://$PROJECT_DIR$/lib/interface/CircularImage.dart">
       <provider selected="true" editor-type-id="text-editor">
@@ -814,13 +811,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="11" lean-forward="true" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pubspec.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="47" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -927,13 +917,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/Calendar/flutter_calendar.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="33" column="1" lean-forward="true" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/interface/GoogleColors.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -975,13 +958,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/images/addCircular.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/emptyState.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/nothingFound.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/Dialogs.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="263" column="54" selection-start-line="263" selection-start-column="54" selection-end-line="263" selection-end-column="54" />
+        <state relative-caret-position="81">
+          <caret line="117" selection-start-line="117" selection-end-line="117" />
           <folding>
             <element signature="e#0#54#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pubspec.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-556">
+          <caret line="22" column="15" lean-forward="true" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interface/Calendar/flutter_calendar.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
         </state>
       </provider>
     </entry>
