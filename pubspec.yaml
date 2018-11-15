@@ -52,6 +52,9 @@ flutter:
   assets:
     - images/allDone.png
     - images/nothingFound.png
+    - images/no_orders.png
+    - images/relaxNow.png
+    - images/somethingWentWrong.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
