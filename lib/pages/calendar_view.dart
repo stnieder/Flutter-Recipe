@@ -42,7 +42,6 @@ class _CalendarView extends State<CalendarView>{
     super.initState();
     selectedDate = _dateOnly(DateTime.now());
     oldData = false;
-    calendarExpanded = false;
   }
 
   @override
@@ -51,13 +50,12 @@ class _CalendarView extends State<CalendarView>{
       children: <Widget>[
         new Flexible(
           child: Calendar(
-            isExpandable: calendarExpandable,
+            isExpandable: false,
             onDateSelected: (DateTime dateTime){
               setState(() {
                 if(DateTime.now().difference(dateTime) > Duration()) oldData = true;
                 else oldData = false;
                 selectedDate = _dateOnly(dateTime);
-                print("Extended: "+calendarExpanded.toString());
               });
             }
           ),

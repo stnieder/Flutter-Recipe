@@ -1,6 +1,8 @@
 import 'package:Time2Eat/interface/GoogleColors.dart';
+import 'package:Time2Eat/interface/MyDropDownButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import 'interface/CustomShowDialog.dart';
@@ -244,78 +246,158 @@ class Dialogs{
 }
 
 class NotificationDialog extends StatefulWidget{
-
-
-
   @override
   State<StatefulWidget> createState() {
     return _NotificationDialog();
   }
 }
 
-class _NotificationDialog extends State<NotificationDialog>{
-  List<String> date = [
-    "Heute",
-    "Morgen",
-    "Nächsten " + DateFormat.E().format(DateTime.now()),
-    "Datum auswählen"
-  ];
-  DateFormat dayNumber = new DateFormat.d(Intl.systemLocale);
-  DateFormat dayName = new DateFormat("EEEEE", "de_DE");
+class _NotificationDialog extends State<NotificationDialog>{  
+  //Select a date
+  DateFormat monthName;
+  DateFormat dayNumber;
+  DateFormat dayName;
+  List<String> date = new List();
   String selectedDate;
 
-  _getContent(){
-    selectedDate = dayNumber.format(DateTime.now()) + " " + dayName.format(DateTime.now());
+  //Select a time
+  List<String> timeName = new List();
+  List<String> timeNumber = new List();
+  Map<String, String> time = new Map();
+  List<String> timeList = new List();
+  String selectedTime;
+
+  _getContent(){ 
     return SimpleDialog(
       children: <Widget>[
-        Text(
+        Padding(
+          padding: EdgeInsets.only(left: 10.0),
+          child: Text(
           "Erinnerung hinzufügen",
           style: TextStyle(
               fontFamily: "Google-Sans",
-              fontWeight: FontWeight.w400
+              fontSize: 15.0,
+              fontWeight: FontWeight.bold
           ),
         ),
-        Container(
-          child: new DropdownButton(
-            isDense: true,
-            hint: Text(selectedDate),
-            items: date.map((String value){
-              String item = value;
-              value = convertDate(value);
-              return new DropdownMenuItem(
-                value: value,
-                child: new Text(item),
-              );
-            }).toList(),
-            onChanged: (String dates) {
-              setState(() {
-                selectedDate = convertDate(dates);
-              });
-            },
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+          child: Container(
+            child: new MyDropdownButton(
+              hint: Text(selectedDate + "                   "),
+              items: date.map((String value){
+                return new MyDropdownMenuItem(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+              onChanged: convertDate,
+            ),
           ),
-        )
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5.0),
+          child: Container(
+            child: new MyDropdownButton(
+              hint: Text(selectedTime),
+              items: timeName.map((String value){
+                int count = timeName.indexOf(value);                
+                return new MyDropdownMenuItem(                  
+                  value: timeNumber[count],
+                  child: ListTile(
+                    title: Text(value),
+                    trailing: Text(
+                      timeNumber[count],
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 14.0
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged: convertTime,
+            ),
+          ),
+        ),
       ],
     );
   }
+
+  convertDate(String value) async{
+    if(value == date[0]){
+       selectedDate = (dayNumber.format(DateTime.now()) + ". " + monthName.format(DateTime.now()));
+    } else if(value == date[1]){
+      selectedDate = (dayNumber.format(DateTime(0,0,DateTime.now().day+1)) + ". " + monthName.format(DateTime.now()));
+    } else if(value == date[2]){
+      selectedDate = (dayNumber.format(DateTime(0,0,DateTime.now().day+7)) + ". " + monthName.format(DateTime.now()));
+    } else if(value == date[3]){
+      var selectDialog = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year-1),
+        lastDate: DateTime(DateTime.now().year+2)
+      );
+      if(selectDialog != null) {
+        selectedDate = (dayNumber.format(selectDialog) + ". " + monthName.format(selectDialog));
+      }
+    }
+    setState(() {});
+  }
+
+  convertTime(String value) async{
+    var pickedTime;
+    if(value != ""){
+      selectedTime = value;
+    } else {
+      pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now()
+      );
+      if(pickedTime != null){
+        selectedTime = pickedTime.toString().split("(")[1].split(")")[0].toString();
+      }
+    }    
+    setState(() {});
+  }
+
+  @override
+    void initState() {
+      super.initState(); 
+      initializeDateFormatting('de_DE', null);
+      monthName = new DateFormat("MMMM", "de_DE");  
+      dayName = new DateFormat('EEEEE', "de_DE");
+      dayNumber = new DateFormat.d("de_DE");           
+      date = [
+        "Heute",
+        "Morgen",
+        "Nächsten " + dayName.format(DateTime.now()),
+        "Datum auswählen..."
+      ];  
+      selectedDate = dayNumber.format(DateTime.now()) + ". " + monthName.format(DateTime.now());
+
+      timeName = [
+        "Morgens",
+        "Nachmittags",
+        "Spätnachmittags",
+        "Abends",
+        "Uhrzeit auswählen..."
+      ];
+
+      timeNumber = [
+        "08:00",
+        "13:00",
+        "18:00",
+        "20:00",
+        ""
+      ];
+      selectedTime = timeNumber[0];
+    }
 
 
   @override
   Widget build(BuildContext context) {
     return _getContent();
-  }
-
-  convertDate(String value){
-    if (value == "Heute") {
-      String name = dayName.format(DateTime.now());
-      selectedDate = (dayNumber.format(DateTime.now()) + name);
-      print("Heute: "+selectedDate);
-      value = selectedDate;
-    } else if(value == "Morgen"){
-      String name = dayName.format(DateTime(0, 0, DateTime.now().day + 1));
-      selectedDate = (dayNumber.format(DateTime(0, 0, DateTime.now().day + 1)) + name);
-      print("Morgen: "+selectedDate);
-      value = selectedDate;
-    }
-    return value;
   }
 }
