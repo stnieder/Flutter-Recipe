@@ -2,6 +2,7 @@ import 'package:Time2Eat/Dialogs.dart';
 import 'package:Time2Eat/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../interface/Calendar/flutter_calendar.dart';
 import '../interface/GoogleColors.dart';
@@ -30,6 +31,7 @@ class CalendarView extends StatefulWidget{
 
 class _CalendarView extends State<CalendarView>{
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
 
   String selectedDate;
   bool oldData;
@@ -69,35 +71,12 @@ class _CalendarView extends State<CalendarView>{
                     child: ListView.builder(
                       addAutomaticKeepAlives: true,
                       itemBuilder: (BuildContext context, int index){
-                        Key dismissibleKey = new Key(snapshot.data[index].name);
                         return new GestureDetector(
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border(bottom: BorderSide(color:  Colors.black12))
                             ),
-                            child: Dismissible(
-                              key: dismissibleKey,
-                              direction: DismissDirection.horizontal,
-                              onDismissed: (direction){
-                                if(direction == DismissDirection.startToEnd){
-                                  deleteTermin(selectedDate, snapshot.data[index].name);
-                                } else if(direction == DismissDirection.endToStart){
-                                  showNotificationDialog();
-                                }
-                              },
-                              background: Container(
-                                alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.only(left: 20.0),
-                                color: Colors.green[400],
-                                child: Icon(Icons.check,color:  Colors.white,),
-                              ),
-                              secondaryBackground: Container(
-                                alignment: Alignment.centerRight,
-                                padding: EdgeInsets.only(right: 20.0),
-                                color: Colors.orangeAccent,
-                                child: Icon(Icons.notifications_none, color: Colors.white),
-                              ),
-                              child: ListTile(
+                            child: ListTile(
                                 leading: CircleAvatar(
                                   child: (snapshot.data[index].image != "no image"
                                       ? Container(
@@ -124,10 +103,12 @@ class _CalendarView extends State<CalendarView>{
                                 ),
                                 title: Text(snapshot.data[index].name),
                               ),
-                            ),
                           ),
                           onTap: (){
-                            showNotificationDialog();
+                            showNotificationDialog(snapshot.data[index].name);
+                          },
+                          onLongPress: (){
+                            //show bottom sheet with: delete, edit, notification
                           },
                         );
                       },
@@ -182,8 +163,8 @@ class _CalendarView extends State<CalendarView>{
     return formatted;
   }
 
-  showNotificationDialog() async{
+  showNotificationDialog(String recipeName) async{
     Dialogs dialog = new Dialogs();
-    await dialog.setNotification(context);
+    await dialog.setNotification(context, recipeName);
   }
 }

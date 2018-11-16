@@ -2,17 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'recipe/recipebook.dart';
 import 'recipe/new_recipe.dart';
 
-void main() => runApp(new Recipe());
+
+var flutterLocalNotifcations;
+
+
+void main() async{
+  flutterLocalNotifcations = new FlutterLocalNotificationsPlugin();
+  runApp(new Recipe());
+}
 
 class Recipe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {  
     //changeStatusColor(); 
-    return new MaterialApp(      
+    return new MaterialApp(    
+      builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child),  
       title: 'Rezeptbuch',
       theme: new ThemeData(        
         backgroundColor: Colors.white,

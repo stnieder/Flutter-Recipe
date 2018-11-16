@@ -1,9 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:Time2Eat/interface/MyDropDownButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'recipe/recipebook.dart';
 
 import 'interface/CustomShowDialog.dart';
 
@@ -237,15 +241,18 @@ class Dialogs{
     );
   }
 
-  setNotification(BuildContext context) {
+  setNotification(BuildContext context, String name) {
     return showDialog(
       context: context,
-      builder: (_) => NotificationDialog()
+      builder: (_) => NotificationDialog(name)
     );
   }
 }
 
 class NotificationDialog extends StatefulWidget{
+  final String recipe;
+  NotificationDialog(this.recipe);
+
   @override
   State<StatefulWidget> createState() {
     return _NotificationDialog();
@@ -253,22 +260,35 @@ class NotificationDialog extends StatefulWidget{
 }
 
 class _NotificationDialog extends State<NotificationDialog>{  
+  
+
+  //FlutterNotificationsPlugin
+  var flutterLocalNotifications = new FlutterLocalNotificationsPlugin();
+  String channelID = "Time2Eat";
+  String channelName;
+  String channelDescription = "It's time two eat something amazing!";
+
   //Select a date
-  DateFormat monthName;
-  DateFormat dayNumber;
+  DateFormat dateFormat;
   DateFormat dayName;
   List<String> date = new List();
   String selectedDate;
+  DateTime selectedDateTime;
 
   //Select a time
   List<String> timeName = new List();
   List<String> timeNumber = new List();
-  Map<String, String> time = new Map();
   List<String> timeList = new List();
   String selectedTime;
 
+  //Select notification intervall
+  List<String> intervalle = new List();
+  List<String> intervallHint = new List();
+  String selectedIntervall;
+
   _getContent(){ 
-    return SimpleDialog(
+    return CustomSimpleDialog(  
+      contentPadding: EdgeInsets.only(bottom: 5.0, right: 5.0, left: 5.0, top: 15.0),    
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: 10.0),
@@ -285,11 +305,13 @@ class _NotificationDialog extends State<NotificationDialog>{
           padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
           child: Container(
             child: new MyDropdownButton(
-              hint: Text(selectedDate + "                   "),
+              hint: Text(selectedDate),
               items: date.map((String value){
                 return new MyDropdownMenuItem(
                   value: value,
-                  child: new Text(value),
+                  child: ListTile(
+                    title: new Text(value),
+                  ),
                 );
               }).toList(),
               onChanged: convertDate,
@@ -321,17 +343,83 @@ class _NotificationDialog extends State<NotificationDialog>{
             ),
           ),
         ),
+        Padding(
+          padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5.0),
+          child: Container(
+            child: new MyDropdownButton(
+              hint: Text(selectedIntervall),
+              items: intervalle.map((String value){
+                return new MyDropdownMenuItem(                  
+                  value: value,
+                  child: ListTile(
+                    title: Text(value)
+                  ),
+                );
+              }).toList(),
+              onChanged: setIntervall,
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: FlatButton(
+                shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                child: Text(
+                  "Abbrechen",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: "Google-Sans"
+                  ),
+                ),
+                highlightColor: GoogleMaterialColors().getLightColor(7).withOpacity(0.1),
+                onPressed: (){
+                  Navigator.pop(context);
+                },
+                splashColor: Colors.transparent,
+              ),
+            ),
+            RaisedButton(
+              animationDuration: Duration(milliseconds: 300),              
+              child: Text(
+                "Speichern",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: "Google-Sans"
+                ),
+              ), 
+              color: GoogleMaterialColors().getLightColor(7).withOpacity(0.85),   
+              elevation: 0.0,         
+              highlightColor: GoogleMaterialColors().getLightColor(7).withAlpha(200),
+              highlightElevation: 2.0,
+              onPressed: (){
+                setNotficationTime(selectedIntervall).then((){
+                  Navigator.pop(context);
+                });                
+              },
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              splashColor: Colors.transparent,
+            )
+          ],
+        )
       ],
     );
   }
 
   convertDate(String value) async{
     if(value == date[0]){
-       selectedDate = (dayNumber.format(DateTime.now()) + ". " + monthName.format(DateTime.now()));
+       selectedDate = dateFormat.format(DateTime.now());
+       selectedDateTime = DateTime.now();
     } else if(value == date[1]){
-      selectedDate = (dayNumber.format(DateTime(0,0,DateTime.now().day+1)) + ". " + monthName.format(DateTime.now()));
+      var newFormat = dateFormat.format(DateTime.now().add(Duration(days: 1)));
+      selectedDate = newFormat;
+      selectedDateTime = DateTime.now().add(Duration(days: 1));
     } else if(value == date[2]){
-      selectedDate = (dayNumber.format(DateTime(0,0,DateTime.now().day+7)) + ". " + monthName.format(DateTime.now()));
+      var newFormat = dateFormat.format(DateTime.now().add(Duration(days: 7)));
+      selectedDate = newFormat;
+      selectedDateTime = DateTime.now().add(Duration(days: 7));
     } else if(value == date[3]){
       var selectDialog = await showDatePicker(
         context: context,
@@ -340,7 +428,8 @@ class _NotificationDialog extends State<NotificationDialog>{
         lastDate: DateTime(DateTime.now().year+2)
       );
       if(selectDialog != null) {
-        selectedDate = (dayNumber.format(selectDialog) + ". " + monthName.format(selectDialog));
+        selectedDateTime = selectDialog;
+        selectedDate = (dateFormat.format(selectDialog));
       }
     }
     setState(() {});
@@ -362,20 +451,154 @@ class _NotificationDialog extends State<NotificationDialog>{
     setState(() {});
   }
 
+  setIntervall(String value) async{
+    var count = intervalle.indexOf(value);
+    selectedIntervall = intervallHint[count];
+    setState(() {});
+  }
+
+  setNotficationTime(String interval){
+    if(interval == intervalle[0]){
+      scheduleNot();
+    } else if(interval == intervalle[1]){
+      showDailyNot();
+    } else if(interval == intervalle[2]){
+      showWeeklyNot();
+    } else if(interval == intervalle[3]){
+      print("Benutzerdefiniert ist noch in Bearbeitung!");
+    }
+  }
+
+
+  Future showOnGoingNot() async{
+    var android = new AndroidNotificationDetails(
+      channelID, 
+      channelName, 
+      channelDescription,
+      importance: Importance.Default,
+      ongoing: true,
+      autoCancel: false
+    );
+    var iOS = new IOSNotificationDetails();
+    var platformSpecs = new NotificationDetails(android, iOS);
+
+    await flutterLocalNotifications.show(
+      0, 
+      channelName, 
+      channelDescription, 
+      platformSpecs
+    );
+  }  
+
+
+  Future scheduleNot() async{
+    //Get Specific Date
+    var date = selectedDate;
+
+    //Get Specific Time
+    var hour = int.parse(selectedTime.split(":")[0]);
+    var minute = int.parse(selectedTime.split(":")[1]);
+    var time = Time(hour, minute, 0);    
+
+    var vibrationPattern = new Int64List(4);
+    vibrationPattern[0] = 0;
+    vibrationPattern[1] = 1000;
+    vibrationPattern[2] = 5000;
+    vibrationPattern[3] = 2000;
+
+
+    var android = new AndroidNotificationDetails(
+      channelID, 
+      channelName, 
+      channelDescription,
+      sound: 'slow_spring_board',
+      vibrationPattern: vibrationPattern,
+      color: GoogleMaterialColors().primaryColor()
+    );
+    var iOS = new IOSNotificationDetails(sound:  'slow_spring_board.aiff');
+    var platformSpecs = new NotificationDetails(android, iOS);
+
+    await flutterLocalNotifications.schedule(
+      0,
+      channelName,
+      channelDescription,
+      selectedDateTime,
+      platformSpecs
+    );
+  }
+
+
+  Future showDailyNot() async{
+    //Get Specific Time
+    var hour = int.parse(selectedTime.split(":")[0]);
+    var minute = int.parse(selectedTime.split(":")[1]);
+    var time = Time(hour, minute, 0);
+
+    var android = new AndroidNotificationDetails(channelID, channelName, channelDescription);
+    var iOS = new IOSNotificationDetails();
+    var platformSpecs = new NotificationDetails(android, iOS);
+
+    await flutterLocalNotifications.showDailyAtTime(
+      0, 
+      channelName, 
+      channelDescription, 
+      time, 
+      platformSpecs
+    );
+  }
+
+  Future showWeeklyNot() async{
+    //Get Specific Time
+    var hour = int.parse(selectedTime.split(":")[0]);
+    var minute = int.parse(selectedTime.split(":")[1]);
+    var time = Time(hour, minute, 0);
+
+    //Get Day of today
+    List<Day> days = [Day.Monday, Day.Tuesday, Day.Thursday, Day.Wednesday, Day.Friday, Day.Saturday, Day.Sunday];
+    var specDay = DateTime.now().day;
+
+    var android = new AndroidNotificationDetails(channelID, channelName, channelDescription);
+    var ios = new IOSNotificationDetails();
+    var platformChannelSpecs = new NotificationDetails(android, ios);
+
+    await flutterLocalNotifications.showWeeklyAtDayAndTime(
+      0,
+      channelName,
+      channelDescription,
+      days[specDay],
+      time,
+      platformChannelSpecs
+    );
+  }
+
+  Future deleteAllNot() async{
+    await flutterLocalNotifications.cancelAll();
+  }
+
+  Future onSelectNotification(String payload) async{
+    if(payload != null){
+      debugPrint('Notification payload: '+payload);
+    }
+
+    await Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => Recipebook())
+    );
+  }
+
   @override
     void initState() {
       super.initState(); 
       initializeDateFormatting('de_DE', null);
-      monthName = new DateFormat("MMMM", "de_DE");  
+      dateFormat = new DateFormat.MMMMd("de_DE");           
       dayName = new DateFormat('EEEEE', "de_DE");
-      dayNumber = new DateFormat.d("de_DE");           
       date = [
         "Heute",
         "Morgen",
         "Nächsten " + dayName.format(DateTime.now()),
         "Datum auswählen..."
       ];  
-      selectedDate = dayNumber.format(DateTime.now()) + ". " + monthName.format(DateTime.now());
+      selectedDate = dateFormat.format(DateTime.now());
 
       timeName = [
         "Morgens",
@@ -393,6 +616,31 @@ class _NotificationDialog extends State<NotificationDialog>{
         ""
       ];
       selectedTime = timeNumber[0];
+
+      intervalle = [
+        "Einmaliger Termin",
+        "Täglich",
+        "Wöchentlich",
+        "Benutzerdefiniert..."
+      ];
+
+      intervallHint = [
+        "Einmaliger Termin",
+        "wird täglich wiederholt ",
+        "wird wöchentlich wiederholt ",
+        "in Bearbeitung..."
+      ];
+      selectedIntervall = intervallHint[0];
+
+      var initializeAndroid = new AndroidInitializationSettings('images/Time2Eat.png');
+      var initializeIOS = new IOSInitializationSettings();
+      var initializeSettings = new InitializationSettings(initializeAndroid, initializeIOS);
+      flutterLocalNotifications.initialize(
+        initializeSettings,
+        onSelectNotification: onSelectNotification
+      );
+
+      channelName = widget.recipe;
     }
 
 

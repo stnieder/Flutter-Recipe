@@ -625,7 +625,7 @@ class _DropdownButtonState<T> extends State<MyDropdownButton<T>> with WidgetsBin
     if (widget.hint != null) {
       hintIndex = items.length;
       items.add(new DefaultTextStyle(
-        style: _textStyle.copyWith(color: Theme.of(context).hintColor),
+        style: _textStyle.copyWith(color: Colors.black),
         child: new IgnorePointer(
           child: widget.hint,
         ),

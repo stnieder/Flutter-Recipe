@@ -29,7 +29,7 @@ dependencies:
   side_header_list_view: ^0.0.4
   fluttertoast: ^2.0.9
   flutter_statusbarcolor: any
-
+  flutter_local_notifications: ^0.4.1+1
 
 
 dev_dependencies:
@@ -55,6 +55,7 @@ flutter:
     - images/no_orders.png
     - images/relaxNow.png
     - images/somethingWentWrong.png
+    - images/Time2Eat.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
