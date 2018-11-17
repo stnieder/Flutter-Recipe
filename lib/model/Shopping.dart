@@ -2,16 +2,17 @@ class ShoppingDB{
   ShoppingDB();
 
   int id, checked;
-  String item, measure, number;
+  String item, measure, number, timestamp;
 
-  static final columns = ["id", "item", "measure", "number", "checked"];
+  static final columns = ["id", "item", "measure", "number", "checked", "timestamp"];
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
       "item": item,
       "measure": measure,
       "number": number,
-      "checked": checked
+      "checked": checked,
+      "timestamp": timestamp
     };
 
     if(id != null){
@@ -29,13 +30,14 @@ class ShoppingDB{
     shopping.number = map["number"];
     shopping.measure = map["measure"];
     shopping.checked = map["checked"];
+    shopping.timestamp = map["timestamp"];
   }
 }
 
 class Shopping{
 
   int id, checked;
-  String item, measure, number;
+  String item, measure, number, timestamp;
 
-  Shopping(this.id, this.item, this.number, this.measure, this.checked);
+  Shopping(this.id, this.item, this.number, this.measure, this.checked, this.timestamp);
 }

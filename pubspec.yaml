@@ -55,7 +55,7 @@ flutter:
     - images/no_orders.png
     - images/relaxNow.png
     - images/somethingWentWrong.png
-    - images/Time2Eat.png
+    - images/time2eat.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

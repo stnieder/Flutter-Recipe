@@ -32,7 +32,7 @@ class _RecipeDetails extends State<RecipeDetails>{
   String recipeName = "";
   String description;
   Duration duration;
-  double peopleDB;
+  int peopleDB;
   int currentPeople = 1;
   String imagePath;
   Color backgroundColor;
@@ -189,7 +189,8 @@ class _RecipeDetails extends State<RecipeDetails>{
 
                 double peopleNumber = 1.0;
                 fetchRecipe().then((list){
-                  peopleNumber = double.parse(list[0].people);
+                  if(list[0].people == null) peopleNumber = 1;
+                  else peopleNumber = double.parse(list[0].people);
                 });
 
                 for(int i=0; i < snapshot.data.length; i++){
@@ -229,9 +230,7 @@ class _RecipeDetails extends State<RecipeDetails>{
             },
           ),
           MaterialButton(
-            onPressed: (){
-              saveShopping();
-            },
+            onPressed: () => saveShopping(),
             child: Text("Zur Einkaufsliste hinzufügen"),
             animationDuration: Duration(milliseconds: 200),
           ),
@@ -304,10 +303,12 @@ class _RecipeDetails extends State<RecipeDetails>{
 
     ShoppingDB shopping = new ShoppingDB();
     for(int i=0; i<nameList.length; i++){
+      print("Failed at item");
       shopping.item = nameList[i];
       shopping.number = numberList[i].toString();
       shopping.measure = measureList[i];
       shopping.checked = 0; // 0 means false
+      shopping.timestamp = DateTime.now().toString();
       shopping = await dbHelper.insertShopping(shopping);
 
       await saveRecShopping(shopping.id, dbHelper);
@@ -324,7 +325,8 @@ class _RecipeDetails extends State<RecipeDetails>{
       id = recipe[i].id;
       description = recipe[i].definition;
       duration = new Duration(minutes: int.parse(recipe[i].duration));
-      peopleDB = double.parse(recipe[i].people);
+      if(recipe[i].people == null) peopleDB = 1;
+      else peopleDB = int.parse(recipe[i].people);
       imagePath = recipe[i].image;
       backgroundColor = convertColor.convertToColor(recipe[i].backgroundColor);      
     }    

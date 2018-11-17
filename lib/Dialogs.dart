@@ -263,7 +263,7 @@ class _NotificationDialog extends State<NotificationDialog>{
   
 
   //FlutterNotificationsPlugin
-  var flutterLocalNotifications = new FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotifications = new FlutterLocalNotificationsPlugin();
   String channelID = "Time2Eat";
   String channelName;
   String channelDescription = "It's time two eat something amazing!";
@@ -395,9 +395,8 @@ class _NotificationDialog extends State<NotificationDialog>{
               highlightColor: GoogleMaterialColors().getLightColor(7).withAlpha(200),
               highlightElevation: 2.0,
               onPressed: (){
-                setNotficationTime(selectedIntervall).then((){
-                  Navigator.pop(context);
-                });                
+                setNotficationTime(selectedIntervall);
+                Navigator.pop(context);
               },
               shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
               splashColor: Colors.transparent,
@@ -498,7 +497,8 @@ class _NotificationDialog extends State<NotificationDialog>{
     //Get Specific Time
     var hour = int.parse(selectedTime.split(":")[0]);
     var minute = int.parse(selectedTime.split(":")[1]);
-    var time = Time(hour, minute, 0);    
+    var time = Time(hour, minute, 0);
+    print("Time: "+time.toString());
 
     var vibrationPattern = new Int64List(4);
     vibrationPattern[0] = 0;
@@ -518,6 +518,7 @@ class _NotificationDialog extends State<NotificationDialog>{
     var iOS = new IOSNotificationDetails(sound:  'slow_spring_board.aiff');
     var platformSpecs = new NotificationDetails(android, iOS);
 
+    /*
     await flutterLocalNotifications.schedule(
       0,
       channelName,
@@ -525,6 +526,7 @@ class _NotificationDialog extends State<NotificationDialog>{
       selectedDateTime,
       platformSpecs
     );
+    */
   }
 
 
@@ -632,7 +634,7 @@ class _NotificationDialog extends State<NotificationDialog>{
       ];
       selectedIntervall = intervallHint[0];
 
-      var initializeAndroid = new AndroidInitializationSettings('images/Time2Eat.png');
+      var initializeAndroid = new AndroidInitializationSettings('time2eat');
       var initializeIOS = new IOSInitializationSettings();
       var initializeSettings = new InitializationSettings(initializeAndroid, initializeIOS);
       flutterLocalNotifications.initialize(

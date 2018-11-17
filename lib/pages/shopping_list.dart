@@ -35,12 +35,15 @@ class _ShoppingPage extends State<ShoppingPage>{
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index){
-                  return new RoundCheckBoxListTile(
-                    checked: (snapshot.data[index].checked == 1
-                      ? true
-                      : false
+                  return new GestureDetector(
+                    child: RoundCheckBoxListTile(
+                      checked: (snapshot.data[index].checked == 1
+                          ? true
+                          : false
+                      ),
+                      title: new Text("${snapshot.data[index].number.toString()}${snapshot.data[index].measure} ${snapshot.data[index].item}"),
+                      onTap: () => checkShopping(snapshot.data[index].item, snapshot.data[index].timestamp),
                     ),
-                    title: new Text("${snapshot.data[index].number.toString()}${snapshot.data[index].measure} ${snapshot.data[index].item}"),
                   );
                 },
               );
@@ -60,5 +63,11 @@ class _ShoppingPage extends State<ShoppingPage>{
         },
       ),
     );
+  }
+
+  checkShopping(String item, String timestamp) async{
+    DBHelper db = new DBHelper();
+    await db.create();
+    await db.updateShopItem(item, timestamp);
   }
 }

@@ -1,234 +1,488 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
-  </component>
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/lib/interface" />
-  </component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="24bec8cd-1ce5-49e9-9b6e-69c76808e3a5" name="Default Changelist" comment="CalendarView: Added recipe display on selected dates">
+    <list default="true" id="a22ccec4-2bf2-41f5-bdcd-41be8bb9e2f3" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/Flutter-Recipe.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/time2eat.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_for_Android.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main_dart.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Added__Step-by-Step_-description_with_draggable_content.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Added__Step-by-Step_-description_with_draggable_content/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/addCircular.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/emptyState.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/nothingFound.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/nothingFound.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/Time2Eat.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/time2eat.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Dialogs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Dialogs.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/database/database.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/database.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/RoundCheckBox.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/RoundCheckBox.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Shopping.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/Shopping.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/shopping_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/shopping_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/recipe/recipeDetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recipe/recipeDetails.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
-    <ignored path="$PROJECT_DIR$/.idea/shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_DATA_SOURCES" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <option name="HIDDEN_KINDS">
-      <set />
-    </option>
-    <expand />
-    <select />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view />
+      </state>
+    </system>
   </component>
   <component name="FUSProjectUsageTrigger">
-    <session id="-1576476862">
+    <session id="1501551482">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="30" />
-          <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.11" value="8" />
-          <entry key="project.open.time.12" value="3" />
-          <entry key="project.open.time.13" value="6" />
-          <entry key="project.open.time.14" value="6" />
-          <entry key="project.open.time.15" value="3" />
-          <entry key="project.open.time.16" value="1" />
-          <entry key="project.open.time.22" value="1" />
-          <entry key="project.opened" value="30" />
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.14" value="1" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="dart" value="326" />
-          <entry key="java" value="1" />
-          <entry key="plist" value="1" />
-          <entry key="svg" value="4" />
-          <entry key="yaml" value="31" />
+          <entry key="dart" value="19" />
+          <entry key="png" value="1" />
+          <entry key="xml" value="1" />
+          <entry key="yaml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Dart" value="326" />
-          <entry key="JAVA" value="1" />
-          <entry key="PLAIN_TEXT" value="1" />
-          <entry key="SVG" value="4" />
-          <entry key="YAML" value="31" />
+          <entry key="Dart" value="19" />
+          <entry key="Image" value="1" />
+          <entry key="XML" value="1" />
+          <entry key="YAML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="dart" value="64297" />
-          <entry key="ft" value="528" />
-          <entry key="plist" value="54" />
-          <entry key="txt" value="376" />
-          <entry key="yaml" value="654" />
+          <entry key="dart" value="1987" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Dart" value="64297" />
-          <entry key="PLAIN_TEXT" value="430" />
-          <entry key="VTL" value="528" />
-          <entry key="YAML" value="654" />
+          <entry key="Dart" value="1987" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="Dialogs.dart" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/Dialogs.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="117" selection-start-line="117" selection-end-line="117" />
-              <folding>
-                <element signature="e#0#54#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="flutter_calendar.dart" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/interface/Calendar/flutter_calendar.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Gradle Kotlin DSL Build Script" />
-        <option value="Dart File" />
-      </list>
-    </option>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/lib/Dialogs.dart">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="355">
+                  <caret line="551" column="29" selection-start-line="551" selection-start-column="29" selection-end-line="551" selection-end-column="29" />
+                  <folding>
+                    <element signature="e#0#25#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/lib/recipe/recipeDetails.dart">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="277">
+                  <caret line="314" column="5" lean-forward="true" selection-start-line="314" selection-start-column="5" selection-end-line="314" selection-end-column="5" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/lib/database/database.dart">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="397">
+                  <caret line="200" column="3" lean-forward="true" selection-start-line="200" selection-start-column="3" selection-end-line="200" selection-end-column="3" />
+                  <folding>
+                    <element signature="e#0#20#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/lib/pages/shopping_list.dart">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="400">
+                  <caret line="45" column="22" selection-start-line="45" selection-start-column="22" selection-end-line="45" selection-end-column="22" />
+                  <folding>
+                    <element signature="e#0#49#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/lib/pages/shopping_list.dart">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="326">
+                  <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
+                  <folding>
+                    <element signature="e#0#49#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/lib/interface/RoundCheckBox.dart">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="195">
+                  <caret line="13" column="16" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>reducenumberList</find>
-      <find>size</find>
-      <find>bool</find>
-      <find>zNumber</find>
-      <find>zNamen</find>
-      <find>zMass</find>
-      <find>nameListController</find>
-      <find>DragA</find>
-      <find>+6</find>
-      <find>FlatButton</find>
-      <find>Zuberi</find>
-      <find>longPressed</find>
-      <find>fetch</find>
-      <find>actionList</find>
-      <find>Shopping</find>
-      <find>showBo</find>
-      <find>SelectableItems</find>
-      <find>SelectableIte</find>
-      <find>searchAp</find>
-      <find>searchOp</find>
-      <find>searchOperation</find>
-      <find>listPage</find>
-      <find>_fab</find>
-      <find>show</find>
-      <find>.add</find>
-      <find>recipeName</find>
-      <find>showDatePicker</find>
-      <find>check</find>
-      <find>showTime</find>
-      <find>Simple</find>
+      <find>fontV</find>
+      <find>font</find>
+      <find>millisecondsS</find>
+      <find>Zur</find>
+      <find>Zur Einkaufsliste hinzuf</find>
     </findStrings>
-    <replaceStrings>
-      <replace />
-      <replace>reduceNumber</replace>
-      <replace>numberList</replace>
-      <replace>massList</replace>
-      <replace>numberController</replace>
-    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GradleLocalSettings">
+    <option name="myGradleHomes">
+      <map>
+        <entry key="$PROJECT_DIR$" value="/opt/gradle/gradle-4.10.2" />
+      </map>
+    </option>
+    <option name="myGradleVersions">
+      <map>
+        <entry key="$PROJECT_DIR$" value="4.10.2" />
+      </map>
+    </option>
+    <option name="availableProjects">
+      <map>
+        <entry>
+          <key>
+            <ExternalProjectPojo>
+              <option name="name" value="Flutter-Recipe" />
+              <option name="path" value="$PROJECT_DIR$" />
+            </ExternalProjectPojo>
+          </key>
+          <value>
+            <list>
+              <ExternalProjectPojo>
+                <option name="name" value="Flutter-Recipe" />
+                <option name="path" value="$PROJECT_DIR$" />
+              </ExternalProjectPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="availableTasks">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <list>
+              <ExternalTaskPojo>
+                <option name="description" value="Initializes a new Gradle build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="init" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the components produced by root project 'Flutter-Recipe'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="components" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the sub-projects of root project 'Flutter-Recipe'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="projects" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the dependent components of components in root project 'Flutter-Recipe'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependentComponents" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all buildscript dependencies declared in root project 'Flutter-Recipe'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="buildEnvironment" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the insight into a specific dependency in root project 'Flutter-Recipe'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependencyInsight" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Generates Gradle wrapper files." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="wrapper" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all dependencies declared in root project 'Flutter-Recipe'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays a help message." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="help" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the configuration model of root project 'Flutter-Recipe'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the properties of root project 'Flutter-Recipe'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="properties" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the tasks runnable from root project 'Flutter-Recipe'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="tasks" />
+              </ExternalTaskPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="modificationStamps">
+      <map>
+        <entry key="$PROJECT_DIR$" value="1542466799000" />
+        <entry key="$PROJECT_DIR$/.gradle" value="0" />
+      </map>
+    </option>
+    <option name="projectBuildClasspath">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <ExternalProjectBuildClasspathPojo>
+              <option name="modulesBuildClasspath">
+                <map>
+                  <entry key="$PROJECT_DIR$">
+                    <value>
+                      <ExternalModuleBuildClasspathPojo>
+                        <option name="path" value="$PROJECT_DIR$" />
+                      </ExternalModuleBuildClasspathPojo>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="name" value="Flutter-Recipe" />
+              <option name="projectBuildClasspath">
+                <list>
+                  <option value="/opt/gradle/gradle-4.10.2/src/testing-jvm" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/persistent-cache" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/diagnostics" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/reporting" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/internal-integ-testing" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/plugin-use" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/core" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/jacoco" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/tooling-api" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/build-comparison" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/language-groovy" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/jvm-services" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/internal-testing" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/core-api" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/resources" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/ide-play" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/javascript" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/language-java" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/version-control" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/testing-base" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/installation-beacon" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/platform-jvm" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/docs" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/build-option" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/resources-s3" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/tooling-api-builders" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/resources-http" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/base-services" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/base-services-groovy" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/composite-builds" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/resources-sftp" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/maven" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/internal-android-performance-testing" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/platform-play" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/ear" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/build-cache" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/signing" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/cli" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/resources-gcs" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/model-core" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/ide-native" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/model-groovy" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/language-native" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/build-cache-http" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/testing-junit-platform" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/wrapper" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/antlr" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/osgi" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/launcher" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/announce" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/test-kit" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/ide" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/build-init" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/workers" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/plugin-development" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/ivy" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/dependency-management" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/logging" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/scala" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/tooling-native" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/publish" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/platform-base" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/native" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/language-jvm" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/code-quality" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/internal-performance-testing" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/messaging" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/platform-native" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/plugins" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/language-scala" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/process-services" />
+                  <option value="/opt/gradle/gradle-4.10.2/src/testing-native" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-kotlin-dsl-provider-plugins-1.0-rc-6.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-persistent-cache-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-runtime-api-info-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-native-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-logging-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-build-cache-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-base-services-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-messaging-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-api-metadata-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-process-services-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-kotlin-dsl-tooling-models-1.0-rc-6.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-wrapper-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-installation-beacon-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/ant-1.9.11.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-tooling-api-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-model-core-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-jvm-services-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-model-groovy-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/groovy-all-2.4.15.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/ant-launcher-1.9.11.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-kotlin-dsl-1.0-rc-6.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-base-services-groovy-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-core-api-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-cli-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-docs-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-kotlin-dsl-tooling-builders-1.0-rc-6.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-launcher-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-resources-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-build-option-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/gradle-core-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-maven-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-ide-native-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-resources-sftp-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-signing-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-platform-jvm-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-composite-builds-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-platform-native-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-reporting-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-build-init-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-testing-junit-platform-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-ear-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-version-control-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-language-scala-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-testing-jvm-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-plugin-development-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-announce-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-ide-play-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-jacoco-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-tooling-api-builders-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-language-java-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-ide-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-resources-http-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-workers-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-dependency-management-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-platform-base-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-test-kit-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-plugin-use-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-resources-s3-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-javascript-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-build-comparison-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-ivy-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-osgi-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-plugins-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-antlr-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-language-native-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-language-jvm-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-build-cache-http-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-diagnostics-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-resources-gcs-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-scala-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-code-quality-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/ivy-2.2.0.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-language-groovy-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-testing-native-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-testing-base-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-publish-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-platform-play-4.10.2.jar" />
+                  <option value="/opt/gradle/gradle-4.10.2/lib/plugins/gradle-tooling-native-4.10.2.jar" />
+                  <option value="$PROJECT_DIR$/buildSrc/src/main/java" />
+                  <option value="$PROJECT_DIR$/buildSrc/src/main/groovy" />
+                </list>
+              </option>
+            </ExternalProjectBuildClasspathPojo>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
+      </map>
+    </option>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/lib/simple.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/lightMaterial.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/pageIndicator.dart" />
-        <option value="$PROJECT_DIR$/lib/recipebook.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/PageIndicator.dart" />
-        <option value="$PROJECT_DIR$/lib/newRecipe/CompletionSteps.dart" />
-        <option value="$PROJECT_DIR$/lib/newRecipe/Allgemein.dart" />
-        <option value="$PROJECT_DIR$/lib/newRecipe/Zutaten.dart" />
-        <option value="$PROJECT_DIR$/lib/newRecipe/newRecipeGit.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/DurationDialog.dart" />
-        <option value="$PROJECT_DIR$/lib/model/Recipe_Description.dart" />
-        <option value="$PROJECT_DIR$/lib/model/Descriptions.dart" />
-        <option value="$PROJECT_DIR$/lib/stack.dart" />
-        <option value="$PROJECT_DIR$/lib/model/StepDescription.dart" />
-        <option value="$PROJECT_DIR$/lib/model/Recipe_Steps.dart" />
-        <option value="$PROJECT_DIR$/lib/model/Ingredients.dart" />
-        <option value="$PROJECT_DIR$/lib/model/Recipe_Ingredient.dart" />
-        <option value="$PROJECT_DIR$/lib/newRecipe/new_recipe.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/CustomListTile.dart" />
-        <option value="$PROJECT_DIR$/lib/model/Termine.dart" />
-        <option value="$PROJECT_DIR$/lib/model/Recipe_Termine.dart" />
-        <option value="$PROJECT_DIR$/lib/model/Recipe_Shopping.dart" />
-        <option value="$PROJECT_DIR$/lib/model/Shopping.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/OwnCalendar.dart" />
-        <option value="$PROJECT_DIR$/lib/main.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/RoundCheckBox.dart" />
-        <option value="$PROJECT_DIR$/lib/pages/shopping_list.dart" />
-        <option value="$PROJECT_DIR$/lib/SelectableItems.dart" />
-        <option value="$PROJECT_DIR$/lib/recipe/new_recipe.dart" />
-        <option value="$PROJECT_DIR$/lib/recipe/recipeDetails.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/CircularReveal.dart" />
-        <option value="$PROJECT_DIR$/lib/pages/list.dart" />
-        <option value="$PROJECT_DIR$/lib/Termine/termin_selection.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/PreferredSizeDivider.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/SelectedRecipe.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/MyDatePicker.dart" />
-        <option value="$PROJECT_DIR$/lib/Termine/RecipeSelection.dart" />
-        <option value="$PROJECT_DIR$/lib/model/Recipes.dart" />
-        <option value="$PROJECT_DIR$/lib/model/RecipeTerminCombi.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/SelectableItems.dart" />
-        <option value="$PROJECT_DIR$/lib/recipe/recipebook.dart" />
-        <option value="$PROJECT_DIR$/lib/database/database.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/Calendar/TimePicker.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/DatePicker.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/TimePicker.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/Calendar/flutter_calendar.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/GoogleColors.dart" />
-        <option value="$PROJECT_DIR$/lib/pages/calendar_view.dart" />
-        <option value="$PROJECT_DIR$/lib/interface/CustomShowDialog.dart" />
+        <option value="$PROJECT_DIR$/android/app/build-extras.gradle" />
+        <option value="$PROJECT_DIR$/android/hooks/copy-build-extras-gradle.js" />
+        <option value="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/android/gradle.properties" />
+        <option value="$PROJECT_DIR$/android/app/build.gradle" />
         <option value="$PROJECT_DIR$/lib/Dialogs.dart" />
-        <option value="$PROJECT_DIR$/pubspec.yaml" />
+        <option value="$PROJECT_DIR$/lib/interface/RoundCheckBox.dart" />
+        <option value="$PROJECT_DIR$/lib/model/Shopping.dart" />
+        <option value="$PROJECT_DIR$/lib/pages/shopping_list.dart" />
+        <option value="$PROJECT_DIR$/lib/recipe/recipeDetails.dart" />
+        <option value="$PROJECT_DIR$/lib/database/database.dart" />
       </list>
     </option>
   </component>
@@ -239,92 +493,92 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="993" />
+    <option name="x" value="67" />
     <option name="y" value="25" />
     <option name="width" value="927" />
-    <option name="height" value="1055" />
+    <option name="height" value="1053" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectReloadState">
+    <option name="STATE" value="1" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
+    <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="AndroidView">
-        <subPane>
-          <expand>
-            <path>
-              <item name="recipe" type="1abcf292:AndroidViewProjectNode" />
-              <item name="recipe_android" type="e9137016:NonAndroidModuleNode" />
-            </path>
-            <path>
-              <item name="recipe" type="1abcf292:AndroidViewProjectNode" />
-              <item name="recipe_android" type="e9137016:NonAndroidModuleNode" />
-              <item name="java" type="f7eae187:NonAndroidSourceTypeNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
-              <item name="recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="Flutter-Recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Flutter-Recipe" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
-              <item name="recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="Flutter-Recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Flutter-Recipe" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
-              <item name="recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="Flutter-Recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Flutter-Recipe" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="interface" type="462c0819:PsiDirectoryNode" />
+              <item name="database" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="recipe" type="b2602c69:ProjectViewProjectNode" />
-              <item name="recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="Flutter-Recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Flutter-Recipe" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="interface" type="462c0819:PsiDirectoryNode" />
-              <item name="Calendar" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Flutter-Recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Flutter-Recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Flutter-Recipe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Flutter-Recipe" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="recipe" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="algorithm" value="Scalr" />
+    <property name="android.sdk.path" value="$USER_HOME$/Android/Sdk" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538134123973" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542477066679" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
+    <property name="format" value="PNG" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="lastFolderRoot" value="$PROJECT_DIR$/android/app/src/main/res/drawable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/android/app/src/main/res/drawable" />
+    <property name="method" value="Automatic" />
+    <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="fileTemplates" />
+    <property name="resolutions" value="XHDPI&#10;XXHDPI&#10;HDPI&#10;MDPI&#10;XXXHDPI" />
+    <property name="settings.editor.selected.configurable" value="dart.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+    <property name="sourceResolution" value="XHDPI" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/images" />
-      <recent name="$PROJECT_DIR$/font" />
-      <recent name="$PROJECT_DIR$/icons" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/lib/interface/CustomDismissbleButtons" />
-      <recent name="$PROJECT_DIR$/lib/newRecipe" />
-      <recent name="$PROJECT_DIR$/lib/interface/Calendar" />
+      <recent name="$PROJECT_DIR$/android" />
+      <recent name="$PROJECT_DIR$/android/app/src/main/res/drawable" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/android/app/src/main/res/drawable" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -340,50 +594,29 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <patterns />
-    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Flutter-Recipe" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
       <properties />
       <listeners />
-    </configuration>
-    <configuration name="&lt;template&gt;" type="JUnit" default="true" selected="false">
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
   </component>
   <component name="SvnConfiguration">
@@ -391,609 +624,250 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="24bec8cd-1ce5-49e9-9b6e-69c76808e3a5" name="Default Changelist" comment="" />
-      <created>1536959226800</created>
+      <changelist id="a22ccec4-2bf2-41f5-bdcd-41be8bb9e2f3" name="Default" comment="" />
+      <created>1542466790989</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1536959226800</updated>
-      <workItem from="1536959248425" duration="5237000" />
-      <workItem from="1536964514684" duration="199000" />
-      <workItem from="1537027045728" duration="5611000" />
-      <workItem from="1537089675348" duration="4952000" />
-      <workItem from="1537096201088" duration="9978000" />
-      <workItem from="1537117146664" duration="300000" />
-      <workItem from="1537117499567" duration="15257000" />
-      <workItem from="1537135824976" duration="4341000" />
-      <workItem from="1537185564875" duration="3795000" />
-      <workItem from="1537200114874" duration="10725000" />
-      <workItem from="1537276125604" duration="6370000" />
-      <workItem from="1537294749512" duration="3526000" />
-      <workItem from="1537298349579" duration="100000" />
-      <workItem from="1537363551530" duration="10453000" />
-      <workItem from="1537443359659" duration="6812000" />
-      <workItem from="1537533379020" duration="9049000" />
-      <workItem from="1537693830895" duration="14633000" />
-      <workItem from="1537782620703" duration="15958000" />
-      <workItem from="1537808314674" duration="5004000" />
-      <workItem from="1537874061692" duration="7251000" />
-      <workItem from="1537884906165" duration="3247000" />
-      <workItem from="1537971009456" duration="106000" />
-      <workItem from="1537971151416" duration="13105000" />
-      <workItem from="1538073591633" duration="3666000" />
-      <workItem from="1538077890805" duration="4087000" />
-      <workItem from="1538082374127" duration="1934000" />
-      <workItem from="1538130135155" duration="4046000" />
-      <workItem from="1538135959157" duration="740000" />
-      <workItem from="1538137458181" duration="1190000" />
-      <workItem from="1538139413200" duration="60000" />
+      <updated>1542466790989</updated>
+      <workItem from="1542469846453" duration="2000" />
+      <workItem from="1542469855086" duration="2091000" />
+      <workItem from="1542471987828" duration="4982000" />
     </task>
-    <task id="LOCAL-00001" summary="Added flutter_calendar of &quot;apptreesoftware&quot;">
-      <created>1537298431294</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1537298431294</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Added calendar style">
-      <created>1537368331234</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1537368331234</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Hero animation on new recipe page">
-      <created>1537374002146</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1537374002146</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Added and styled CustomAlertDialog to new_recipe page">
-      <created>1537542424353</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1537542424353</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Dismissable ingredients">
-      <created>1537790838936</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1537790838936</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Added &quot;Step-by-Step&quot;-description with draggable content">
-      <created>1537798686605</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1537798686605</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Added &quot;Step-by-Step&quot;-description with draggable content">
-      <created>1537874576188</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1537874576188</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Split &quot;New-Recipe&quot;-Page and new Color theme">
-      <created>1537881311206</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1537881311206</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Added DurationPicker made by Chris Harris">
-      <created>1538081967503</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1538081967503</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Added multiple selection">
-      <created>1541954962765</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1541954962765</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Minor changes">
-      <created>1541954977134</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1541954977134</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Termine: added Recipe selection">
-      <created>1542056590578</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1542056590578</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Termine: Recipe selection, minor changes">
-      <created>1542057648384</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1542057648384</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Termine: Added search function">
-      <created>1542113633801</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1542113633801</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Termine: Added date selection with custom DatePicker">
-      <created>1542122612905</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1542122612905</updated>
-    </task>
-    <task id="LOCAL-00016" summary="CalendarView: Added recipe display on selected dates">
-      <created>1542224316548</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1542224316548</updated>
-    </task>
-    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="171732000" />
-  </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
+    <option name="totallyTimeSpent" value="7075000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
-      <window_info id="Build Variants" order="3" sideWeight="0.5008726" side_tool="true" weight="0.21416713" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5019369" side_tool="true" weight="0.3275488" />
-      <window_info anchor="bottom" id="Dart Analysis" order="7" weight="0.3076087" />
-      <window_info anchor="right" id="Flutter Outline" order="6" weight="0.3291714" />
-      <window_info anchor="bottom" id="Logcat" order="10" sideWeight="0.4980631" weight="0.3275488" />
-      <window_info id="Capture Tool" order="7" />
-      <window_info id="Designer" order="2" />
-      <window_info id="Structure" order="1" sideWeight="0.5008726" side_tool="true" weight="0.21416713" />
-      <window_info anchor="right" id="Device File Explorer" order="12" side_tool="true" weight="0.3280363" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32608697" />
-      <window_info anchor="bottom" id="Messages" order="14" weight="0.3264642" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
-      <window_info id="Image Layers" order="4" />
-      <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4971623" weight="0.4099783" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.45986986" />
-      <window_info anchor="bottom" id="Terminal" order="15" weight="0.3275488" />
-      <window_info id="Captures" order="6" weight="0.3291714" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4991274" visible="true" weight="0.39568347" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.45986986" />
-      <window_info anchor="right" id="Theme Preview" order="9" />
-      <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info anchor="right" id="Flutter Inspector" order="11" weight="0.32872164" />
-      <window_info anchor="bottom" id="Inspection Results" order="13" weight="0.32972974" />
-      <window_info anchor="right" id="Assistant" order="0" weight="0.3295063" />
-      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
-      <window_info anchor="right" id="Database" order="10" weight="0.3291714" />
-      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
-      <window_info id="UI Designer" order="8" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="right" id="Palette" order="4" />
-      <window_info anchor="right" id="Maven Projects" order="7" />
-    </layout>
-    <layout-to-restore>
-      <window_info id="Designer" order="2" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="Dart Analysis" order="7" weight="0.30810812" />
-      <window_info id="Build Variants" order="3" side_tool="true" />
-      <window_info id="Image Layers" order="4" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4971623" weight="0.51243246" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" id="Flutter Inspector" order="6" weight="0.32872164" />
-      <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info id="Captures" order="6" weight="0.3291714" />
-      <window_info id="Capture Tool" order="7" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Inspection Results" order="13" weight="0.32972974" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info id="UI Designer" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50283766" side_tool="true" weight="0.34669557" />
-      <window_info anchor="bottom" id="Messages" order="14" weight="0.3264865" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Device File Explorer" order="11" side_tool="true" weight="0.3291714" />
-      <window_info anchor="right" id="Flutter Outline" order="5" />
-      <window_info anchor="bottom" id="Logcat" order="10" weight="0.32864866" />
-      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.46054053" />
-      <window_info anchor="right" id="Maven Projects" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="15" weight="0.32756758" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14167129" />
-      <window_info anchor="right" id="Database" order="10" weight="0.3291714" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.3264865" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
-      <window_info anchor="right" id="Theme Preview" order="9" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17266187" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Captures" order="2" weight="0.25" />
+      <window_info id="Designer" order="3" />
+      <window_info id="Build Variants" order="4" side_tool="true" />
+      <window_info id="Image Layers" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info id="Capture Tool" order="7" />
+      <window_info id="UI Designer" order="8" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32972974" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4997233" visible="true" weight="0.32756758" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.46054053" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.399137" />
-    </layout-to-restore>
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Build" order="7" weight="0.32936078" />
+      <window_info anchor="bottom" id="Dart Analysis" order="8" weight="0.329718" />
+      <window_info anchor="bottom" id="Android Profiler" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5002767" side_tool="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Logcat" order="11" />
+      <window_info anchor="bottom" id="Version Control" order="12" weight="0.329718" />
+      <window_info anchor="bottom" id="Terminal" order="13" weight="0.32864866" />
+      <window_info anchor="bottom" id="Messages" order="14" weight="0.32827735" />
+      <window_info anchor="bottom" id="Database Changes" order="15" show_stripe_button="false" />
+      <window_info anchor="right" id="Preview" weight="0.3291714" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Flutter Inspector" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Device File Explorer" order="5" side_tool="true" />
+      <window_info anchor="right" id="Flutter Outline" order="6" />
+      <window_info anchor="right" id="Gradle" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Theme Preview" order="9" />
+      <window_info anchor="right" id="Palette" order="10" />
+      <window_info anchor="right" id="Maven Projects" order="11" />
+      <window_info anchor="right" id="Database" order="12" />
+    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="Vcs.Log.History.Properties">
-    <option name="COLUMN_ORDER">
-      <list>
-        <option value="0" />
-        <option value="2" />
-        <option value="3" />
-        <option value="1" />
-      </list>
-    </option>
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added flutter_calendar of &quot;apptreesoftware&quot;" />
-    <MESSAGE value="Added calendar style" />
-    <MESSAGE value="Hero animation on new recipe page" />
-    <MESSAGE value="Added and styled CustomAlertDialog to new_recipe page" />
-    <MESSAGE value="Dismissable ingredients" />
-    <MESSAGE value="Added &quot;Step-by-Step&quot;-description with draggable content" />
-    <MESSAGE value="Split &quot;New-Recipe&quot;-Page and new Color theme" />
-    <MESSAGE value="Added DurationPicker made by Chris Harris" />
-    <MESSAGE value="Added multiple selection" />
-    <MESSAGE value="Minor changes" />
-    <MESSAGE value="Termine: added Recipe selection" />
-    <MESSAGE value="Termine: Recipe selection, minor changes" />
-    <MESSAGE value="Termine: Added search function" />
-    <MESSAGE value="Termine: Added date selection with custom DatePicker" />
-    <MESSAGE value="CalendarView: Added recipe display on selected dates" />
-    <option name="LAST_COMMIT_MESSAGE" value="CalendarView: Added recipe display on selected dates" />
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib/newRecipe/Allgemein.dart" />
-    <entry file="file://$PROJECT_DIR$/lib/newRecipe/Zutaten.dart" />
-    <entry file="file://$PROJECT_DIR$/lib/newRecipe/newRecipeGit.dart" />
-    <entry file="file://$PROJECT_DIR$/lib/newRecipe/Zubereitung.dart" />
-    <entry file="file://$PROJECT_DIR$/lib/interface/DurationDialog.dart">
+    <entry file="file://$PROJECT_DIR$/android/gradle/wrapper/gradle-wrapper.properties">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/app/src/main/java/com/vendetta/recipe/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/hooks/copy-build-extras-gradle.js" />
+    <entry file="file://$PROJECT_DIR$/android/local.properties">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="495" selection-start-line="495" selection-end-line="495" />
+        <state relative-caret-position="270">
+          <caret line="18" column="17" lean-forward="true" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/LoadingBar.dart" />
-    <entry file="file://$PROJECT_DIR$/lib/stack.dart" />
-    <entry file="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-0.12.0/lib/src/database.dart">
+    <entry file="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-0.12.0/android/src/main/java/com/tekartik/sqflite/SQLiteOpenHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="317" column="13" selection-start-line="317" selection-start-column="13" selection-end-line="317" selection-end-column="13" />
+        <state relative-caret-position="-28">
+          <caret line="29" column="22" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/model/StepDescription.dart">
+    <entry file="file://$PROJECT_DIR$/android/app/build-extras.gradle" />
+    <entry file="file://$PROJECT_DIR$/.flutter-plugins">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.metadata">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/gradle.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="28" selection-start-column="28" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/gradle.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="103" column="16" selection-start-line="103" selection-start-column="16" selection-end-line="103" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/vcs.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/app/src/main/res/values/styles.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.packages">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="20" column="6" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Flutter-Recipe.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
-          <caret line="15" column="6" lean-forward="true" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/newRecipe/new_recipe.dart" />
-    <entry file="file://$PROJECT_DIR$/lib/interface/CustomListTile.dart">
+    <entry file="file://$PROJECT_DIR$/.gradle/4.10.2/gc.properties">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/build.gradle">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/settings.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="122" column="3" lean-forward="true" selection-start-line="122" selection-start-column="3" selection-end-line="122" selection-end-column="3" />
+        <state relative-caret-position="225">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/model/Ingredients.dart">
+    <entry file="file://$PROJECT_DIR$/android/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="25" lean-forward="true" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+        <state relative-caret-position="555">
+          <caret line="37" column="27" selection-start-line="37" selection-start-column="27" selection-end-line="37" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/model/Recipe_Steps.dart">
+    <entry file="file://$PROJECT_DIR$/pubspec.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="24" lean-forward="true" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
+        <state relative-caret-position="120">
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/model/Recipe_Ingredient.dart">
+    <entry file="file://$PROJECT_DIR$/lib/recipe/new_recipe.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="3" selection-start-line="7" selection-start-column="2" selection-end-line="26" selection-end-column="3" />
+        <state relative-caret-position="12915">
+          <caret line="886" column="3" selection-start-line="886" selection-start-column="3" selection-end-line="886" selection-end-column="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/model/Recipe_Shopping.dart">
+    <entry file="file://$PROJECT_DIR$/lib/pages/calendar_view.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+        <state>
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/app/src/main/res/drawable/launch_background.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-0.12.2+1/lib/src/database.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="300" column="13" selection-start-line="300" selection-start-column="13" selection-end-line="300" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interface/RoundCheckBox.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="16" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Dialogs.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="355">
+          <caret line="551" column="29" selection-start-line="551" selection-start-column="29" selection-end-line="551" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/model/Shopping.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
-          <caret line="36" column="17" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/OwnCalendar.dart" />
-    <entry file="file://$PROJECT_DIR$/lib/main.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/RoundCheckBox.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="610">
-          <caret line="71" column="35" selection-start-line="71" selection-start-column="35" selection-end-line="71" selection-end-column="35" />
+          <caret line="36" column="15" lean-forward="true" selection-start-line="36" selection-start-column="15" selection-end-line="36" selection-end-column="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/pages/shopping_list.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="38" column="63" selection-start-line="38" selection-start-column="63" selection-end-line="38" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/SelectableItems.dart" />
-    <entry file="file://$PROJECT_DIR$/lib/interface/CircularReveal.dart" />
-    <entry file="file://$PROJECT_DIR$/lib/interface/CircularImage.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" column="28" lean-forward="true" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/pages/list.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="102" column="47" selection-start-line="102" selection-start-column="47" selection-end-line="102" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/PreferredSizeDivider.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="11" lean-forward="true" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/SelectedRecipe.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="482">
-          <caret line="54" column="46" lean-forward="true" selection-start-line="54" selection-start-column="46" selection-end-line="54" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/HexToColor.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="18" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/MyDatePicker.dart" />
-    <entry file="file://$PROJECT_DIR$/lib/recipe/recipeDetails.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="303" lean-forward="true" selection-start-line="303" selection-end-line="303" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/model/Recipe_Termine.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Termine/RecipeSelection.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-255">
-          <caret line="183" selection-start-line="183" selection-end-line="183" />
+        <state relative-caret-position="400">
+          <caret line="45" column="22" selection-start-line="45" selection-start-column="22" selection-end-line="45" selection-end-column="22" />
           <folding>
             <element signature="e#0#49#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/model/Termine.dart">
+    <entry file="file://$PROJECT_DIR$/lib/recipe/recipeDetails.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="2" selection-start-line="30" selection-start-column="2" selection-end-line="31" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/model/Recipes.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="445">
-          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/SelectableItems.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1635">
-          <caret line="111" column="8" lean-forward="true" selection-start-line="111" selection-start-column="8" selection-end-line="111" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/model/RecipeTerminCombi.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="24" lean-forward="true" selection-start-column="24" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/recipe/recipebook.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="583" lean-forward="true" selection-start-line="583" selection-end-line="583" />
+        <state relative-caret-position="277">
+          <caret line="314" column="5" lean-forward="true" selection-start-line="314" selection-start-column="5" selection-end-line="314" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/database/database.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="71" column="21" lean-forward="true" selection-start-line="71" selection-start-column="21" selection-end-line="71" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/Calendar/TimePicker.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/TimePicker.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1446" column="24" selection-start-line="1446" selection-start-column="24" selection-end-line="1446" selection-end-column="24" />
+        <state relative-caret-position="397">
+          <caret line="200" column="3" lean-forward="true" selection-start-line="200" selection-start-column="3" selection-end-line="200" selection-end-column="3" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/DatePicker.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="13" column="8" lean-forward="true" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/GoogleColors.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///opt/flutter/packages/flutter/lib/src/material/dropdown.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="500" column="2" selection-start-line="500" selection-start-column="2" selection-end-line="500" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/CustomShowDialog.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="517" column="25" selection-start-line="517" selection-start-column="25" selection-end-line="517" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#22046#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/pages/calendar_view.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="715">
-          <caret line="131" column="53" selection-start-line="131" selection-start-column="53" selection-end-line="131" selection-end-column="53" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/recipe/new_recipe.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="393" column="28" selection-start-line="393" selection-start-column="28" selection-end-line="393" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/addCircular.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/emptyState.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/nothingFound.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Dialogs.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="117" selection-start-line="117" selection-end-line="117" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pubspec.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-556">
-          <caret line="22" column="15" lean-forward="true" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/Calendar/flutter_calendar.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -1014,7 +888,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>Android</last-edited>
+          <last-edited>Android (Flutter-Recipe)|Android</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1049,7 +923,20 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>recipe_android</last-edited>
+          <last-edited>Flutter-Recipe</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1061,7 +948,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Dart Packages</last-edited>
+          <last-edited>Flutter Plugins</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

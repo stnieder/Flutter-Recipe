@@ -4,12 +4,14 @@ class RoundCheckBoxListTile extends StatefulWidget{
   Widget title;
   Widget trailing;
   bool checked;
+  Function onTap;
 
   RoundCheckBoxListTile(
     {
       this.checked,
       @required this.title,
-      this.trailing
+      this.trailing,
+      this.onTap
     }
   );
 
@@ -65,6 +67,7 @@ class _RoundCheckBoxListTile extends State<RoundCheckBoxListTile>{
                   setState(() {
                     checked = !checked;
                   });
+                  widget.onTap();
                 },
               ),
               Padding(

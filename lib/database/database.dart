@@ -83,7 +83,8 @@ class DBHelper{
         "item text, "+
         "measure varchar, "+
         "number real, " +
-        "checked integer " +
+        "checked integer, " +
+        "timestamp real " +
       ")"
     );
 
@@ -309,11 +310,11 @@ class DBHelper{
 
   //Get Shopping list
   Future<List<Shopping>> getShopping() async{
-    String sql = "SELECT shopping.item, shopping.measure, shopping.number, shopping.checked, recipes.name FROM shopping, recipes, recipeShopping WHERE recipes.id = recipeShopping.idRecipes AND recipeShopping.idShopping = shopping.id";
+    String sql = "SELECT shopping.item, shopping.measure, shopping.number, shopping.checked, shopping.timestamp, recipes.name FROM shopping, recipes, recipeShopping WHERE recipes.id = recipeShopping.idRecipes AND recipeShopping.idShopping = shopping.id";
     List<Map> list = await _db.rawQuery(sql);
     List<Shopping> shopping = new List();
     for(int i=0; i<list.length; i++){
-      shopping.add(new Shopping(list[i]["id"], list[i]["item"], list[i]["number"].toString(), list[i]["measure"], list[i]["checked"]));
+      shopping.add(new Shopping(list[i]["id"], list[i]["item"], list[i]["number"].toString(), list[i]["measure"], list[i]["checked"], list[i]["timestamp"]));
     }
     return shopping;
   }
@@ -352,6 +353,35 @@ class DBHelper{
     return await _db.rawUpdate(
       sql,
       [newFavorite, recipeName]
+    );
+  }
+
+  //Update shopping item
+  Future<int> updateShopItem(String item, String timestamp) async{
+    String sql = "SELECT checked FROM shopping WHERE item = ? AND timestamp = ?";
+    List<Map> list = await _db.rawQuery(
+      sql,
+      [item, timestamp]
+    );
+    print("ItemAnzahl: "+list.length.toString());
+    List<int> checked = new List();
+    for(int i=0; i<list.length; i++){
+      checked.add(list[i]["checked"]);
+    }
+
+    int checkedInt;
+    String timestampString;
+
+    for(int i=0; i<checked.length; i++){
+      if(checked[i] == 0) checkedInt = 1;
+      else checkedInt = 0;
+      timestampString = DateTime.now().toString();
+    }
+
+    sql = "UPDATE shopping SET checked = ?, timestamp = ? WHERE item = ? AND timestamp = ?";
+    return await _db.rawUpdate(
+      sql,
+      [checkedInt, timestampString, item, timestamp]
     );
   }
 }
