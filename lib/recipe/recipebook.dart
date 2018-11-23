@@ -16,8 +16,8 @@ import '../interface/HexToColor.dart';
 import '../interface/SelectableItems.dart';
 import '../model/Recipes.dart';
 import '../pages/calendar_view.dart';
-import '../pages/list.dart';
 import '../pages/shopping_list.dart';
+
 
 
 Future<List<Recipes>> fetchRecipes(bool searched, String recipeName) async{
@@ -102,7 +102,20 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           ),
         ),
         FloatingActionButton(
-          onPressed: (){},
+          onPressed: (){
+            SnackBar snackbar = SnackBar(
+              content: Text("Can't send photo. Retry in 5 seconds"),
+              action: SnackBarAction(
+                textColor: Colors.pinkAccent,
+                label: "Retry",
+                onPressed: () {
+                  // Retry button pressed
+                },
+              ),
+            );
+
+            _drawerKey.currentState.showSnackBar(snackbar);
+          },
           child: Icon(
             Icons.add
           ),

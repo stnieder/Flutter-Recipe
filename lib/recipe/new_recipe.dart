@@ -33,6 +33,7 @@ class NewRecipe extends StatefulWidget{
   final Duration duration;
   final String imagePath;
   final Color backgroundColor;
+  final int personenAnzahl;
 
   //Zutaten
   final List<double> numberList;
@@ -53,7 +54,8 @@ class NewRecipe extends StatefulWidget{
        this.numberList,
        this.measureList,
        this.nameList,
-       this.stepsList
+       this.stepsList,
+       this.personenAnzahl
     }
   );
 
@@ -122,13 +124,20 @@ class _NewRecipe extends State<NewRecipe>{
       zNumber = widget.numberList;
       zMass = widget.measureList;
       zNamen = widget.nameList;
-      stepDescription = widget.stepsList;
+
+      for(int i=0; i < widget.stepsList.length; i++){
+        print("Before description add: "+stepDescription.length.toString());
+        stepDescription.add(widget.stepsList[i]);
+        print("After description add: "+stepDescription.length.toString());
+        print("Description: "+stepDescription.toString());
+      }
+      personenAnzahl = widget.personenAnzahl;
       edit = true;
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -587,9 +596,9 @@ class _NewRecipe extends State<NewRecipe>{
                       ),
                       Container(
                         height: descriptionHeight,
-                        child: DragAndDropList(
-                          stepDescription.length,
-                          itemBuilder: (BuildContext ctxt, item){
+                        child: ListView.builder(
+                          itemCount: stepDescription.length,
+                          itemBuilder: (ctxt, item){
                             return new SizedBox(                                 
                               child: new Dismissible(
                                 key: Key(item.toString()),
@@ -632,18 +641,7 @@ class _NewRecipe extends State<NewRecipe>{
                                 ),
                               ),
                             );
-                          },
-                          onDragFinish: (before, after){
-                            String data = stepDescription[before];
-                            stepDescription.removeAt(before);
-                            stepDescription.insert(after, data);
-                            setState(() {});
-                          },
-                          canBeDraggedTo: (stepDescription.length > 1
-                            ? (one, two) => false
-                            : (one, two) => true
-                          ),
-                          dragElevation: 6.0,
+                          }
                         ),
                       )
                     ],
@@ -799,7 +797,7 @@ class _NewRecipe extends State<NewRecipe>{
       returnValue = false;
       await errorMessage("s");
     }  
-    if(recipeTaken == true)  {
+    if(recipeTaken == true && edit != true)  {
       returnValue = false;
       await errorMessage("t");
     }

@@ -289,6 +289,7 @@ class _RecipeDetails extends State<RecipeDetails>{
   }
 
   Future saveRecShopping(int shoppingID, DBHelper dbHelper) async{
+    await dbHelper.create();
 
     RecipeShopping recipeShopping = new RecipeShopping();
     recipeShopping.idShopping = shoppingID;
@@ -302,8 +303,8 @@ class _RecipeDetails extends State<RecipeDetails>{
     await dbHelper.create();
 
     ShoppingDB shopping = new ShoppingDB();
+    print("NameList length: "+nameList.length.toString()+"--------------------------------------------------");
     for(int i=0; i<nameList.length; i++){
-      print("Failed at item");
       shopping.item = nameList[i];
       shopping.number = numberList[i].toString();
       shopping.measure = measureList[i];
@@ -361,7 +362,6 @@ class _RecipeDetails extends State<RecipeDetails>{
     for(int i=0; i < parsedSteps.length; i++){
       steps.add(parsedSteps[i]);
     }
-    print("Steps-Anzahl: "+steps.length.toString());
     return steps;
   }
 
@@ -380,6 +380,7 @@ class _RecipeDetails extends State<RecipeDetails>{
           measureList: measureList,
           nameList: nameList,
           stepsList: stepsList,
+          personenAnzahl: peopleDB,
         )
       )
     );
