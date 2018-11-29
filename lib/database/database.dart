@@ -309,8 +309,9 @@ class DBHelper{
   }
 
   //Get Shopping list
-  Future<List<Shopping>> getShopping() async{
-    String sql = "SELECT shopping.item, shopping.measure, shopping.number, shopping.checked, shopping.timestamp, recipes.name FROM shopping, recipes, recipeShopping WHERE recipes.id = recipeShopping.idRecipes AND recipeShopping.idShopping = shopping.id ORDER BY shopping.checked DESC";
+  Future<List<Shopping>> getShopping(String order) async{
+    if(order == "abc") order = "item ASC";
+    String sql = "SELECT shopping.item, shopping.measure, shopping.number, shopping.checked, shopping.timestamp, recipes.name FROM shopping, recipes, recipeShopping WHERE recipes.id = recipeShopping.idRecipes AND recipeShopping.idShopping = shopping.id ORDER BY shopping.checked, shopping."+order;
     List<Map> list = await _db.rawQuery(sql);
     List<Shopping> shopping = new List();
     for(int i=0; i<list.length; i++){

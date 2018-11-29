@@ -1,16 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:Time2Eat/database/database.dart';
 import 'package:Time2Eat/interface/RoundCheckBox.dart';
 import 'package:Time2Eat/model/Shopping.dart';
-import 'package:flutter/material.dart';
 
 import '../interface/GoogleColors.dart';
 import '../interface/MyExpansionTile.dart';
 
 
-Future<List<Shopping>> fetchShoppingList() async{
+Future<List<Shopping>> fetchShoppingList(SharedPreferences prefs) async{    
+  String order = "abc";
+  prefs = await SharedPreferences.getInstance();
+  if(prefs.getString("order") == null) {
+    order = "timestamp";
+    prefs.setString("order", order);
+  } else {
+    prefs.setString("order", order);
+  }
   var dbHelper = new DBHelper();
   await dbHelper.create();
-  Future<List<Shopping>> shopping = dbHelper.getShopping();
+  Future<List<Shopping>> shopping = dbHelper.getShopping(order);
   return shopping;
 }
 
@@ -25,7 +35,8 @@ class ShoppingPage extends StatefulWidget{
 
 class _ShoppingPage extends State<ShoppingPage>{
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
-
+  
+  SharedPreferences prefs;
   final GlobalKey<MyExpansionTileState> expansionTile = new GlobalKey();
 
   DBHelper db = new DBHelper();
@@ -34,7 +45,7 @@ class _ShoppingPage extends State<ShoppingPage>{
   Widget build(BuildContext context) {
     return new Container(
       child: FutureBuilder(
-        future: fetchShoppingList(),
+        future: fetchShoppingList(prefs),
         builder: (context, snapshot){
           List<Widget> checked = new List();
           List<Widget> notchecked = new List();

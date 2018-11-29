@@ -30,6 +30,7 @@ dependencies:
   fluttertoast: ^2.0.9
   flutter_statusbarcolor: any
   flutter_local_notifications: ^0.4.1+1
+  shared_preferences: ^0.4.3
 
 
 dev_dependencies:

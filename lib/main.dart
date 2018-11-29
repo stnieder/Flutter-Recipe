@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'recipe/recipebook.dart';
 import 'recipe/new_recipe.dart';
@@ -21,6 +22,7 @@ class Recipe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {  
     //changeStatusColor(); 
+    setPrefs();
     return new MaterialApp(    
       builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child),  
       title: 'Rezeptbuch',
@@ -37,6 +39,11 @@ class Recipe extends StatelessWidget {
         '/add_recipe': (context) => NewRecipe()
       },
     );
+  }
+
+  setPrefs() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getString("shopping") == null) await prefs.setString("shopping", "Einkaufsliste");    
   }
 
   changeStatusColor() async{
