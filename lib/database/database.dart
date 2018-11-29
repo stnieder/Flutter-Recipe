@@ -193,7 +193,7 @@ class DBHelper{
     if(count == 0){
       shopping.id = await _db.insert("shopping", shopping.toMap());
     } else {
-      await _db.rawUpdate("UPDATE shopping SET number = number + ? WHERE item = ?", [shopping.number, shopping.item]);
+      await _db.rawUpdate("UPDATE shopping SET number = number + ?, checked = 0 WHERE item = ?", [shopping.number, shopping.item]);
     }
     return shopping;
   }
@@ -356,36 +356,10 @@ class DBHelper{
     );
   }
 
-  //Get checked column of shopping item
-  Future<List<String>> getCheckedColumn(String item, String timestamp) async{
-    String sql = "SELECT item FROM shopping WHERE item = ? AND timestamp = ? AND checked = ?";
-    List<String> checkedItems = new List();
-    List<Map> list = await _db.rawQuery(sql, [item, timestamp, 1]);
-
-    for(int i=0; i<list.length; i++){
-      checkedItems.add(list[i]["item"]);
-    }
-
-    return checkedItems;
-  }
-
-  //Get unchecked column of shopping item
-  Future<List<String>> getUncheckedColumn(String item, String timestamp) async{
-    String sql = "SELECT item FROM shopping WHERE item = ? AND timestamp = ? AND checked = ?";
-    List<String> unchecked = new List();
-    List<Map> list = await _db.rawQuery(sql, [item, timestamp, 0]);
-
-    for(int i=0; i<list.length; i++){
-      unchecked.add(list[i]["item"]);
-    }
-
-    return unchecked;
-  }
-
   //Update shopping item
   Future<int> updateShopItem(String item, String timestamp, int checked) async{
     String sql = "UPDATE shopping SET checked = ?, timestamp = ? WHERE item = ? AND timestamp = ?";
-    int count = await _db.rawUpdate(sql, [checked.toString(), timestamp, item, DateTime.now().toString()]);
+    int count = await _db.rawUpdate(sql, [checked.toString(), DateTime.now().toString(), item, timestamp]);
     return count;
   }
 }

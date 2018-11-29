@@ -123,12 +123,19 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       ];
 
     return Scaffold(
-      appBar: (longPressFlag
-        ? longPressedAppBar()
-        : (searchActive
-          ? searchAppBar()
-          : defaultAppBar()
-        )
+      appBar: PreferredSize(
+        child: AnimatedCrossFade(
+          firstChild: longPressedAppBar(),
+          secondChild: (searchActive
+            ? searchAppBar()
+            : defaultAppBar()
+          ),
+          crossFadeState: longPressFlag
+            ? CrossFadeState.showFirst
+            : CrossFadeState.showSecond,
+          duration: Duration(milliseconds: 200),
+        ),
+        preferredSize: Size(MediaQuery.of(context).size.width, 56.0),
       ),
       key: _drawerKey,
       body: pageView(_currentTab),
@@ -404,15 +411,6 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           onPressed: (){
             print("Deleted pressed");
           },
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.label_outline,
-            color: Colors.black54,
-          ),
-          onPressed: (){
-            print("Labeled pressed");
-          },
         )
       ],
       backgroundColor: Colors.white,
@@ -423,38 +421,24 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         ),
         onPressed: (){
           setState(() {
-            for(int i=0; i < map.length; i++){
-              var widget = this.map[0].currentState;
-              print(widget);
-            }
+            longPressFlag = false;                       
             indexList.clear();
-            longPressFlag = false;
-            longPress();                 
-
+            longPress();      
             searchController = new TextEditingController();
           });
         },
       ),
-      title: (indexList.isEmpty
-        ? Text(
-            indexList.length.toString()
-          )
-        : Text(
-            "Rezepte auswählen",
-            style: TextStyle(
-              fontFamily: "Google-Sans",
-              fontSize: 16.0
-            ),
-          )
+      title: Text(
+        indexList.length.toString(),
+        style: TextStyle(
+          color: Colors.black54
+        ),
       ),
     );
   }
 
   Widget pageView(int currentPage){
-    switch (currentPage) {
-      case 0:
-          return listPage();
-        break;
+    switch (currentPage) {      
       case 1:
           return CalendarView();
         break;
@@ -462,6 +446,9 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       case 2:
           return ShoppingPage();
         break;
+      default:
+        return listPage();
+      break;
     }
   }
 
@@ -482,7 +469,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
                       Container(
                           width: 200.0,
                           height: 200.0,
-                          child: Text("hier kommt ein bild hinein")//Image.asset("images/nothingFound.png"),
+                          child: Image.asset("images/nothingFound.png"),
                       ),
                       Container(
                         child: Padding(

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 class RoundCheckBoxListTile extends StatefulWidget{
-  Widget title;
-  Widget trailing;
-  bool checked;
-  Function onTap;
+  final bool underline;
+  final Widget title;
+  final Widget trailing;
+  final Function onTap;
+  final bool checked;  
 
   RoundCheckBoxListTile(
     {
       this.checked,
+      this.onTap,
       @required this.title,
       this.trailing,
-      this.onTap
+      this.underline
     }
   );
 
@@ -38,6 +40,10 @@ class _RoundCheckBoxListTile extends State<RoundCheckBoxListTile>{
           padding: EdgeInsets.only(left: 10.0, top: 5.0, bottom: 5.0),
           child: Row(
             children: <Widget>[
+              (widget.underline
+                ? Divider()
+                : Container()
+              ),
               GestureDetector(
                 child: (checked
                     ? Padding(
@@ -80,8 +86,7 @@ class _RoundCheckBoxListTile extends State<RoundCheckBoxListTile>{
               )
             ],
           ),
-        ),
-        Divider()
+        ),        
       ],
     );
   }

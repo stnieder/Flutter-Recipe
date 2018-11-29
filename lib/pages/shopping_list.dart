@@ -2,7 +2,9 @@ import 'package:Time2Eat/database/database.dart';
 import 'package:Time2Eat/interface/RoundCheckBox.dart';
 import 'package:Time2Eat/model/Shopping.dart';
 import 'package:flutter/material.dart';
+
 import '../interface/GoogleColors.dart';
+import '../interface/MyExpansionTile.dart';
 
 
 Future<List<Shopping>> fetchShoppingList() async{
@@ -23,18 +25,10 @@ class ShoppingPage extends StatefulWidget{
 
 class _ShoppingPage extends State<ShoppingPage>{
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
-  List<Widget> notchecked = new List();
-  List<Widget> checked = new List();
+
+  final GlobalKey<MyExpansionTileState> expansionTile = new GlobalKey();
+
   DBHelper db = new DBHelper();
-
-
-  @override
-  void initState() {
-    super.initState();
-    (()async{
-      await db.create();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,50 +36,63 @@ class _ShoppingPage extends State<ShoppingPage>{
       child: FutureBuilder(
         future: fetchShoppingList(),
         builder: (context, snapshot){
+          List<Widget> checked = new List();
+          List<Widget> notchecked = new List();
           if(snapshot.hasData){
             if(snapshot.data.length != 0){
               for(int i=0; i<snapshot.data.length; i++){
                 if(snapshot.data[i].checked == 0) {
                   notchecked.add(
-                    RoundCheckBoxListTile(
-                      title: Text(snapshot.data[i].number + snapshot.data[i].measure + " " + snapshot.data[i].item),
-                      checked: false,
-                      onTap: () {
-                        setState(() {
-                          checkShopping(snapshot.data[i].item, snapshot.data[i].timestamp);
-                        });
-                      },
+                    checkbox(
+                      snapshot.data[i].item, 
+                      snapshot.data[i].timestamp, 
+                      snapshot.data[i].number, 
+                      snapshot.data[i].measure, 
+                      snapshot.data[i].checked
                     )
                   );
-                } else if(snapshot.data[i].checked == 1){
+                } else {    
                   checked.add(
-                    RoundCheckBoxListTile(
-                      title: Text(snapshot.data[i].number + snapshot.data[i].measure + " " + snapshot.data[i].item),
-                      checked: true,
-                      onTap: () {
-                        setState(() {
-                          checkShopping(snapshot.data[i].item, snapshot.data[i].timestamp);
-                        });
-                      },
+                    checkbox(
+                      snapshot.data[i].item, 
+                      snapshot.data[i].timestamp, 
+                      snapshot.data[i].number, 
+                      snapshot.data[i].measure, 
+                      snapshot.data[i].checked
                     )
                   );
                 }
               }
 
-              return Column(
-                children: <Widget>[
-                  Flexible(
-
-                    child: ListView(
-                      children: notchecked,
-                    ),
+              if(checked.isEmpty){
+                return Container(
+                  child: Column(
+                    children: notchecked,
                   ),
-                  ExpansionTile(
-                    title: Text("Checked Items"),
-                    children: checked,
-                  )
-                ],
-              );
+                );
+              } else {
+                return Column(
+                  children: <Widget>[
+                    Container(
+                      child: Column(
+                        children: notchecked,
+                      ),
+                    ),
+                    MyExpansionTile(
+                      title: Text(
+                        "Erledigt (${checked.length})",
+                        style: TextStyle(
+                          fontFamily: "Google-Sans",
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      key: expansionTile,
+                      children: checked,
+                    )
+                  ],
+                );
+              }              
             } else if(snapshot.data.length == 0){
               return new Center(
                 child: Text("Keine Daten gefunden."),
@@ -104,17 +111,40 @@ class _ShoppingPage extends State<ShoppingPage>{
     );
   }
 
-  checkShopping(String item, String timestamp) async{
-    List<String> uncheckedItems = await db.getUncheckedColumn(item, timestamp);
-    List<String> checkedItems = await db.getCheckedColumn(item, timestamp);
-    int updatedRecords;
+  checkShopping(String item, String timestamp, int check) async{
+    await db.create();
+    await db.updateShopItem(item, timestamp, check);
+  }
 
-    if(uncheckedItems.contains(item)){
-      updatedRecords = await db.updateShopItem(item, timestamp, 0);
-    } else if(checkedItems.contains(item)){
-      updatedRecords = await db.updateShopItem(item, timestamp, 1);
-    }
-    print("Zutaten geupdatet");
-    setState(() {});
+  checkbox(String item, String timestamp, String number, String measure, int checked){        
+    return RoundCheckBoxListTile(
+      title: (checked == 0
+        ? Text(number + measure + " " + item)
+        : RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                new TextSpan(
+                  text: number + measure + " " + item,
+                  style: new TextStyle(
+                    color: Colors.black,
+                    decoration: TextDecoration.lineThrough
+                  )
+                )
+              ]
+            ),
+          )
+      ),
+      checked: checked == 1,
+      underline: checked == 0,
+      onTap: (){
+        setState(() {
+          if(checked == 0) checked = 1;
+          else {            
+            checked = 0;            
+          }
+          checkShopping(item, timestamp, checked);
+        });
+      },
+    );
   }
 }

@@ -84,6 +84,7 @@ class _NewRecipe extends State<NewRecipe>{
   //Allgemein
   final TextEditingController recipeName = new TextEditingController();
   final TextEditingController recipeDescription = new TextEditingController();  
+  FocusNode nameFocus = new FocusNode();
 
   //Zutaten
   double ingredientHeight = 0.0;
@@ -124,13 +125,7 @@ class _NewRecipe extends State<NewRecipe>{
       zNumber = widget.numberList;
       zMass = widget.measureList;
       zNamen = widget.nameList;
-
-      for(int i=0; i < widget.stepsList.length; i++){
-        print("Before description add: "+stepDescription.length.toString());
-        stepDescription.add(widget.stepsList[i]);
-        print("After description add: "+stepDescription.length.toString());
-        print("Description: "+stepDescription.toString());
-      }
+      stepDescription = widget.stepsList;      
       personenAnzahl = widget.personenAnzahl;
       edit = true;
     }
@@ -316,12 +311,13 @@ class _NewRecipe extends State<NewRecipe>{
                       child: Icon(OMIcons.fastfood),
                     ),
                     title: TextFormField(
-                        autocorrect: true,
-                        autovalidate: true,
+                        autocorrect: nameFocus.hasFocus,
+                        autovalidate: nameFocus.hasFocus,
                         controller: recipeName,
                         decoration: InputDecoration(
                           hintText: "* Name",
                         ),
+                        focusNode: nameFocus,
                         maxLength: 30,
                         maxLengthEnforced: true,
                         validator: (value) => checkRecipe(value) 
