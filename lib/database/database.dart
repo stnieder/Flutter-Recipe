@@ -88,6 +88,14 @@ class DBHelper{
       ")"
     );
 
+    //create shopping list titles
+    await db.execute(
+      "CREATE TABLE listTitles("+
+        "id integer primary key AUTOINCREMENT, "+
+        "titleName text, "+
+      ")"
+    );
+
 
     //Create table between recipes and ingredients
     await db.execute(
@@ -122,6 +130,15 @@ class DBHelper{
         "id integer primary key AUTOINCREMENT, "+
         "idRecipes real, "+
         "idShopping real "+
+      ")"
+    );
+
+    //Create table between shopping and listTitles
+    await db.execute(
+      "CREATE TABLE shoppingTitles("+
+        "id integer primary key AUTOINCREMENT, "+
+        "idShopping real, "+
+        "idTitles real "+
       ")"
     );
 
