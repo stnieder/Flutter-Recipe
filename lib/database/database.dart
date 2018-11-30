@@ -180,6 +180,11 @@ class DBHelper{
     return count;
   }
 
+  Future<int> checkListTitle(String title) async{
+    int count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM listTitles where titleName = ?", [title]));
+    return count;
+  }
+
   Future<RecipesDB> insertRecipe(RecipesDB recipe) async{
     var count;
     if(recipe.id == null) count = 0;
@@ -381,6 +386,25 @@ class DBHelper{
     return shopping;
   }
 
+  //Get checked shopping items
+  Future<int> countCheckedItems(String order, String title) async{
+    if(order == "abc") order = "item ASC";
+    String sql = 
+    "SELECT COUNT(*) " + 
+    "FROM shopping, recipes, recipeShopping, shoppingTitles, listTitles " + 
+    "WHERE recipes.id = recipeShopping.idRecipes "+ 
+    "AND recipeShopping.idShopping = shopping.id "+
+    "AND shopping.id = shoppingTitles.idShopping "+
+    "AND shoppingTitles.idTitles = listTitles.id "+
+    "AND listTitles.titleName = ? "+
+    "AND shopping.checked = ? "+
+    "ORDER BY shopping.checked, shopping."+order;
+
+    int count = Sqflite.firstIntValue(await _db.rawQuery(sql, [title, 1]));
+    print("CountTitles: "+count.toString());
+    return count;
+  }
+
   //Get Termine of specific date
   Future<List> getTermine(String date) async{
     String sql = "SELECT termine.termin, recipes.name, recipes.image FROM termine, recipeTermine, recipes WHERE termine.termin = '"+date+"' AND termine.id = recipeTermine.idTermine AND recipeTermine.idRecipes = recipes.id";
@@ -406,8 +430,17 @@ class DBHelper{
 
   //Count list titles
   Future<int> countTitles(String title) async{
-    String sql = "SELECT COUNT(*) FROM listTitles WHERE listTitles.titleName = ?";
-    List<Map> list = await _db.rawQuery(sql, [title]);
+    String sql;
+    List<Map> list = new List();
+    if(title != "") {
+      sql = "SELECT COUNT(*) FROM listTitles WHERE listTitles.titleName = ?";
+      list = await _db.rawQuery(sql, [title]);
+    }
+    else {
+      sql = "SELECT COUNT(*) FROM listTitles";
+      list = await _db.rawQuery(sql);      
+    }
+    
     return list.length;
   }
 

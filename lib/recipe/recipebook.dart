@@ -4,12 +4,12 @@ import 'package:Time2Eat/interface/DatePicker.dart';
 import 'package:Time2Eat/model/Recipe_Termine.dart';
 import 'package:Time2Eat/model/Termine.dart';
 import 'package:Time2Eat/recipe/new_recipe.dart';
-import 'package:Time2Eat/main.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../Constants.dart';
 import '../database/database.dart';
@@ -71,6 +71,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
     "Terminübersicht",
     "Einkaufsliste"
   ];
+
   List<FloatingActionButton> _fabs = new List();
 
   
@@ -175,7 +176,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
               )
             ],
         ),
-        floatingActionButton: _fabs[_currentTab],
+        floatingActionButton: _fabs[_currentTab],        
       );
     }
   
@@ -352,6 +353,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         actions: actionList(_currentTab),
         backgroundColor: Color(0xFFfafafa),
         elevation: 0.0,
+        leading: leadingWidget(_currentTab),
         title: Padding(
           padding: EdgeInsets.only(left: 120.0),
           child: Text(
@@ -633,5 +635,37 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
   setPrefs() async{
     prefs = await SharedPreferences.getInstance();
     _tabTitle[2] = prefs.getString("currentList");
+  }
+
+
+  leadingWidget(int page) {
+    switch (page) {
+      case 2:
+        return IconButton(
+          icon: Icon(Icons.dehaze, color: Colors.black54),
+          onPressed: (){
+            asyncBottomSheet();
+          },
+        );
+        break;
+    }
+  }
+
+  asyncBottomSheet() async{
+    var returnStatement = await Dialogs().showShoppingMenu(context);
+    if(returnStatement == "neue Liste"){
+      returnStatement = await Dialogs().createNewList(context);
+    } else if(returnStatement == "feedback"){
+      _launchMail();
+    }
+  }
+
+  _launchMail() async{
+    const url = "mailto:simon.eder1236@gmail.com?subject=Feedback";
+    if(await canLaunch(url)){
+      await launch(url);
+    } else {
+      throw "Konnte Email leider nicht starten";
+    }
   }
 }

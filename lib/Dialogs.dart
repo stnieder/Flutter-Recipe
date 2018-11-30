@@ -1,15 +1,12 @@
-import 'dart:typed_data';
-
+import 'package:Time2Eat/database/database.dart';
 import 'package:Time2Eat/interface/GoogleColors.dart';
-import 'package:Time2Eat/interface/MyDropDownButton.dart';
+import 'package:Time2Eat/interface/MyListTile.dart';
 import 'package:Time2Eat/interface/NotificationDialog.dart';
+import 'package:Time2Eat/interface/RoundedBottomSheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'recipe/recipebook.dart';
 
 import 'interface/CustomShowDialog.dart';
 
@@ -251,6 +248,7 @@ class Dialogs{
   }
 
   showPopupMenu(BuildContext context, int page) async{
+    //Possible choices
     List<String> choices = [
       "Alphabetisch",
       "Datum",
@@ -258,9 +256,17 @@ class Dialogs{
       "List wechseln",
       "Alle erledigten Aufgaben löschen"
     ];
+
+    //get current order
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String prefsOrder = prefs.getString("order");
 
+    //Count amount of list titles
+    DBHelper db = new DBHelper();
+    int countTitles = await db.countTitles("");
+
+    //Count checked list items
+    int countItems = await db.countCheckedItems(prefsOrder, prefs.getString("currentList"));
     
     _title(String text){
       return Text(
@@ -297,67 +303,54 @@ class Dialogs{
       );
     }
 
-    _item(BuildContext context, String text){
-      return ListTile(
-        trailing: Icon(Icons.check, color: Colors.transparent),
-        contentPadding: EdgeInsets.only(left: 20.0),
-        title: Text(
-          text,
-          style: TextStyle(
-            fontSize: 14.0
+    _item(BuildContext context, String text, bool enable){
+      return InkWell(
+        child: ListTile(
+          trailing: Icon(Icons.check, color: Colors.transparent),
+          contentPadding: EdgeInsets.only(left: 20.0),
+          title: Text(
+            text,
+            style: TextStyle(
+              fontSize: 14.0
+            ),
           ),
+          enabled: enable,
         ),
-        onTap: () {
-          Navigator.pop(context, text);
-        },
+        onTap: (){
+          if(enable) Navigator.pop(context, text);
+        }
       );
     }
 
-    return showModalBottomSheet(      
-        context: context,        
-        builder: (BuildContext context){
-          return new Container(
-            color: Color(0xFF737373),            
-            child: new Container(
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                borderRadius: new BorderRadius.only(
-                  topLeft: const Radius.circular(5.0),
-                  topRight: const Radius.circular(5.0)
-                )
+    return showRoundedBottomSheet(
+      context: context,
+      child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  _title("Sortieren nach"),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        _sortItem(context, choices[0], "abc"),
+                        _sortItem(context, choices[1], "timestamp")
+                      ],
+                    ),
+                  ),                            
+                ],
               ),
-              child: Container(
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            _title("Sortieren nach"),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: <Widget>[
-                                  _sortItem(context, choices[0], "abc"),
-                                  _sortItem(context, choices[1], "timestamp")
-                                ],
-                              ),
-                            ),                            
-                          ],
-                        ),
-                      ),
-                      Divider(),
-                      _item(context, choices[2]),
-                      _item(context, choices[3]),
-                      _item(context, choices[4])
-                    ],
-                  )
-                )
             ),
-          );
-        }
+            Divider(),
+            _item(context, choices[2], true),
+            _item(context, choices[3], countTitles > 1),
+            _item(context, choices[4], countItems > 0)
+          ],
+        )
     );
   }
 
@@ -409,7 +402,7 @@ class Dialogs{
                   color: Colors.black
                 ),
               ),
-              highlightColor: GoogleMaterialColors().getLightColor(2).withOpacity(0.2),              
+              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
               onPressed: (){
                 Navigator.pop(context, 'abbrechen');
               },              
@@ -433,6 +426,210 @@ class Dialogs{
         );
       }
     );
+  }
+
+  showShoppingMenu(BuildContext context) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String currentTitle = prefs.getString("currentList");
+    Color addListColor = Colors.white;
+    
+    DBHelper db = new DBHelper();
+
+    List<Widget> items = new List();    
+
+    _title(String text){
+      return Text(
+        text,
+        style: TextStyle(
+          color: Colors.grey,
+          fontFamily: "Google-Sans",
+          fontSize: 13.0,  
+          fontWeight: FontWeight.bold                         
+        ),
+      );
+    }
+    
+    _items(String text){
+      return MyListTileText(
+        backgroundColor: GoogleMaterialColors().primaryColor().withOpacity(0.4),
+        enabled: currentTitle == text,
+        childText: text,        
+      );
+    }
+
+    _list() async{      
+      List list = await db.getListTitles();
+
+      for(int i=0; i < list.length; i++){
+        items.add(
+          _items(list[i].titleName)
+        );
+      }
+    }
+
+    await _list();
+    return showRoundedBottomSheet(
+      context: context,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 30.0, left: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10.0),
+                  child: _title("Ihre Listen"),
+                ),
+                Column(
+                  children: items
+                )
+              ],
+            ),
+          ),
+          Divider(),
+          GestureDetector(
+            child: ListTile(
+              leading: Icon(Icons.add, color: Colors.black54),
+              title: Text(
+                "Neue Liste erstellen",
+                style: TextStyle(
+                  fontFamily: "Google-Sans",
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),            
+            onTap: (){
+              Navigator.pop(context, "neue Liste");
+            },
+          ),
+          Divider(),
+          GestureDetector(
+            child: ListTile(
+              leading: Icon(OMIcons.smsFailed, color: Colors.black54),
+              title: Text(
+                "Feedback geben",
+                style: TextStyle(
+                  fontFamily: "Google-Sans",
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),            
+            onTap: (){
+              Navigator.pop(context, "feedback");
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  createNewList(BuildContext context) async{
+    TextEditingController controller = new TextEditingController();
+    DBHelper db = new DBHelper();
+
+    bool _titleTaken = false;
+
+    await db.create();
+    _checkList<bool>(String title){
+      db.create().then((nothing){
+        db.checkListTitle(title).then((val){
+          if(val > 0){
+            _titleTaken = true;
+          } else {
+            _titleTaken = false;
+          }
+        });
+      });
+      return _titleTaken;
+    }
+
+
+    return showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return CustomAlertDialog(            
+            content: Container(
+              height: 100.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(5.0))
+              ),
+              child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 10.0, bottom: 10.0),
+                  child: new Text(
+                    "Neue Liste erstellen",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontFamily: "Google-Sans",
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                  child: TextFormField(
+                    autofocus: true,    
+                    autocorrect: true,                
+                    controller: controller,                    
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Listentitel eingeben",
+                      hintStyle: TextStyle(
+                        color: Colors.black54,
+                        fontFamily: "Google-Sans",
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.bold                        
+                      )
+                    ),
+                    validator: (value) => _checkList(value)
+                      ? "Dieser Titel ist vergeben"
+                      : null
+                    ,
+                  ),
+                )
+              ],
+            ),
+            ),
+            contentPadding: EdgeInsets.only(bottom: 0.0),
+            actions: <Widget>[
+              new FlatButton(
+                child: Text(
+                  "Abbrechen",
+                  style: TextStyle(
+                    color: Colors.black
+                  ),
+                ),
+                highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+                onPressed: (){
+                  Navigator.pop(context, 'abbrechen');
+                },              
+                shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                splashColor: Colors.transparent,
+              ),
+              new FlatButton(
+                child: Text(
+                  "Speichern",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),
+                ),
+                color: GoogleMaterialColors().primaryColor(),
+                onPressed: (){
+                  if(controller.text.isNotEmpty) {
+
+                  }
+                },
+                shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              )
+            ],
+          );
+        }
+    );    
   }
 }
 
