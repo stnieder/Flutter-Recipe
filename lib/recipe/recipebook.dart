@@ -447,10 +447,9 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       switch (currentPage) {      
         case 1:
             return CalendarView();
-          break;
-  
+          break;  
         case 2:
-            return ShoppingPage();
+            return ShoppingPage("Einkaufsliste");
           break;
         default:
           return listPage();
@@ -618,14 +617,21 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       print("DialogReturn: "+dialogReturn.toString());
       if(dialogReturn == "Liste umbenennen"){
         var rename = await Dialogs().renameShopping(context);
-        setState(() {
-          if(rename != "abbrechen") prefs.setString("shopping", rename);
-        });
+        if(rename != null){
+          if(rename != "abbrechen") {
+            String oldTitle = rename[0];
+            String newTitle = rename[1];              
+            await dbHelper.updateTitle(newTitle, oldTitle);
+            setState(() {
+              prefs.setString("currentList", newTitle);
+            });            
+          }
+        }
       }
     }
   
   setPrefs() async{
     prefs = await SharedPreferences.getInstance();
-    _tabTitle[2] = prefs.getString("shopping");
+    _tabTitle[2] = prefs.getString("currentList");
   }
 }

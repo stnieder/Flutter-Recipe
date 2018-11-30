@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:Time2Eat/model/ListTitle.dart';
 import 'package:Time2Eat/model/RecipeTerminCombi.dart';
 import 'package:Time2Eat/model/Recipe_Shopping.dart';
 import 'package:Time2Eat/model/Recipe_Termine.dart';
 import 'package:Time2Eat/model/Shopping.dart';
+import 'package:Time2Eat/model/Shopping_Title.dart';
 import 'package:Time2Eat/model/Termine.dart';
 import 'package:path/path.dart';
 import '../model/Recipe_Steps.dart';
@@ -34,114 +36,123 @@ class DBHelper{
   * Create tables in the database
   * */
   Future _create(Database db, int version) async{
-    //Create recipes table
-    await db.execute(
-      "CREATE TABLE recipes(" +
-        "id integer primary key AUTOINCREMENT, " +
-        "name varchar, " +
-        "definition text, "+
-        "duration varchar, " +
-        "people integer default 2, " +
-        "favorite integer default 0, "+
-        "timestamp text, "+
-        "image real, "+
-        "backgroundColor text "+
-      ")"
-    );
+    await db.transaction((txn) async{
+      //Create recipes table
+        await txn.execute(
+          "CREATE TABLE recipes(" +
+            "id integer primary key AUTOINCREMENT, " +
+            "name varchar, " +
+            "definition text, "+
+            "duration varchar, " +
+            "people integer default 2, " +
+            "favorite integer default 0, "+
+            "timestamp text, "+
+            "image real, "+
+            "backgroundColor text "+
+          ")"
+        );
 
-    //Create ingredients table
-    await db.execute(
-      "CREATE TABLE ingredients(" +
-        "id integer primary key AUTOINCREMENT, " +
-        "name varchar, "+
-        "measure varchar, "+
-        "number real "+
-      ")"
-    );
+        //Create ingredients table
+        await txn.execute(
+          "CREATE TABLE ingredients(" +
+            "id integer primary key AUTOINCREMENT, " +
+            "name varchar, "+
+            "measure varchar, "+
+            "number real "+
+          ")"
+        );
 
-    //Create steps table
-    await db.execute(
-      "CREATE TABLE steps(" +
-        "id integer primary key AUTOINCREMENT, " +
-        "number integer, " +
-        "description text "+
-      ")"
-    );
+        //Create steps table
+        await txn.execute(
+          "CREATE TABLE steps(" +
+            "id integer primary key AUTOINCREMENT, " +
+            "number integer, " +
+            "description text "+
+          ")"
+        );
 
-    //create termin table
-    await db.execute(
-      "CREATE TABLE termine("+
-        "id integer primary key AUTOINCREMENT, " +
-        "termin text " +
-      ")"
-    );
+        //create termin table
+        await txn.execute(
+          "CREATE TABLE termine("+
+            "id integer primary key AUTOINCREMENT, " +
+            "termin text " +
+          ")"
+        );
 
-    //create shopping table
-    await db.execute(
-      "CREATE TABLE shopping("+
-        "id integer primary key AUTOINCREMENT, " +
-        "item text, "+
-        "measure varchar, "+
-        "number real, " +
-        "checked integer, " +
-        "timestamp real " +
-      ")"
-    );
+        //create shopping table
+        await txn.execute(
+          "CREATE TABLE shopping("+
+            "id integer primary key AUTOINCREMENT, " +
+            "item text, "+
+            "measure varchar, "+
+            "number real, " +
+            "checked integer, " +
+            "timestamp real " +
+          ")"
+        );
 
-    //create shopping list titles
-    await db.execute(
-      "CREATE TABLE listTitles("+
-        "id integer primary key AUTOINCREMENT, "+
-        "titleName text, "+
-      ")"
-    );
+        //create shopping list titles
+        await txn.execute(
+          "CREATE TABLE listTitles("+
+            "id integer primary key AUTOINCREMENT, "+
+            "titleName varchar "+
+          ")"
+        );
 
 
-    //Create table between recipes and ingredients
-    await db.execute(
-      "CREATE TABLE recipeIngredients(" +
-        "id integer primary key AUTOINCREMENT, " +
-        "idRecipes real, "+
-        "idIngredients real "+
-      ")"
-    );
+        //Create table between recipes and ingredients
+        await txn.execute(
+          "CREATE TABLE recipeIngredients(" +
+            "id integer primary key AUTOINCREMENT, " +
+            "idRecipes real, "+
+            "idIngredients real "+
+          ")"
+        );
 
-    //Create table between recipes and descriptions
-    await db.execute(
-        "CREATE TABLE recipeSteps(" +
-          "id integer primary key AUTOINCREMENT, " +
-          "idRecipes real, "+
-          "idSteps real "+
-        ")"
-    );
+        //Create table between recipes and descriptions
+        await txn.execute(
+            "CREATE TABLE recipeSteps(" +
+              "id integer primary key AUTOINCREMENT, " +
+              "idRecipes real, "+
+              "idSteps real "+
+            ")"
+        );
 
-    //Create table between recipes and termine
-    await db.execute(
-      "CREATE TABLE recipeTermine(" +
-        "id integer primary key AUTOINCREMENT, "+
-        "idRecipes real, "+
-        "idTermine real "+
-      ")"
-    );
+        //Create table between recipes and termine
+        await txn.execute(
+          "CREATE TABLE recipeTermine(" +
+            "id integer primary key AUTOINCREMENT, "+
+            "idRecipes real, "+
+            "idTermine real "+
+          ")"
+        );
 
-    //Create table between recipes and termine
-    await db.execute(
-      "CREATE TABLE recipeShopping(" +
-        "id integer primary key AUTOINCREMENT, "+
-        "idRecipes real, "+
-        "idShopping real "+
-      ")"
-    );
+        //Create table between recipes and termine
+        await txn.execute(
+          "CREATE TABLE recipeShopping(" +
+            "id integer primary key AUTOINCREMENT, "+
+            "idRecipes real, "+
+            "idShopping real "+
+          ")"
+        );
 
-    //Create table between shopping and listTitles
-    await db.execute(
-      "CREATE TABLE shoppingTitles("+
-        "id integer primary key AUTOINCREMENT, "+
-        "idShopping real, "+
-        "idTitles real "+
-      ")"
-    );
+        //Create table between shopping and listTitles
+        await txn.execute(
+          "CREATE TABLE shoppingTitles("+
+            "id integer primary key AUTOINCREMENT, "+
+            "idShopping real, "+
+            "idTitles real "+
+          ")"
+        );
 
+        //Insert first default shopping table
+        int insert = await txn.rawInsert(
+          "INSERT INTO listTitles(titleName) VALUES(?)",
+          ["Einkaufsliste"]
+        );
+        print("inserted1:$insert");
+
+    });
     print("Created all tables");
   }
 
@@ -228,6 +239,18 @@ class DBHelper{
     return termine;
   }
 
+  Future<ListTitleDB> insertList(ListTitleDB titles) async{
+    var count;
+    if(titles.id == null) count = 0;
+    else count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM listTitles WHERE titleName = ?", [titles.titleName]));
+    if(count == 0){
+      titles.id = await _db.insert("listTitles", titles.toMap());
+    } else {
+      await _db.update("listTitles", titles.toMap(), where: "id = ?", whereArgs: [titles.id]);
+    }
+    return titles;
+  }  
+
   Future<RecIngre> insertRecIngre(RecIngre recIngre) async{
     var count;
     if(recIngre.id == null) count = 0;
@@ -274,6 +297,18 @@ class DBHelper{
       await _db.update("recipeTermine", recShop.toMap(), where:  "id = ?", whereArgs: [recShop.id]);
     }
     return recShop;
+  }
+
+  Future<ShoppingTitlesDB> insertShoppingTitles(ShoppingTitlesDB shopTitles) async{
+    var count;
+    if(shopTitles.id == null) count = 0;
+    else count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM shoppingTitles WHERE id = ?", [shopTitles.id]));
+    if(count == 0){
+      shopTitles.id = await _db.insert("shoppingTitles", shopTitles.toMap());
+    } else {
+      await _db.update("shoppingTitles", shopTitles.toMap(), where:  "id = ?", whereArgs: [shopTitles.id]);
+    }
+    return shopTitles;
   }
 
 
@@ -326,10 +361,19 @@ class DBHelper{
   }
 
   //Get Shopping list
-  Future<List<Shopping>> getShopping(String order) async{
+  Future<List<Shopping>> getShopping(String order, String title) async{
     if(order == "abc") order = "item ASC";
-    String sql = "SELECT shopping.item, shopping.measure, shopping.number, shopping.checked, shopping.timestamp, recipes.name FROM shopping, recipes, recipeShopping WHERE recipes.id = recipeShopping.idRecipes AND recipeShopping.idShopping = shopping.id ORDER BY shopping.checked, shopping."+order;
-    List<Map> list = await _db.rawQuery(sql);
+    String sql = 
+    "SELECT shopping.item, shopping.measure, shopping.number, shopping.checked, shopping.timestamp, recipes.name " + 
+    "FROM shopping, recipes, recipeShopping, shoppingTitles, listTitles " + 
+    "WHERE recipes.id = recipeShopping.idRecipes "+ 
+    "AND recipeShopping.idShopping = shopping.id "+
+    "AND shopping.id = shoppingTitles.idShopping "+
+    "AND shoppingTitles.idTitles = listTitles.id "+
+    "AND listTitles.titleName = ? "+
+    "ORDER BY shopping.checked, shopping."+order;
+
+    List<Map> list = await _db.rawQuery(sql, [title]);
     List<Shopping> shopping = new List();
     for(int i=0; i<list.length; i++){
       shopping.add(new Shopping(list[i]["id"], list[i]["item"], list[i]["number"].toString(), list[i]["measure"], list[i]["checked"], list[i]["timestamp"]));
@@ -347,6 +391,31 @@ class DBHelper{
     }
     print("TerminAnzahl: "+termine.length.toString());
     return termine;
+  }
+
+  //Get all List titles
+  Future<List<ListTitle>> getListTitles() async{
+    String sql = "SELECT * FROM listTitles";
+    List<Map> list = await _db.rawQuery(sql);
+    List<ListTitle> titles = new List();
+    for(int i=0; i<list.length; i++){
+      titles.add(new ListTitle(list[i]["id"], list[i]["titleName"]));
+    }
+    return titles;
+  }
+
+  //Count list titles
+  Future<int> countTitles(String title) async{
+    String sql = "SELECT COUNT(*) FROM listTitles WHERE listTitles.titleName = ?";
+    List<Map> list = await _db.rawQuery(sql, [title]);
+    return list.length;
+  }
+
+  //Update list title
+  Future<int> updateTitle(String newTitle, String oldTitle) async{
+    String sql = "UPDATE listTitles SET titleName = ? WHERE titleName = ?";
+    int count = await _db.rawUpdate(sql, [newTitle, oldTitle]);
+    return count;
   }
 
   /*

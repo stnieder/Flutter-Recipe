@@ -1,3 +1,5 @@
+import 'package:Time2Eat/database/database.dart';
+import 'package:Time2Eat/model/ListTitle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
@@ -43,7 +45,10 @@ class Recipe extends StatelessWidget {
 
   setPrefs() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getString("shopping") == null) await prefs.setString("shopping", "Einkaufsliste");    
+    DBHelper db = new DBHelper();
+    await db.create();
+    List title = await db.getListTitles();
+    if(prefs.getString("shopping") == null) await prefs.setString("currentList", title[0].titleName);    
   }
 
   changeStatusColor() async{

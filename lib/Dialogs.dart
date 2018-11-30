@@ -255,6 +255,7 @@ class Dialogs{
       "Alphabetisch",
       "Datum",
       "Liste umbenennen",
+      "List wechseln",
       "Alle erledigten Aufgaben löschen"
     ];
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -321,12 +322,11 @@ class Dialogs{
               decoration: new BoxDecoration(
                 color: Colors.white,
                 borderRadius: new BorderRadius.only(
-                  topLeft: const Radius.circular(10.0),
-                  topRight: const Radius.circular(10.0)
+                  topLeft: const Radius.circular(5.0),
+                  topRight: const Radius.circular(5.0)
                 )
               ),
-              child: SingleChildScrollView(
-                child: new Container(
+              child: Container(
                   child: Column(
                     children: <Widget>[
                       Padding(
@@ -350,11 +350,11 @@ class Dialogs{
                       ),
                       Divider(),
                       _item(context, choices[2]),
-                      _item(context, choices[3])
+                      _item(context, choices[3]),
+                      _item(context, choices[4])
                     ],
                   )
-                ),
-              )
+                )
             ),
           );
         }
@@ -364,7 +364,8 @@ class Dialogs{
   renameShopping(BuildContext context) async{
     TextEditingController controller = new TextEditingController();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    controller.text = prefs.getString("shopping");
+    String oldTitle = prefs.getString("currentList");
+    controller.text = prefs.getString("currentList");
 
     return showDialog(
       context: context,
@@ -404,19 +405,29 @@ class Dialogs{
             new FlatButton(
               child: Text(
                 "Abbrechen",
-
+                style: TextStyle(
+                  color: Colors.black
+                ),
               ),
-              color: GoogleMaterialColors().getLightColor(2),
+              highlightColor: GoogleMaterialColors().getLightColor(2).withOpacity(0.2),              
               onPressed: (){
                 Navigator.pop(context, 'abbrechen');
-              },
+              },              
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              splashColor: Colors.transparent,
             ),
             new FlatButton(
-              child: Text("Erledigt"),
+              child: Text(
+                "Erledigt",
+                style: TextStyle(
+                  color: Colors.white
+                ),
+              ),
               color: GoogleMaterialColors().primaryColor(),
               onPressed: (){
-                if(controller.text.isNotEmpty) Navigator.pop(context, controller.text);                
+                if(controller.text.isNotEmpty) Navigator.pop(context, [oldTitle, controller.text]);                
               },
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
             )
           ],
         );
