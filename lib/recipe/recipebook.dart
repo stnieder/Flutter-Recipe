@@ -1,7 +1,9 @@
 import 'package:Time2Eat/Dialogs.dart';
 import 'package:Time2Eat/Termine/RecipeSelection.dart';
 import 'package:Time2Eat/interface/DatePicker.dart';
+import 'package:Time2Eat/model/ListTitle.dart';
 import 'package:Time2Eat/model/Recipe_Termine.dart';
+import 'package:Time2Eat/model/Shopping_Title.dart';
 import 'package:Time2Eat/model/Termine.dart';
 import 'package:Time2Eat/recipe/new_recipe.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +81,8 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
   @override
     void initState() {
       super.initState();
-      dbHelper.create();      
+      dbHelper.create(); 
+      setPrefs();     
     }
       
     @override
@@ -451,7 +454,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
             return CalendarView();
           break;  
         case 2:
-            return ShoppingPage("Einkaufsliste");
+            return ShoppingPage();
           break;
         default:
           return listPage();
@@ -655,13 +658,29 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
     var returnStatement = await Dialogs().showShoppingMenu(context);
     if(returnStatement == "neue Liste"){
       returnStatement = await Dialogs().createNewList(context);
+      if(returnStatement != null && returnStatement != "abbrechen"){
+        await dbHelper.create();
+
+        ListTitleDB titles = new ListTitleDB();
+        titles.titleName = returnStatement;
+        titles = await dbHelper.insertList(titles);
+
+        setState(() {
+          prefs.setString("currentList", titles.titleName);
+        });
+      }
     } else if(returnStatement == "feedback"){
-      _launchMail();
+      returnStatement = await _launchMail();
+    } else if(returnStatement != null){      
+      setState(() {
+        prefs.setString("currentList", returnStatement);
+        _tabTitle[2] = returnStatement;
+      });
     }
   }
 
   _launchMail() async{
-    const url = "mailto:simon.eder1236@gmail.com?subject=Feedback";
+    const url = "mailto:stefan.niederwanger@outlook.com?subject=Feedback%20on%20the%20app";
     if(await canLaunch(url)){
       await launch(url);
     } else {

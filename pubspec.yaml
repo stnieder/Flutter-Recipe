@@ -31,7 +31,7 @@ dependencies:
   flutter_statusbarcolor: any
   flutter_local_notifications: ^0.4.1+1
   shared_preferences: ^0.4.3
-  url_launcher: ^4.0.2
+  url_launcher: ^3.0.3
 
 
 dev_dependencies:

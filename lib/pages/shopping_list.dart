@@ -9,9 +9,9 @@ import '../interface/GoogleColors.dart';
 import '../interface/MyExpansionTile.dart';
 
 
-Future<List<Shopping>> fetchShoppingList(SharedPreferences prefs, String currentList) async{    
+Future<List<Shopping>> fetchShoppingList() async{    
   String order = "abc";
-  prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   if(prefs.getString("order") == null) {
     order = "timestamp";
     prefs.setString("order", order);
@@ -20,16 +20,13 @@ Future<List<Shopping>> fetchShoppingList(SharedPreferences prefs, String current
   }
   var dbHelper = new DBHelper();
   await dbHelper.create();
-  Future<List<Shopping>> shopping = dbHelper.getShopping(order, currentList);
+  Future<List<Shopping>> shopping = dbHelper.getShopping(order, prefs.getString("currentList"));
   return shopping;
 }
 
 
 
 class ShoppingPage extends StatefulWidget{
-  final String currentList;
-  ShoppingPage(this.currentList);
-
   @override
   State<StatefulWidget> createState() {
     return _ShoppingPage();
@@ -45,10 +42,15 @@ class _ShoppingPage extends State<ShoppingPage>{
   DBHelper db = new DBHelper();
 
   @override
+    void initState() {      
+      super.initState();
+    }
+
+  @override
   Widget build(BuildContext context) {
     return new Container(
       child: FutureBuilder(
-        future: fetchShoppingList(prefs, widget.currentList),
+        future: fetchShoppingList(),
         builder: (context, snapshot){
           List<Widget> checked = new List();
           List<Widget> notchecked = new List();

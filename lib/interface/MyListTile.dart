@@ -4,12 +4,14 @@ class MyListTileText extends StatefulWidget {
   final bool enabled;
   final Color backgroundColor;
   final String childText;
+  final Function onTap;
 
   MyListTileText(
     {
       this.enabled,
       this.backgroundColor,
-      @required this.childText
+      @required this.childText,
+      this.onTap
     }
   );
 
@@ -83,6 +85,9 @@ class _MyListTileTextState extends State<MyListTileText> with TickerProviderStat
           )
         ),
       ),
+      onTap: (){
+        if(widget.onTap != null) widget.onTap();
+      },
       onPanStart: (DragStartDetails details){
         setState(() {
           pressed = true;

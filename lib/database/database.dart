@@ -165,9 +165,8 @@ class DBHelper{
     print("Latest record deleted!");
   }
 
-
   /*
-  * Insert values into the database
+  * Check values 
   */
 
   Future<int> checkRecipe(String recipeName) async{
@@ -181,9 +180,20 @@ class DBHelper{
   }
 
   Future<int> checkListTitle(String title) async{
-    int count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM listTitles where titleName = ?", [title]));
+    int count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM listTitles WHERE titleName = ?", [title]));
     return count;
   }
+
+  Future<int> checkShoppingItems(String listName) async{
+    String sql = "SELECT COUNT(*) FROM listTitles, shoppingTitles WHERE listTitles.id = shoppingTitles.idTitles AND listTitles.titleName = ?";
+    int count = Sqflite.firstIntValue(await _db.rawQuery(sql, [listName]));
+    return count;
+  }
+
+
+  /*
+  * Insert values into the database
+  */  
 
   Future<RecipesDB> insertRecipe(RecipesDB recipe) async{
     var count;
