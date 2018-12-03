@@ -355,17 +355,15 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       return AppBar(
         actions: actionList(_currentTab),
         backgroundColor: Color(0xFFfafafa),
+        centerTitle: true,
         elevation: 0.0,
         leading: leadingWidget(_currentTab),
-        title: Padding(
-          padding: EdgeInsets.only(left: 120.0),
-          child: Text(
-            _tabTitle[_currentTab],
-            style: TextStyle(
-              color: Colors.black54,
-              fontFamily: "Google-Sans",
-              fontSize: 17.0
-            ),
+        title: Text(
+          _tabTitle[_currentTab],
+          style: TextStyle(
+            color: Colors.black54,
+            fontFamily: "Google-Sans",
+            fontSize: 17.0
           ),
         ),
       );

@@ -10,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'interface/CustomShowDialog.dart';
 
+double _kShoppingMenuHeight = 100.0;
+
 class Dialogs{
   final personenAnzahlController = new TextEditingController();
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
@@ -331,6 +333,7 @@ class Dialogs{
 
     return showRoundedBottomSheet(
       context: context,
+      height: 350.0,
       child: Column(
           children: <Widget>[
             Padding(
@@ -439,6 +442,8 @@ class Dialogs{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String currentTitle = prefs.getString("currentList");
     Color addListColor = Colors.white;
+    double containerHeight = 200.0;
+    double initial;
     
     DBHelper db = new DBHelper();
 
@@ -479,67 +484,16 @@ class Dialogs{
 
     await _list();
     return showRoundedBottomSheet(
+      height: 330.0,
       context: context,
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 30.0, left: 10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: _title("Ihre Listen"),
-                ),
-                Column(
-                  children: items
-                )
-              ],
-            ),
-          ),
-          Divider(),
-          GestureDetector(
-            child: ListTile(
-              leading: Icon(Icons.add, color: Colors.black54),
-              title: Text(
-                "Neue Liste erstellen",
-                style: TextStyle(
-                  fontFamily: "Google-Sans",
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-            ),            
-            onTap: (){
-              Navigator.pop(context, "neue Liste");
-            },
-          ),
-          Divider(),
-          GestureDetector(
-            child: ListTile(
-              leading: Icon(OMIcons.smsFailed, color: Colors.black54),
-              title: Text(
-                "Feedback geben",
-                style: TextStyle(
-                  fontFamily: "Google-Sans",
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-            ),            
-            onTap: (){
-              Navigator.pop(context, "feedback");
-            },
-          )
-        ],
+      child: ShoppingMenu(
+        title: _title("Ihre Listen"),
+        items: items
       )
     );
   }
 
   createNewList(BuildContext context) async{
-    
-
-
     return showDialog(
         context: context,
         builder: (BuildContext context){
@@ -663,5 +617,110 @@ class _CreateNewListState extends State<CreateNewList> {
         )
       ],
     );
+  }
+}
+
+class ShoppingMenu extends StatefulWidget {
+  final Widget title;
+  final List<Widget> items;
+
+  ShoppingMenu(
+    {
+      this.title,
+      this.items
+    }
+  );
+
+  @override
+  _ShoppingMenuState createState() => _ShoppingMenuState();
+}
+
+class _ShoppingMenuState extends State<ShoppingMenu> {
+  SharedPreferences prefs;
+  String currentTitle;
+  Color addListColor = Colors.white;
+  double initial;
+  
+  DBHelper db = new DBHelper();
+
+  setPrefs() async{
+    prefs = await SharedPreferences.getInstance();
+    currentTitle = prefs.getString("currentList");
+  }
+
+  @override
+    void initState() {
+      super.initState();
+      setPrefs();
+    }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        child: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overscroll){
+            overscroll.disallowGlow();
+          },        
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: _kShoppingMenuHeight
+            ),
+            child: ListView( 
+                physics: NeverScrollableScrollPhysics(),             
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 30.0, left: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 10.0),
+                          child: widget.title,
+                        ),
+                        Column(
+                          children: widget.items
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                  GestureDetector(
+                    child: ListTile(
+                      leading: Icon(Icons.add, color: Colors.black54),
+                      title: Text(
+                        "Neue Liste erstellen",
+                        style: TextStyle(
+                          fontFamily: "Google-Sans",
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),            
+                    onTap: (){
+                      Navigator.pop(context, "neue Liste");
+                    },
+                  ),
+                  Divider(),
+                  GestureDetector(
+                    child: ListTile(
+                      leading: Icon(OMIcons.smsFailed, color: Colors.black54),
+                      title: Text(
+                        "Feedback geben",
+                        style: TextStyle(
+                          fontFamily: "Google-Sans",
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),            
+                    onTap: (){
+                      Navigator.pop(context, "feedback");
+                    },
+                  )
+                ],
+              ),
+          ),
+        ),
+      );
   }
 }
