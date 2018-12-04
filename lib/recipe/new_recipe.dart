@@ -17,7 +17,7 @@ import '../interface/DurationDialog.dart'; //made by Chris Harris https://pub.da
 import '../interface/CircularImage.dart';
 import '../interface/GoogleColors.dart';
 
-import '../Dialogs.dart';
+import '../DialogClasses/Dialogs.dart';
 
 import '../model/Ingredients.dart';
 import '../model/Recipe_Ingredient.dart';
@@ -26,6 +26,7 @@ import '../model/Recipes.dart';
 import '../model/StepDescription.dart';
 
 class NewRecipe extends StatefulWidget{
+  
   //Main
   final int recipeID;
   final String name;

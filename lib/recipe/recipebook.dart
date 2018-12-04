@@ -1,4 +1,4 @@
-import 'package:Time2Eat/Dialogs.dart';
+import 'package:Time2Eat/DialogClasses/Dialogs.dart';
 import 'package:Time2Eat/Termine/RecipeSelection.dart';
 import 'package:Time2Eat/interface/DatePicker.dart';
 import 'package:Time2Eat/model/ListTitle.dart';
@@ -387,6 +387,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         ),
         title: TextField(        
           autofocus: true,
+          autocorrect: true,
           cursorColor: googleMaterialColors.primaryColor(),
           cursorRadius: Radius.circular(16.0),
           cursorWidth: 2.0,
@@ -398,8 +399,16 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
               fontFamily: "Google-Sans"
             )
           ),
-          onSubmitted: (String input){
-            searchOperation(input);
+          onChanged: (String input){
+            if(input.trim().length > 0) {
+              setState(() {
+                searchOperation(input);
+              });
+            } else if(input.trim().length == 0){
+              setState(() {
+                searchOperation(null);
+              });
+            }
           },
           style: TextStyle(
             color: Colors.black54,
@@ -490,61 +499,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
                     )
                 );
               }
-              return SideHeaderListView(
-                hasSameHeader: (int a, int b){
-                  return snapshot.data[a].name[0] == snapshot.data[b].name[0];
-                },
-                itemCount: snapshot.data.length,
-                headerBuilder: (BuildContext context, int index){
-                    return new Padding(
-                      padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
-                      child: Container(
-                        width: 10.0,
-                        child: Text(
-                          snapshot.data[index].name[0].toUpperCase(),
-                          style: TextStyle(
-                              color: googleMaterialColors.primaryColor().withGreen(120),
-                              fontFamily: "Google-Sans",
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w600
-                          ),
-                        ),
-                      ),
-                    );
-                },
-                itemExtend: 70.0,
-                itemBuilder: (BuildContext context, int index){
-  
-                  Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);
-                  String image = snapshot.data[index].image;
-  
-                  key = new GlobalKey<StateSelectableItem>();
-  
-                  map.putIfAbsent(index, () => key);
-  
-                  return SelectableItems(
-                    key: key,
-                    color: usedColor,
-                    name: snapshot.data[index].name,
-                    title: (searchController.text.isEmpty
-                      ? Text(snapshot.data[index].name)
-                      : recipeName(searchCondition, snapshot.data[index].name)
-                    ),
-                    index: index,
-                    image: image,
-                    isSelected: indexList.contains(snapshot.data[index].name),
-                    longPressEnabled: longPressFlag,
-                    callback: () {
-                      if (indexList.contains(snapshot.data[index].name)) {
-                        indexList.remove(snapshot.data[index].name);
-                      } else {
-                        indexList.add(snapshot.data[index].name);
-                      }
-                      longPress();
-                    },
-                  );
-                },
-              );
+              return changeList(snapshot);
             } else if(!snapshot.hasData) {
               return Center(
                 child: Text("Keine Daten vorhanden"),
@@ -557,7 +512,111 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         ),
       );
     }
+
+    changeList(AsyncSnapshot snapshot){
+      if(searchActive == true && searchController.text.trim() != "" && searchController.text.trim() != null){
+        return normalList(snapshot);
+      } else return sideHeaderList(snapshot);
+    }
   
+
+    normalList(AsyncSnapshot snapshot){
+      return ListView.builder(
+
+          itemBuilder: (BuildContext context, int index){
+
+            Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);
+            String image = snapshot.data[index].image;
+
+            key = new GlobalKey<StateSelectableItem>();
+
+            map.putIfAbsent(index, () => key);
+
+            return SelectableItems(
+              key: key,
+              color: usedColor,
+              name: snapshot.data[index].name,
+              title: (searchController.text.isEmpty
+                ? Text(snapshot.data[index].name)
+                : recipeName(searchCondition, snapshot.data[index].name)
+              ),
+              index: index,
+              image: image,
+              isSelected: indexList.contains(snapshot.data[index].name),
+              longPressEnabled: longPressFlag,
+              callback: () {
+                if (indexList.contains(snapshot.data[index].name)) {
+                  indexList.remove(snapshot.data[index].name);
+                } else {
+                  indexList.add(snapshot.data[index].name);
+                }
+                longPress();
+              },
+            );
+
+          },
+          itemCount: snapshot.data.length,
+          itemExtent: 70.0,
+        );
+    }
+
+    sideHeaderList(AsyncSnapshot snapshot){
+      return SideHeaderListView(
+          hasSameHeader: (int a, int b){
+            if(!searchActive) return snapshot.data[a].name[0] == snapshot.data[b].name[0];
+          },
+          itemCount: snapshot.data.length,
+          headerBuilder: (BuildContext context, int index){
+              return new Padding(
+                padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
+                child: Container(
+                  width: 10.0,
+                  child: Text(
+                    snapshot.data[index].name[0].toUpperCase(),
+                    style: TextStyle(
+                        color: googleMaterialColors.primaryColor().withGreen(120),
+                        fontFamily: "Google-Sans",
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w600
+                    ),
+                  ),
+                ),
+              );
+          },
+          itemExtend: 70.0,
+          itemBuilder: (BuildContext context, int index){
+
+            Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);
+            String image = snapshot.data[index].image;
+
+            key = new GlobalKey<StateSelectableItem>();
+
+            map.putIfAbsent(index, () => key);
+
+            return SelectableItems(
+              key: key,
+              color: usedColor,
+              name: snapshot.data[index].name,
+              title: (searchController.text.isEmpty
+                ? Text(snapshot.data[index].name)
+                : recipeName(searchCondition, snapshot.data[index].name)
+              ),
+              index: index,
+              image: image,
+              isSelected: indexList.contains(snapshot.data[index].name),
+              longPressEnabled: longPressFlag,
+              callback: () {
+                if (indexList.contains(snapshot.data[index].name)) {
+                  indexList.remove(snapshot.data[index].name);
+                } else {
+                  indexList.add(snapshot.data[index].name);
+                }
+                longPress();
+              },
+            );
+          },
+        );
+    }
   
   
     openTermin(BuildContext context)async {
@@ -630,6 +689,17 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
             });            
           }
         }
+      } else if(dialogReturn == "Liste löschen") {
+        String deletedList = prefs.getString("currentList");
+        await dbHelper.deleteListTitle(prefs.getString("currentList"));
+        await prefs.remove("currentList");
+        List<ListTitle> titles = await dbHelper.getListTitles();
+        setState(() {
+          prefs.setString("currentList", titles[0].titleName);
+        });        
+        showBottomSnack("value", ToastGravity.BOTTOM);
+      } else if(dialogReturn == "Alle erledigten Einkäufe löschen"){
+
       }
     }
   

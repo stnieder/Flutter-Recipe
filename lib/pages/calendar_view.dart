@@ -1,4 +1,4 @@
-import 'package:Time2Eat/Dialogs.dart';
+import 'package:Time2Eat/DialogClasses/Dialogs.dart';
 import 'package:Time2Eat/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

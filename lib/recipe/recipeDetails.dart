@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:Time2Eat/DialogClasses/Dialogs.dart';
+import 'package:Time2Eat/model/ListTitle.dart';
 import 'package:Time2Eat/model/Recipe_Shopping.dart';
 import 'package:Time2Eat/model/Shopping.dart';
+import 'package:Time2Eat/model/Shopping_Title.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -288,6 +291,16 @@ class _RecipeDetails extends State<RecipeDetails>{
     );
   }
 
+  Future saveTitleShopping(int shoppingID, int titleID, DBHelper dbHelper) async{
+    await dbHelper.create();
+
+    ShoppingTitlesDB shoppingTitle = new ShoppingTitlesDB();
+    shoppingTitle.idShopping = shoppingID;
+    shoppingTitle.idTitles = titleID;
+
+    shoppingTitle = await dbHelper.insertShoppingTitles(shoppingTitle);
+  }
+
   Future saveRecShopping(int shoppingID, DBHelper dbHelper) async{
     await dbHelper.create();
 
@@ -300,21 +313,68 @@ class _RecipeDetails extends State<RecipeDetails>{
 
   Future saveShopping() async{
     DBHelper dbHelper = new DBHelper();
+    ShoppingDB shopping = new ShoppingDB();
+    ShoppingTitlesDB shoppingTitles = new ShoppingTitlesDB();
     await dbHelper.create();
 
-    ShoppingDB shopping = new ShoppingDB();
-    print("NameList length: "+nameList.length.toString()+"--------------------------------------------------");
-    for(int i=0; i<nameList.length; i++){
-      shopping.item = nameList[i];
-      shopping.number = numberList[i].toString();
-      shopping.measure = measureList[i];
-      shopping.checked = 0; // 0 means false
-      shopping.timestamp = DateTime.now().toString();
-      shopping = await dbHelper.insertShopping(shopping);
+    int titleCount = await dbHelper.checkListTitle("");
+    List<String> titleNames = await dbHelper.filterListTitle();
 
-      await saveRecShopping(shopping.id, dbHelper);
+    if(titleCount == 1){
+      for(int i=0; i<nameList.length; i++){
+        //Save shopping items
+        shopping.item = nameList[i];
+        shopping.number = numberList[i].toString();
+        shopping.measure = measureList[i];
+        shopping.checked = 0; // 0 means false
+        shopping.timestamp = DateTime.now().toString();
+        shopping = await dbHelper.insertShopping(shopping);
+
+        //Make link to recipe
+        await saveRecShopping(shopping.id, dbHelper);
+
+        //ID of shopping item
+        shoppingTitles.idShopping = shopping.id;
+
+        //Get all listTitles
+        List<ListTitle> listTitles = await dbHelper.getListTitles();
+
+        //Link shopping items to list titles            
+        shoppingTitles.idTitles = listTitles[0].id;;
+        shoppingTitles = await dbHelper.insertShoppingTitles(shoppingTitles);
+        await saveTitleShopping(shopping.id, listTitles[0].id, dbHelper);      
+      }
+      showBottomSnack("Zutaten wurden zur Einkaufsliste hinzugefügt", ToastGravity.BOTTOM);
+    } else {
+      var dialogReturn = await Dialogs().addToShoppingList(context);
+      if(dialogReturn != "abbrechen" && dialogReturn != null){
+        for(int i=0; i < nameList.length-1; i++){
+          //Save shopping items
+          shopping.item = nameList[i];
+          shopping.number = numberList[i].toString();
+          shopping.measure = measureList[i];
+          shopping.checked = 0; // 0 means false
+          shopping.timestamp = DateTime.now().toString();
+          shopping = await dbHelper.insertShopping(shopping, dialogReturn);
+
+          //Make link to recipe
+          await saveRecShopping(shopping.id, dbHelper);
+
+          //ID of shopping item
+          shoppingTitles.idShopping = shopping.id;
+
+          //Get all listTitles
+          List<ListTitle> listTitles = await dbHelper.getListTitles();
+          int titleID = await dbHelper.getTitleID(dialogReturn);
+          shoppingTitles.idTitles = titleID;
+          shoppingTitles = await dbHelper.insertShoppingTitles(shoppingTitles);
+          await saveTitleShopping(shopping.id, titleID, dbHelper);         
+        }
+        showBottomSnack("Zutaten wurden zur Einkaufsliste hinzugefügt", ToastGravity.BOTTOM);
+      }
     }
-    showBottomSnack("Zutaten wurden zur Einkaufsliste hinzugefügt", ToastGravity.BOTTOM);
+
+    
   }
 
   Future<List<Recipes>> fetchRecipe() async{

@@ -49,6 +49,7 @@ class DBHelper{
             "timestamp text, "+
             "image real, "+
             "backgroundColor text "+
+            "PRIMARY KEY(id) " + 
           ")"
         );
 
@@ -59,6 +60,7 @@ class DBHelper{
             "name varchar, "+
             "measure varchar, "+
             "number real "+
+            "PRIMARY KEY(id) " + 
           ")"
         );
 
@@ -68,6 +70,7 @@ class DBHelper{
             "id integer primary key AUTOINCREMENT, " +
             "number integer, " +
             "description text "+
+            "PRIMARY KEY(id) " + 
           ")"
         );
 
@@ -76,6 +79,7 @@ class DBHelper{
           "CREATE TABLE termine("+
             "id integer primary key AUTOINCREMENT, " +
             "termin text " +
+            "PRIMARY KEY(id) " + 
           ")"
         );
 
@@ -88,6 +92,7 @@ class DBHelper{
             "number real, " +
             "checked integer, " +
             "timestamp real " +
+            "PRIMARY KEY(id) " + 
           ")"
         );
 
@@ -96,6 +101,7 @@ class DBHelper{
           "CREATE TABLE listTitles("+
             "id integer primary key AUTOINCREMENT, "+
             "titleName varchar "+
+            "PRIMARY KEY(id) " + 
           ")"
         );
 
@@ -106,6 +112,9 @@ class DBHelper{
             "id integer primary key AUTOINCREMENT, " +
             "idRecipes real, "+
             "idIngredients real "+
+            "PRIMARY KEY(id), " + 
+            "FOREIGN KEY(idRecipes) references recipes(id) ON DELETE RESTRICT ON UPDATE CASCADE, "+
+            "FOREIGN KEY(idIngredients) references ingredients(id) ON DELETE RESTRICT ON UPDATE CASCADE "
           ")"
         );
 
@@ -115,6 +124,9 @@ class DBHelper{
               "id integer primary key AUTOINCREMENT, " +
               "idRecipes real, "+
               "idSteps real "+
+              "PRIMARY KEY(id), " + 
+              "FOREIGN KEY(idRecipes) references recipes(id) ON DELETE RESTRICT ON UPDATE CASCADE, "+
+              "FOREIGN KEY(idSteps) references steps(id) ON DELETE RESTRICT ON UPDATE CASCADE "+
             ")"
         );
 
@@ -124,6 +136,9 @@ class DBHelper{
             "id integer primary key AUTOINCREMENT, "+
             "idRecipes real, "+
             "idTermine real "+
+            "PRIMARY KEY(id), " + 
+            "FOREIGN KEY(idRecipes) references recipes(id) ON DELETE RESTRICT ON UPDATE CASCADE, "+
+            "FOREIGN KEY(idTermine) references termine(id) ON DELETE RESTRICT ON UPDATE CASCADE "+
           ")"
         );
 
@@ -133,6 +148,9 @@ class DBHelper{
             "id integer primary key AUTOINCREMENT, "+
             "idRecipes real, "+
             "idShopping real "+
+            "PRIMARY KEY(id), " + 
+            "FOREIGN KEY(idRecipes) references recipes(id) ON DELETE RESTRICT ON UPDATE CASCADE, "+
+            "FOREIGN KEY(idShopping) references shopping(id) ON DELETE RESTRICT ON UPDATE CASCADE "+
           ")"
         );
 
@@ -142,6 +160,9 @@ class DBHelper{
             "id integer primary key AUTOINCREMENT, "+
             "idShopping real, "+
             "idTitles real "+
+            "PRIMARY KEY(id), " + 
+            "FOREIGN KEY(idShopping) references shopping(id) ON DELETE RESTRICT ON UPDATE CASCADE "+
+            "FOREIGN KEY(idTitles) references listTitles(id) ON DELETE RESTRICT ON UPDATE CASCADE "+
           ")"
         );
 
@@ -165,6 +186,32 @@ class DBHelper{
     print("Latest record deleted!");
   }
 
+  Future deleteListTitle(String title) async{
+    await _db.transaction((txn) async{
+      int listID = Sqflite.firstIntValue(
+        await txn.rawQuery(
+          "SELECT id FROM listTitles WHERE listTitles.titleName = ? ", 
+          [title]
+        )
+      );
+
+      String sql = "DELETE FROM shoppingTitles WHERE shoppingTitles.idTitles = ? ";
+      await txn.rawQuery(
+        sql,
+        [listID]
+      );
+
+      sql = "DELETE FROM listTitles WHERE listTitles.titleName = ?";
+      await txn.rawQuery(
+        sql,
+        [title]
+      );
+
+      print("ListTile deleted");
+
+    });
+  }
+
   /*
   * Check values 
   */
@@ -180,7 +227,9 @@ class DBHelper{
   }
 
   Future<int> checkListTitle(String title) async{
-    int count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM listTitles WHERE titleName = ?", [title]));
+    int count;
+    if(title != "") Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM listTitles WHERE titleName = ?", [title]));
+    else Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM listTitles"));
     return count;
   }
 
@@ -231,12 +280,13 @@ class DBHelper{
     return steps;
   }
   
-  Future<ShoppingDB> insertShopping(ShoppingDB shopping) async{
-    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM shopping WHERE item = ?", [shopping.item]));
+  Future<ShoppingDB> insertShopping(ShoppingDB shopping, [String titleName]) async{
+    int nextID = Sqflite.firstIntValue(await _db.rawQuery("SELECT MAX(id) AS max_id FROM shopping"));
+    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM shopping, shoppingTitles, listTitles WHERE shopping.item = ? AND shoppingTitles.idShopping = ? AND shoppingTitles.idTitles = listTitles.id AND listTitles.titleName = ?", [shopping.item, nextID, titleName]));
     if(count == 0){
       shopping.id = await _db.insert("shopping", shopping.toMap());
     } else {
-      await _db.rawUpdate("UPDATE shopping SET number = number + ?, checked = 0 WHERE item = ?", [shopping.number, shopping.item]);
+      shopping.id = await _db.rawUpdate("UPDATE shopping SET number = number + ?, checked = 0 WHERE item = ?", [shopping.number, shopping.item]);
     }
     return shopping;
   }
@@ -249,7 +299,7 @@ class DBHelper{
     if(count == 0){
       termine.id = await _db.insert("termine", termine.toMap());
     } else {
-      await _db.update("termine", termine.toMap(), where: "id = ?", whereArgs: [termine.id]);
+      termine.id = await _db.update("termine", termine.toMap(), where: "id = ?", whereArgs: [termine.id]);
     }
     return termine;
   }
@@ -261,7 +311,7 @@ class DBHelper{
     if(count == 0){
       titles.id = await _db.insert("listTitles", titles.toMap());
     } else {
-      await _db.update("listTitles", titles.toMap(), where: "id = ?", whereArgs: [titles.id]);
+      titles.id = await _db.update("listTitles", titles.toMap(), where: "id = ?", whereArgs: [titles.id]);
     }
     return titles;
   }  
@@ -273,7 +323,7 @@ class DBHelper{
     if(count == 0){
       recIngre.id = await _db.insert("recipeIngredients", recIngre.toMap());
     } else {
-      await _db.update("recipeIngredients", recIngre.toMap(), where: "id = ?", whereArgs: [recIngre.id]);
+      recIngre.id = await _db.update("recipeIngredients", recIngre.toMap(), where: "id = ?", whereArgs: [recIngre.id]);
     }
     return recIngre;
   }
@@ -285,7 +335,7 @@ class DBHelper{
     if(count == 0){
       recSteps.id = await _db.insert("recipeSteps", recSteps.toMap());   
     } else {
-      await _db.update("recipeSteps", recSteps.toMap(), where: "id = ?", whereArgs: [recSteps.id]);
+      recSteps.id = await _db.update("recipeSteps", recSteps.toMap(), where: "id = ?", whereArgs: [recSteps.id]);
     }    
     return recSteps;
   }
@@ -297,7 +347,7 @@ class DBHelper{
     if(count == 0){
       recTermine.id = await _db.insert("recipeTermine", recTermine.toMap());
     } else {
-      await _db.update("recipeTermine", recTermine.toMap(), where:  "id = ?", whereArgs: [recTermine.id]);
+      recTermine.id = await _db.update("recipeTermine", recTermine.toMap(), where:  "id = ?", whereArgs: [recTermine.id]);
     }
     return recTermine;
   }
@@ -309,7 +359,7 @@ class DBHelper{
     if(count == 0){
       recShop.id = await _db.insert("recipeShopping", recShop.toMap());
     } else {
-      await _db.update("recipeTermine", recShop.toMap(), where:  "id = ?", whereArgs: [recShop.id]);
+      recShop.id = await _db.update("recipeTermine", recShop.toMap(), where:  "id = ?", whereArgs: [recShop.id]);
     }
     return recShop;
   }
@@ -321,7 +371,7 @@ class DBHelper{
     if(count == 0){
       shopTitles.id = await _db.insert("shoppingTitles", shopTitles.toMap());
     } else {
-      await _db.update("shoppingTitles", shopTitles.toMap(), where:  "id = ?", whereArgs: [shopTitles.id]);
+      shopTitles.id = await _db.update("shoppingTitles", shopTitles.toMap(), where:  "id = ?", whereArgs: [shopTitles.id]);
     }
     return shopTitles;
   }
@@ -475,6 +525,27 @@ class DBHelper{
     }
     return recipes;
   }
+
+  //Get only list title
+  Future<List<String>> filterListTitle() async{
+    String sql = "SELECT titleName FROM listTitles";
+    List<Map> list = await _db.rawQuery(sql);
+    List<String> titles = new List();
+    for(int i=0; i < list.length; i++){
+      titles.add(list[i]["titleName"]);
+    }
+
+    return titles;
+  }
+
+  //Get ListTitle ID
+  Future<int> getTitleID(String title) async{
+    String sql = "SELECT id FROM listTitles WHERE titleName = ?";
+    List<Map> list = await _db.rawQuery(sql, [title]);
+    int id = list[0]["id"];
+    return id;    
+  }
+
 
 
   //Update favorite recipe
