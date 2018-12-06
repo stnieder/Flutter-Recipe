@@ -32,6 +32,7 @@ dependencies:
   flutter_local_notifications: ^0.4.1+1
   shared_preferences: ^0.4.3
   url_launcher: ^3.0.3
+  scheduled_notifications:   ^1.0.0
 
 
 dev_dependencies:

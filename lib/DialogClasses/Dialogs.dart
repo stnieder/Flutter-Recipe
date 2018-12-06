@@ -68,7 +68,7 @@ class Dialogs{
       barrierDismissible: true,
       builder: (BuildContext ctxt){
         return CustomAlertDialog(
-          title: Text("Personenanzahl pro Portion"),
+          title: Text("Portionen"),
           content: Container(
             height: 78.0,
             decoration: BoxDecoration(
@@ -266,17 +266,18 @@ class Dialogs{
     //get current order
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String prefsOrder = prefs.getString("order");
+    String prefsList = prefs.getString("currentList");
 
     //Count amount of list titles
     DBHelper db = new DBHelper();
-    int countTitles = await db.countTitles("");
+    int countTitles = await db.countTitles(prefsList);
 
     //Count checked list items
-    int countItems = await db.countCheckedItems(prefsOrder, prefs.getString("currentList"));
+    int countItems = await db.countCheckedItems(prefsOrder, prefsList);
 
     //Check if items are inside of the list
     checkListItems() async{
-      int items = await db.checkShoppingItems(prefs.getString("currentList"));
+      int items = await db.countTitles(prefsList);
       if(items > 0) return false;
       else return true;
     }
@@ -330,7 +331,9 @@ class Dialogs{
           enabled: enable,
         ),
         onTap: (){
-          if(enable) Navigator.pop(context, text);
+          if(enable) {
+            Navigator.pop(context, text);
+          }
         }
       );
     }
@@ -512,6 +515,91 @@ class Dialogs{
       context: context,
       builder: (BuildContext context){
         return ListTitles();
+      }
+    );
+  }
+
+  deleteCheckedItems(BuildContext context, int itemCount) async{
+    return customDialog(
+      context, 
+      "Alle erledigten Einkäufe löschen?", 
+      Container(
+        child: Text(
+          itemCount.toString() + " erledigte Einkäufe werden unwiderruflich gelöscht",
+          style: TextStyle(
+            color: Colors.black54,
+            fontFamily: "Google-Sans",
+            fontSize: 13.0,
+            fontWeight: FontWeight.w400
+          ),
+        ),
+      ), 
+      <Widget>[
+        new FlatButton(
+          child: Text(
+            "Abbrechen",
+            style: TextStyle(
+              color: GoogleMaterialColors().primaryColor()
+            ),
+          ),
+          highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+          onPressed: (){
+            Navigator.pop(context, 'abbrechen');
+          },              
+          shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+          splashColor: Colors.transparent,
+        ),
+        new FlatButton(
+          child: Text(
+            "Löschen",
+            style: TextStyle(
+              color: GoogleMaterialColors().primaryColor()
+            ),
+          ),
+          highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),
+          onPressed: (){
+            Navigator.pop(context, "löschen");
+          },
+          shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+        )
+      ]
+    );    
+  }
+
+
+
+
+  customDialog(BuildContext context,String title, Widget content, List<Widget> actions) async{
+    return showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return CustomAlertDialog(
+          content: Container(
+            height: 100.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(5.0))
+            ),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 10.0, bottom: 10.0),
+                  child: new Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontFamily: "Google-Sans",
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                content
+              ],
+            ),
+          ),
+          contentPadding: EdgeInsets.only(bottom: 0.0),
+          actions: actions,
+        );
       }
     );
   }

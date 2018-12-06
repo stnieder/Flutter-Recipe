@@ -8,6 +8,7 @@ import 'package:Time2Eat/model/Shopping_Title.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../database/database.dart';
 import '../interface/GoogleColors.dart';
 import '../interface/HexToColor.dart';
@@ -48,6 +49,8 @@ class _RecipeDetails extends State<RecipeDetails>{
 
   //Zubereitung
   List<String> stepsList = new List();
+
+  int ingredientsLength = 0;
 
   @override
     void initState() {
@@ -196,6 +199,8 @@ class _RecipeDetails extends State<RecipeDetails>{
                   else peopleNumber = double.parse(list[0].people);
                 });
 
+                ingredientsLength = snapshot.data.length;
+
                 for(int i=0; i < snapshot.data.length; i++){
 
                   //For this view
@@ -291,6 +296,7 @@ class _RecipeDetails extends State<RecipeDetails>{
     );
   }
 
+
   Future saveTitleShopping(int shoppingID, int titleID, DBHelper dbHelper) async{
     await dbHelper.create();
 
@@ -312,68 +318,32 @@ class _RecipeDetails extends State<RecipeDetails>{
   }
 
   Future saveShopping() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     DBHelper dbHelper = new DBHelper();
     ShoppingDB shopping = new ShoppingDB();
     ShoppingTitlesDB shoppingTitles = new ShoppingTitlesDB();
     await dbHelper.create();
 
     int titleCount = await dbHelper.checkListTitle("");
-    List<String> titleNames = await dbHelper.filterListTitle();
+    int titleID = await dbHelper.getTitleID(prefs.getString("currentList"));
 
-    if(titleCount == 1){
-      for(int i=0; i<nameList.length; i++){
-        //Save shopping items
-        shopping.item = nameList[i];
-        shopping.number = numberList[i].toString();
-        shopping.measure = measureList[i];
-        shopping.checked = 0; // 0 means false
-        shopping.timestamp = DateTime.now().toString();
-        shopping = await dbHelper.insertShopping(shopping);
+    print("TitleCount: "+titleCount.toString());
 
-        //Make link to recipe
-        await saveRecShopping(shopping.id, dbHelper);
+    for (var i = 0; i < ingredientsLength; i++) {
+      shopping.item = nameList[i];
+      shopping.number = numberList[i].toString();
+      shopping.checked = 0;
+      shopping.measure = measureList[i];
+      shopping.timestamp = DateTime.now().toString();
+      
+      shopping = await dbHelper.linkShoppingTitles(shopping, prefs.getString("currentList"));
+      print("ShoppingID: ${shopping.id}");
 
-        //ID of shopping item
-        shoppingTitles.idShopping = shopping.id;
-
-        //Get all listTitles
-        List<ListTitle> listTitles = await dbHelper.getListTitles();
-
-        //Link shopping items to list titles            
-        shoppingTitles.idTitles = listTitles[0].id;;
-        shoppingTitles = await dbHelper.insertShoppingTitles(shoppingTitles);
-        await saveTitleShopping(shopping.id, listTitles[0].id, dbHelper);      
-      }
-      showBottomSnack("Zutaten wurden zur Einkaufsliste hinzugefügt", ToastGravity.BOTTOM);
-    } else {
-      var dialogReturn = await Dialogs().addToShoppingList(context);
-      if(dialogReturn != "abbrechen" && dialogReturn != null){
-        for(int i=0; i < nameList.length-1; i++){
-          //Save shopping items
-          shopping.item = nameList[i];
-          shopping.number = numberList[i].toString();
-          shopping.measure = measureList[i];
-          shopping.checked = 0; // 0 means false
-          shopping.timestamp = DateTime.now().toString();
-          shopping = await dbHelper.insertShopping(shopping, dialogReturn);
-
-          //Make link to recipe
-          await saveRecShopping(shopping.id, dbHelper);
-
-          //ID of shopping item
-          shoppingTitles.idShopping = shopping.id;
-
-          //Get all listTitles
-          List<ListTitle> listTitles = await dbHelper.getListTitles();
-          int titleID = await dbHelper.getTitleID(dialogReturn);
-          shoppingTitles.idTitles = titleID;
-          shoppingTitles = await dbHelper.insertShoppingTitles(shoppingTitles);
-          await saveTitleShopping(shopping.id, titleID, dbHelper);         
-        }
-        showBottomSnack("Zutaten wurden zur Einkaufsliste hinzugefügt", ToastGravity.BOTTOM);
-      }
-    }
-
+      await saveRecShopping(shopping.id, dbHelper);
+      await saveTitleShopping(shopping.id, titleID, dbHelper);
+    }      
+    showBottomSnack("Saved to $titleID: ${prefs.getString("currentList")}", ToastGravity.BOTTOM);
     
   }
 

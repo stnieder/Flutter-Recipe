@@ -61,7 +61,10 @@ class _ListTitlesState extends State<ListTitles> {
 
   futureDialog(AsyncSnapshot snapshot){
     return Container(
-      height: snapshot.data.length * 52.0,           
+      height: (snapshot.data.length == 2
+        ? 120.0
+        : snapshot.data.length * 52.0
+      ),           
       width: MediaQuery.of(context).size.width * 0.8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5.0)),

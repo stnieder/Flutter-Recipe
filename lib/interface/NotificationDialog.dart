@@ -5,9 +5,11 @@ import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:Time2Eat/interface/MyDropDownButton.dart';
 import 'package:Time2Eat/recipe/recipebook.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 
 class NotificationDialog extends StatefulWidget{
   final String recipe;
@@ -25,8 +27,8 @@ class _NotificationDialog extends State<NotificationDialog>{
   //FlutterNotificationsPlugin
   FlutterLocalNotificationsPlugin flutterLocalNotifications = new FlutterLocalNotificationsPlugin();
   String channelID = "Time2Eat";
-  String channelName;
-  String channelDescription = "It's time two eat something amazing!";
+  String channelName = "channel name";
+  String channelDescription = "It's time to eat something amazing!";
 
   //Select a date
   DateFormat dateFormat;
@@ -36,15 +38,43 @@ class _NotificationDialog extends State<NotificationDialog>{
   DateTime selectedDateTime;
 
   //Select a time
-  List<String> timeName = new List();
-  List<String> timeNumber = new List();
+  final List<String> timeName = [
+        "Morgens",
+        "Nachmittags",
+        "Spätnachmittags",
+        "Abends",
+        "Uhrzeit auswählen..."
+      ];
+
+  final List<String> timeNumber = [
+        "08:00",
+        "13:00",
+        "18:00",
+        "20:00",
+        ""
+      ];
   List<String> timeList = new List();
   String selectedTime;
+  TimeOfDay notificationTime;
+  var pickedTime;
+  int timeIndex;
 
   //Select notification intervall
-  List<String> intervalle = new List();
-  List<String> intervallHint = new List();
+  final List<String> intervalle = [
+    "Einmaliger Termin",
+    "Täglich",
+    "Wöchentlich"
+  ];
+  final List<String> intervallHint = [
+    "Einmaliger Termin",
+    "wird täglich wiederholt ",
+    "wird wöchentlich wiederholt "
+  ]; 
   String selectedIntervall;
+
+  //Days
+  final List<String> weekDays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
+  int selectedDay;
 
   _getContent(){ 
     return CustomSimpleDialog(  
@@ -61,22 +91,50 @@ class _NotificationDialog extends State<NotificationDialog>{
           ),
         ),
         ),
-        Padding(
-          padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
-          child: Container(
-            child: new MyDropdownButton(
-              hint: Text(selectedDate),
-              items: date.map((String value){
-                return new MyDropdownMenuItem(
-                  value: value,
-                  child: ListTile(
-                    title: new Text(value),
-                  ),
-                );
-              }).toList(),
-              onChanged: convertDate,
-            ),
-          ),
+        (selectedIntervall == intervalle[0]
+          ? Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+              child: Container(
+                child: new MyDropdownButton(
+                  hint: Text(selectedDate),
+                  items: date.map((String value){
+                    return new MyDropdownMenuItem(
+                      value: value,
+                      child: ListTile(
+                        title: new Text(value),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: convertDate,
+                ),
+              ),
+            ) 
+          : Container()
+        ),
+        (selectedIntervall == intervallHint[2]
+          ? Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+              child: Container(
+                child: new MyDropdownButton(
+                  hint: Text(weekDays[selectedDay]),
+                  items: weekDays.map((String value){
+                    return new MyDropdownMenuItem(
+                      value: value,
+                      child: ListTile(
+                        title: new Text(value),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (String value){                    
+                    setState(() {
+                      int number = weekDays.indexOf(value);
+                      selectedDay = number;
+                    });
+                  },
+                ),
+              ),
+            ) 
+          : Container()
         ),
         Padding(
           padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5.0),
@@ -84,7 +142,8 @@ class _NotificationDialog extends State<NotificationDialog>{
             child: new MyDropdownButton(
               hint: Text(selectedTime),
               items: timeName.map((String value){
-                int count = timeName.indexOf(value);                
+                int count = timeName.indexOf(value); 
+                timeIndex = count;               
                 return new MyDropdownMenuItem(                  
                   value: timeNumber[count],
                   child: ListTile(
@@ -150,13 +209,16 @@ class _NotificationDialog extends State<NotificationDialog>{
                   fontFamily: "Google-Sans"
                 ),
               ), 
-              color: GoogleMaterialColors().getLightColor(7).withOpacity(0.85),   
+              color: GoogleMaterialColors().primaryColor().withOpacity(0.15),   
               elevation: 0.0,         
-              highlightColor: GoogleMaterialColors().getLightColor(7).withAlpha(200),
+              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.15),
               highlightElevation: 2.0,
               onPressed: (){
-                setNotficationTime(selectedIntervall);
-                Navigator.pop(context);
+                setState(() {
+                  setNotficationTime(selectedIntervall);
+                });
+                //setNotficationTime(selectedIntervall);
+                //Navigator.pop(context);
               },
               shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
               splashColor: Colors.transparent,
@@ -194,8 +256,7 @@ class _NotificationDialog extends State<NotificationDialog>{
     setState(() {});
   }
 
-  convertTime(String value) async{
-    var pickedTime;
+  convertTime(String value) async{    
     if(value != ""){
       selectedTime = value;
     } else {
@@ -207,6 +268,10 @@ class _NotificationDialog extends State<NotificationDialog>{
         selectedTime = pickedTime.toString().split("(")[1].split(")")[0].toString();
       }
     }    
+    notificationTime = TimeOfDay(
+      hour: int.parse(selectedTime.toString().split(":")[0]),
+      minute: int.parse(selectedTime.toString().split(":")[1])
+    );
     setState(() {});
   }
 
@@ -217,134 +282,88 @@ class _NotificationDialog extends State<NotificationDialog>{
   }
 
   setNotficationTime(String interval){
+    
     if(interval == intervalle[0]){
-      scheduleNot();
+      _oneTimeNotification();
     } else if(interval == intervalle[1]){
-      showDailyNot();
+      _dailyNotification();
     } else if(interval == intervalle[2]){
-      showWeeklyNot();
-    } else if(interval == intervalle[3]){
-      print("Benutzerdefiniert ist noch in Bearbeitung!");
-    }
+      _weeklyNotification();
+    } 
   }
 
+Future _oneTimeNotification() async {  
+  var scheduledNotificationDateTime = DateTime(
+    DateTime.now().year,
+    selectedDateTime.month,
+    selectedDateTime.day,
+    int.parse(selectedTime.toString().split(":")[0]),
+    int.parse(selectedTime.toString().split(":")[1])
+  );
+  var android = new AndroidNotificationDetails(channelID, channelName, channelDescription);
+  var iOS = new IOSNotificationDetails();
 
-  Future showOnGoingNot() async{
-    var android = new AndroidNotificationDetails(
-      channelID, 
-      channelName, 
-      channelDescription,
-      importance: Importance.Default,
-      ongoing: true,
-      autoCancel: false
-    );
-    var iOS = new IOSNotificationDetails();
-    var platformSpecs = new NotificationDetails(android, iOS);
+  NotificationDetails platformChannelSpecifics = new NotificationDetails(android, iOS);
 
-    await flutterLocalNotifications.show(
-      0, 
-      channelName, 
-      channelDescription, 
-      platformSpecs
-    );
-  }  
+  await flutterLocalNotifications.schedule(
+    0,
+    widget.recipe,
+    channelDescription,
+    scheduledNotificationDateTime,
+    platformChannelSpecifics
+  );
+}
 
+Future _dailyNotification() async{
+  var scheduledNotificationTime = new Time(
+    int.parse(selectedTime.toString().split(":")[0]),
+    int.parse(selectedTime.toString().split(":")[1]),
+    0
+  );
+  var android = new AndroidNotificationDetails(channelID, channelName, channelDescription);
+  var iOS = new IOSNotificationDetails();
 
-  Future scheduleNot() async{
-    //Get Specific Date
-    var date = selectedDate;
+  NotificationDetails platformChannelSpecifics = new NotificationDetails(android, iOS);
 
-    //Get Specific Time
-    var hour = int.parse(selectedTime.split(":")[0]);
-    var minute = int.parse(selectedTime.split(":")[1]);
-    var time = Time(hour, minute, 0);
-    print("Time: "+time.toString());
+  await flutterLocalNotifications.showDailyAtTime(
+    0,
+    widget.recipe,
+    channelDescription,
+    scheduledNotificationTime,
+    platformChannelSpecifics
+  );
+}
 
-    var vibrationPattern = new Int64List(4);
-    vibrationPattern[0] = 0;
-    vibrationPattern[1] = 1000;
-    vibrationPattern[2] = 5000;
-    vibrationPattern[3] = 2000;
+Future _weeklyNotification() async{
+  var scheduledNotificationTime = new Time(
+    int.parse(selectedTime.toString().split(":")[0]),
+    int.parse(selectedTime.toString().split(":")[1]),
+    0
+  );
+  var android = new AndroidNotificationDetails(channelID, channelName, channelDescription);
+  var iOS = new IOSNotificationDetails();
 
+  NotificationDetails platformChannelSpecifics = new NotificationDetails(android, iOS);
 
-    var android = new AndroidNotificationDetails(
-      channelID, 
-      channelName, 
-      channelDescription,
-      sound: 'slow_spring_board',
-      vibrationPattern: vibrationPattern,
-      color: GoogleMaterialColors().primaryColor()
-    );
-    var iOS = new IOSNotificationDetails(sound:  'slow_spring_board.aiff');
-    var platformSpecs = new NotificationDetails(android, iOS);
+  await flutterLocalNotifications.showWeeklyAtDayAndTime(
+    0,
+    widget.recipe,
+    channelDescription,
+    Day(selectedDay),
+    scheduledNotificationTime,
+    platformChannelSpecifics
+  );
+}
 
-    /*
-    await flutterLocalNotifications.schedule(
-      0,
-      channelName,
-      channelDescription,
-      selectedDateTime,
-      platformSpecs
-    );
-    */
-  }
-
-
-  Future showDailyNot() async{
-    //Get Specific Time
-    var hour = int.parse(selectedTime.split(":")[0]);
-    var minute = int.parse(selectedTime.split(":")[1]);
-    var time = Time(hour, minute, 0);
-
-    var android = new AndroidNotificationDetails(channelID, channelName, channelDescription);
-    var iOS = new IOSNotificationDetails();
-    var platformSpecs = new NotificationDetails(android, iOS);
-
-    await flutterLocalNotifications.showDailyAtTime(
-      0, 
-      channelName, 
-      channelDescription, 
-      time, 
-      platformSpecs
-    );
-  }
-
-  Future showWeeklyNot() async{
-    //Get Specific Time
-    var hour = int.parse(selectedTime.split(":")[0]);
-    var minute = int.parse(selectedTime.split(":")[1]);
-    var time = Time(hour, minute, 0);
-
-    //Get Day of today
-    List<Day> days = [Day.Monday, Day.Tuesday, Day.Thursday, Day.Wednesday, Day.Friday, Day.Saturday, Day.Sunday];
-    var specDay = DateTime.now().day;
-
-    var android = new AndroidNotificationDetails(channelID, channelName, channelDescription);
-    var ios = new IOSNotificationDetails();
-    var platformChannelSpecs = new NotificationDetails(android, ios);
-
-    await flutterLocalNotifications.showWeeklyAtDayAndTime(
-      0,
-      channelName,
-      channelDescription,
-      days[specDay],
-      time,
-      platformChannelSpecs
-    );
-  }
-
-  Future deleteAllNot() async{
-    await flutterLocalNotifications.cancelAll();
-  }
-
-  Future onSelectNotification(String payload) async{
-    if(payload != null){
-      debugPrint('Notification payload: '+payload);
-    }
-
-    await Navigator.push(
-      context, 
-      MaterialPageRoute(builder: (context) => Recipebook())
+  Future onSelectNotification(String payload) async {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return new AlertDialog(
+          title: Text("PayLoad"),
+          content: Text("Payload : $payload"),
+        );
+      },
     );
   }
 
@@ -361,38 +380,18 @@ class _NotificationDialog extends State<NotificationDialog>{
         "Datum auswählen..."
       ];  
       selectedDate = dateFormat.format(DateTime.now());
+      selectedDateTime = DateTime.now();
 
-      timeName = [
-        "Morgens",
-        "Nachmittags",
-        "Spätnachmittags",
-        "Abends",
-        "Uhrzeit auswählen..."
-      ];
+      timeIndex = 0;
+      selectedTime = timeNumber[timeIndex];
+      notificationTime = TimeOfDay(
+        hour: int.parse(selectedTime.toString().split(":")[0]),
+        minute: int.parse(selectedTime.toString().split(":")[1])
+      );
 
-      timeNumber = [
-        "08:00",
-        "13:00",
-        "18:00",
-        "20:00",
-        ""
-      ];
-      selectedTime = timeNumber[0];
-
-      intervalle = [
-        "Einmaliger Termin",
-        "Täglich",
-        "Wöchentlich",
-        "Benutzerdefiniert..."
-      ];
-
-      intervallHint = [
-        "Einmaliger Termin",
-        "wird täglich wiederholt ",
-        "wird wöchentlich wiederholt ",
-        "in Bearbeitung..."
-      ];
       selectedIntervall = intervallHint[0];
+
+      selectedDay = DateTime.now().day;
 
       var initializeAndroid = new AndroidInitializationSettings('time2eat');
       var initializeIOS = new IOSInitializationSettings();

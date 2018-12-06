@@ -49,7 +49,6 @@ class DBHelper{
             "timestamp text, "+
             "image real, "+
             "backgroundColor text "+
-            "PRIMARY KEY(id) " + 
           ")"
         );
 
@@ -60,7 +59,6 @@ class DBHelper{
             "name varchar, "+
             "measure varchar, "+
             "number real "+
-            "PRIMARY KEY(id) " + 
           ")"
         );
 
@@ -70,7 +68,6 @@ class DBHelper{
             "id integer primary key AUTOINCREMENT, " +
             "number integer, " +
             "description text "+
-            "PRIMARY KEY(id) " + 
           ")"
         );
 
@@ -79,7 +76,6 @@ class DBHelper{
           "CREATE TABLE termine("+
             "id integer primary key AUTOINCREMENT, " +
             "termin text " +
-            "PRIMARY KEY(id) " + 
           ")"
         );
 
@@ -91,8 +87,8 @@ class DBHelper{
             "measure varchar, "+
             "number real, " +
             "checked integer, " +
-            "timestamp real " +
-            "PRIMARY KEY(id) " + 
+            "timestamp real, " +
+            "order_id integer "+
           ")"
         );
 
@@ -101,7 +97,6 @@ class DBHelper{
           "CREATE TABLE listTitles("+
             "id integer primary key AUTOINCREMENT, "+
             "titleName varchar "+
-            "PRIMARY KEY(id) " + 
           ")"
         );
 
@@ -112,9 +107,6 @@ class DBHelper{
             "id integer primary key AUTOINCREMENT, " +
             "idRecipes real, "+
             "idIngredients real "+
-            "PRIMARY KEY(id), " + 
-            "FOREIGN KEY(idRecipes) references recipes(id) ON DELETE RESTRICT ON UPDATE CASCADE, "+
-            "FOREIGN KEY(idIngredients) references ingredients(id) ON DELETE RESTRICT ON UPDATE CASCADE "
           ")"
         );
 
@@ -124,9 +116,6 @@ class DBHelper{
               "id integer primary key AUTOINCREMENT, " +
               "idRecipes real, "+
               "idSteps real "+
-              "PRIMARY KEY(id), " + 
-              "FOREIGN KEY(idRecipes) references recipes(id) ON DELETE RESTRICT ON UPDATE CASCADE, "+
-              "FOREIGN KEY(idSteps) references steps(id) ON DELETE RESTRICT ON UPDATE CASCADE "+
             ")"
         );
 
@@ -136,9 +125,6 @@ class DBHelper{
             "id integer primary key AUTOINCREMENT, "+
             "idRecipes real, "+
             "idTermine real "+
-            "PRIMARY KEY(id), " + 
-            "FOREIGN KEY(idRecipes) references recipes(id) ON DELETE RESTRICT ON UPDATE CASCADE, "+
-            "FOREIGN KEY(idTermine) references termine(id) ON DELETE RESTRICT ON UPDATE CASCADE "+
           ")"
         );
 
@@ -148,9 +134,6 @@ class DBHelper{
             "id integer primary key AUTOINCREMENT, "+
             "idRecipes real, "+
             "idShopping real "+
-            "PRIMARY KEY(id), " + 
-            "FOREIGN KEY(idRecipes) references recipes(id) ON DELETE RESTRICT ON UPDATE CASCADE, "+
-            "FOREIGN KEY(idShopping) references shopping(id) ON DELETE RESTRICT ON UPDATE CASCADE "+
           ")"
         );
 
@@ -160,9 +143,6 @@ class DBHelper{
             "id integer primary key AUTOINCREMENT, "+
             "idShopping real, "+
             "idTitles real "+
-            "PRIMARY KEY(id), " + 
-            "FOREIGN KEY(idShopping) references shopping(id) ON DELETE RESTRICT ON UPDATE CASCADE "+
-            "FOREIGN KEY(idTitles) references listTitles(id) ON DELETE RESTRICT ON UPDATE CASCADE "+
           ")"
         );
 
@@ -212,6 +192,57 @@ class DBHelper{
     });
   }
 
+  //Delete checked items
+  Future deleteCheckedItems(String listName) async{
+    await _db.transaction((txn) async{
+      String sqlCount, sql;
+      int count;
+
+
+      sql = 
+        "SELECT shopping.item AS item "+
+        "FROM shopping, shoppingTitles, listTitles "+
+        "WHERE shopping.id = shoppingTitles.idShopping "+
+        "AND shoppingTitles.idTitles = listTitles.id "+
+        "AND listTitles.titleName = ?";
+      List<Map> list = await txn.rawQuery(sql, [listName]);
+      List<String> items = new List();
+
+      for (var i = 0; i < list.length; i++) {
+        items.add(list[i]["item"]);
+      }
+
+      sql = "DELETE FROM shoppingTitles "+
+            "WHERE idShopping IN ("+
+              "SELECT shoppingTitles.idShopping "+
+              "FROM shoppingTitles, shopping, listTitles "+ 
+              "WHERE shopping.id = shoppingTitles.idShopping "+
+              "AND shoppingTitles.idTitles = listTitles.id "+
+              "AND shopping.checked = 1 "+
+              "AND listTitles.titleName = ?"+
+            ")";
+
+      await txn.rawDelete(sql, [listName]);
+
+
+      sqlCount = 
+        "SELECT COUNT(*) FROM shoppingTitles, shopping "+
+        "WHERE shoppingTitles.idShopping = shopping.id "+
+        "AND shopping.item = ?";      
+
+      sql = 
+        "DELETE FROM shopping "+
+        "WHERE item = ?";
+
+      for (var i = 0; i < items.length; i++) {
+        count = Sqflite.firstIntValue(await txn.rawQuery(sqlCount, [items[i]]));
+        if(count == 0){
+          await txn.rawDelete(sql, [items[i]]);
+        }
+      }
+    });
+  }
+
   /*
   * Check values 
   */
@@ -228,8 +259,14 @@ class DBHelper{
 
   Future<int> checkListTitle(String title) async{
     int count;
-    if(title != "") Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM listTitles WHERE titleName = ?", [title]));
-    else Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM listTitles"));
+    if(title != "") count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM listTitles WHERE titleName = ?", [title]));
+    else count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM listTitles"));
+    return count;
+  }
+
+  Future<int> checkItem(String itemName) async{
+    String sql = "SELECT COUNT(*) FROM shopping WHERE item = ?";
+    int count = Sqflite.firstIntValue(await _db.rawQuery(sql, [itemName]));
     return count;
   }
 
@@ -279,16 +316,89 @@ class DBHelper{
     }
     return steps;
   }
+
+  Future<int> freeItemID() async{
+    int count = Sqflite.firstIntValue(await _db.rawQuery("SELECT MAX(id) FROM shopping"));
+    return count + 1;
+  }
   
-  Future<ShoppingDB> insertShopping(ShoppingDB shopping, [String titleName]) async{
-    int nextID = Sqflite.firstIntValue(await _db.rawQuery("SELECT MAX(id) AS max_id FROM shopping"));
-    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM shopping, shoppingTitles, listTitles WHERE shopping.item = ? AND shoppingTitles.idShopping = ? AND shoppingTitles.idTitles = listTitles.id AND listTitles.titleName = ?", [shopping.item, nextID, titleName]));
+  Future<ShoppingDB> newShoppingItem(ShoppingDB shopping) async{
+
+    int count = Sqflite.firstIntValue(
+      await _db.rawQuery(
+        "SELECT COUNT(*) FROM shopping WHERE shopping.item = ? AND shopping.measure = ?",
+        [shopping.item, shopping.measure]
+      )
+    );
+    
+    String sql = "UPDATE shopping SET number = ?";
+
     if(count == 0){
       shopping.id = await _db.insert("shopping", shopping.toMap());
     } else {
-      shopping.id = await _db.rawUpdate("UPDATE shopping SET number = number + ?, checked = 0 WHERE item = ?", [shopping.number, shopping.item]);
+      shopping.id = await _db.rawUpdate(sql, [shopping.number]);
     }
+    
     return shopping;
+  }
+
+  Future<ShoppingDB> linkShoppingTitles(ShoppingDB shopping, String titlename) async{
+    String countSQL =
+      "SELECT COUNT(*) "+
+      "FROM shopping, shoppingTitles, listTitles "+
+      "WHERE shopping.item = ? "+
+      "AND shopping.id = shoppingTitles.idShopping "+
+      "AND shoppingTitles.idTitles = listTitles.id "+
+      "AND listTitles.titleName = ? ";
+    int count = Sqflite.firstIntValue(await _db.rawQuery(countSQL, [shopping.item, titlename]));
+
+    String updateSQL = 
+      "UPDATE shopping "+
+      "SET number = number + ?"+
+      "WHERE id = ( "+
+        "SELECT shoppingTitles.idShopping "+
+        "FROM shoppingTitles, listTitles "+
+        "WHERE shoppingTitles.idTitles = listTitles.id "+
+        "AND listTitles.titleName = ?"+
+      ") "+
+      "AND item = ?";
+
+    String insertSQL = 
+      "INSERT INTO shopping ("+
+        "item, measure, number, checked, timestamp "+
+      ") "+
+      "VALUES ("+
+        "?, ?, ?, ?, ?"+
+      ")";
+    
+    if(count == 0){
+      shopping.id = await _db.rawInsert(insertSQL, [shopping.item, shopping.measure, shopping.number, shopping.checked, shopping.timestamp]);
+    } else {
+      shopping.id = await _db.rawUpdate(updateSQL, [shopping.number, titlename, shopping.item]);
+    }
+
+    return shopping;
+  }
+
+  Future<bool> checkItems(String item, String titleName) async{
+    bool value = false;
+
+    var count = Sqflite.firstIntValue(
+      await _db.rawQuery(
+        "SELECT COUNT(*) "+
+        "FROM shopping, shoppingTitles, listTitles "+
+        "WHERE shopping.item = ?"+
+        "AND shopping.id = shoppingTitles.idShopping "+
+        "AND shoppingTitles.idTitles = listTitles.id "+
+        "AND listTitles.titleName = ? ",
+        [item, titleName]
+      )
+    );
+
+    if(count > 0) value = true; //a shopping item is in this list
+
+
+    return value;
   }
 
   Future<TermineDB> insertTermine(TermineDB termine) async{
@@ -398,8 +508,8 @@ class DBHelper{
   }
 
   Future<int> countRecipes() async{
-    List<Map> list = await _db.rawQuery("SELECT * FROM recipes");
-    return list.length;
+    int count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM recipes"));
+    return count;
   }
 
   //Get Ingredients of specific recipe
@@ -478,7 +588,7 @@ class DBHelper{
   }
 
   //Get all List titles
-  Future<List<ListTitle>> getListTitles() async{
+  Future<List<ListTitle>> getListTitles([int number]) async{
     String sql = "SELECT * FROM listTitles";
     List<Map> list = await _db.rawQuery(sql);
     List<ListTitle> titles = new List();
@@ -488,20 +598,28 @@ class DBHelper{
     return titles;
   }
 
+  //Get first list title
+  Future<String> getFirstTitle() async{
+    String sql = "SELECT titleName FROM listTitles";
+    List<Map> list = await _db.rawQuery(sql);
+    String title = list[0]["titleName"];
+    return title;
+  }
+
   //Count list titles
   Future<int> countTitles(String title) async{
-    String sql;
-    List<Map> list = new List();
-    if(title != "") {
-      sql = "SELECT COUNT(*) FROM listTitles WHERE listTitles.titleName = ?";
-      list = await _db.rawQuery(sql, [title]);
-    }
-    else {
-      sql = "SELECT COUNT(*) FROM listTitles";
-      list = await _db.rawQuery(sql);      
-    }
+    String sql; 
+    int count;
+
+    sql = 
+        "SELECT COUNT(*) "+
+        "FROM listTitles, shopping, shoppingTitles "+
+        "WHERE listTitles.id = shoppingTitles.idTitles "+
+        "AND shoppingTitles.idShopping = shopping.id "+
+        "AND listTitles.titleName = ?";
+    count = Sqflite.firstIntValue(await _db.rawQuery(sql, [title]));
     
-    return list.length;
+    return count;
   }
 
   //Update list title
@@ -546,6 +664,21 @@ class DBHelper{
     return id;    
   }
 
+  //Get Shopping item ID
+  Future<int> getItemID(String item) async{
+    String sql = "SELECT id FROM shopping WHERE item = ?";
+    List<Map> list = await _db.rawQuery(sql, [item]);
+    int id = list[0]["id"];
+    return id;
+  }
+
+  //Get next shopping item ID
+  Future<int> getNextItemID() async{
+    String sql = "SELECT MAX(id) AS _ID FROM shopping";
+    int id = Sqflite.firstIntValue(await _db.rawQuery(sql));
+    return id;
+  }
+
 
 
   //Update favorite recipe
@@ -563,4 +696,6 @@ class DBHelper{
     int count = await _db.rawUpdate(sql, [checked.toString(), DateTime.now().toString(), item, timestamp]);
     return count;
   }
+
+
 }

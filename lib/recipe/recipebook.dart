@@ -342,7 +342,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           IconButton(
             icon: Icon(Icons.more_vert, color: Colors.black54),
             onPressed: (){
-              asyncDialog();
+              asyncHamMenu();
             },
             tooltip: "Select all",
           ) 
@@ -674,9 +674,10 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       return id;
     }
   
-    asyncDialog() async{
+    asyncHamMenu() async{
+      bool reload = false;
+
       var dialogReturn = await Dialogs().showPopupMenu(context, _currentTab);
-      print("DialogReturn: "+dialogReturn.toString());
       if(dialogReturn == "Liste umbenennen"){
         var rename = await Dialogs().renameShopping(context);
         if(rename != null){
@@ -684,21 +685,36 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
             String oldTitle = rename[0];
             String newTitle = rename[1];              
             await dbHelper.updateTitle(newTitle, oldTitle);
-            setState(() {
-              prefs.setString("currentList", newTitle);
-            });            
+            prefs.setString("currentList", newTitle);
           }
         }
+
+
       } else if(dialogReturn == "Liste löschen") {
-        String deletedList = prefs.getString("currentList");
-        await dbHelper.deleteListTitle(prefs.getString("currentList"));
+        
+        String prefsList = prefs.getString("currentList");
+        await dbHelper.deleteListTitle(prefsList);
         await prefs.remove("currentList");
-        List<ListTitle> titles = await dbHelper.getListTitles();
+        String newTitle = await dbHelper.getFirstTitle();
         setState(() {
-          prefs.setString("currentList", titles[0].titleName);
-        });        
-        showBottomSnack("value", ToastGravity.BOTTOM);
+          prefs.setString("currentList", newTitle);
+          setPrefs();
+        });
+
+
+
       } else if(dialogReturn == "Alle erledigten Einkäufe löschen"){
+        
+        var delete = await Dialogs().deleteCheckedItems(
+          context, 
+          await dbHelper.countCheckedItems(prefs.getString("order"), prefs.getString("currentList"))
+        );
+
+        if(delete == "löschen"){
+          String list = prefs.getString("currentList");
+          await dbHelper.deleteCheckedItems(list);          
+        }       
+
 
       }
     }
