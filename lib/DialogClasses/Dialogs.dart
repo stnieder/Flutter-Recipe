@@ -1,5 +1,6 @@
 import 'package:Time2Eat/DialogClasses/CreateNewList.dart';
 import 'package:Time2Eat/DialogClasses/ListTitles.dart';
+import 'package:Time2Eat/DialogClasses/SelectPortion.dart';
 import 'package:Time2Eat/DialogClasses/ShoppingMenu.dart';
 import 'package:Time2Eat/database/database.dart';
 import 'package:Time2Eat/interface/GoogleColors.dart';
@@ -8,6 +9,7 @@ import 'package:Time2Eat/interface/NotificationDialog.dart';
 import 'package:Time2Eat/interface/RoundedBottomSheet.dart';
 import 'package:Time2Eat/model/ListTitle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -566,7 +568,87 @@ class Dialogs{
     );    
   }
 
-
+  selectPortions(BuildContext context, int currentNumber) async{
+    int selected = currentNumber;
+    return showRoundedBottomSheet(      
+      context: context,   
+      height: 150.0,   
+      child: Container(
+        height: 70.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 15.0, left: 15.0),
+              child: Text(
+                "Portionen",
+                style: TextStyle(
+                  fontFamily: "Google-Sans",
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+            Expanded(
+                  child: Container(              
+                    height: 50.0,
+                    width: 100.0,
+                    child: CupertinoPicker(      
+                      backgroundColor: Colors.white,          
+                      onSelectedItemChanged: (selection){
+                        selected = selection;
+                      },
+                      itemExtent: 25.0,
+                      children: List.generate(
+                        101,
+                        (index){
+                          Widget text;
+                          if(index == 0) {
+                            text = Text(
+                              "${0.5}",
+                              style: TextStyle(
+                                fontFamily: "Google-Sans",
+                                fontSize: 15.0
+                              ),
+                            );
+                          }
+                          else if(index < 101) {
+                            text = Text(
+                              "${index}",
+                              style: TextStyle(
+                                fontFamily: "Google-Sans",
+                                fontSize: 15.0
+                              ),
+                            );
+                          }
+                          return text;
+                        }
+                      ),
+                    ),
+                  ),
+                ),
+                FlatButton(                  
+                  child: Row(
+                    children: <Widget>[
+                      Icon(OMIcons.save, color: Colors.black45),
+                      Text(
+                        "Speichern",
+                        style: TextStyle(
+                          fontFamily: "Google-Sans",
+                          fontSize: 14.0                    
+                        ),
+                      )
+                    ],
+                  ),
+                  onPressed: (){
+                    Navigator.pop(context, selected);
+                  },
+                )
+          ],
+        ),
+      )
+    );
+  }
 
 
   customDialog(BuildContext context,String title, Widget content, List<Widget> actions) async{

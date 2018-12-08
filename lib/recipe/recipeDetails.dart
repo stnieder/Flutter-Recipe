@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:Time2Eat/DialogClasses/Dialogs.dart';
-import 'package:Time2Eat/model/ListTitle.dart';
+import 'package:Time2Eat/interface/RadialMinutes.dart';
 import 'package:Time2Eat/model/Recipe_Shopping.dart';
 import 'package:Time2Eat/model/Shopping.dart';
 import 'package:Time2Eat/model/Shopping_Title.dart';
+import 'package:Time2Eat/recipe/cooking.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -28,10 +29,15 @@ class RecipeDetails extends StatefulWidget{
     }
 }
 
-class _RecipeDetails extends State<RecipeDetails>{
+class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
   ConvertColor convertColor = new ConvertColor();
+  double percentage = 0.0;
 
+  //Appbar
+  GlobalKey<State<PopupMenuButton>> _buttonKey = new GlobalKey<State<PopupMenuButton>>();
+
+  //Allgemein
   int id;  
   String recipeName = "";
   String description;
@@ -46,20 +52,52 @@ class _RecipeDetails extends State<RecipeDetails>{
   List<double> numberList = new List();
   List<String> measureList = new List();
   List<String> nameList = new List();
+  List<Widget> ingredients = new List();
+  int ingredientAnzahl;
+  var sample;
+  Color textColor = Colors.black;
 
   //Zubereitung
   List<String> stepsList = new List();
 
   int ingredientsLength = 0;
+  int durationMinutes;
 
   @override
     void initState() {
       super.initState();      
       recipeName = widget.recipeName;
+
+      // Get all data of specific recipe
+      getRecipeData();
+
+      //Set ingredients height
+      sample = fetchIngredients();
+    }
+
+    getRecipeData() async{
+      var db = new DBHelper();
+      List<Recipes> recipes = await db.getSpecRecipe(widget.recipeName);
+      description = recipes[0].definition;
+      duration = new Duration(minutes: int.parse(recipes[0].duration));
+      var people = recipes[0].people;
+      if(people != null) peopleDB = 1;
+      imagePath = recipes[0].image;
+      backgroundColor = convertColor.convertToColor(recipes[0].backgroundColor);        
+
+      percentage = (int.parse(recipes[0].duration) / 60) * 100;
+      setState(() {
+        durationMinutes = duration.inMinutes;
+      });
     }
 
   @override
-  Widget build(BuildContext context) {          
+    void setState(fn) {
+      super.setState(fn);
+    }
+
+  @override
+  Widget build(BuildContext context) {        
     return new Scaffold(
       appBar: AppBar(        
         actions: <Widget>[
@@ -70,16 +108,55 @@ class _RecipeDetails extends State<RecipeDetails>{
 
                 int favorite = snapshot.data[0].favorite;
 
-                return IconButton(
-                  icon: ( favorite == 0
-                    ? Icon(Icons.star_border, color: Colors.black54)
-                    : Icon(Icons.star, color: Colors.black54)
-                  ),
-                  onPressed: (){
-                    setState(() {
-                      updateFavorite(favorite);
-                    });
-                  },
+                return Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: ( favorite == 0
+                        ? Icon(Icons.star_border, color: Colors.black54)
+                        : Icon(Icons.star, color: Colors.black54)
+                      ),
+                      onPressed: (){
+                        setState(() {
+                          updateFavorite(favorite);
+                        });
+                      },
+                    ),
+                    PopupMenuButton(
+                      key: _buttonKey,
+                      icon: Icon(Icons.more_vert, color: Colors.black54),
+                      itemBuilder: (_){
+                        return <PopupMenuItem>[
+                          PopupMenuItem(
+                            child: Row(
+                              children: <Widget>[
+                                Icon(OMIcons.create, color: Colors.black54),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
+                                  child: Text("Bearbeiten"),
+                                )
+                              ],
+                            ),
+                            value: "bearbeiten",
+                          ),
+                          PopupMenuItem(
+                            child: Row(
+                              children: <Widget>[
+                                Icon(OMIcons.delete, color: Colors.black54),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
+                                  child: Text("Löschen"),
+                                )
+                              ],
+                            ),
+                            value: "löschen",
+                          )
+                        ];
+                      },
+                      onSelected: (value){
+                        showBottomSnack(value, ToastGravity.BOTTOM);
+                      },
+                    )
+                  ],
                 );
               } else if(snapshot.hasError){
 
@@ -111,27 +188,28 @@ class _RecipeDetails extends State<RecipeDetails>{
           ),
         ),
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
           CircleAvatar(
-            child: (imagePath == "no image"
+            backgroundColor: backgroundColor,
+            child: (imagePath != "no image"
                 ? Container(
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-                  image: AssetImage(imagePath),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
-              ),
-            )
+                    decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                        colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                        image: AssetImage(imagePath),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                    ),
+                  )
                 : Text(
                     recipeName[0].toUpperCase(),
                     style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: "Google-Sans",
-                        fontSize: 35.0,
-                        fontWeight: FontWeight.w400
+                      color: Colors.white,
+                      fontFamily: "Google-Sans",
+                      fontSize: 35.0,
+                      fontWeight: FontWeight.w400
                     ),
                   )
             ),
@@ -154,146 +232,214 @@ class _RecipeDetails extends State<RecipeDetails>{
               )
             ],
           ),
-          Divider(),
+          Container(            
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.black.withOpacity(0.1)
+                )                
+              ),
+            ),
+            padding: EdgeInsets.only(top: 15.0),
+          ),
           Row(
             children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.remove),
-                onPressed: (){
-                  if(currentPeople > 1){
-                    setState((){
-                      currentPeople--;
-                    });
-                  }
-                },
-              ),
-              Text(
-                  currentPeople == 1
-                  ? "1 Person"
-                  : currentPeople.toString()+" Personen"
-              ),
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: (){
-                  setState((){
-                    currentPeople++;
-                  });
-                },
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, left: 10.0),
+                child: Column(
+                  children: <Widget>[
+                    RadialMinutes(
+                      percentage: percentage,
+                      radius: 65.0,
+                      text: "$durationMinutes Min.",
+                    ),
+                    _radialText("Zubereitung")
+                  ],
+                ),
               )
             ],
           ),
-          FutureBuilder(
-            future: fetchIngredients(),
-            initialData: [],
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-              if(snapshot.hasData){
-                List<Text> widget_numberList = new List();
-                List<Text> widget_measureList = new List();
-                List<Text> widget_nameList = new List();
-
-                List<Widget> ingredients = new List();
-
-                double peopleNumber = 1.0;
-                fetchRecipe().then((list){
-                  if(list[0].people == null) peopleNumber = 1;
-                  else peopleNumber = double.parse(list[0].people);
-                });
-
-                ingredientsLength = snapshot.data.length;
-
-                for(int i=0; i < snapshot.data.length; i++){
-
-                  //For this view
-                  widget_numberList.add(Text(((double.parse(snapshot.data[i].number)/peopleNumber)*currentPeople).toString()));
-                  widget_measureList.add(Text(snapshot.data[i].measure));
-                  widget_nameList.add(Text(snapshot.data[i].name));
-
-                  //For the edit view
-                  nameList.add(snapshot.data[i].name);
-                  numberList.add(double.parse(snapshot.data[i].number));
-                  measureList.add(snapshot.data[i].measure);
-                }
-                
-                for(int i=0; i< widget_numberList.length; i++){
-                  ingredients.add(
-                    Row(
-                      children: <Widget>[
-                        widget_numberList[i],
-                        widget_measureList[i],
-                        widget_nameList[i]
-                      ],
-                    )
-                  );
-                }
-                
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: ingredients,
-                );
-                
-              } else if(snapshot.hasError){
-                return new Text("Keine Daten vorhanden.");
-              }
-              return new CircularProgressIndicator();
-            },
+          Container(            
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.black.withOpacity(0.1)
+                )                
+              ),
+            ),
+            padding: EdgeInsets.only(top: 15.0),
           ),
-          MaterialButton(
-            onPressed: () => saveShopping(),
-            child: Text("Zur Einkaufsliste hinzufügen"),
-            animationDuration: Duration(milliseconds: 200),
-          ),
-          FutureBuilder(
-            future: fetchSteps(),
-            initialData: [],
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-              if(snapshot.hasData){
-                List<Text> widget_numberList = new List();
-                List<Text> widget_descriptionList = new List();
-                List<Widget> steps = new List();
-
-                for(int i=0; i < snapshot.data.length; i++){
-                  //For this view
-                  widget_numberList.add(Text(snapshot.data[i].number.toString()));
-                  widget_descriptionList.add(Text(snapshot.data[i].description));
-
-                  //For edit view
-                  stepsList.add(snapshot.data[i].description);
-                }
-                
-                for(int i=0; i< widget_numberList.length; i++){
-                  steps.add(
-                    Row(
-                      children: <Widget>[
-                        widget_numberList[i],
-                        widget_descriptionList[i]
-                      ],
+          Row(
+            
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 15.0, left: 15.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black45),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      shape: BoxShape.rectangle
+                    ),
+                    child: GestureDetector(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
+                        child: Text(
+                          "$peopleDB",
+                          style: TextStyle(
+                            color: GoogleMaterialColors().primaryColor().withOpacity(0.9),
+                            fontSize: 15.0
+                          ),
+                        ),
+                      ),
+                        onTap: (){
+                          _selectPortion();
+                        },
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 15.0, left: 5.0),
+                child: Text(
+                  (peopleDB == 1
+                    ? (peopleDB == 0.5
+                      ? "Portion"
+                      : "Portion"
                     )
+                    : "Portionen"
+                  )
+                ),
+              )              
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 15.0, top: 15.0),
+            child: FutureBuilder(
+              future: fetchIngredients(),
+              initialData: [],
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                if(snapshot.hasData){
+                  
+                  return Column(
+                    children: <Widget>[
+                      NotificationListener<OverscrollIndicatorNotification>(
+                        onNotification: (overscroll){
+                          overscroll.disallowGlow();
+                        },
+                        child: Container(
+                          height: snapshot.data.length * 40.0,
+                          child: ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (BuildContext context, int index){
+                              double number = double.parse(snapshot.data[index].number);
+                              String measure = snapshot.data[index].measure;
+                              String name = snapshot.data[index].name;
+
+                              nameList.add(name);
+                              numberList.add(number);
+                              measureList.add(measure);
+
+                              return Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Text("$number $measure"),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 12.0),
+                                      child: Text("$name"),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        child: FlatButton(                        
+                          child: Text("Zur Einkaufsliste hinzufügen"),
+                          onPressed: () => saveShopping(),                        
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                            side: BorderSide(
+                              color: Colors.amber,
+                              width: 2.0
+                            )
+                          ), 
+                          splashColor: Colors.transparent,    
+                          highlightColor: Colors.amber,  
+                          textColor: textColor,
+                        ),
+                        onTapDown: (TapDownDetails details){
+                          setState(() {
+                            textColor = Colors.white;
+                          });
+                        },
+                        onTapUp: (TapUpDetails details){
+                          setState(() {
+                            textColor = Colors.black;
+                          });
+                        },
+                        onTapCancel: (){
+                          setState(() {
+                            textColor = Colors.black;
+                          });
+                        },
+                      )
+                    ],
                   );
+                  
+                } else if(snapshot.hasError){
+                  return new Text("Keine Daten vorhanden.");
                 }
-                
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: steps,
-                );
-              } else if(snapshot.hasError){
-                return new Text("Keine Daten vorhanden.");
-              }
-              return new CircularProgressIndicator();
-            },
+                return new CircularProgressIndicator();
+              },
+            ),
           )
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: googleMaterialColors.primaryColor(),
         child: Icon(
-          OMIcons.create
+          Icons.fastfood
         ),
         onPressed: (){
-          editRecipe();
+          print("Steps: $stepsList");
+          Navigator.push(
+            context, 
+            MaterialPageRoute(
+              builder: (_) => StartCooking(steps: stepsList)
+            )
+          );
         },
+        tooltip: "Jetzt kochen",
       ),
       
     );
+  }
+
+  _radialText(String value){
+    return Padding(
+      padding: EdgeInsets.only(top: 10.0),
+      child: Text(
+        "$value",
+        style: TextStyle(
+          fontFamily: "Google-Sans",
+          fontSize: 14.0                        
+        ),                      
+      ),
+    );
+  }
+
+  _selectPortion() async{
+    var portionen = await Dialogs().selectPortions(context, peopleDB);
+    if(portionen != null){
+      setState(() {
+        peopleDB = portionen;        
+      });
+    }
   }
 
 
@@ -380,20 +526,12 @@ class _RecipeDetails extends State<RecipeDetails>{
     for(int i=0; i< parsedIngredients.length; i++){
       ingredients.add(parsedIngredients[i]);
     }    
-    print("Ingredients-Anzahl: "+ingredients.length.toString());
-    return ingredients;
-  }
 
-  Future<List<Steps>> fetchSteps() async{
-    DBHelper dbHelper = new DBHelper();
-    await dbHelper.create();
-    var parsedSteps = await dbHelper.getSteps(recipeName);
-    List<Steps> steps = List<Steps>();
-    for(int i=0; i < parsedSteps.length; i++){
-      steps.add(parsedSteps[i]);
-    }
-    return steps;
-  }
+    stepsList = await dbHelper.getStepDescription(recipeName);
+    ingredientAnzahl = ingredients.length;
+    print("StepsAnzahl: ${stepsList.length}");
+    return ingredients;
+  } 
 
   Future editRecipe() async{
     Navigator.pushReplacement(

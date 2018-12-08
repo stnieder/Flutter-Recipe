@@ -535,6 +535,17 @@ class DBHelper{
     return steps;
   }
 
+  //Get Step description
+  Future<List<String>> getStepDescription(String recipeName) async{
+    String sql = "SELECT steps.description FROM steps, recipes, recipeSteps WHERE recipes.name = '"+recipeName+"' AND recipes.id = recipeSteps.idRecipes AND recipeSteps.idSteps = steps.id";
+    List<Map> list = await _db.rawQuery(sql);
+    List<String> steps = new List();
+    for(int i =0; i<list.length; i++){
+      steps.add(list[i]["description"]);
+    }
+    return steps;
+  }
+
   //Get Shopping list
   Future<List<Shopping>> getShopping(String order, String title) async{
     if(order == "abc") order = "item ASC";
