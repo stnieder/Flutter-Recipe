@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class CircularImage extends StatefulWidget{
   final String imagePath;

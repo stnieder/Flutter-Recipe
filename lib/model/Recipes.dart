@@ -5,15 +5,17 @@ class RecipesDB{
 
   int id, favorite;
   String image;
-  String name, definition, timestamp, duration, people, backgroundColor;
+  String name, definition, timestamp, pre_duration, cre_duration, resting_time,  people, backgroundColor;
 
-  static final columns = ["id", "name", "definition","duration", "people", "favorite", "timestamp", "image", "backgroundColor"];
+  static final columns = ["id", "name", "definition","pre_duration", "cre_duration", "resting_time", "people", "favorite", "timestamp", "image", "backgroundColor"];
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
       "name": name,
       "definition": definition,      
-      "duration": duration,
+      "pre_duration": pre_duration,
+      "cre_duration": cre_duration,
+      "resting_time": resting_time,
       "people": people,
       "favorite": favorite,
       "timestamp": timestamp,
@@ -34,7 +36,9 @@ class RecipesDB{
     recipes.id = map["id"];
     recipes.name = map["name"];
     recipes.definition = map["definition"];
-    recipes.duration = map["duration"];
+    recipes.pre_duration = map["pre_duration"];
+    recipes.cre_duration = map["cre_duration"];
+    recipes.resting_time = map["resting_time"];
     recipes.people = map["people"];
     recipes.favorite = map["favorite"];
     recipes.timestamp = map["timestamp"];
@@ -49,14 +53,16 @@ class RecipesDB{
 class Recipes{
   int id, favorite;
   String image;
-  String name, definition, timestamp, duration, people, backgroundColor;
+  String name, definition, timestamp, pre_duration, cre_duration, resting_time, people, backgroundColor;
 
   Recipes(
     {
       @required this.id, 
       this.name, 
       this.definition, 
-      this.duration,
+      this.pre_duration,
+      this.cre_duration,
+      this.resting_time,
       this.people,
       this.favorite, 
       this.timestamp, 

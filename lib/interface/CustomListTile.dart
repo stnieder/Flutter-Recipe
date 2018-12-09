@@ -1,5 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/diagnostics.dart';
 
 class CustomListTile extends StatefulWidget{
   final Color mainColor;
@@ -128,6 +128,7 @@ class _ListTile extends State<CustomListTile> with TickerProviderStateMixin impl
   }
 
   @override
+
   List<DiagnosticsNode> debugDescribeChildren() {
     return null;
   }

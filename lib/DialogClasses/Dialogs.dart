@@ -1,13 +1,11 @@
 import 'package:Time2Eat/DialogClasses/CreateNewList.dart';
 import 'package:Time2Eat/DialogClasses/ListTitles.dart';
-import 'package:Time2Eat/DialogClasses/SelectPortion.dart';
 import 'package:Time2Eat/DialogClasses/ShoppingMenu.dart';
 import 'package:Time2Eat/database/database.dart';
 import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:Time2Eat/interface/MyListTile.dart';
 import 'package:Time2Eat/interface/NotificationDialog.dart';
 import 'package:Time2Eat/interface/RoundedBottomSheet.dart';
-import 'package:Time2Eat/model/ListTitle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
@@ -272,7 +270,6 @@ class Dialogs{
 
     //Count amount of list titles
     DBHelper db = new DBHelper();
-    int countTitles = await db.countTitles(prefsList);
 
     //Count checked list items
     int countItems = await db.countCheckedItems(prefsOrder, prefsList);
@@ -450,9 +447,6 @@ class Dialogs{
   showShoppingMenu(BuildContext context) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String currentTitle = prefs.getString("currentList");
-    Color addListColor = Colors.white;
-    double containerHeight = 200.0;
-    double initial;
     
     DBHelper db = new DBHelper();
 
@@ -614,7 +608,7 @@ class Dialogs{
                           }
                           else if(index < 101) {
                             text = Text(
-                              "${index}",
+                              "$index",
                               style: TextStyle(
                                 fontFamily: "Google-Sans",
                                 fontSize: 15.0

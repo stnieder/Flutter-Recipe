@@ -1,5 +1,4 @@
 import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/model/ListTitle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';

@@ -43,7 +43,9 @@ class DBHelper{
             "id integer primary key AUTOINCREMENT, " +
             "name varchar, " +
             "definition text, "+
-            "duration varchar, " +
+            "pre_duration varchar, " +
+            "cre_duration varchar, " + 
+            "resting_time varchar, " +
             "people integer default 2, " +
             "favorite integer default 0, "+
             "timestamp text, "+
@@ -492,7 +494,7 @@ class DBHelper{
     List<Map> list = await _db.rawQuery("SELECT * FROM recipes ORDER BY name DESC");
     List<Recipes> recipes = new List();
     for(int i =0; i < list.length; i++){
-      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"],duration:  list[i]["duration"], favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
+      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"], pre_duration: list[i]["pre_duration"], cre_duration: list[i]["cre_duration"], resting_time: list[i]["resting_time"], people: list[i]["people"].toString(), favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
     }
     return recipes;
   }  
@@ -502,7 +504,7 @@ class DBHelper{
     List<Map> list = await _db.rawQuery("SELECT * FROM recipes WHERE name = ?", [recipeName]);
     List<Recipes> recipes = new List();
     for(int i =0; i < list.length; i++){
-      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"],duration:  list[i]["duration"], favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
+      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"], pre_duration: list[i]["pre_duration"], cre_duration: list[i]["cre_duration"], resting_time: list[i]["resting_time"], people: list[i]["people"].toString(), favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
     }   
     return recipes;
   }
@@ -650,7 +652,7 @@ class DBHelper{
     List<Map> list = await _db.rawQuery(sql);
     List<Recipes> recipes = new List();
     for(int i =0; i < list.length; i++){
-      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"],duration:  list[i]["duration"], favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
+      recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"], pre_duration: list[i]["pre_duration"], cre_duration: list[i]["cre_duration"], resting_time: list[i]["resting_time"], people: list[i]["people"], favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
     }
     return recipes;
   }

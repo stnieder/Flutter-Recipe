@@ -1,8 +1,5 @@
-import 'package:Time2Eat/interface/CustomShowDialog.dart';
-import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_picker/flutter_picker.dart';
 
 class SelectPortion extends StatefulWidget {
   int currentNumber;
@@ -37,7 +34,7 @@ class _SelectPortionState extends State<SelectPortion> {
         (index){
           Widget text;
           if(index == 0) text = Text("${0.5}");
-          else if(index < 101) text = Text("${index}");
+          else if(index < 101) text = Text("$index");
           return text;
         }
       ),

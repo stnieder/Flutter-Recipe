@@ -61,7 +61,7 @@ packages:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.2"
+    version: "0.4.2+1"
   flutter_picker:
     dependency: "direct main"
     description:
@@ -87,7 +87,7 @@ packages:
       name: fluttertoast
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.4"
   image_picker:
     dependency: "direct main"
     description:
@@ -183,7 +183,7 @@ packages:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.2+1"
+    version: "0.13.0"
   stack_trace:
     dependency: transitive
     description:

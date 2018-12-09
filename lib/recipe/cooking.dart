@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:Time2Eat/interface/RoundCheckBox.dart';
 
 class StartCooking extends StatefulWidget {
   final List<String> steps;
@@ -16,7 +15,6 @@ class _StartCookingState extends State<StartCooking> {
   List<Step> stepper = new List();
 
   GlobalKey<CheckCardsState> cardKey;
-  List<GlobalKey<CheckCardsState>> _keys = new List();
   Map<int, GlobalKey> map = new Map();
 
   ThemeData enabledTheme = ThemeData(
@@ -89,9 +87,34 @@ class CheckCards extends StatefulWidget {
   CheckCardsState createState() => CheckCardsState();
 }
 
-class CheckCardsState extends State<CheckCards> {
+class CheckCardsState extends State<CheckCards> with SingleTickerProviderStateMixin{
   bool checked;
   List<bool> checkedList = new List();
+  AnimationController _animation;
+
+  ThemeData checkedTheme = ThemeData(
+    accentColor: Colors.grey[700],
+    cardColor: Colors.black.withOpacity(0.1),
+    textTheme: TextTheme(
+      body1: TextStyle(
+        color: Colors.grey[850],
+        fontFamily: "Google-Sans",
+        fontSize: 14.0
+      )
+    )
+  );
+
+  ThemeData notchecked = ThemeData(
+    accentColor: Colors.amber,
+    cardColor: Colors.white,
+    textTheme: TextTheme(
+      body1: TextStyle(
+        color: Colors.black,
+        fontFamily: "Google-Sans",
+        fontSize: 14.0
+      )
+    )
+  );
 
   @override
     void initState() {
@@ -100,6 +123,13 @@ class CheckCardsState extends State<CheckCards> {
       for(int i=0; i < widget.itemCount; i++){
         checkedList.add(false);
       }
+
+      _animation = AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 300)
+      );
+
+      _animation.repeat();
     }
 
   @override
@@ -107,63 +137,75 @@ class CheckCardsState extends State<CheckCards> {
     List<Widget> cards = new List();
     for (var i = 0; i < widget.itemCount; i++) {
       cards.add(
-        Card(          
-          elevation: 2.0,
-          shape: new RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5.0))
-          ),
-          child: ListTile(
-            onTap: (){
-              setState(() {
-                checkedList[i] = !checkedList[i];
-                if(checkedList[i] == true){
-                  for(int j=i-1; j > -1; j--){
-                    checkedList[j] = true;
-                  }
-                } else if(checkedList[i] == false){
-                  for(int j=i+1; j < widget.itemCount; j++){
-                    checkedList[j] = false;
-                  }
-                }
-              });
-            },
-            leading: Text(
-              "${i+1}",
-              style: TextStyle(
-                color: Colors.amber,
-                fontFamily: "Google-Sans",
-                fontSize: 15.0,
-                fontWeight: FontWeight.bold
+        AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child){
+            return Card( 
+              color: (checkedList[i] == false
+                ? Colors.white
+                : Colors.grey[300]
+              ),         
+              elevation: 2.0,
+              shape: new RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))
               ),
-            ),
-            title: widget.titles[i],
-            trailing: AnimatedCrossFade(
-              firstChild: Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black26,
-                        width: 2.0
-                      ),
-                      shape: BoxShape.circle
+              child: ListTile(
+                onTap: (){
+                  setState(() {
+                    checkedList[i] = !checkedList[i];
+                    if(checkedList[i] == true){
+                      for(int j=i-1; j > -1; j--){
+                        checkedList[j] = true;
+                      }
+                    } else if(checkedList[i] == false){
+                      for(int j=i+1; j < widget.itemCount; j++){
+                        checkedList[j] = false;
+                      }
+                    }
+                  });
+                },
+                leading: Text(
+                  "${i+1}",
+                  style: TextStyle(
+                    color: (checkedList[i] == false
+                      ? Colors.amber
+                      : Colors.black.withOpacity(0.5)
+                    ),
+                    fontFamily: "Google-Sans",
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold
                   ),
-                  child: Text(""),
-                  height: 24.0,
-                  width: 24.0
-              ),
-              secondChild: Container(                
-                child: Icon(Icons.check, color:  Colors.white),
-                decoration: BoxDecoration(
-                  color: Colors.amber,
-                  shape: BoxShape.circle
+                ),
+                title: widget.titles[i],
+                trailing: AnimatedCrossFade(
+                  firstChild: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black26,
+                            width: 2.0
+                          ),
+                          shape: BoxShape.circle
+                      ),
+                      child: Text(""),
+                      height: 24.0,
+                      width: 24.0
+                  ),
+                  secondChild: Container(                
+                    child: Icon(Icons.check, color:  Colors.white),
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      shape: BoxShape.circle
+                    ),
+                  ),
+                  duration: Duration(milliseconds: 200),
+                  crossFadeState: (checkedList[i]
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst
+                  ),
                 ),
               ),
-              duration: Duration(milliseconds: 200),
-              crossFadeState: (checkedList[i]
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst
-              ),
-            ),
-          ),
+            );
+          },
         )
       );
     }

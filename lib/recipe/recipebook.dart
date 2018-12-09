@@ -3,7 +3,6 @@ import 'package:Time2Eat/Termine/RecipeSelection.dart';
 import 'package:Time2Eat/interface/DatePicker.dart';
 import 'package:Time2Eat/model/ListTitle.dart';
 import 'package:Time2Eat/model/Recipe_Termine.dart';
-import 'package:Time2Eat/model/Shopping_Title.dart';
 import 'package:Time2Eat/model/Termine.dart';
 import 'package:Time2Eat/recipe/new_recipe.dart';
 import 'package:flutter/material.dart';
@@ -675,8 +674,6 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
     }
   
     asyncHamMenu() async{
-      bool reload = false;
-
       var dialogReturn = await Dialogs().showPopupMenu(context, _currentTab);
       if(dialogReturn == "Liste umbenennen"){
         var rename = await Dialogs().renameShopping(context);

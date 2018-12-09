@@ -1,36 +1,44 @@
 import 'dart:math';
 
+import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:flutter/material.dart';
 
-class RadialMinutes extends StatelessWidget {
+class RadialMinutes extends StatefulWidget {
   final double radius;
-  final String text;
-  final double percentage;
-  RadialMinutes({this.radius, this.text, this.percentage});
+  final Widget center;
+  final double minutes;
+  final Color completeColor;
+  final Color lineColor;
+  RadialMinutes(
+    {
+      this.radius, 
+      this.center, 
+      this.minutes,
+      @required this.completeColor,
+      @required this.lineColor
+    }
+  );
 
+  @override
+  _RadialMinutesState createState() => _RadialMinutesState();
+}
+
+class _RadialMinutesState extends State<RadialMinutes> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: this.radius,
-      width: this.radius,
-      child: new CustomPaint(
+      height: widget.radius,
+      width: widget.radius,
+      child: CustomPaint(
         foregroundPainter: new MyPainter(
-          lineColor: Colors.grey[400],
+          lineColor: widget.lineColor,
           standardWidth: 2.0,
           completeWidth: 4.0,
-          completePercent: percentage,
-          completeColor: Colors.amber
+          minutes: widget.minutes,
+          completeColor: widget.completeColor
         ),
-        child: Padding(
-          padding: EdgeInsets.only(top: radius / 3, left: radius / 8),
-          child: Text(
-            this.text,
-            style: TextStyle(
-              fontFamily: "Google-Sans",
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500
-            ),
-          ),
+        child: Center(
+          child: widget.center,
         ),
       ),
     );
@@ -42,11 +50,25 @@ class MyPainter extends CustomPainter{
   Color completeColor;
   double completeWidth;
   double standardWidth;
-  double completePercent;
-  MyPainter({this.lineColor, this.completePercent, this.completeColor, this.completeWidth, this.standardWidth});
+  double minutes;
+  MyPainter({this.lineColor, this.minutes, this.completeColor, this.completeWidth, this.standardWidth});
 
   @override
   void paint(Canvas canvas, Size size){
+    Offset center = new Offset(size.width / 2, size.height / 2);
+    double radius = min(size.width/2, size.height/2);    
+    double hours = minutes / 60;
+    double rest = minutes % 60;
+
+    if(hours>0){
+      lineColor = GoogleMaterialColors().getLightColor(Random().nextInt(5));
+      completeColor = GoogleMaterialColors().getLightColor(Random().nextInt(5));
+      do {
+        completeColor = GoogleMaterialColors().getLightColor(Random().nextInt(5));
+      } while (completeColor == lineColor);
+
+      minutes = rest;
+    }
     Paint line = new Paint()
       ..color = lineColor
       ..strokeCap = StrokeCap.round
@@ -57,16 +79,14 @@ class MyPainter extends CustomPainter{
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
       ..strokeWidth = completeWidth;
-    
-    Offset center = new Offset(size.width / 2, size.height / 2);
-    double radius = min(size.width/2, size.height/2);
+
     canvas.drawCircle(
       center,
       radius,
       line
-    );
-
-    double arcAngle = 2*pi* (completePercent / 100);
+    );  
+    
+    double arcAngle = 2*pi* (((minutes / 60)));
 
     canvas.drawArc(
       new Rect.fromCircle(center:  center, radius: radius),
@@ -75,6 +95,7 @@ class MyPainter extends CustomPainter{
       false,
       complete
     );
+    
   }
 
   @override

@@ -15,7 +15,6 @@ import '../interface/GoogleColors.dart';
 import '../interface/HexToColor.dart';
 import '../model/Ingredients.dart';
 import '../model/Recipes.dart';
-import '../model/StepDescription.dart';
 import '../recipe/new_recipe.dart';
 
 
@@ -32,7 +31,7 @@ class RecipeDetails extends StatefulWidget{
 class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
   ConvertColor convertColor = new ConvertColor();
-  double percentage = 0.0;
+  
 
   //Appbar
   GlobalKey<State<PopupMenuButton>> _buttonKey = new GlobalKey<State<PopupMenuButton>>();
@@ -40,13 +39,19 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
   //Allgemein
   int id;  
   String recipeName = "";
-  String description;
-  Duration duration;
+  String description;  
   int peopleDB;
   int currentPeople = 1;
   String imagePath;
   Color backgroundColor;
   bool titleVisibility = false;  
+  Duration preperation_duration;
+  Duration creation_duration;
+  Duration resting_duration;
+
+  double preperation_percentage;
+  double creation_percentage;
+  double resting_percentage;
 
   //Zutaten
   List<double> numberList = new List();
@@ -61,7 +66,9 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
   List<String> stepsList = new List();
 
   int ingredientsLength = 0;
-  int durationMinutes;
+  int preperation_minutes;
+  int creation_minutes;
+  int resting_minutes;
 
   @override
     void initState() {
@@ -79,16 +86,23 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       var db = new DBHelper();
       List<Recipes> recipes = await db.getSpecRecipe(widget.recipeName);
       description = recipes[0].definition;
-      duration = new Duration(minutes: int.parse(recipes[0].duration));
+      preperation_duration = new Duration(minutes: int.parse(recipes[0].pre_duration));
+      creation_duration = new Duration(minutes:  int.parse(recipes[0].cre_duration));
+      resting_duration = new Duration(minutes: int.parse(recipes[0].resting_time));
       var people = recipes[0].people;
       if(people != null) peopleDB = 1;
+      else peopleDB = int.parse(people);
       imagePath = recipes[0].image;
       backgroundColor = convertColor.convertToColor(recipes[0].backgroundColor);        
 
-      percentage = (int.parse(recipes[0].duration) / 60) * 100;
-      setState(() {
-        durationMinutes = duration.inMinutes;
-      });
+      preperation_percentage = (preperation_duration.inMinutes / 60) * 100;
+      preperation_minutes = preperation_duration.inMinutes;
+
+      creation_percentage = (creation_duration.inMinutes / 60) *100;
+      creation_minutes = creation_duration.inMinutes;
+
+      resting_percentage = (resting_duration.inMinutes / 60)*100;
+      resting_minutes = resting_duration.inMinutes;
     }
 
   @override
@@ -243,17 +257,69 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
             padding: EdgeInsets.only(top: 15.0),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: 10.0, left: 10.0),
                 child: Column(
                   children: <Widget>[
                     RadialMinutes(
-                      percentage: percentage,
+                      completeColor: Colors.green[400],
+                      lineColor: Colors.amber,
+                      minutes: double.parse(creation_minutes.toString()),
                       radius: 65.0,
-                      text: "$durationMinutes Min.",
+                      center:Text(
+                        preperation_minutes.toString()+" Min.",
+                        style: TextStyle(
+                          fontFamily: "Google-Sans",
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w500
+                        ),
+                      )
                     ),
                     _radialText("Zubereitung")
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    RadialMinutes(
+                      completeColor: Colors.green[400],
+                      lineColor: Colors.amber,
+                      minutes: double.parse(creation_minutes.toString()),
+                      radius: 65.0,
+                      center:Text(
+                        creation_minutes.toString()+" Min.",
+                        style: TextStyle(
+                          fontFamily: "Google-Sans",
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w500
+                        ),
+                      )
+                    ),
+                    _radialText("Koch-/Backzeit")
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    RadialMinutes(
+                      completeColor: Colors.green[400],
+                      lineColor: Colors.amber,
+                      minutes: double.parse(resting_minutes.toString()),
+                      radius: 65.0,
+                      center:Text(
+                        resting_minutes.toString()+" Min.",
+                        style: TextStyle(
+                          fontFamily: "Google-Sans",
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w500
+                        ),
+                      )
+                    ),
+                    _radialText("Ruhezeit")
                   ],
                 ),
               )
@@ -468,7 +534,6 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
 
     DBHelper dbHelper = new DBHelper();
     ShoppingDB shopping = new ShoppingDB();
-    ShoppingTitlesDB shoppingTitles = new ShoppingTitlesDB();
     await dbHelper.create();
 
     int titleCount = await dbHelper.checkListTitle("");
@@ -501,7 +566,9 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       recipe.add(parsedRecipe[i]);
       id = recipe[i].id;
       description = recipe[i].definition;
-      duration = new Duration(minutes: int.parse(recipe[i].duration));
+      preperation_duration = new Duration(minutes: int.parse(recipe[i].pre_duration));
+      creation_duration = new Duration(minutes: int.parse(recipe[i].cre_duration));
+      resting_duration = new Duration(minutes: int.parse(recipe[i].resting_time));
       if(recipe[i].people == null) peopleDB = 1;
       else peopleDB = int.parse(recipe[i].people);
       imagePath = recipe[i].image;
@@ -541,7 +608,9 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
           recipeID: id,
           name: recipeName,
           description: description,
-          duration: duration,
+          preperation_duration: preperation_duration,
+          creation_duration: creation_duration,
+          resting_duration: resting_duration,
           backgroundColor: backgroundColor,
           imagePath: imagePath,
           numberList: numberList,
