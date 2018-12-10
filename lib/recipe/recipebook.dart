@@ -816,7 +816,6 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       int titleCount = await dbHelper.countAllTitles();
       if(titleCount > 1){
         var titles = await Dialogs().addToShoppingList(context);
-        print("Titles: $titles");
         if(titles != null && titles != "abbrechen") {
           shopping = await dbHelper.linkShoppingTitles(shopping, titles);
           int titleID = await dbHelper.getTitleID(titles);
@@ -828,9 +827,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         await saveTitleShopping(shopping.id, titleID, dbHelper);
       }
 
-      setState(() {
-        print("Finished");
-      });
+      setState(() {});
     }
   }
 }
