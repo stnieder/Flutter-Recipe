@@ -58,7 +58,6 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
   List<String> measureList = new List();
   List<String> nameList = new List();
   List<Widget> ingredients = new List();
-  int ingredientAnzahl;
   var sample;
   Color textColor = Colors.black;
 
@@ -69,6 +68,8 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
   int preperation_minutes;
   int creation_minutes;
   int resting_minutes;
+
+  Widget titleImage;
 
   @override
     void initState() {
@@ -95,14 +96,44 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       imagePath = recipes[0].image;
       backgroundColor = convertColor.convertToColor(recipes[0].backgroundColor);        
 
-      preperation_percentage = (preperation_duration.inMinutes / 60) * 100;
-      preperation_minutes = preperation_duration.inMinutes;
+      setState(() {
+        preperation_percentage = (preperation_duration.inMinutes / 60) * 100;
+        preperation_minutes = preperation_duration.inMinutes;
 
-      creation_percentage = (creation_duration.inMinutes / 60) *100;
-      creation_minutes = creation_duration.inMinutes;
+        creation_percentage = (creation_duration.inMinutes / 60) *100;
+        creation_minutes = creation_duration.inMinutes;
 
-      resting_percentage = (resting_duration.inMinutes / 60)*100;
-      resting_minutes = resting_duration.inMinutes;
+        resting_percentage = (resting_duration.inMinutes / 60)*100;
+        resting_minutes = resting_duration.inMinutes;
+
+        if(imagePath == "no image"){
+          titleImage = CircleAvatar(
+            backgroundColor: backgroundColor,
+            child: Text(
+                    recipeName[0].toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: "Google-Sans",
+                      fontSize: 35.0,
+                      fontWeight: FontWeight.w400
+                    ),
+                  ),
+            maxRadius: 40.0,
+          );
+        } else {
+          titleImage = Container(
+            width: MediaQuery.of(context).size.width,
+            height: 200.0,
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                image: AssetImage(imagePath),
+                fit: BoxFit.cover,
+              )
+            ),
+          );
+        }
+      });
     }
 
   @override
@@ -115,68 +146,72 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
     return new Scaffold(
       appBar: AppBar(        
         actions: <Widget>[
-          FutureBuilder(
-            future: fetchRecipe(),
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-              if(snapshot.hasData){
+          StatefulBuilder(
+            builder: (context, update){
+              return FutureBuilder(
+                future: fetchRecipe(),
+                builder: (BuildContext context, AsyncSnapshot snapshot){
+                  if(snapshot.hasData){
 
-                int favorite = snapshot.data[0].favorite;
+                    int favorite = snapshot.data[0].favorite;
 
-                return Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: ( favorite == 0
-                        ? Icon(Icons.star_border, color: Colors.black54)
-                        : Icon(Icons.star, color: Colors.black54)
-                      ),
-                      onPressed: (){
-                        setState(() {
-                          updateFavorite(favorite);
-                        });
-                      },
-                    ),
-                    PopupMenuButton(
-                      key: _buttonKey,
-                      icon: Icon(Icons.more_vert, color: Colors.black54),
-                      itemBuilder: (_){
-                        return <PopupMenuItem>[
-                          PopupMenuItem(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(OMIcons.create, color: Colors.black54),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
-                                  child: Text("Bearbeiten"),
-                                )
-                              ],
-                            ),
-                            value: "bearbeiten",
+                    return Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: ( favorite == 0
+                            ? Icon(Icons.star_border, color: Colors.black54)
+                            : Icon(Icons.star, color: Colors.black54)
                           ),
-                          PopupMenuItem(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(OMIcons.delete, color: Colors.black54),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
-                                  child: Text("Löschen"),
-                                )
-                              ],
-                            ),
-                            value: "löschen",
-                          )
-                        ];
-                      },
-                      onSelected: (value){
-                        showBottomSnack(value, ToastGravity.BOTTOM);
-                      },
-                    )
-                  ],
-                );
-              } else if(snapshot.hasError){
+                          onPressed: (){
+                            update(() {
+                              updateFavorite(favorite);
+                            });
+                          },
+                        ),
+                        PopupMenuButton(
+                          key: _buttonKey,
+                          icon: Icon(Icons.more_vert, color: Colors.black54),
+                          itemBuilder: (_){
+                            return <PopupMenuItem>[
+                              PopupMenuItem(
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(OMIcons.create, color: Colors.black54),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
+                                      child: Text("Bearbeiten"),
+                                    )
+                                  ],
+                                ),
+                                value: "bearbeiten",
+                              ),
+                              PopupMenuItem(
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(OMIcons.delete, color: Colors.black54),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
+                                      child: Text("Löschen"),
+                                    )
+                                  ],
+                                ),
+                                value: "löschen",
+                              )
+                            ];
+                          },
+                          onSelected: (value){
+                            showBottomSnack(value, ToastGravity.BOTTOM);
+                          },
+                        )
+                      ],
+                    );
+                  } else if(snapshot.hasError){
 
-                return Text("");
-              }
-              return Icon(Icons.check_box_outline_blank, color: Colors.black54);
+                    return Text("");
+                  }
+                  return Icon(Icons.check_box_outline_blank, color: Colors.black54);
+                },
+              );
             },
           )
         ],
@@ -188,52 +223,16 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
           onPressed: (){
             Navigator.pop(context);
           },
-        ),
-        title: Opacity(
-          opacity: (titleVisibility
-            ? 0.0
-            : 1.0
-          ),
-          child: Text(
-            recipeName,
-            style: TextStyle(
-              color: Colors.black54
-            ),
-          ),
-        ),
+        )
       ),
       body: ListView(
         children: <Widget>[
-          CircleAvatar(
-            backgroundColor: backgroundColor,
-            child: (imagePath != "no image"
-                ? Container(
-                    decoration: new BoxDecoration(
-                      image: new DecorationImage(
-                        colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-                        image: AssetImage(imagePath),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
-                    ),
-                  )
-                : Text(
-                    recipeName[0].toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: "Google-Sans",
-                      fontSize: 35.0,
-                      fontWeight: FontWeight.w400
-                    ),
-                  )
-            ),
-            maxRadius: 40.0,
-          ),
+          titleImage,
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 30.0, left: 5.0),
+                padding: EdgeInsets.only(top: 15.0, left: 5.0),
                 child: Text(
                   recipeName,
                   style: TextStyle(
@@ -335,134 +334,145 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
             ),
             padding: EdgeInsets.only(top: 15.0),
           ),
-          Row(
-            
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 15.0, left: 15.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black45),
-                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      shape: BoxShape.rectangle
-                    ),
-                    child: GestureDetector(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
-                        child: Text(
-                          "$peopleDB",
-                          style: TextStyle(
-                            color: GoogleMaterialColors().primaryColor().withOpacity(0.9),
-                            fontSize: 15.0
-                          ),
-                        ),
-                      ),
-                        onTap: (){
-                          _selectPortion();
-                        },
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 15.0, left: 5.0),
-                child: Text(
-                  (peopleDB == 1
-                    ? (peopleDB == 0.5
-                      ? "Portion"
-                      : "Portion"
-                    )
-                    : "Portionen"
-                  )
-                ),
-              )              
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 15.0, top: 15.0),
-            child: FutureBuilder(
-              future: fetchIngredients(),
-              initialData: [],
-              builder: (BuildContext context, AsyncSnapshot snapshot){
-                if(snapshot.hasData){
-                  
-                  return Column(
+          StatefulBuilder(
+            builder: (context, update){
+              return Column(
+                children: <Widget>[
+                  Row(            
                     children: <Widget>[
-                      NotificationListener<OverscrollIndicatorNotification>(
-                        onNotification: (overscroll){
-                          overscroll.disallowGlow();
-                        },
-                        child: Container(
-                          height: snapshot.data.length * 40.0,
-                          child: ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (BuildContext context, int index){
-                              double number = double.parse(snapshot.data[index].number);
-                              String measure = snapshot.data[index].measure;
-                              String name = snapshot.data[index].name;
-
-                              nameList.add(name);
-                              numberList.add(number);
-                              measureList.add(measure);
-
-                              return Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: <Widget>[
-                                    Text("$number $measure"),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 12.0),
-                                      child: Text("$name"),
-                                    )
-                                  ],
+                      Padding(
+                        padding: EdgeInsets.only(top: 15.0, left: 15.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black45),
+                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                              shape: BoxShape.rectangle
+                            ),
+                            child: GestureDetector(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
+                                child: Text(
+                                  "$peopleDB",
+                                  style: TextStyle(
+                                    color: GoogleMaterialColors().primaryColor().withOpacity(0.9),
+                                    fontSize: 15.0
+                                  ),
                                 ),
-                              );
-                            },
+                              ),
+                                onTap: (){
+                                  _selectPortion(update);
+                                },
+                            ),
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        child: FlatButton(                        
-                          child: Text("Zur Einkaufsliste hinzufügen"),
-                          onPressed: () => saveShopping(),                        
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                            side: BorderSide(
-                              color: Colors.amber,
-                              width: 2.0
+                      Padding(
+                        padding: EdgeInsets.only(top: 15.0, left: 5.0),
+                        child: Text(
+                          (peopleDB == 1
+                            ? (peopleDB == 0.5
+                              ? "Portion"
+                              : "Portion"
                             )
-                          ), 
-                          splashColor: Colors.transparent,    
-                          highlightColor: Colors.amber,  
-                          textColor: textColor,
+                            : "Portionen"
+                          )
                         ),
-                        onTapDown: (TapDownDetails details){
-                          setState(() {
-                            textColor = Colors.white;
-                          });
-                        },
-                        onTapUp: (TapUpDetails details){
-                          setState(() {
-                            textColor = Colors.black;
-                          });
-                        },
-                        onTapCancel: (){
-                          setState(() {
-                            textColor = Colors.black;
-                          });
-                        },
-                      )
+                      )              
                     ],
-                  );
-                  
-                } else if(snapshot.hasError){
-                  return new Text("Keine Daten vorhanden.");
-                }
-                return new CircularProgressIndicator();
-              },
-            ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0, top: 15.0),
+                    child: FutureBuilder(
+                      future: fetchIngredients(),
+                      initialData: [],
+                      builder: (BuildContext context, AsyncSnapshot snapshot){
+                        if(snapshot.hasData){
+                          
+                          return Column(
+                            children: <Widget>[
+                              NotificationListener<OverscrollIndicatorNotification>(
+                                onNotification: (overscroll){
+                                  overscroll.disallowGlow();
+                                },
+                                child: Container(
+                                  height: snapshot.data.length * 40.0,
+                                  child: ListView.builder(
+                                    itemCount: snapshot.data.length,
+                                    itemBuilder: (BuildContext context, int index){
+                                      double number = double.parse(snapshot.data[index].number);
+                                      String measure = snapshot.data[index].measure;
+                                      String name = snapshot.data[index].name;
+
+                                      nameList.add(name);
+                                      numberList.add(number);
+                                      measureList.add(measure);
+
+                                      return Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Text("$number $measure"),
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 12.0),
+                                              child: Text("$name"),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              StatefulBuilder(
+                                builder: (context, update){
+                                  return GestureDetector(
+                                    child: FlatButton(                        
+                                      child: Text("Zur Einkaufsliste hinzufügen"),
+                                      onPressed: () => saveShopping(),                        
+                                      shape: new RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                        side: BorderSide(
+                                          color: Colors.amber,
+                                          width: 2.0
+                                        )
+                                      ), 
+                                      splashColor: Colors.transparent,    
+                                      highlightColor: Colors.amber,  
+                                      textColor: textColor,
+                                    ),
+                                    onTapDown: (TapDownDetails details){
+                                      update(() {
+                                        textColor = Colors.white;
+                                      });
+                                    },
+                                    onTapUp: (TapUpDetails details){
+                                      update(() {
+                                        textColor = Colors.black;
+                                      });
+                                    },
+                                    onTapCancel: (){
+                                      update(() {
+                                        textColor = Colors.black;
+                                      });
+                                    },
+                                  );
+                                },
+                              )
+                            ],
+                          );
+                          
+                        } else if(snapshot.hasError){
+                          return new Text("Keine Daten vorhanden.");
+                        }
+                        return new CircularProgressIndicator();
+                      },
+                    ),
+                  )
+                ],
+              );
+            },
           )
         ],
       ),
@@ -476,7 +486,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
           Navigator.push(
             context, 
             MaterialPageRoute(
-              builder: (_) => StartCooking(steps: stepsList)
+              builder: (_) => StartCooking(steps: stepsList, recipe: recipeName,)
             )
           );
         },
@@ -499,10 +509,10 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
     );
   }
 
-  _selectPortion() async{
+  _selectPortion(StateSetter update) async{
     var portionen = await Dialogs().selectPortions(context, peopleDB);
     if(portionen != null){
-      setState(() {
+      update(() {
         peopleDB = portionen;        
       });
     }
@@ -540,6 +550,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
     int titleID = await dbHelper.getTitleID(prefs.getString("currentList"));
 
     print("TitleCount: "+titleCount.toString());
+    
 
     for (var i = 0; i < ingredientsLength; i++) {
       shopping.item = nameList[i];
@@ -549,7 +560,6 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       shopping.timestamp = DateTime.now().toString();
       
       shopping = await dbHelper.linkShoppingTitles(shopping, prefs.getString("currentList"));
-      print("ShoppingID: ${shopping.id}");
 
       await saveRecShopping(shopping.id, dbHelper);
       await saveTitleShopping(shopping.id, titleID, dbHelper);
@@ -595,7 +605,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
     }    
 
     stepsList = await dbHelper.getStepDescription(recipeName);
-    ingredientAnzahl = ingredients.length;
+    ingredientsLength = ingredients.length;
     print("StepsAnzahl: ${stepsList.length}");
     return ingredients;
   } 

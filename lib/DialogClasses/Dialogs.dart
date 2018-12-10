@@ -8,6 +8,7 @@ import 'package:Time2Eat/interface/NotificationDialog.dart';
 import 'package:Time2Eat/interface/RoundedBottomSheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -644,8 +645,71 @@ class Dialogs{
     );
   }
 
+  deleteRecipes(BuildContext context) async{
+    return showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return CustomAlertDialog(
+          content: Container(
+            height: 50.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(15.0))
+            ),
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.only(left: 15.0, top: 20.0,right: 5.0),
+                child: Text(
+                  "Diese Rezepte werden unwiderruflich gelöscht",
+                  style: TextStyle(
+                    fontFamily: "Google-Sans",
+                    fontSize: 15.0
+                  ),
+                ),
+              ),
+            ),
+          ),
+          contentPadding: EdgeInsets.only(bottom: 0.0),
+          actions: <Widget>[
+            new FlatButton(
+              child: Text(
+                "Abbrechen",
+                style: TextStyle(
+                  color: GoogleMaterialColors().primaryColor()
+                ),
+              ),
+              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+              onPressed: (){
+                Navigator.pop(context, 'abbrechen');
+              },              
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              splashColor: Colors.transparent,
+            ),
+            new FlatButton(
+              child: Text(
+                "Löschen",
+                style: TextStyle(
+                  color: GoogleMaterialColors().primaryColor()
+                ),
+              ),
+              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),
+              onPressed: (){
+                Navigator.pop(context, "löschen");
+              },
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+            )
+          ],
+        );
+      }
+    );
+  }
 
-  customDialog(BuildContext context,String title, Widget content, List<Widget> actions) async{
+  newShoppingItem(BuildContext context) async{
+    TextEditingController numberController = new TextEditingController();
+    TextEditingController namecontroller = new TextEditingController();
+    List<String> masses = ["Stk.", "kg", "g", "l", "mg", "TL", "EL"];
+    String selectedMass;  
+
     return showDialog(
       context: context,
       builder: (BuildContext context){
@@ -661,6 +725,139 @@ class Dialogs{
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 10.0, bottom: 10.0),
                   child: new Text(
+                    "Neue Zutat zur Einkaufsliste hinzufügen",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontFamily: "Google-Sans",
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                          width: 50.0,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 8.0, right: 5.0),
+                            child: TextFormField(
+                              controller: numberController,
+                              decoration: InputDecoration(
+                                  border: UnderlineInputBorder(                                      
+                                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                                  ),
+                                  contentPadding: EdgeInsets.only(bottom: 5.0),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide( 
+                                      color: Colors.blue,
+                                      style: BorderStyle.solid
+                                    ),
+                                  ),
+                                  hintText: "2.0",                                    
+                              ),
+                              inputFormatters: [
+                                new BlacklistingTextInputFormatter(new RegExp('[\\,]')),
+                              ],
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center                               
+                            ),
+                          )
+                      ),
+                      Container(
+                        child: new DropdownButton(
+                          items: masses.map((String value){
+                            return new DropdownMenuItem<String>(
+                              value: value,
+                              child: new Text(
+                                  value
+                              ),
+                            );
+                          }).toList(),
+                          hint: Text("Maß"),
+                          onChanged: (String newValue){
+                            selectedMass = newValue;
+                          },
+                          value: selectedMass,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0, top: 8.0),
+                        child: Container(
+                          width: 100.0,
+                          child: TextFormField(
+                            controller: namecontroller,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(bottom: 5.0),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.black12, style: BorderStyle.solid
+                                  ),
+                                ),
+                                hintText: "Bezeichnung"
+                            ),
+                            keyboardType: TextInputType.text,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          contentPadding: EdgeInsets.only(bottom: 0.0),
+          actions: <Widget>[
+            new FlatButton(
+              child: Text(
+                "Abbrechen",
+                style: TextStyle(
+                  color: Colors.black
+                ),
+              ),
+              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+              onPressed: (){
+                Navigator.pop(context, 'abbrechen');
+              },              
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              splashColor: Colors.transparent,
+            ),
+            new FlatButton(
+              child: Text(
+                "Speichern",
+                style: TextStyle(
+                  color: Colors.white
+                ),
+              ),
+              color: GoogleMaterialColors().primaryColor(),
+              onPressed: (){
+                if(namecontroller.text.isNotEmpty && numberController.text.isNotEmpty && selectedMass != null) Navigator.pop(context, [namecontroller.text, numberController.text, selectedMass]);                
+              },
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+            )
+          ],
+        );
+      }
+    );
+  }
+
+
+  customDialog(BuildContext context,String title, Widget content, List<Widget> actions) async{
+    return showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return CustomAlertDialog(
+          content: Container(
+            height: 100.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(15.0))
+            ),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 10.0, bottom: 10.0),
+                  child: new Text(
                     title,
                     style: TextStyle(
                       fontSize: 14.0,
@@ -669,7 +866,12 @@ class Dialogs{
                     ),
                   ),
                 ),
-                content
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 15.0, right: 5.0),
+                    child: content,
+                  )
+                )
               ],
             ),
           ),

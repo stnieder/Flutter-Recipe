@@ -8,6 +8,7 @@ import 'package:Time2Eat/model/Shopping.dart';
 import 'package:Time2Eat/model/Shopping_Title.dart';
 import 'package:Time2Eat/model/Termine.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../model/Recipe_Steps.dart';
 import '../model/StepDescription.dart';
 import 'package:sqflite/sqflite.dart';
@@ -168,6 +169,14 @@ class DBHelper{
     print("Latest record deleted!");
   }
 
+  //Delete a recipe
+  Future<int> deleteRecipe(String recipeName) async{
+    String sql = "DELETE FROM recipes WHERE name = ?";
+    int count = await _db.rawDelete(sql, [recipeName]);    
+    return count;
+  }
+
+  //Delete a list
   Future deleteListTitle(String title) async{
     await _db.transaction((txn) async{
       int listID = Sqflite.firstIntValue(
@@ -324,7 +333,8 @@ class DBHelper{
     return count + 1;
   }
   
-  Future<ShoppingDB> newShoppingItem(ShoppingDB shopping) async{
+  Future<ShoppingDB> newShoppingItem(ShoppingDB shopping, [String title]) async{
+    SharedPreferences prefs  = await SharedPreferences.getInstance();
 
     int count = Sqflite.firstIntValue(
       await _db.rawQuery(
@@ -333,12 +343,22 @@ class DBHelper{
       )
     );
     
-    String sql = "UPDATE shopping SET number = ?";
+    String sql = 
+      "UPDATE shopping "+
+      "SET number = number + ?"+
+      "WHERE id = ( "+
+        "SELECT shoppingTitles.idShopping "+
+        "FROM shoppingTitles, listTitles "+
+        "WHERE shoppingTitles.idTitles = listTitles.id "+
+        "AND listTitles.titleName = ?"+
+      ") "+
+      "AND item = ?";
 
     if(count == 0){
       shopping.id = await _db.insert("shopping", shopping.toMap());
     } else {
-      shopping.id = await _db.rawUpdate(sql, [shopping.number]);
+      if(title == null)shopping.id = await _db.rawUpdate(sql, [shopping.number, prefs.getString("currentList")]);
+      else shopping.id = await _db.rawUpdate(sql, [shopping.number, title]);      
     }
     
     return shopping;
@@ -347,11 +367,11 @@ class DBHelper{
   Future<ShoppingDB> linkShoppingTitles(ShoppingDB shopping, String titlename) async{
     String countSQL =
       "SELECT COUNT(*) "+
-      "FROM shopping, shoppingTitles, listTitles "+
-      "WHERE shopping.item = ? "+
-      "AND shopping.id = shoppingTitles.idShopping "+
-      "AND shoppingTitles.idTitles = listTitles.id "+
-      "AND listTitles.titleName = ? ";
+        "FROM shopping, shoppingTitles, listTitles "+
+        "WHERE shopping.item = ? "+
+        "AND shopping.id = shoppingTitles.idShopping "+
+        "AND shoppingTitles.idTitles = listTitles.id "+
+        "AND listTitles.titleName = ? ";
     int count = Sqflite.firstIntValue(await _db.rawQuery(countSQL, [shopping.item, titlename]));
 
     String updateSQL = 
@@ -471,7 +491,7 @@ class DBHelper{
     if(count == 0){
       recShop.id = await _db.insert("recipeShopping", recShop.toMap());
     } else {
-      recShop.id = await _db.update("recipeTermine", recShop.toMap(), where:  "id = ?", whereArgs: [recShop.id]);
+      recShop.id = await _db.update("recipeShopping", recShop.toMap(), where:  "id = ?", whereArgs: [recShop.id]);
     }
     return recShop;
   }
@@ -491,7 +511,7 @@ class DBHelper{
 
   //Get all Recipes
   Future<List<Recipes>> getRecipes() async{
-    List<Map> list = await _db.rawQuery("SELECT * FROM recipes ORDER BY name DESC");
+    List<Map> list = await _db.rawQuery("SELECT * FROM recipes ORDER BY name ASC");
     List<Recipes> recipes = new List();
     for(int i =0; i < list.length; i++){
       recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"], pre_duration: list[i]["pre_duration"], cre_duration: list[i]["cre_duration"], resting_time: list[i]["resting_time"], people: list[i]["people"].toString(), favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
@@ -554,9 +574,7 @@ class DBHelper{
     String sql = 
     "SELECT shopping.item, shopping.measure, shopping.number, shopping.checked, shopping.timestamp, recipes.name " + 
     "FROM shopping, recipes, recipeShopping, shoppingTitles, listTitles " + 
-    "WHERE recipes.id = recipeShopping.idRecipes "+ 
-    "AND recipeShopping.idShopping = shopping.id "+
-    "AND shopping.id = shoppingTitles.idShopping "+
+    "WHERE shopping.id = shoppingTitles.idShopping "+
     "AND shoppingTitles.idTitles = listTitles.id "+
     "AND listTitles.titleName = ? "+
     "ORDER BY shopping.checked, shopping."+order;
@@ -632,6 +650,17 @@ class DBHelper{
         "AND listTitles.titleName = ?";
     count = Sqflite.firstIntValue(await _db.rawQuery(sql, [title]));
     
+    return count;
+  }
+
+  //Count all titles
+  Future<int> countAllTitles() async{
+    String sql = 
+    "SELECT COUNT(*) FROM listTitles, shopping, shoppingTitles "+
+    "WHERE listTitles.id = shoppingTitles.idTitles "+
+    "AND shoppingTitles.idShopping = shopping.id ";
+
+    int count = Sqflite.firstIntValue(await _db.rawQuery(sql));
     return count;
   }
 

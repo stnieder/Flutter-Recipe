@@ -3,6 +3,8 @@ import 'package:Time2Eat/Termine/RecipeSelection.dart';
 import 'package:Time2Eat/interface/DatePicker.dart';
 import 'package:Time2Eat/model/ListTitle.dart';
 import 'package:Time2Eat/model/Recipe_Termine.dart';
+import 'package:Time2Eat/model/Shopping.dart';
+import 'package:Time2Eat/model/Shopping_Title.dart';
 import 'package:Time2Eat/model/Termine.dart';
 import 'package:Time2Eat/recipe/new_recipe.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +112,8 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           ),
           FloatingActionButton(
             onPressed: (){
-              SnackBar snackbar = SnackBar(
+              newShoppingItem();
+              /*SnackBar snackbar = SnackBar(
                 content: Text("Can't send photo. Retry in 5 seconds"),
                 action: SnackBarAction(
                   textColor: Colors.pinkAccent,
@@ -121,7 +124,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
                 ),
               );
   
-              _drawerKey.currentState.showSnackBar(snackbar);
+              _drawerKey.currentState.showSnackBar(snackbar);*/
             },
             child: Icon(
               Icons.add
@@ -426,7 +429,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
               color: Colors.black54,
             ),
             onPressed: (){
-              print("Deleted pressed");
+              deleteDialog(indexList);
             },
           )
         ],
@@ -766,6 +769,68 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       await launch(url);
     } else {
       throw "Konnte Email leider nicht starten";
+    }
+  }
+
+  deleteDialog(List<String> recipeNames) async{
+    var delete = await Dialogs().deleteRecipes(context);
+    if(delete == "löschen"){
+      int deleted;
+      for (var i = 0; i < recipeNames.length; i++) {
+        deleted = await dbHelper.deleteRecipe(recipeNames[i]);
+      }
+      if(recipeNames.length == 1) showBottomSnack(recipeNames[0]+" wurde gelöscht", ToastGravity.BOTTOM);
+      else if(recipeNames.length > 1) showBottomSnack("$deleted Rezepte wurden gelöscht", ToastGravity.BOTTOM);
+      setState(() {
+        indexList.clear();
+        longPress();
+      });
+    } 
+  }
+
+  saveTitleShopping(int shoppingID, int titleID, DBHelper dbHelper) async{
+    await dbHelper.create();
+
+    ShoppingTitlesDB shoppingTitle = new ShoppingTitlesDB();
+    shoppingTitle.idShopping = shoppingID;
+    shoppingTitle.idTitles = titleID;
+
+    shoppingTitle = await dbHelper.insertShoppingTitles(shoppingTitle);
+  }
+
+  newShoppingItem() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var item = await Dialogs().newShoppingItem(context);
+    if(item != null && item != "abbrechen"){
+      String name = item[0];
+      String number = item[1];
+      String mass = item[2];
+
+      ShoppingDB shopping = new ShoppingDB();
+      shopping.item = name;
+      shopping.number = number;
+      shopping.measure = mass;
+      shopping.checked = 0;
+      shopping.timestamp = DateTime.now().toString();
+
+      int titleCount = await dbHelper.countAllTitles();
+      if(titleCount > 1){
+        var titles = await Dialogs().addToShoppingList(context);
+        print("Titles: $titles");
+        if(titles != null && titles != "abbrechen") {
+          shopping = await dbHelper.linkShoppingTitles(shopping, titles);
+          int titleID = await dbHelper.getTitleID(titles);
+          await saveTitleShopping(shopping.id, titleID, dbHelper);
+        } else return;        
+      } else if(titleCount == 1){
+        shopping = await dbHelper.newShoppingItem(shopping);
+        int titleID = await dbHelper.getTitleID(prefs.getString("currentList"));
+        await saveTitleShopping(shopping.id, titleID, dbHelper);
+      }
+
+      setState(() {
+        print("Finished");
+      });
     }
   }
 }

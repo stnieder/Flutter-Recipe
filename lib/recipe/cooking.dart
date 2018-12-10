@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class StartCooking extends StatefulWidget {
   final List<String> steps;
-  StartCooking({this.steps});
+  final String recipe;
+  StartCooking({this.steps, @required this.recipe});
 
   @override
   _StartCookingState createState() => _StartCookingState();
@@ -35,9 +36,14 @@ class _StartCookingState extends State<StartCooking> {
         leading: IconButton(
           icon: Icon(Icons.close, color: Colors.black45),
           onPressed: () {
-            //Zuerst ein Dialog zur Bestätigung
             Navigator.pop(context);
           },
+        ),
+        title: Text(
+          widget.recipe,
+          style: TextStyle(
+            fontFamily: "Google-Sans"
+          ),
         ),
       ),
       body: Padding(
