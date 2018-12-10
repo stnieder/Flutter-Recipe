@@ -74,6 +74,7 @@ class _NewRecipe extends State<NewRecipe>{
   GoogleMaterialColors materialColors = new GoogleMaterialColors();
   Color usedColor;
   bool edit = false;
+  String oldRecipe;
 
   //MainPage
   bool personenError = false;
@@ -120,7 +121,7 @@ class _NewRecipe extends State<NewRecipe>{
   final TextEditingController stepDescriptionController = new TextEditingController();
   GlobalKey<FormState> stepDescriptionKey = new GlobalKey<FormState>();  
   int descriptionCounter = 0;
-  List<String> stepDescription = [];
+  List<String> stepDescription = new List();
 
 
   @override
@@ -131,26 +132,31 @@ class _NewRecipe extends State<NewRecipe>{
       Random random = new Random();
       usedColor = materialColors.getLightColor(random.nextInt(5));
     } else if(widget.name != null){
+      oldRecipe = widget.name;
+
       recipeName.text = widget.name;
       recipeDescription.text = widget.description;
       prepDuration = widget.preperation_duration;
-      prep_percentage = (int.parse(widget.preperation_duration.toString().split(":")[0]) / 60) * 100;
+      prep_percentage = (prepDuration.inMinutes / 60) * 100;
       preperation_minutes = widget.preperation_duration.inMinutes;
       creaDuration = widget.creation_duration;
-      crea_percentage = (int.parse(widget.creation_duration.toString().split(":")[0]) / 60) * 100;
+      crea_percentage = (creaDuration.inMinutes / 60) * 100;
       creation_minutes = widget.preperation_duration.inMinutes;
       restDuration = widget.resting_duration;
-      rest_percentage = (int.parse(widget.resting_duration.toString().split(":")[0]) / 60) * 100;
+      rest_percentage = (restDuration.inMinutes / 60) * 100;
       resting_minutes =  widget.resting_duration.inMinutes;
       _image = widget.imagePath;
       usedColor = widget.backgroundColor;
       ingredientHeight = 56.0 * widget.numberList.length;
       zNumber = widget.numberList;
       zMass = widget.measureList;
-      zNamen = widget.nameList;
-      stepDescription = widget.stepsList;      
+      zNamen = widget.nameList;      
+      stepDescription = widget.stepsList; 
       personenAnzahl = widget.personenAnzahl;
       edit = true;
+      setState(() {
+        print("Description: $stepDescription")     ;
+      });
     }    
   }
 
@@ -236,8 +242,9 @@ class _NewRecipe extends State<NewRecipe>{
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10.0),
                       onTap: () async{
+                        int oldAnzahl = personenAnzahl;
                         personenAnzahl = await dialogs.personenAnzahl(context);   
-                        if(personenAnzahl == null){
+                        if(personenAnzahl == null && oldAnzahl == null){
                           update(() {
                             personenError = true;
                           });
@@ -283,7 +290,7 @@ class _NewRecipe extends State<NewRecipe>{
                           context: context,
                           initialTime: new Duration(minutes: 20)
                       );
-                      if(prepDuration == null) prepError = true;
+                      if(prepDuration == null && preperation_minutes == null) prepError = true;
                       else {
                         prepError = false;
                         preperation_minutes = prepDuration.inMinutes;
@@ -324,7 +331,7 @@ class _NewRecipe extends State<NewRecipe>{
                           context: context,
                           initialTime: new Duration(minutes: 20)
                       );
-                      if(creaDuration == null) creaError = true;
+                      if(creaDuration == null && creation_minutes == null) creaError = true;
                       else {
                         creaError = false;
                         creation_minutes = creaDuration.inMinutes;
@@ -365,7 +372,7 @@ class _NewRecipe extends State<NewRecipe>{
                           context: context,
                           initialTime: new Duration(minutes: 20)
                       );
-                      if(restDuration == null) restError = true;
+                      if(restDuration == null && resting_minutes == null) restError = true;
                       else {
                         restError = false;
                         resting_minutes = restDuration.inMinutes;
@@ -544,7 +551,7 @@ class _NewRecipe extends State<NewRecipe>{
                                 }).toList(),
                                 hint: Text("Maß"),
                                 onChanged: (String newValue){
-                                  setState(() {
+                                  update(() {
                                     selectedMass = newValue;
                                   });
                                 },
@@ -708,13 +715,21 @@ class _NewRecipe extends State<NewRecipe>{
                                 icon: Icon(Icons.check),
                                 onPressed: (){
                                   if(stepDescriptionController.text.trim().length != 0){
-                                    changeDescription("a", 0, update);
-                                    setState(() {
-                                      zubError = false;
-                                    });
+                                    bool add = false;
+                                    for (var i = 0; i < stepDescription.length; i++) {
+                                      if(stepDescriptionController.text.trim() == stepDescription[i]) add = true;                                      
+                                    }
+                                    if(!add){
+                                      changeDescription("a", 0, update);
+                                      update(() {
+                                        zubError = false;
+                                      });
+                                    } else {
+                                      showBottomSnack("Dieser Schritt ist schon vorhanden", ToastGravity.BOTTOM);
+                                    }
                                   } else {                                
                                     errorMessage("s", update);
-                                    setState(() {
+                                    update(() {
                                       zubError = true;
                                     });
                                   }
@@ -727,10 +742,11 @@ class _NewRecipe extends State<NewRecipe>{
                             height: descriptionHeight,
                             child: ListView.builder(
                               itemCount: stepDescription.length,
-                              itemBuilder: (ctxt, item){
+                              itemBuilder: (ctxt, index){
+                                final step = stepDescription[index];
                                 return new SizedBox(                                 
                                   child: new Dismissible(
-                                    key: Key(item.toString()),
+                                    key: Key(index.toString()),
                                     background: Container(
                                       alignment: Alignment.centerLeft,
                                       padding: EdgeInsets.only(left: 20.0),
@@ -739,27 +755,28 @@ class _NewRecipe extends State<NewRecipe>{
                                     ),
                                     child: ListTile(
                                       leading: CircleAvatar(
-                                        backgroundColor: usedColor.withOpacity(0.3),
+                                        backgroundColor: usedColor.withOpacity(0.8),
                                         child: Text(
-                                          (item+1).toString(),
+                                          (index+1).toString(),
                                           style: TextStyle(
-                                            color: usedColor.withGreen(160).withAlpha(1000)
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold
                                           ),
                                         ),
                                       ),
                                       title: Text(
-                                        stepDescription[item].toString()
+                                        step
                                       ),
                                     ),
-                                    direction: (recipeDescription.text.isEmpty
+                                    direction: (stepDescriptionController.text.isEmpty
                                       ? DismissDirection.horizontal
                                       : DismissDirection.startToEnd
                                     ),
                                     onDismissed: (direction){
                                       if(direction == DismissDirection.startToEnd){
-                                        changeDescription("d", item, update);
+                                        changeDescription("d", index, update);
                                       } else if(direction == DismissDirection.endToStart){
-                                        changeDescription("e", item, update);
+                                        changeDescription("e", index, update);
                                       }
                                     },
                                     secondaryBackground: Container(
@@ -791,7 +808,7 @@ class _NewRecipe extends State<NewRecipe>{
     File newImage = await ImagePicker.pickImage(source: imageSource);
 
     update(() {
-      _image = newImage.path;
+      _image = (newImage.path);
     });
   }
 
@@ -818,7 +835,7 @@ class _NewRecipe extends State<NewRecipe>{
       stepDescriptionController.clear();
     }
 
-    setState(() {});
+    update(() {});
   }
 
   void changeIngreNumber(String status,int index, StateSetter update){
@@ -832,7 +849,7 @@ class _NewRecipe extends State<NewRecipe>{
       }
     }
 
-    setState(() {});
+    update(() {});
   }
 
 
@@ -889,7 +906,7 @@ class _NewRecipe extends State<NewRecipe>{
       zNamenController.clear();
     }
 
-    setState(() {});
+    update(() {});
   }
 
   errorMessage(String input, StateSetter update){
@@ -911,7 +928,7 @@ class _NewRecipe extends State<NewRecipe>{
       recipeTaken = true;
       showBottomSnack("Ein Rezept mit diesem Namen ist schon vorhanden.", ToastGravity.BOTTOM);
     }
-    setState(() {});
+    update(() {});
   }
 
   controlInput(StateSetter update) async{
@@ -972,7 +989,6 @@ class _NewRecipe extends State<NewRecipe>{
     await db.insertRecIngre(ids);
   }
 
-
   Future saveIngredients(int recipeID, int i) async{
     IngredientsDB ingredients = new IngredientsDB();
     ingredients.name = zNamen[i];
@@ -1002,18 +1018,26 @@ class _NewRecipe extends State<NewRecipe>{
       
       if(_image != null){
         Directory directory = await getApplicationDocumentsDirectory();
-        String path = directory.path;
-        await File(_image).copy('$path/${recipeName.text}.png');
-        recipe.image = '$path/${recipeName.text}.png';
+        String path = directory.path.replaceAll(new RegExp(r"\s+\b|\b\s"), String.fromCharCode(95)); //95 from ASCII is '_'
+        String image = (recipeName.text).replaceAll(new RegExp(r"\s+\b|\b\s"), String.fromCharCode(95));
+        await File(_image).copy('$path/$image}.png');
+        recipe.image = '$path/$image.png';
       } else {
         recipe.image = "no image";
       }
 
       recipe.backgroundColor = usedColor.toString();
 
-      recipe = await db.insertRecipe(recipe);
+      if(edit) {
+        recipe = await db.updateRecipe(recipe, oldRecipe);
+        recipe.id = await db.getRecipeID(recipe.name);
+        await db.deleteIngre(recipeName.text);
+        await db.deleteSteps(recipeName.text);
+      } else {
+        recipe = await db.insertRecipe(recipe);
+      }
 
-      if(recipe.id == null) await db.deleteLatest();
+      if(recipe.id == null && !edit) await db.deleteLatest();
       else {
         for(int i=0; i < zNamen.length; i++){
           await saveIngredients(recipe.id, i);
@@ -1024,8 +1048,10 @@ class _NewRecipe extends State<NewRecipe>{
         }        
         
         Navigator.pop(context, "saved");
-        showBottomSnack("Rezept erfolgreich gespeichert", ToastGravity.BOTTOM);
-      }      
+        if(edit) showBottomSnack("Rezept erfolgreich geändert", ToastGravity.BOTTOM);
+        else showBottomSnack("Rezept erfolgreich gespeichert", ToastGravity.BOTTOM);
+      }
+      
     }    
   }
 
@@ -1034,12 +1060,12 @@ class _NewRecipe extends State<NewRecipe>{
     db.create().then((nothing){
       db.checkRecipe(name).then((val){
         if(val > 0) {
-          setState(() {
+          update(() {
             _recExist = true;
             recipeTaken = true;
           });
         } else {          
-          setState(() {
+          update(() {
             _recExist = false;
             recipeTaken = false;
           });

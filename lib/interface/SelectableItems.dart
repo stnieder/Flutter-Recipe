@@ -71,7 +71,7 @@ class StateSelectableItem extends State<SelectableItems> {
                 Icons.check,
                 color: Colors.white,
               )
-              : (widget.image != "no image"
+              : (widget.image == "no image"
                 ? Container(
                   width: 40.0,
                   height: 40.0,

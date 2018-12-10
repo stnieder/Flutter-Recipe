@@ -304,6 +304,11 @@ class DBHelper{
     return recipe;
   }
 
+  Future<RecipesDB> updateRecipe(RecipesDB recipe, String oldName) async{
+    await _db.update("recipes", recipe.toMap(), where: "name = ?", whereArgs: [oldName]);
+    return recipe;
+  }
+
   Future<IngredientsDB> insertIngre(IngredientsDB ingre) async{
     var count;
     if(ingre.id == null) count = 0;
@@ -314,6 +319,51 @@ class DBHelper{
       await _db.update("ingredients", ingre.toMap(), where: "id = ?", whereArgs: [ingre.id]);
     }
     return ingre;
+  }
+
+  Future<int> deleteIngre(String recipe) async{
+    int count;
+    await _db.transaction((txn)async{
+      String sql = 
+        "SELECT ingredients.id FROM ingredients, recipeIngredients, recipes "+
+        "WHERE ingredients.id = recipeIngredients.idIngredients "+
+        "AND recipeIngredients.idRecipes = recipes.id "+
+        "AND recipes.name = ?";
+      List<Map> list = await txn.rawQuery(sql, [recipe]);
+      List<String> items = new List();
+      for (var i = 0; i < list.length; i++) {
+        items.add(list[i]["id"].toString());
+      }
+
+      sql = 
+        "SELECT recipeIngredients.id FROM ingredients, recipeIngredients, recipes "+
+        "WHERE ingredients.id = recipeIngredients.idIngredients "+
+        "AND recipeIngredients.idRecipes = recipes.id "+
+        "AND recipes.name = ?";
+      List<Map> listZwischen = await txn.rawQuery(sql, [recipe]);
+      List<String> zwischenTabelle = new List();
+      for (var i = 0; i < list.length; i++) {
+        zwischenTabelle.add(listZwischen[i]["id"].toString());
+      }
+      
+
+      sql = 
+        "DELETE FROM ingredients "+
+        "WHERE id = ?";
+      for (var i = 0; i < items.length; i++) {
+        await txn.rawDelete(sql, [items[i]]);
+      }
+
+      sql = 
+        "DELETE FROM recipeIngredients "+
+        "WHERE id = ?";
+      for (var i = 0; i < zwischenTabelle.length; i++) {
+        await txn.rawDelete(sql, [zwischenTabelle[i]]);
+      }
+      count = items.length + zwischenTabelle.length;
+      print("Items deleted: $count");
+    });    
+    return count;
   }
 
   Future<StepsDB> insertSteps(StepsDB steps) async{
@@ -328,10 +378,51 @@ class DBHelper{
     return steps;
   }
 
-  Future<int> freeItemID() async{
-    int count = Sqflite.firstIntValue(await _db.rawQuery("SELECT MAX(id) FROM shopping"));
-    return count + 1;
+  Future<int> deleteSteps(recipe) async{
+    int count;
+    await _db.transaction((txn)async{
+      String sql = 
+        "SELECT steps.id FROM steps, recipeSteps, recipes "+
+        "WHERE steps.id = recipeSteps.idSteps "+
+        "AND recipeSteps.idRecipes = recipes.id "+
+        "AND recipes.name = ?";
+      List<Map> list = await txn.rawQuery(sql, [recipe]);
+      List<String> items = new List();
+      for (var i = 0; i < list.length; i++) {
+        items.add(list[i]["id"].toString());
+      }
+
+      sql = 
+        "SELECT recipeSteps.id FROM steps, recipeSteps, recipes "+
+        "WHERE steps.id = recipeSteps.idSteps "+
+        "AND recipeSteps.idRecipes = recipes.id "+
+        "AND recipes.name = ?";
+      List<Map> listZwischen = await txn.rawQuery(sql, [recipe]);
+      List<String> zwischenTabelle = new List();
+      for (var i = 0; i < list.length; i++) {
+        zwischenTabelle.add(listZwischen[i]["id"].toString());
+      }
+      
+
+      sql = 
+        "DELETE FROM steps "+
+        "WHERE id = ?";
+      for (var i = 0; i < items.length; i++) {
+        await txn.rawDelete(sql, [items[i]]);
+      }
+
+      sql = 
+        "DELETE FROM recipeSteps "+
+        "WHERE id = ?";
+      for (var i = 0; i < zwischenTabelle.length; i++) {
+        await txn.rawDelete(sql, [zwischenTabelle[i]]);
+      }
+      count = items.length + zwischenTabelle.length;
+      print("Items deleted: $count");
+    });    
+    return count;
   }
+
   
   Future<ShoppingDB> newShoppingItem(ShoppingDB shopping, [String title]) async{
     SharedPreferences prefs  = await SharedPreferences.getInstance();
@@ -718,6 +809,13 @@ class DBHelper{
   Future<int> getNextItemID() async{
     String sql = "SELECT MAX(id) AS _ID FROM shopping";
     int id = Sqflite.firstIntValue(await _db.rawQuery(sql));
+    return id;
+  }
+
+  //Get recipe ID
+  Future<int> getRecipeID(String recipe)async{
+    String sql = "SELECT id FROM recipes WHERE name = ?";
+    int id = Sqflite.firstIntValue(await _db.rawQuery(sql, [recipe]));
     return id;
   }
 

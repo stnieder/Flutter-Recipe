@@ -61,11 +61,9 @@ class MyPainter extends CustomPainter{
     double rest = minutes % 60;
 
     if(hours>0){
-      lineColor = GoogleMaterialColors().getLightColor(Random().nextInt(5));
-      completeColor = GoogleMaterialColors().getLightColor(Random().nextInt(5));
-      do {
-        completeColor = GoogleMaterialColors().getLightColor(Random().nextInt(5));
-      } while (completeColor == lineColor);
+      List<Color> combination = GoogleMaterialColors().getColorCombination();
+      lineColor = combination[0];
+      completeColor = combination[1];
 
       minutes = rest;
     }

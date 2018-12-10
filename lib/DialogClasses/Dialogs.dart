@@ -6,6 +6,7 @@ import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:Time2Eat/interface/MyListTile.dart';
 import 'package:Time2Eat/interface/NotificationDialog.dart';
 import 'package:Time2Eat/interface/RoundedBottomSheet.dart';
+import 'package:Time2Eat/recipe/recipebook.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -645,7 +646,7 @@ class Dialogs{
     );
   }
 
-  deleteRecipes(BuildContext context) async{
+  deleteRecipes(BuildContext context, int length) async{
     return showDialog(
       context: context,
       builder: (BuildContext context){
@@ -660,7 +661,10 @@ class Dialogs{
               child: Padding(
                 padding: EdgeInsets.only(left: 15.0, top: 20.0,right: 5.0),
                 child: Text(
-                  "Diese Rezepte werden unwiderruflich gelöscht",
+                  (length == 1
+                    ? "Diese Rezepte werden unwiderruflich gelöscht"
+                    : "Dieses Rezept wird unwiderruflich gelöscht"
+                  ),
                   style: TextStyle(
                     fontFamily: "Google-Sans",
                     fontSize: 15.0
@@ -694,7 +698,10 @@ class Dialogs{
               ),
               highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),
               onPressed: (){
-                Navigator.pop(context, "löschen");
+                if(length == 1) {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Recipebook()));
+                }
+                else Navigator.pop(context, "löschen");
               },
               shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
             )

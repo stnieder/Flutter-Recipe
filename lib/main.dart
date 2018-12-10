@@ -1,3 +1,4 @@
+import 'package:Time2Eat/Splashscreen.dart';
 import 'package:Time2Eat/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,7 +37,7 @@ class Recipe extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => Recipebook(),
+        '/': (context) => Splashscreen(),
         '/add_recipe': (context) => NewRecipe()
       },
     );

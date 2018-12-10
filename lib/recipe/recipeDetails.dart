@@ -91,9 +91,10 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       creation_duration = new Duration(minutes:  int.parse(recipes[0].cre_duration));
       resting_duration = new Duration(minutes: int.parse(recipes[0].resting_time));
       var people = recipes[0].people;
-      if(people != null) peopleDB = 1;
+      if(people == null) peopleDB = 1;
       else peopleDB = int.parse(people);
       imagePath = recipes[0].image;
+      print("_--------------------IMAGEPATH: $imagePath");
       backgroundColor = convertColor.convertToColor(recipes[0].backgroundColor);        
 
       setState(() {
@@ -128,7 +129,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
               image: new DecorationImage(
                 colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
                 image: AssetImage(imagePath),
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               )
             ),
           );
@@ -200,7 +201,11 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                             ];
                           },
                           onSelected: (value){
-                            showBottomSnack(value, ToastGravity.BOTTOM);
+                            if(value == "löschen"){
+                              deleteRecipe();
+                            } else if(value == "bearbeiten"){
+                              editRecipe();
+                            }
                           },
                         )
                       ],
@@ -259,7 +264,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 10.0, left: 10.0),
+                padding: EdgeInsets.only(top: 10.0, left: 20.0),
                 child: Column(
                   children: <Widget>[
                     RadialMinutes(
@@ -276,11 +281,21 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                         ),
                       )
                     ),
-                    _radialText("Zubereitung")
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "Zubereitung",
+                        style: TextStyle(
+                          fontFamily: "Google-Sans",
+                          fontSize: 14.0                        
+                        ),                      
+                      ),
+                    )
                   ],
                 ),
               ),
-              Expanded(
+              Padding(
+                padding: EdgeInsets.only(top: 10.0),
                 child: Column(
                   children: <Widget>[
                     RadialMinutes(
@@ -297,11 +312,21 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                         ),
                       )
                     ),
-                    _radialText("Koch-/Backzeit")
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "Koch-/Backzeit",
+                        style: TextStyle(
+                          fontFamily: "Google-Sans",
+                          fontSize: 14.0                        
+                        ),                      
+                      ),
+                    )
                   ],
                 ),
               ),
-              Expanded(
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, right: 30.0),
                 child: Column(
                   children: <Widget>[
                     RadialMinutes(
@@ -413,7 +438,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                                         padding: EdgeInsets.all(8.0),
                                         child: Row(
                                           children: <Widget>[
-                                            Text("$number $measure"),
+                                            Text("${number*peopleDB} $measure"),
                                             Padding(
                                               padding: EdgeInsets.only(left: 12.0),
                                               child: Text("$name"),
@@ -554,7 +579,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
 
     for (var i = 0; i < ingredientsLength; i++) {
       shopping.item = nameList[i];
-      shopping.number = numberList[i].toString();
+      shopping.number = (numberList[i]*peopleDB).toString();
       shopping.checked = 0;
       shopping.measure = measureList[i];
       shopping.timestamp = DateTime.now().toString();
@@ -631,6 +656,16 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
         )
       )
     );
+  }
+
+  deleteRecipe() async{
+    var delete = await Dialogs().deleteRecipes(context, 1);
+    if(delete != null && delete != "abbrechen"){
+      await DBHelper().deleteRecipe(recipeName);
+      setState(() {
+        showBottomSnack("$recipeName wurde gelöscht", ToastGravity.BOTTOM);
+      });      
+    }
   }
 
 

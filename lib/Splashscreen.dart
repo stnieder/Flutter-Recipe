@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:Time2Eat/recipe/recipebook.dart';
 import 'package:flutter/material.dart';
 
@@ -19,10 +20,39 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+
       backgroundColor: Colors.white,
-      body: Center(        
-        child: new Image.asset('images/time2eat.png'),
-      ),
+      body: Padding(        
+        padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.height/4,
+          left: MediaQuery.of(context).size.width/3.8
+        ),
+        child: Stack(
+          children: <Widget>[
+            new Image.asset(
+              'images/time2eat.png',
+              height: 175.0,
+              width: 175.0,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height/1.5,
+                left: 45.0
+              ),
+              child: Text(
+                "Vendetta",
+                style: TextStyle(
+                  color: Colors.grey.withOpacity(0.45),
+                  fontFamily: "Google-Sans",
+                  fontSize: 22.0,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w600
+                ),
+              ),
+            )
+          ],
+        ),
+      ),      
     );
   }
 

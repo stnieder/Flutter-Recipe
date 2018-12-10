@@ -8,11 +8,13 @@ import 'package:Time2Eat/model/Shopping_Title.dart';
 import 'package:Time2Eat/model/Termine.dart';
 import 'package:Time2Eat/recipe/new_recipe.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 
 import '../Constants.dart';
 import '../database/database.dart';
@@ -478,38 +480,53 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           initialData: [],
           future: fetchRecipes(searchPerformed, searchCondition),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              if(snapshot.data.length == 0){
-                return Center(
-                    child:Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                            width: 200.0,
-                            height: 200.0,
-                            child: Image.asset("images/nothingFound.png"),
-                        ),
-                        Container(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 75.0),
-                            child: Text("Es wurden keine Rezepte gefunden."),
-                          ),
-                          width: 300.0,
+            switch(snapshot.connectionState){
+              case ConnectionState.none: print("Nothing"); break;
+              case ConnectionState.active: print("Active"); break;
+              case ConnectionState.waiting: return Center(child: CircularProgressIndicator());  break;
+              case ConnectionState.done: 
+                  if(snapshot.data.length == 0){
+                    return Center(
+                        child:Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                                width: 200.0,
+                                height: 200.0,
+                                child: Image.asset("images/nothingFound.png"),
+                            ),
+                            Container(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 75.0),
+                                child: Text("Es wurden keine Rezepte gefunden."),
+                              ),
+                              width: 300.0,
+                            )
+                          ],
                         )
-                      ],
-                    )
-                );
-              }
-              return changeList(snapshot);
-            } else if(!snapshot.hasData) {
-              return Center(
-                child: Text("Keine Daten vorhanden"),
-              );
-            } else if (snapshot.hasError) {
-              return new Text("${snapshot.error}");
+                    );
+                  } else return changeList(snapshot);
+                    
+                  break;
+              default:
+                  if(snapshot.hasError) {
+                    GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
+                    SnackBar snackBar = new SnackBar(
+                      key: _key,
+                      content: Text("Die Fehlermeldung kopieren?"),
+                      action: SnackBarAction(
+                        label: "Kopieren",
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: snapshot.error.toString()));
+                          showBottomSnack("Fehlermeldung wurde kopiert", ToastGravity.BOTTOM);
+                        },
+                      ),
+                    );
+                    _key.currentState.showSnackBar(snackBar);
+                    return Text("Something went wrong. Send an email with the description of the error to: stefan.niederwanger@outlook.com. Or post it at www.github.com/stnieder/Flutter-Recipe marked as issue");
+                  }                    
             }
-            return new Container(alignment: AlignmentDirectional.center,child: new CircularProgressIndicator(),);
           },
         ),
       );
@@ -773,7 +790,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
   }
 
   deleteDialog(List<String> recipeNames) async{
-    var delete = await Dialogs().deleteRecipes(context);
+    var delete = await Dialogs().deleteRecipes(context, indexList.length);
     if(delete == "löschen"){
       int deleted;
       for (var i = 0; i < recipeNames.length; i++) {
