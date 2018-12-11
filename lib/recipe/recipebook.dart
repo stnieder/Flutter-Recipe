@@ -14,7 +14,6 @@ import 'package:intl/intl.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:share/share.dart';
 
 import '../Constants.dart';
 import '../database/database.dart';
@@ -51,6 +50,8 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
   var googleMaterialColors = new GoogleMaterialColors();
   final GlobalKey<ScaffoldState> _drawerKey = new GlobalKey<ScaffoldState>();
   SharedPreferences prefs;
+  GlobalKey<State<PopupMenuButton>> _buttonKey = new GlobalKey<State<PopupMenuButton>>();
+  bool popup = false;
 
   //LongPress
   bool longPressFlag = false;
@@ -66,6 +67,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
 
 
   ConvertColor convertColor = new ConvertColor();
+  List<String> save_recipes = new List();
 
   //Body
   int _currentTab = 0;
@@ -90,6 +92,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       
     @override
     Widget build(BuildContext context) {
+      save_recipes = [];
       setPrefs();
       _fabs = [
           FloatingActionButton(
@@ -115,18 +118,6 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           FloatingActionButton(
             onPressed: (){
               newShoppingItem();
-              /*SnackBar snackbar = SnackBar(
-                content: Text("Can't send photo. Retry in 5 seconds"),
-                action: SnackBarAction(
-                  textColor: Colors.pinkAccent,
-                  label: "Retry",
-                  onPressed: () {
-                    // Retry button pressed
-                  },
-                ),
-              );
-  
-              _drawerKey.currentState.showSnackBar(snackbar);*/
             },
             child: Icon(
               Icons.add
@@ -158,7 +149,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
             fixedColor: Colors.blue[600],          
             items: [
               BottomNavigationBarItem(              
-                icon: Icon(OMIcons.book),
+                icon: Icon(OMIcons.collectionsBookmark),
                 title: const Text(
                   'Rezeptbuch',
                   style: TextStyle(
@@ -231,7 +222,6 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           searchController.text = "";
           fetchRecipes(false, null);
           searchPerformed = false;
-          searchActive = false;
         });
       }
     }  
@@ -329,17 +319,44 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
             },
             tooltip: "Search",
           ),
-          IconButton(
+          PopupMenuButton(
+            key: _buttonKey,
             icon: Icon(Icons.more_vert, color: Colors.black54),
-            onPressed: (){},
-          ) 
-        ];
-      } else if(currentPage == 1){
-        iconButtons = [
-          IconButton(
-            icon: Icon(Icons.more_vert, color: Colors.black54),
-            onPressed: (){},
-          ) 
+            itemBuilder: (_){
+              return _popUpMenu();
+            },
+            onSelected: (value){
+              switch(value){
+                case "einzeln":
+                  setState(() {
+                    longPressFlag = true;
+                    popup = true;
+                  });
+                  break;
+                case "alle":
+                  setState(() {
+                    indexList = save_recipes;
+                    longPressFlag = true;
+                  });
+                  break;
+                case "rezept":
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => new NewRecipe()));
+                  break;
+                case "termin":
+                  setState(() {
+                    currentPage = 1;
+                    openTermin(context);
+                  });
+                  break;
+                case "item":
+                  setState(() {
+                    currentPage = 2;
+                    newShoppingItem();
+                  });
+                  break;
+              }
+            },
+          )
         ];
       } else if(currentPage == 2){
         iconButtons = [
@@ -443,7 +460,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           ),
           onPressed: (){
             setState(() {
-              longPressFlag = false;                       
+              popup = false;
               indexList.clear();
               longPress();      
               searchController = new TextEditingController();
@@ -451,7 +468,10 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           },
         ),
         title: Text(
-          indexList.length.toString(),
+          (popup && indexList.isEmpty
+            ? "Rezepte auswählen"
+            : indexList.length.toString()
+          ),
           style: TextStyle(
             color: Colors.black54
           ),
@@ -480,53 +500,51 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           initialData: [],
           future: fetchRecipes(searchPerformed, searchCondition),
           builder: (context, snapshot) {
-            switch(snapshot.connectionState){
-              case ConnectionState.none: print("Nothing"); break;
-              case ConnectionState.active: print("Active"); break;
-              case ConnectionState.waiting: return Center(child: CircularProgressIndicator());  break;
-              case ConnectionState.done: 
-                  if(snapshot.data.length == 0){
-                    return Center(
-                        child:Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                                width: 200.0,
-                                height: 200.0,
-                                child: Image.asset("images/nothingFound.png"),
-                            ),
-                            Container(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 75.0),
-                                child: Text("Es wurden keine Rezepte gefunden."),
-                              ),
-                              width: 300.0,
-                            )
-                          ],
+            if(snapshot.hasData){
+              if(snapshot.data.length == 0){
+                return Center(
+                    child:Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                            width: 200.0,
+                            height: 200.0,
+                            child: Image.asset("images/nothingFound.png"),
+                        ),
+                        Container(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 75.0),
+                            child: Text("Es wurden keine Rezepte gefunden."),
+                          ),
+                          width: 300.0,
                         )
-                    );
-                  } else return changeList(snapshot);
-                    
-                  break;
-              default:
-                  if(snapshot.hasError) {
-                    GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
-                    SnackBar snackBar = new SnackBar(
-                      key: _key,
-                      content: Text("Die Fehlermeldung kopieren?"),
-                      action: SnackBarAction(
-                        label: "Kopieren",
-                        onPressed: () {
-                          Clipboard.setData(ClipboardData(text: snapshot.error.toString()));
-                          showBottomSnack("Fehlermeldung wurde kopiert", ToastGravity.BOTTOM);
-                        },
-                      ),
-                    );
-                    _key.currentState.showSnackBar(snackBar);
-                    return Text("Something went wrong. Send an email with the description of the error to: stefan.niederwanger@outlook.com. Or post it at www.github.com/stnieder/Flutter-Recipe marked as issue");
-                  }                    
+                      ],
+                    )
+                );
+              } 
+              return changeList(snapshot);
+            } else if(snapshot.hasError) {
+              GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
+              SnackBar snackBar = new SnackBar(
+                key: _key,
+                content: Text("Die Fehlermeldung kopieren?"),
+                action: SnackBarAction(
+                  label: "Kopieren",
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: snapshot.error.toString()));
+                    showBottomSnack("Fehlermeldung wurde kopiert", ToastGravity.BOTTOM);
+                  },
+                ),
+              );
+              _key.currentState.showSnackBar(snackBar);
+              return Text("Something went wrong. Send an email with the description of the error to: stefan.niederwanger@outlook.com. Or post it at www.github.com/stnieder/Flutter-Recipe marked as issue");
+            } else if(snapshot.connectionState == ConnectionState.waiting){
+              return Container(
+                child: Text(""),
+              );
             }
+            return Center(child: CircularProgressIndicator());
           },
         ),
       );
@@ -543,35 +561,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       return ListView.builder(
 
           itemBuilder: (BuildContext context, int index){
-
-            Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);
-            String image = snapshot.data[index].image;
-
-            key = new GlobalKey<StateSelectableItem>();
-
-            map.putIfAbsent(index, () => key);
-
-            return SelectableItems(
-              key: key,
-              color: usedColor,
-              name: snapshot.data[index].name,
-              title: (searchController.text.isEmpty
-                ? Text(snapshot.data[index].name)
-                : recipeName(searchCondition, snapshot.data[index].name)
-              ),
-              index: index,
-              image: image,
-              isSelected: indexList.contains(snapshot.data[index].name),
-              longPressEnabled: longPressFlag,
-              callback: () {
-                if (indexList.contains(snapshot.data[index].name)) {
-                  indexList.remove(snapshot.data[index].name);
-                } else {
-                  indexList.add(snapshot.data[index].name);
-                }
-                longPress();
-              },
-            );
+            return _selectableItems(snapshot, index);
 
           },
           itemCount: snapshot.data.length,
@@ -583,6 +573,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       return SideHeaderListView(
           hasSameHeader: (int a, int b){
             if(!searchActive) return snapshot.data[a].name[0] == snapshot.data[b].name[0];
+            else return false;
           },
           itemCount: snapshot.data.length,
           headerBuilder: (BuildContext context, int index){
@@ -605,36 +596,43 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           itemExtend: 70.0,
           itemBuilder: (BuildContext context, int index){
 
-            Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);
-            String image = snapshot.data[index].image;
-
-            key = new GlobalKey<StateSelectableItem>();
-
-            map.putIfAbsent(index, () => key);
-
-            return SelectableItems(
-              key: key,
-              color: usedColor,
-              name: snapshot.data[index].name,
-              title: (searchController.text.isEmpty
-                ? Text(snapshot.data[index].name)
-                : recipeName(searchCondition, snapshot.data[index].name)
-              ),
-              index: index,
-              image: image,
-              isSelected: indexList.contains(snapshot.data[index].name),
-              longPressEnabled: longPressFlag,
-              callback: () {
-                if (indexList.contains(snapshot.data[index].name)) {
-                  indexList.remove(snapshot.data[index].name);
-                } else {
-                  indexList.add(snapshot.data[index].name);
-                }
-                longPress();
-              },
-            );
+            return _selectableItems(snapshot, index);
           },
         );
+    }
+
+    _selectableItems(AsyncSnapshot snapshot, int index) {
+      if(!save_recipes.contains(snapshot.data[index].name)){
+        save_recipes.add(snapshot.data[index].name);
+      }
+      Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);
+      String image = snapshot.data[index].image;
+
+      key = new GlobalKey<StateSelectableItem>();
+
+      map.putIfAbsent(index, () => key);
+
+      return SelectableItems(
+        key: key,
+        color: usedColor,
+        name: snapshot.data[index].name,
+        title: (searchController.text.isEmpty
+          ? Text(snapshot.data[index].name)
+          : recipeName(searchCondition, snapshot.data[index].name)
+        ),
+        index: index,
+        image: image,
+        isSelected: indexList.contains(snapshot.data[index].name),
+        longPressEnabled: longPressFlag,
+        callback: () {
+          if (indexList.contains(snapshot.data[index].name)) {
+            indexList.remove(snapshot.data[index].name);
+          } else {
+            indexList.add(snapshot.data[index].name);
+          }
+          longPress();
+        },
+      );
     }
   
   
@@ -655,7 +653,6 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         if(picked != null && picked !=  _date){
           final dateFormat = new DateFormat('dd-MM-yyyy');
           for(int i=0; i<returned.length; i++){
-            print("Returned: "+returned[i]);
             await saveTermin(returned[i], dateFormat.format(picked));
           }
           showBottomSnack("Termin wurde erfolgreich gespeichert", ToastGravity.BOTTOM);
@@ -673,7 +670,6 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       termine.termin = date;
       termine = await db.insertTermine(termine);
   
-      print("TerminID: "+termine.id.toString());
       RecipeTermine recipeTermine = new RecipeTermine();
   
       recipeTermine.idRecipes = await fetchSpecRecipe(recipe);
@@ -732,7 +728,9 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
           await dbHelper.deleteCheckedItems(list);          
         }       
 
-
+        setState(() {
+          setPrefs();
+        });
       }
     }
   
@@ -778,6 +776,10 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
         _tabTitle[2] = returnStatement;
       });
     }
+
+    setState(() {
+      print("Finished");
+    });
   }
 
   _launchMail() async{
@@ -790,7 +792,7 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
   }
 
   deleteDialog(List<String> recipeNames) async{
-    var delete = await Dialogs().deleteRecipes(context, indexList.length);
+    var delete = await Dialogs().deleteRecipes(context, recipeNames.length);
     if(delete == "löschen"){
       int deleted;
       for (var i = 0; i < recipeNames.length; i++) {
@@ -847,5 +849,113 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
 
       setState(() {});
     }
+  }
+
+  _popUpMenu(){
+    return [
+      PopupMenuItem(
+        child: Row(
+          children: <Widget>[
+            Icon(OMIcons.checkCircleOutline),
+            Padding(
+              padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
+              child: Text(
+                "Auswählen",
+                style: TextStyle(
+                  fontFamily: "Google-Sans"
+                ),
+              ),
+            )
+          ],
+        ),
+        value: "einzeln",
+      ),
+      PopupMenuItem(
+        child: Row(
+          children: <Widget>[
+            Icon(OMIcons.doneAll),
+            Padding(
+              padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
+              child: Text(
+                "Alle auswählen",
+                style: TextStyle(
+                  fontFamily: "Google-Sans"
+                ),
+              ),
+            )
+          ],
+        ),
+        value: "alle",
+      ),
+      PopupMenuItem(
+        enabled: false,
+        height: 40.0,
+        child: Container(child: Text("")),
+      ),
+      PopupMenuItem(
+        height: 15.0,
+        enabled: false,
+        child: Text(
+          "NEU ERSTELLEN",
+          style: TextStyle(
+            fontFamily: "Google-Sans",
+            fontSize: 12.0,
+            fontWeight: FontWeight.bold
+          ),
+        ),
+      ),
+      PopupMenuItem(
+        height: 50.0,
+        child: Row(
+          children: <Widget>[
+            Icon(OMIcons.book),
+            Padding(
+              padding: EdgeInsets.only(bottom: 3.0, left: 10.0),
+              child: Text(
+                "Rezept",
+                style: TextStyle(
+                  fontFamily: "Google-Sans"
+                ),
+              ),
+            )
+          ],
+        ),
+        value: "rezept",
+      ),
+      PopupMenuItem(
+        child: Row(
+          children: <Widget>[
+            Icon(OMIcons.calendarToday),
+            Padding(
+              padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
+              child: Text(
+                "Termin",
+                style: TextStyle(
+                  fontFamily: "Google-Sans"
+                ),
+              ),
+            )
+          ],
+        ),
+        value: "termin",
+      ),
+      PopupMenuItem(
+        child: Row(
+          children: <Widget>[
+            Icon(OMIcons.shoppingBasket),
+            Padding(
+              padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
+              child: Text(
+                "Einkaufsartikel",
+                style: TextStyle(
+                  fontFamily: "Google-Sans"
+                ),
+              ),
+            )
+          ],
+        ),
+        value: "item",
+      ),
+    ];
   }
 }

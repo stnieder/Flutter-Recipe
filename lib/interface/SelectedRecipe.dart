@@ -8,13 +8,15 @@ class SelectedRecipe extends StatefulWidget {
   final Color backgroundColor;
   final AssetImage backgroundImage;
   final String label;
+  final Widget littleIcon; 
 
   SelectedRecipe(
     {
       @required this.hasImage,
       this.backgroundColor,
       this.backgroundImage,
-      @required this.label
+      @required this.label,
+      @required this.littleIcon
     }
   );
 
@@ -52,19 +54,7 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
                   padding: EdgeInsets.only(left: 25.0, top: 20.0),
                   child: Align(
                     alignment: Alignment.bottomRight,
-                    child: RotationTransition(
-                      turns: new AlwaysStoppedAnimation(45 / 360),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle
-                        ),
-                        child: Icon(
-                          Icons.add_circle,
-                          size: 18.0,
-                        ),
-                      ),
-                    ),
+                    child: widget.littleIcon,
                   ),
                 )
               ],
@@ -72,23 +62,22 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
             width: 40.0,
             height: 40.0,
           ),
-          new Flexible(
-            child: new Container(
-              padding: EdgeInsets.only(left: 5.0),
-              child: new Text(
-                widget.label,
-                overflow: TextOverflow.ellipsis,
-                style: new TextStyle(
-                  fontSize: 13.0,
-                  fontFamily: 'Google-Sans',
-                ),
-              ),
+          new Text(
+            widget.label,
+            overflow: TextOverflow.ellipsis,
+            style: new TextStyle(
+              color: Colors.grey,
+              fontSize: 13.0,
+              fontFamily: 'Google-Sans',
             ),
+            textAlign: TextAlign.left,
           ),
         ],
       ),
       height: 70.0,
-      width: 55.0
+      width: 63.0
     );
   }
 }
+
+

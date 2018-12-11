@@ -84,17 +84,13 @@ class _SideHeaderListViewState extends State<SideHeaderListView> {
       return true;
     }
 
-    if (
-      position != 0 &&
-      position != currentPosition &&
-        !widget.hasSameHeader(position, position - 1)) {
+    if (position != 0 && position != currentPosition && !widget.hasSameHeader(position, position - 1)) {
       return true;
     }
 
-    if (
-      position != widget.itemCount -1 &&
-      !widget.hasSameHeader(position, position + 1) &&
-        position == currentPosition) {
+    if (position != widget.itemCount -1 && 
+    !widget.hasSameHeader(position, position + 1) && 
+    position == currentPosition) {
       return true;
     }
     return false;

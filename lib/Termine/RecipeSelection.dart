@@ -3,6 +3,8 @@ import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:Time2Eat/interface/HexToColor.dart';
 import 'package:Time2Eat/interface/SelectedRecipe.dart';
 import 'package:Time2Eat/model/Recipes.dart';
+import 'package:Time2Eat/interface/MyAppBar.dart';
+import 'package:Time2Eat/interface/CircularImage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -58,6 +60,15 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
             ? Container()
             : selectedAppBar()
           ),
+          Container(
+            height: 5.0,
+            width: MediaQuery.of(context).size.width - 10.0,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color:  Colors.grey[300])
+              )
+            ),
+          ),
           Flexible(
             child: new FutureBuilder<List<Recipes>>(
               initialData: [],
@@ -91,63 +102,66 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
                     itemBuilder: (BuildContext context, int index){
                       return InkWell(
                         onTap: (){
-                          ConvertColor convert = new ConvertColor();
+                          if(!selectedName.contains(snapshot.data[index].name)){
+                            ConvertColor convert = new ConvertColor();
 
-                          selectedName.add(snapshot.data[index].name);
-                          selectedColor.add(convert.convertToColor(snapshot.data[index].backgroundColor));
-                          selectedImage.add(snapshot.data[index].image);
+                            selectedName.add(snapshot.data[index].name);
+                            selectedColor.add(convert.convertToColor(snapshot.data[index].backgroundColor));
+                            selectedImage.add(snapshot.data[index].image);
 
-                          selectionActive = true;
+                            selectionActive = true;
 
-                          setState(() {
-                            searchController.text = "";
-                            searchCondition = "";
-                            fetchRecipes(false, null);
-                          });
+                            setState(() {
+                              searchController.text = "";
+                              searchCondition = "";
+                              fetchRecipes(false, null);
+                            });
 
-                          print("SelectedRecipe label: "+snapshot.data[index].name);
+                            print("SelectedRecipe label: "+snapshot.data[index].name);
+                          }
                         },
-                        child: (selectedName.contains(snapshot.data[index].name)
-                          ? Container()
-                          : ListTile(
-                          leading: snapshot.data[index].image != "no image"
-                              ? Container(
-                            width: 40.0,
-                            height: 40.0,
-                            decoration: new BoxDecoration(
-                              image: new DecorationImage(
-                                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-                                image: AssetImage(snapshot.data[index].image),
-                                fit: BoxFit.cover,
+                        child: ListTile(
+                            leading: (selectedName.contains(snapshot.data[index].name)
+                              ? returnCheckedRecipes(snapshot.data[index].name, convert.convertToColor(snapshot.data[index].backgroundColor), snapshot.data[index].image)
+                              : (snapshot.data[index].image != "no image"
+                                  ? Container(
+                                width: 40.0,
+                                height: 40.0,
+                                decoration: new BoxDecoration(
+                                  image: new DecorationImage(
+                                    colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                                    image: AssetImage(snapshot.data[index].image),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                                ),
+                              )
+                                  : CircleAvatar(
+                                child: Text(
+                                  snapshot.data[index].name[0].toUpperCase(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 21.0,
+                                      fontWeight: FontWeight.w400
+                                  ),
+                                ),
+                                backgroundColor: convert.convertToColor(snapshot.data[index].backgroundColor),
+                              ))
+                            ),
+                              title: Padding(
+                                padding: EdgeInsets.only(top: 0.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    ( searchController.text.isEmpty
+                                        ? Text(snapshot.data[index].name)
+                                        : recipeName(searchCondition, snapshot.data[index].name)
+                                    )
+                                  ],
+                                ),
                               ),
-                              borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
-                            ),
-                          )
-                              : CircleAvatar(
-                            child: Text(
-                              snapshot.data[index].name[0].toUpperCase(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 21.0,
-                                  fontWeight: FontWeight.w400
-                              ),
-                            ),
-                            backgroundColor: convert.convertToColor(snapshot.data[index].backgroundColor),
-                          ),
-                          title: Padding(
-                            padding: EdgeInsets.only(top: 0.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                ( searchController.text.isEmpty
-                                    ? Text(snapshot.data[index].name)
-                                    : recipeName(searchCondition, snapshot.data[index].name)
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                        )
+                            )
+                        
                       );
                     },
                   );
@@ -247,17 +261,14 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
   }
 
   selectedAppBar(){
-    return AppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: Colors.white,
-      elevation: 0.5,
+    return CustomAppBar(
       title: Padding(
         padding: EdgeInsets.only(top: 4.0),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: selectedName.length,
           itemBuilder: (BuildContext context, int index){
-            return returnRecipes(selectedName[index], selectedColor[index], selectedImage[index]);
+            return returnRecipes(selectedName[index].split(" ")[0], selectedColor[index], selectedImage[index]);
           },
         ),
       ),
@@ -358,6 +369,49 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
     return wholeName;
   }
 
+  returnCheckedRecipes(String label, Color backgroundColor, String imagePath){
+    return GestureDetector(
+      child: SelectedRecipe(
+          hasImage: (imagePath != "no image"),
+          backgroundImage: (imagePath == null
+              ? null
+              : AssetImage(imagePath)
+          ),
+          backgroundColor: (backgroundColor == null
+              ? null
+              : backgroundColor
+          ),
+          label: label,
+          littleIcon: Container(
+            decoration: BoxDecoration(                          
+                color: Colors.white,
+                shape: BoxShape.circle
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(top: 2.0),
+              child: Icon(
+                Icons.check_circle,
+                size: 18.0,
+                color: Colors.green,
+              ),
+            ),
+          ),
+      ),
+      onTap: (){
+        setState(() {
+          selectedName.remove(label);
+          selectedColor.remove(backgroundColor);
+          selectedImage.remove(imagePath);
+
+          if(selectedName.isEmpty) {
+            selectionActive = false;
+          }
+          searchController.text = "";
+        });
+      },
+    );
+  }
+
   returnRecipes(String label, Color backgroundColor, String imagePath){
     return GestureDetector(
       child: SelectedRecipe(
@@ -370,7 +424,20 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
               ? null
               : backgroundColor
           ),
-          label: label
+          label: label,
+          littleIcon: RotationTransition(
+            turns: new AlwaysStoppedAnimation(45 / 360),
+            child: Container(
+              decoration: BoxDecoration(                          
+                  color: Colors.white,
+                  shape: BoxShape.circle
+              ),
+              child: Icon(
+                Icons.add_circle,
+                size: 18.0,
+              ),
+            ),
+          ),
       ),
       onTap: (){
         setState(() {

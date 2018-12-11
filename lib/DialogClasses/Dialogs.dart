@@ -655,13 +655,13 @@ class Dialogs{
             height: 50.0,
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(15.0))
+              borderRadius: BorderRadius.all(Radius.circular(5.0))
             ),
             child: Center(
               child: Padding(
                 padding: EdgeInsets.only(left: 15.0, top: 20.0,right: 5.0),
                 child: Text(
-                  (length == 1
+                  (length > 1
                     ? "Diese Rezepte werden unwiderruflich gelöscht"
                     : "Dieses Rezept wird unwiderruflich gelöscht"
                   ),
