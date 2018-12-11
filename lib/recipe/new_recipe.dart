@@ -183,7 +183,10 @@ class _NewRecipe extends State<NewRecipe>{
               backgroundColor: Colors.white,
               leading: IconButton(
                 onPressed: () async{
-                  var result = await dialogs.closeDialog(context);
+                  String title;
+                  if(edit) title = "Deine Änderungen werden nicht gespeichert.";
+                  else title = "Dein Rezept wird nicht gespeichert";
+                  var result = await dialogs.closeDialog(context, title);
                   if(result == "verwerfen") Navigator.pop(context);
                 },
                 icon: Icon(
@@ -1020,7 +1023,7 @@ class _NewRecipe extends State<NewRecipe>{
         Directory directory = await getApplicationDocumentsDirectory();
         String path = directory.path.replaceAll(new RegExp(r"\s+\b|\b\s"), String.fromCharCode(95)); //95 from ASCII is '_'
         String image = (recipeName.text).replaceAll(new RegExp(r"\s+\b|\b\s"), String.fromCharCode(95));
-        await File(_image).copy('$path/$image}.png');
+        await File(_image).copy('$path/$image.png');
         recipe.image = '$path/$image.png';
       } else {
         recipe.image = "no image";

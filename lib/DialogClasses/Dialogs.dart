@@ -22,7 +22,7 @@ class Dialogs{
   final personenAnzahlController = new TextEditingController();
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
 
-  closeDialog(BuildContext context){
+  closeDialog(BuildContext context, String title){
     return showDialog(
         context: context,
         builder: (BuildContext context){
@@ -33,9 +33,9 @@ class Dialogs{
                 borderRadius: BorderRadius.all(Radius.circular(5.0))
               ),
               child: Padding(
-                padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0, bottom: 0.0),
+                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 10.0, bottom: 0.0),
                 child: new Text(
-                  "Dein Rezept wird nicht gespeichert",
+                  title,
                   style: TextStyle(
                       fontSize: 14.0
                   ),

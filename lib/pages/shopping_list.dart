@@ -47,12 +47,14 @@ class _ShoppingPage extends State<ShoppingPage>{
   @override
   void setState(fn) {
       super.setState(fn);      
+      checked = [];
+      notchecked = [];
     }
 
 
 
   @override
-  Widget build(BuildContext context) {        
+  Widget build(BuildContext context) {            
     return new NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (overscroll){
         overscroll.disallowGlow();

@@ -831,14 +831,15 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
       shopping.timestamp = DateTime.now().toString();
 
       int titleCount = await dbHelper.countAllTitles();
-      if(titleCount > 1){
+      print("TitleCount: $titleCount");
+      if(titleCount > 0){
         var titles = await Dialogs().addToShoppingList(context);
         if(titles != null && titles != "abbrechen") {
           shopping = await dbHelper.linkShoppingTitles(shopping, titles);
           int titleID = await dbHelper.getTitleID(titles);
           await saveTitleShopping(shopping.id, titleID, dbHelper);
         } else return;        
-      } else if(titleCount == 1){
+      } else if(titleCount == 0){
         shopping = await dbHelper.newShoppingItem(shopping);
         int titleID = await dbHelper.getTitleID(prefs.getString("currentList"));
         await saveTitleShopping(shopping.id, titleID, dbHelper);

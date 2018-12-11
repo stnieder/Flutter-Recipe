@@ -602,7 +602,7 @@ class DBHelper{
 
   //Get all Recipes
   Future<List<Recipes>> getRecipes() async{
-    List<Map> list = await _db.rawQuery("SELECT * FROM recipes ORDER BY name ASC");
+    List<Map> list = await _db.rawQuery("SELECT * FROM recipes ORDER BY name DESC");
     List<Recipes> recipes = new List();
     for(int i =0; i < list.length; i++){
       recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"], pre_duration: list[i]["pre_duration"], cre_duration: list[i]["cre_duration"], resting_time: list[i]["resting_time"], people: list[i]["people"].toString(), favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
@@ -663,8 +663,8 @@ class DBHelper{
   Future<List<Shopping>> getShopping(String order, String title) async{
     if(order == "abc") order = "item ASC";
     String sql = 
-    "SELECT shopping.item, shopping.measure, shopping.number, shopping.checked, shopping.timestamp, recipes.name " + 
-    "FROM shopping, recipes, recipeShopping, shoppingTitles, listTitles " + 
+    "SELECT shopping.item, shopping.measure, shopping.number, shopping.checked, shopping.timestamp " + 
+    "FROM shopping, shoppingTitles, listTitles " + 
     "WHERE shopping.id = shoppingTitles.idShopping "+
     "AND shoppingTitles.idTitles = listTitles.id "+
     "AND listTitles.titleName = ? "+

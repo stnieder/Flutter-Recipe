@@ -129,7 +129,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
               image: new DecorationImage(
                 colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
                 image: AssetImage(imagePath),
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               )
             ),
           );

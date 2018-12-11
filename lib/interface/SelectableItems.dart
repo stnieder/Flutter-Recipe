@@ -36,9 +36,36 @@ class StateSelectableItem extends State<SelectableItems> {
   bool isSelected = false;
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
 
+  Widget leadingWidget;
+
   @override
   void initState() {
     if(widget.isSelected) isSelected = widget.isSelected;
+
+    if(widget.image == "no image"){
+      leadingWidget = Text(
+                  widget.name[0].toUpperCase(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 21.0,
+                    fontWeight: FontWeight.w400
+                  ),
+                );
+    } else if(widget.image != "no image"){
+      leadingWidget = Container(
+        width: 40.0,
+        height: 40.0,
+        decoration: new BoxDecoration(
+          image: new DecorationImage(
+            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+            image: AssetImage(widget.image),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+        ),
+      );
+    }
+
     super.initState();
   }
 
@@ -68,31 +95,10 @@ class StateSelectableItem extends State<SelectableItems> {
           leading: CircleAvatar(
             child: (isSelected
               ? Icon(
-                Icons.check,
-                color: Colors.white,
-              )
-              : (widget.image == "no image"
-                ? Container(
-                  width: 40.0,
-                  height: 40.0,
-                  decoration: new BoxDecoration(
-                    image: new DecorationImage(
-                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-                      image: AssetImage(widget.image),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
-                  ),
+                  Icons.check,
+                  color: Colors.white,
                 )
-                : Text(
-                  widget.name[0].toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 21.0,
-                    fontWeight: FontWeight.w400
-                  ),
-                )
-              )
+              : leadingWidget
             ),
             backgroundColor: (isSelected
               ? googleMaterialColors.primaryColor()
