@@ -10,7 +10,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationDialog extends StatefulWidget{
   final String recipe;
-  NotificationDialog(this.recipe);
+  final int recipeID;
+  NotificationDialog(this.recipe, this.recipeID);
 
   @override
   State<StatefulWidget> createState() {
@@ -303,7 +304,7 @@ Future _oneTimeNotification() async {
   NotificationDetails platformChannelSpecifics = new NotificationDetails(android, iOS);
 
   await flutterLocalNotifications.schedule(
-    0,
+    widget.recipeID,
     widget.recipe,
     channelDescription,
     scheduledNotificationDateTime,
@@ -323,7 +324,7 @@ Future _dailyNotification() async{
   NotificationDetails platformChannelSpecifics = new NotificationDetails(android, iOS);
 
   await flutterLocalNotifications.showDailyAtTime(
-    0,
+    widget.recipeID,
     widget.recipe,
     channelDescription,
     scheduledNotificationTime,
@@ -343,7 +344,7 @@ Future _weeklyNotification() async{
   NotificationDetails platformChannelSpecifics = new NotificationDetails(android, iOS);
 
   await flutterLocalNotifications.showWeeklyAtDayAndTime(
-    0,
+    widget.recipeID,
     widget.recipe,
     channelDescription,
     Day(selectedDay),

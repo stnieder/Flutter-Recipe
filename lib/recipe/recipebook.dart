@@ -9,6 +9,7 @@ import 'package:Time2Eat/model/Termine.dart';
 import 'package:Time2Eat/recipe/new_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -41,11 +42,11 @@ Future<List<Recipes>> fetchRecipes(bool searched, String recipeName) async{
 class Recipebook extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-    return _Recipebook();
+    return RecipebookState();
   }
 }
 
-class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
+class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
   var dbHelper = new DBHelper();
   var googleMaterialColors = new GoogleMaterialColors();
   final GlobalKey<ScaffoldState> _drawerKey = new GlobalKey<ScaffoldState>();
@@ -793,10 +794,13 @@ class _Recipebook extends State<Recipebook> with TickerProviderStateMixin{
 
   deleteDialog(List<String> recipeNames) async{
     var delete = await Dialogs().deleteRecipes(context, recipeNames.length);
+    FlutterLocalNotificationsPlugin notificationsPlugin = new FlutterLocalNotificationsPlugin();
     if(delete == "löschen"){
       int deleted;
       for (var i = 0; i < recipeNames.length; i++) {
-        deleted = await dbHelper.deleteRecipe(recipeNames[i]);
+        int recipeID = await dbHelper.getRecipeID(recipeNames[i]);
+        deleted = await dbHelper.deleteRecipe(recipeNames[i]);    
+        await notificationsPlugin.cancel(recipeID);
       }
       if(recipeNames.length == 1) showBottomSnack(recipeNames[0]+" wurde gelöscht", ToastGravity.BOTTOM);
       else if(recipeNames.length > 1) showBottomSnack("$deleted Rezepte wurden gelöscht", ToastGravity.BOTTOM);

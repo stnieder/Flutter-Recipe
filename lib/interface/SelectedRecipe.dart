@@ -9,6 +9,8 @@ class SelectedRecipe extends StatefulWidget {
   final AssetImage backgroundImage;
   final String label;
   final Widget littleIcon; 
+  final double height;
+  final double width;
 
   SelectedRecipe(
     {
@@ -16,7 +18,9 @@ class SelectedRecipe extends StatefulWidget {
       this.backgroundColor,
       this.backgroundImage,
       @required this.label,
-      @required this.littleIcon
+      @required this.littleIcon,
+      this.height,
+      this.width
     }
   );
 
@@ -62,20 +66,29 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
             width: 40.0,
             height: 40.0,
           ),
-          new Text(
-            widget.label,
-            overflow: TextOverflow.ellipsis,
-            style: new TextStyle(
-              color: Colors.grey,
-              fontSize: 13.0,
-              fontFamily: 'Google-Sans',
-            ),
-            textAlign: TextAlign.left,
+          (widget.label == ""
+            ? Container()
+            : new Text(
+                widget.label,
+                overflow: TextOverflow.ellipsis,
+                style: new TextStyle(
+                  color: Colors.grey,
+                  fontSize: 13.0,
+                  fontFamily: 'Google-Sans',
+                ),
+                textAlign: TextAlign.left,
+              )
           ),
         ],
       ),
-      height: 70.0,
-      width: 63.0
+      height: (widget.height == null
+        ? 70.0
+        : widget.height
+      ),
+      width: (widget.width == null
+        ? 63.0
+        : widget.width
+      )
     );
   }
 }

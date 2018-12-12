@@ -1,5 +1,6 @@
 import 'package:Time2Eat/DialogClasses/Dialogs.dart';
 import 'package:Time2Eat/database/database.dart';
+import 'package:Time2Eat/recipe/recipebook.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -32,6 +33,7 @@ class CalendarView extends StatefulWidget{
 class _CalendarView extends State<CalendarView>{
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+  final _key = GlobalKey();
 
   String selectedDate;
   bool oldData;
@@ -49,6 +51,7 @@ class _CalendarView extends State<CalendarView>{
   @override
   Widget build(BuildContext context) {
     return Column(
+      key: _key,
       children: <Widget>[
         new Flexible(
           child: Calendar(
@@ -104,11 +107,8 @@ class _CalendarView extends State<CalendarView>{
                                 title: Text(snapshot.data[index].name),
                               ),
                           ),
-                          onTap: (){
-                            showNotificationDialog(snapshot.data[index].name);
-                          },
                           onLongPress: (){
-                            //show bottom sheet with: delete, edit, notification
+                            editNotification(snapshot.data[index].name);
                           },
                         );
                       },
@@ -166,5 +166,28 @@ class _CalendarView extends State<CalendarView>{
   showNotificationDialog(String recipeName) async{
     Dialogs dialog = new Dialogs();
     await dialog.setNotification(context, recipeName);
+  }
+
+  showPositioned(){
+
+  }
+
+  editNotification(String recipe) async{
+    var edit = await Dialogs().editTermin(context);
+    if(edit == "delete"){
+      SnackBar snackBar = SnackBar(
+        action: SnackBarAction(          
+          label: "Rückgängig machen",
+          onPressed: (){
+            print("rückgängig!");
+          },
+          textColor: GoogleMaterialColors().getLightColor(5),          
+        ),
+        content: Text("Termin gelöscht"),
+      );
+      Scaffold.of(context).showSnackBar(snackBar);
+    } else if(edit == "notification"){
+      showNotificationDialog(recipe);
+    }
   }
 }

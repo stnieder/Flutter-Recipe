@@ -15,6 +15,7 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../interface/CustomShowDialog.dart';
+import 'DeleteNotification.dart';
 
 double _kShoppingMenuHeight = 100.0;
 
@@ -248,10 +249,14 @@ class Dialogs{
     );
   }
 
-  setNotification(BuildContext context, String name) {
+  setNotification(BuildContext context, String name) async{
+    DBHelper db = new DBHelper();
+    await db.create();
+    int recipeID = await db.getRecipeID(name);
+
     return showDialog(
       context: context,
-      builder: (_) => NotificationDialog(name)
+      builder: (_) => NotificationDialog(name, recipeID)
     );
   }
 
@@ -468,13 +473,13 @@ class Dialogs{
     
     _items(String text){
       return MyListTileText(
-          backgroundColor: GoogleMaterialColors().primaryColor().withOpacity(0.4),
-          enabled: currentTitle == text,
-          childText: text,        
-          onTap: (){            
-            Navigator.pop(context, text);
-          },
-        );
+        backgroundColor: GoogleMaterialColors().primaryColor().withOpacity(0.4),
+        enabled: currentTitle == text,
+        childText: text,        
+        onTap: (){            
+          Navigator.pop(context, text);
+        },
+      );
     }
 
     _list() async{      
@@ -845,6 +850,62 @@ class Dialogs{
           ],
         );
       }
+    );
+  }
+
+  editTermin(BuildContext context) async{
+    Color deleteBackground = GoogleMaterialColors().getLightColor(2).withOpacity(0.2);
+    Color deleteColor = GoogleMaterialColors().getLightColor(2);
+
+    Color notificationBackground = GoogleMaterialColors().getLightColor(0).withOpacity(0.2);
+    Color notificationColor = GoogleMaterialColors().getLightColor(0);
+
+    List<String> sheetText = [
+      "Termin löschen",
+      "Benachrichtigung hinzufügen"
+    ];
+    
+    List<IconData> sheetIcon = [
+      OMIcons.delete,
+      OMIcons.notificationsActive
+    ];
+
+
+    return showRoundedBottomSheet(
+      context: context,
+      height: 115.0,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 10.0, left: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 10.0, left: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      RoundedBackground(
+                        text: sheetText[0], 
+                        background: deleteBackground, 
+                        textColor: deleteColor,
+                        icon: sheetIcon[0],
+                      ),
+                      RoundedBackground(
+                        text: sheetText[1], 
+                        background: notificationBackground, 
+                        textColor: notificationColor,
+                        icon: sheetIcon[1],
+                      ),
+                    ],
+                  ),
+                ),                            
+              ],
+            ),
+          ),
+        ],
+      )
     );
   }
 

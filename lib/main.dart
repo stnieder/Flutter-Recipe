@@ -30,6 +30,7 @@ class Recipe extends StatelessWidget {
       title: 'Rezeptbuch',
       theme: new ThemeData(        
         backgroundColor: Colors.white,
+        canvasColor: Colors.white,
         primarySwatch: Colors.blue,        
         iconTheme: IconThemeData(
           color: Colors.black54          

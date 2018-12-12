@@ -7,6 +7,7 @@ import 'package:Time2Eat/model/Shopping.dart';
 import 'package:Time2Eat/model/Shopping_Title.dart';
 import 'package:Time2Eat/recipe/cooking.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -660,8 +661,12 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
 
   deleteRecipe() async{
     var delete = await Dialogs().deleteRecipes(context, 1);
+    FlutterLocalNotificationsPlugin notificationsPlugin = new FlutterLocalNotificationsPlugin();
     if(delete != null && delete != "abbrechen"){
+      int recipeID = await DBHelper().getRecipeID(recipeName);
       await DBHelper().deleteRecipe(recipeName);
+      await notificationsPlugin.cancel(recipeID);
+      Navigator.pop(context);
       setState(() {
         showBottomSnack("$recipeName wurde gelöscht", ToastGravity.BOTTOM);
       });      
