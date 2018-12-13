@@ -26,6 +26,7 @@ class RecipeSelection extends StatefulWidget {
 }
 
 class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMixin{
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey();
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
   ConvertColor convert = new ConvertColor();
 
@@ -54,9 +55,15 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
       ),
       body: Column(
         children: <Widget>[
-          (!selectionActive
-            ? Container()
-            : selectedAppBar()
+          AnimatedCrossFade(
+            firstChild: Container(),
+            secondChild: selectedAppBar(),
+            crossFadeState: (selectionActive
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst
+            ),
+            duration: Duration(milliseconds: 300),
+            sizeCurve: Curves.linear            
           ),
           Flexible(
             child: new FutureBuilder<List<Recipes>>(
@@ -100,9 +107,12 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
                               if(!name.contains(snapshot.data[index].name)){
                                 ConvertColor convert = new ConvertColor();
 
+                                int listIndex = name.length;
                                 name.add(snapshot.data[index].name);
                                 color.add(convert.convertToColor(snapshot.data[index].backgroundColor));
                                 image.add(snapshot.data[index].image);
+
+                                _listKey.currentState.insertItem(listIndex, duration: Duration(milliseconds: 200));
 
                                 selectionActive = true;
 
@@ -264,24 +274,19 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
 
   selectedAppBar(){
     return Container(
-      child: Padding(
+      child: AnimatedList(
         padding: EdgeInsets.only(top: 4.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Flexible(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: name.length,
-                itemBuilder: (BuildContext context, int index){
-                  return returnRecipes(name[index], color[index], image[index]);
-                },
-              ),
-            )
-          ],
-        ),
+        key: _listKey,
+        scrollDirection: Axis.horizontal,
+        initialItemCount: name.length,
+        itemBuilder: (context, index, animation){
+          return ScaleTransition(                                   
+            scale: animation,            
+            child: returnRecipes(name[index], color[index], image[index]),
+          );
+        },
       ),
-      height: 78.0,
+      height: 76.0,
       width: MediaQuery.of(context).size.width,
     );
   }
@@ -446,7 +451,18 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
       ),
       onTap: (){
         if(name.contains(label)){
-          int index = name.indexOf(label);
+          int index = name.indexOf(label);          
+          _listKey.currentState.removeItem(
+            index,
+            (BuildContext context, Animation<double> animation){
+              return ScaleTransition(
+                alignment: Alignment.center,
+                scale: animation,
+                child: returnCheckedRecipes(label, backgroundColor, imagePath),
+              );
+            },
+            duration: Duration(milliseconds: 100)
+          );
           name.removeAt(index);
           color.removeAt(index);
           image.removeAt(index);

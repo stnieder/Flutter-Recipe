@@ -2,13 +2,14 @@ class TermineDB{
   TermineDB();
 
   int id;
-  String termin; //should be a Date
+  String terminDate, notificationID; //should be a Date
 
-  static final columns = ["id", "termin"];
+  static final columns = ["id", "terminDate", "notificationID"];
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
-      "termin": termin
+      "terminDate": terminDate,
+      "notificationID": notificationID
     };
 
     if(id != null){
@@ -22,14 +23,15 @@ class TermineDB{
     TermineDB termine = new TermineDB();
 
     termine.id = map["id"];
-    termine.termin = map["termin"];
+    termine.terminDate = map["terminDate"];
+    termine.notificationID = map["notificationID"];
   }
 }
 
 class Termine{
 
   int id;
-  String termin;
+  String terminDate, notificationID;
 
-  Termine(this.id, this.termin);
+  Termine(this.id, this.terminDate, this.notificationID);
 }

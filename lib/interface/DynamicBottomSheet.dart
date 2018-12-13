@@ -11,7 +11,7 @@ Future<T> showDynamicBottomSheet<T> ({
   assert(context != null);
   assert(child != null);
   assert(minHeight != null && minHeight > 0);
-  assert(maxHeight < 450.0);
+  if(maxHeight != null) assert(maxHeight < 450.0);
 
   double position = 0.0;
   StreamController<double> controller = StreamController.broadcast();
@@ -25,10 +25,15 @@ Future<T> showDynamicBottomSheet<T> ({
           return new GestureDetector(
             onVerticalDragUpdate: (DragUpdateDetails details){
               position = MediaQuery.of(context).size.height - details.globalPosition.dy;
-              print(position);
-              if(position > minHeight){
-                controller.add(position);
-              } else if(position.isNegative) Navigator.pop(context);
+              if(maxHeight == null){
+                if(position > minHeight){
+                  controller.add(position);
+                } else if(position.isNegative) Navigator.pop(context);
+              } else {
+                if(position > minHeight && position < maxHeight){
+                  controller.add(position);
+                } else if(position.isNegative) Navigator.pop(context);
+              }
             },
             behavior: HitTestBehavior.translucent,
             child: Container(
@@ -37,7 +42,7 @@ Future<T> showDynamicBottomSheet<T> ({
               child: new Container(
                 decoration: new BoxDecoration(
                   color: Colors.white,
-                  borderRadius: (position > 400.0
+                  borderRadius: (position > (maxHeight == null ? 400.0 : maxHeight)
                     ? BorderRadius.circular(0.0)
                     : new BorderRadius.only(
                         topLeft: const Radius.circular(5.0),
@@ -51,7 +56,7 @@ Future<T> showDynamicBottomSheet<T> ({
                       children: <Widget>[
                         AnimatedOpacity(
                           duration: Duration(milliseconds: 300),
-                          opacity: (position > 400.0
+                          opacity: (position > (maxHeight == null ? 400.0 : maxHeight)
                             ? 0.0
                             : 1.0
                           ),

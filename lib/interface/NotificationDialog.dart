@@ -1,3 +1,4 @@
+import 'package:Time2Eat/NotificationID.dart';
 import 'package:Time2Eat/interface/CustomShowDialog.dart';
 import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:Time2Eat/interface/MyDropDownButton.dart';
@@ -56,6 +57,8 @@ class _NotificationDialog extends State<NotificationDialog>{
   TimeOfDay notificationTime;
   var pickedTime;
   int timeIndex;
+
+  int notificationID;
 
   //Select notification intervall
   final List<String> intervalle = [
@@ -212,11 +215,7 @@ class _NotificationDialog extends State<NotificationDialog>{
               highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.15),
               highlightElevation: 2.0,
               onPressed: (){
-                setState(() {
-                  setNotficationTime(selectedIntervall);
-                });
-                //setNotficationTime(selectedIntervall);
-                //Navigator.pop(context);
+                createNotification();
               },
               shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
               splashColor: Colors.transparent,
@@ -225,6 +224,11 @@ class _NotificationDialog extends State<NotificationDialog>{
         )
       ],
     );
+  }
+
+  createNotification() async{
+    int id = await setNotficationTime(selectedIntervall);
+    Navigator.pop(context, id);
   }
 
   convertDate(String value) async{
@@ -279,19 +283,21 @@ class _NotificationDialog extends State<NotificationDialog>{
     setState(() {});
   }
 
-  setNotficationTime(String interval){
-    
+  setNotficationTime(String interval) async{
+    String r_value = "";
     if(interval == intervalle[0]){
-      _oneTimeNotification();
+      r_value = await _oneTimeNotification();
     } else if(interval == intervalle[1]){
-      _dailyNotification();
+      r_value = await _dailyNotification();
     } else if(interval == intervalle[2]){
-      _weeklyNotification();
+      r_value = await _weeklyNotification();
     } 
+
+    return r_value;
   }
 
 Future _oneTimeNotification() async {  
-  var scheduledNotificationDateTime = DateTime(
+  var schedule = DateTime(
     DateTime.now().year,
     selectedDateTime.month,
     selectedDateTime.day,
@@ -303,17 +309,21 @@ Future _oneTimeNotification() async {
 
   NotificationDetails platformChannelSpecifics = new NotificationDetails(android, iOS);
 
+  int notificationID = NotificationID().getID_one(schedule, widget.recipeID);
+
   await flutterLocalNotifications.schedule(
-    widget.recipeID,
+    notificationID,
     widget.recipe,
     channelDescription,
-    scheduledNotificationDateTime,
+    schedule,
     platformChannelSpecifics
   );
+
+  return notificationID.toString();
 }
 
 Future _dailyNotification() async{
-  var scheduledNotificationTime = new Time(
+  var schedule = new Time(
     int.parse(selectedTime.toString().split(":")[0]),
     int.parse(selectedTime.toString().split(":")[1]),
     0
@@ -323,17 +333,21 @@ Future _dailyNotification() async{
 
   NotificationDetails platformChannelSpecifics = new NotificationDetails(android, iOS);
 
+  int notificationID = NotificationID().getID_daily(DateTime.now().day, schedule, widget.recipeID);
+
   await flutterLocalNotifications.showDailyAtTime(
-    widget.recipeID,
+    notificationID,
     widget.recipe,
     channelDescription,
-    scheduledNotificationTime,
+    schedule,
     platformChannelSpecifics
   );
+
+  return notificationID.toString();
 }
 
 Future _weeklyNotification() async{
-  var scheduledNotificationTime = new Time(
+  var schedule = new Time(
     int.parse(selectedTime.toString().split(":")[0]),
     int.parse(selectedTime.toString().split(":")[1]),
     0
@@ -342,15 +356,18 @@ Future _weeklyNotification() async{
   var iOS = new IOSNotificationDetails();
 
   NotificationDetails platformChannelSpecifics = new NotificationDetails(android, iOS);
+  int notificationID = NotificationID().getID_weekly(Day(selectedDay), schedule, widget.recipeID);
 
   await flutterLocalNotifications.showWeeklyAtDayAndTime(
-    widget.recipeID,
+    notificationID,
     widget.recipe,
     channelDescription,
     Day(selectedDay),
-    scheduledNotificationTime,
+    schedule,
     platformChannelSpecifics
   );
+
+  return notificationID.toString();
 }
 
   Future onSelectNotification(String payload) async {

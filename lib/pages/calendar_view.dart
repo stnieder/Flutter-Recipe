@@ -1,5 +1,6 @@
 import 'package:Time2Eat/DialogClasses/Dialogs.dart';
 import 'package:Time2Eat/database/database.dart';
+import 'package:Time2Eat/model/Termine.dart';
 import 'package:Time2Eat/recipe/recipebook.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -61,6 +62,7 @@ class _CalendarView extends State<CalendarView>{
                 if(DateTime.now().difference(dateTime) > Duration()) oldData = true;
                 else oldData = false;
                 selectedDate = _dateOnly(dateTime);
+                print(selectedDate);
               });
             }
           ),
@@ -107,7 +109,7 @@ class _CalendarView extends State<CalendarView>{
                                 title: Text(snapshot.data[index].name),
                               ),
                           ),
-                          onLongPress: (){
+                          onTap: (){
                             editNotification(snapshot.data[index].name);
                           },
                         );
@@ -164,12 +166,16 @@ class _CalendarView extends State<CalendarView>{
   }
 
   showNotificationDialog(String recipeName) async{
+    DBHelper db = new DBHelper();
+    await db.create();
+    int recipeID = await db.getRecipeID(recipeName);
     Dialogs dialog = new Dialogs();
-    await dialog.setNotification(context, recipeName);
-  }
-
-  showPositioned(){
-
+    var r_value = await dialog.setNotification(context, recipeName, recipeID);
+    if(r_value != null){
+      int terminID = await db.getTerminID(recipeName);
+      int updated = await db.updateNotification(terminID, r_value);
+    }
+    setState(() {});
   }
 
   editNotification(String recipe) async{

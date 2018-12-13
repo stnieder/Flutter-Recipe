@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:Time2Eat/DialogClasses/Dialogs.dart';
 import 'package:Time2Eat/interface/RadialMinutes.dart';
+import 'package:Time2Eat/JSON/recipes.dart';
 import 'package:Time2Eat/model/Recipe_Shopping.dart';
 import 'package:Time2Eat/model/Shopping.dart';
 import 'package:Time2Eat/model/Shopping_Title.dart';
@@ -11,6 +14,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart';
 import '../database/database.dart';
 import '../interface/GoogleColors.dart';
 import '../interface/HexToColor.dart';
@@ -32,7 +36,14 @@ class RecipeDetails extends StatefulWidget{
 class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
   ConvertColor convertColor = new ConvertColor();
-  
+
+
+  //Json export
+  File jsonFile;
+  Directory directory;
+  Map<String,dynamic> jsonMap;
+  String filename; //name created in initState((){})
+  bool fileExists = false;
 
   //Appbar
   GlobalKey<State<PopupMenuButton>> _buttonKey = new GlobalKey<State<PopupMenuButton>>();
@@ -43,12 +54,14 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
   String description;  
   int peopleDB;
   int currentPeople = 1;
+  int favorite;
   String imagePath;
   Color backgroundColor;
   bool titleVisibility = false;  
   Duration preperation_duration;
   Duration creation_duration;
   Duration resting_duration;
+  String timestamp;
 
   double preperation_percentage;
   double creation_percentage;
@@ -76,6 +89,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
     void initState() {
       super.initState();      
       recipeName = widget.recipeName;
+      filename = recipeName+".json";
 
       // Get all data of specific recipe
       getRecipeData();
@@ -95,6 +109,9 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       if(people == null) peopleDB = 1;
       else peopleDB = int.parse(people);
       imagePath = recipes[0].image;
+      favorite = recipes[0].favorite;
+      timestamp = recipes[0].timestamp;
+
       print("_--------------------IMAGEPATH: $imagePath");
       backgroundColor = convertColor.convertToColor(recipes[0].backgroundColor);        
 
@@ -155,7 +172,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                 builder: (BuildContext context, AsyncSnapshot snapshot){
                   if(snapshot.hasData){
 
-                    int favorite = snapshot.data[0].favorite;
+                    favorite = snapshot.data[0].favorite;
 
                     return Row(
                       children: <Widget>[
@@ -198,6 +215,18 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                                   ],
                                 ),
                                 value: "löschen",
+                              ),
+                              PopupMenuItem(
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(OMIcons.share, color: Colors.black54),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
+                                      child: Text("Exportieren"),
+                                    )
+                                  ],
+                                ),
+                                value: "exportieren",
                               )
                             ];
                           },
@@ -206,6 +235,8 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                               deleteRecipe();
                             } else if(value == "bearbeiten"){
                               editRecipe();
+                            } else if(value == "exportieren"){
+                              recipeToJson();
                             }
                           },
                         )
@@ -681,5 +712,73 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       gravity: toastGravity,
       timeInSecForIos: 2,
     );
+  }
+
+  void recipeToJson() async{
+    await getApplicationDocumentsDirectory().then((Directory dir){
+      directory = dir;
+      jsonFile = new File(directory.path+"/"+filename);
+      fileExists = jsonFile.existsSync();
+      if(fileExists){
+        this.setState((){
+          jsonMap = json.decode(jsonFile.readAsStringSync());
+        });
+      }
+    });
+    writeFile();
+  }
+
+  void writeFile(){
+    List<ZutatenModel> zutaten = [];
+    List<ZubereitungModel> zubereitungen = [];
+
+    for (var i = 0; i < nameList.length; i++) {
+      zutaten.add(
+        ZutatenModel(
+          nameList[i],
+          numberList[i].toString(),
+          measureList[i]
+        )
+      );
+    }
+
+    for (var i = 0; i < stepsList.length; i++) {
+      zubereitungen.add(
+        ZubereitungModel(
+          i.toString(),
+          stepsList[i]
+        )
+      );
+    }
+
+    RecipesModel recipe = new RecipesModel(
+      widget.recipeName, 
+      imagePath, 
+      description, 
+      favorite, 
+      timestamp, 
+      preperation_minutes.toString(), 
+      creation_minutes.toString(), 
+      resting_minutes.toString(), 
+      peopleDB.toString(), 
+      backgroundColor.toString(), 
+      zutaten, 
+      zubereitungen
+    );
+
+    final jsonString = recipe.toJson();
+
+    if(fileExists) {
+      Map<String,dynamic> fileContent = json.decode(jsonFile.readAsStringSync());
+      fileContent.addAll(jsonString);
+      jsonFile.writeAsStringSync(json.encode(fileContent));
+    } else {
+      jsonFile.createSync();
+      fileExists = true;
+      jsonFile.writeAsStringSync(json.encode(jsonString));
+    }
+
+    print(jsonFile.path);
+    showBottomSnack("Gespeichert nach ${jsonFile.path}", ToastGravity.BOTTOM);
   }
 }

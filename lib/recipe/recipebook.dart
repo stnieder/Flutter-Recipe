@@ -15,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import '../Constants.dart';
 import '../database/database.dart';
@@ -64,6 +65,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
   bool searchActive = false;
   TextEditingController searchController = new TextEditingController();
   bool searchPerformed = false;
+  bool _dialVisible = true;
   String searchCondition;
 
 
@@ -80,7 +82,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     "Einkaufsliste"
   ];
 
-  List<FloatingActionButton> _fabs = new List();
+  List _fabs = new List();
 
   
 
@@ -95,17 +97,43 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     Widget build(BuildContext context) {
       save_recipes = [];
       setPrefs();
-      _fabs = [
-          FloatingActionButton(
-            onPressed: (){
-              Navigator.push(
-                context, 
-                MaterialPageRoute(builder: (context)=> NewRecipe())
-              );
-            },
-            child: Icon(
-              Icons.add
-            ),
+      _fabs = [/*
+        Navigator.push(
+          context, 
+          MaterialPageRoute(builder: (context)=> NewRecipe())
+        );
+      */
+          SpeedDial(
+            animatedIcon: AnimatedIcons.menu_close,
+            animatedIconTheme: IconThemeData(size: 22.0),
+            curve: Curves.linear,
+            children: [
+              SpeedDialChild(
+                child: Icon(Icons.create, color: Colors.white),
+                backgroundColor: GoogleMaterialColors().getLightColor(0),
+                label: "Erstellen",
+                labelStyle: TextStyle(
+                  fontFamily: "Google-Sans",
+                  fontWeight: FontWeight.w500
+                ),
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => new NewRecipe())
+                  );
+                }
+              ),
+              SpeedDialChild(
+                child: Icon(Icons.save_alt, color: Colors.white),
+                backgroundColor: GoogleMaterialColors().getLightColor(5),
+                label: "Importieren",
+                labelStyle: TextStyle(
+                  fontFamily: "Google-Sans",
+                  fontWeight: FontWeight.w500
+                )
+              )
+            ],
+            visible: _dialVisible,            
           ),
           FloatingActionButton(
             //Add recipe
@@ -670,7 +698,8 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
   
       TermineDB termine = new TermineDB();
   
-      termine.termin = date;
+      termine.terminDate = date;
+      termine.notificationID = "0";
       termine = await db.insertTermine(termine);
   
       RecipeTermine recipeTermine = new RecipeTermine();

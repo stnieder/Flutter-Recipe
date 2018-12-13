@@ -34,6 +34,12 @@ class Recipe extends StatelessWidget {
         primarySwatch: Colors.blue,        
         iconTheme: IconThemeData(
           color: Colors.black54          
+        ),
+        textTheme: TextTheme(
+          body1: TextStyle(
+            color: Colors.black,
+            fontFamily: "Noto-Sans"
+          )
         )
       ),
       initialRoute: '/',

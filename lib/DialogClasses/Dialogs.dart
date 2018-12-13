@@ -250,14 +250,10 @@ class Dialogs{
     );
   }
 
-  setNotification(BuildContext context, String name) async{
-    DBHelper db = new DBHelper();
-    await db.create();
-    int recipeID = await db.getRecipeID(name);
-
+  setNotification(BuildContext context, String name, int id) async{
     return showDialog(
       context: context,
-      builder: (_) => NotificationDialog(name, recipeID)
+      builder: (_) => NotificationDialog(name, id)
     );
   }
 
@@ -345,10 +341,13 @@ class Dialogs{
       );
     }
 
-    return showRoundedBottomSheet(
+    return showDynamicBottomSheet(
       context: context,
-      height: 350.0,
-      child: Column(
+      minHeight: 150.0,
+      maxHeight: 350.0,
+      child: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Column(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 10.0),
@@ -374,7 +373,8 @@ class Dialogs{
             _item(context, choices[3], await checkListItems()),
             _item(context, choices[4], countItems > 0)
           ],
-        )
+        ),
+      )
     );
   }
 
@@ -496,6 +496,7 @@ class Dialogs{
     await _list();
     return showDynamicBottomSheet(
       minHeight: 200.0,
+      maxHeight: 200.0 + (items.length * 30.0),
       context: context,
       child: ShoppingMenu(
         title: _title("Ihre Listen"),

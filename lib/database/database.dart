@@ -78,7 +78,8 @@ class DBHelper{
         await txn.execute(
           "CREATE TABLE termine("+
             "id integer primary key AUTOINCREMENT, " +
-            "termin text " +
+            "terminDate text, " +            
+            "notificationID text "+
           ")"
         );
 
@@ -517,7 +518,7 @@ class DBHelper{
   Future<TermineDB> insertTermine(TermineDB termine) async{
     var count;
     if(termine.id == null) count = 0;
-    else count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM termine WHERE termin = ?", [termine.termin]));
+    else count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM termine WHERE terminDate = ?", [termine.terminDate]));
     print("Termine Count: "+count.toString());
     if(count == 0){
       termine.id = await _db.insert("termine", termine.toMap());
@@ -678,6 +679,18 @@ class DBHelper{
     return shopping;
   }
 
+  Future<int> getTerminID(String recipe) async{
+    String sql =
+      "SELECT termine.id "+
+      "FROM termine, recipeTermine, recipes "+
+      "WHERE termine.id = recipeTermine.idTermine "+
+      "AND recipeTermine.idRecipes = recipes.id "+
+      "AND recipes.name = ?";
+
+    int id = Sqflite.firstIntValue(await _db.rawQuery(sql, [recipe]));
+    return id;
+  }
+
   //Get checked shopping items
   Future<int> countCheckedItems(String order, String title) async{
     if(order == "abc") order = "item ASC";
@@ -699,7 +712,7 @@ class DBHelper{
 
   //Get Termine of specific date
   Future<List> getTermine(String date) async{
-    String sql = "SELECT termine.termin, recipes.name, recipes.image FROM termine, recipeTermine, recipes WHERE termine.termin = '"+date+"' AND termine.id = recipeTermine.idTermine AND recipeTermine.idRecipes = recipes.id";
+    String sql = "SELECT termine.terminDate, recipes.name, recipes.image FROM termine, recipeTermine, recipes WHERE termine.terminDate = '"+date+"' AND termine.id = recipeTermine.idTermine AND recipeTermine.idRecipes = recipes.id";
     List<Map> list = await _db.rawQuery(sql);
     List termine = new List();
     for (int i=0; i<list.length; i++) {
@@ -837,5 +850,12 @@ class DBHelper{
     return count;
   }
 
+
+  //Update notification id
+  Future<int> updateNotification(int terminID, String notificationID) async{
+    String sql = "UPDATE termine SET notificationID = ? WHERE termine.id = ?";
+    int count = await _db.rawUpdate(sql, [notificationID, terminID]);
+    return count;
+  }
 
 }
