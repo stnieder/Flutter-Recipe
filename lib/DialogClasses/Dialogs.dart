@@ -2,6 +2,7 @@ import 'package:Time2Eat/DialogClasses/CreateNewList.dart';
 import 'package:Time2Eat/DialogClasses/ListTitles.dart';
 import 'package:Time2Eat/DialogClasses/ShoppingMenu.dart';
 import 'package:Time2Eat/database/database.dart';
+import 'package:Time2Eat/interface/DynamicBottomSheet.dart';
 import 'package:Time2Eat/interface/GoogleColors.dart';
 import 'package:Time2Eat/interface/MyListTile.dart';
 import 'package:Time2Eat/interface/NotificationDialog.dart';
@@ -493,8 +494,8 @@ class Dialogs{
     }
 
     await _list();
-    return showRoundedBottomSheet(
-      height: 330.0,
+    return showDynamicBottomSheet(
+      minHeight: 200.0,
       context: context,
       child: ShoppingMenu(
         title: _title("Ihre Listen"),

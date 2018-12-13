@@ -145,11 +145,11 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
         body: pageView(_currentTab),
         bottomNavigationBar: BottomNavigationBar(
             onTap: onTabTapped,
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _currentTab,
-            fixedColor: Colors.blue[600],          
+            type: BottomNavigationBarType.fixed,            
+            currentIndex: _currentTab,            
             items: [
-              BottomNavigationBarItem(              
+              BottomNavigationBarItem( 
+                activeIcon: Icon(Icons.collections_bookmark, color: Colors.blue[600]),             
                 icon: Icon(OMIcons.collectionsBookmark),
                 title: const Text(
                   'Rezeptbuch',
@@ -158,6 +158,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
                 )
               ),
               BottomNavigationBarItem(
+                activeIcon: Icon(Icons.calendar_today, color: Colors.blue[600]),
                 icon: Icon(OMIcons.calendarToday),
                 title: const Text(
                   'Kalender',
@@ -166,6 +167,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
                 )
               ),
               BottomNavigationBarItem(
+                activeIcon: Icon(Icons.shopping_basket, color: Colors.blue[600]),
                 icon: Icon(OMIcons.shoppingBasket),
                 title: Text(
                   _tabTitle[2],
