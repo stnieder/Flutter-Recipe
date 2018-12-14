@@ -24,7 +24,6 @@ class _RoundedBackgroundState extends State<RoundedBackground> {
 
   List<String> sheetText = [
     "Termin löschen",
-    "Termin bearbeiten",
     "Benachrichtigung hinzufügen"
   ];
 
@@ -87,7 +86,7 @@ class _RoundedBackgroundState extends State<RoundedBackground> {
           String r_value = "";
           if(widget.text == sheetText[0]){
             r_value = "delete";
-          } else if(widget.text == sheetText[2]){
+          } else if(widget.text == sheetText[1]){
             r_value = "notification";
           } else {
             return;

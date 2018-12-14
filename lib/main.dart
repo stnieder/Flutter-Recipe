@@ -3,6 +3,8 @@ import 'package:Time2Eat/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:simple_permissions/simple_permissions.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,7 +25,7 @@ class Recipe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {  
-    //changeStatusColor(); 
+    changeStatusColor(); 
     setPrefs();
     return new MaterialApp(    
       builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child),  
@@ -50,6 +52,15 @@ class Recipe extends StatelessWidget {
     );
   }
 
+  showBottomSnack(String value, ToastGravity toastGravity){
+    Fluttertoast.showToast(
+      msg: value,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: toastGravity,
+      timeInSecForIos: 2,            
+    );
+  }
+
   setPrefs() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     DBHelper db = new DBHelper();
@@ -58,11 +69,18 @@ class Recipe extends StatelessWidget {
     if(prefs.getString("shopping") == null) await prefs.setString("currentList", title[0].titleName);    
   }
 
+  getPermission() async{
+    var permissions = await SimplePermissions.requestPermission(Permission. WriteExternalStorage);
+    if(permissions == PermissionStatus.denied || permissions == PermissionStatus.deniedNeverAsk){
+      showBottomSnack("Ohne diese Berechtigung können sie keine Rezepte teilen.", ToastGravity.CENTER);
+    }
+  }
+
   changeStatusColor() async{
     try {
       await FlutterStatusbarcolor.setStatusBarColor(Colors.white);
-      FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-      FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
+      FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+      FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
     } on PlatformException catch (e) {
       debugPrint(e.toString());
     }

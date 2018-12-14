@@ -1,35 +1,40 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+List<String> notificationIntervalle = [
+  "onetime",
+  "daily",
+  "weekly"
+];
+
 class NotificationID{
 
   NotificationID();
 
-  getID_one(DateTime scheduled, int recipeID){
+  int getID_one(DateTime scheduled, int recipeID){
     String notification_id = 
-      scheduled.year.toString() + scheduled.month.toString() + scheduled.day.toString() +
-      scheduled.hour.toString() + scheduled.minute.toString() + scheduled.second.toString();
+      scheduled.month.toString() + scheduled.day.toString() +
+      scheduled.hour.toString() + scheduled.minute.toString() +
+      recipeID.toString();
 
-    notification_id += recipeID.toString();
+    print("NotificationID: $notification_id");
 
     return int.parse(notification_id);
   }
 
-  getID_daily(int day, Time schedule, int recipeID){
+  int getID_daily(int day, Time schedule, int recipeID){
     String notification_id = 
-      day.toString() + 
-      schedule.hour.toString() + schedule.minute.toString() + schedule.second.toString();
-
-    notification_id += recipeID.toString();
+      DateTime.now().month.toString() + day.toString() + 
+      schedule.hour.toString() + schedule.minute.toString() + 
+      recipeID.toString();
 
     return int.parse(notification_id);
   }
 
-  getID_weekly(Day selected, Time schedule, int recipeID){
+  int getID_weekly(Day selected, Time schedule, int recipeID){
     String notification_id = 
-      selected.value.toString() + 
-      schedule.hour.toString() + schedule.minute.toString() + schedule.second.toString();
-
-    notification_id += recipeID.toString();
+      DateTime.now().month.toString() + selected.value.toString() + 
+      schedule.hour.toString() + schedule.minute.toString() +
+      recipeID.toString();
 
     return int.parse(notification_id);
   }

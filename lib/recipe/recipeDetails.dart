@@ -15,6 +15,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:simple_permissions/simple_permissions.dart';
 import '../database/database.dart';
 import '../interface/GoogleColors.dart';
 import '../interface/HexToColor.dart';
@@ -85,6 +86,8 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
 
   Widget titleImage;
 
+  bool permissions = false;
+
   @override
     void initState() {
       super.initState();      
@@ -112,7 +115,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       favorite = recipes[0].favorite;
       timestamp = recipes[0].timestamp;
 
-      print("_--------------------IMAGEPATH: $imagePath");
+
       backgroundColor = convertColor.convertToColor(recipes[0].backgroundColor);        
 
       setState(() {
@@ -153,11 +156,6 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
           );
         }
       });
-    }
-
-  @override
-    void setState(fn) {
-      super.setState(fn);
     }
 
   @override
@@ -236,7 +234,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                             } else if(value == "bearbeiten"){
                               editRecipe();
                             } else if(value == "exportieren"){
-                              recipeToJson();
+                              getPermission();
                             }
                           },
                         )
@@ -551,6 +549,13 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       ),
       
     );
+  }
+
+  getPermission() async{
+    var permissions = await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
+
+    if(permissions) recipeToJson();
+    else Dialogs().authorizeWriting(context);
   }
 
   _radialText(String value){

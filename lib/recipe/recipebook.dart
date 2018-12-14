@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:Time2Eat/DialogClasses/Dialogs.dart';
+import 'package:Time2Eat/NotificationID.dart';
 import 'package:Time2Eat/Termine/RecipeSelection.dart';
 import 'package:Time2Eat/interface/DatePicker.dart';
 import 'package:Time2Eat/model/ListTitle.dart';
@@ -84,29 +87,42 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
 
   List _fabs = new List();
 
-  
+  AnimationController animationController;
+  Animation colorAnimation;
+
 
   @override
     void initState() {
       super.initState();
       dbHelper.create(); 
-      setPrefs();     
+      setPrefs();  
+
+      animationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 200))
+        ..addStatusListener((status){})..addListener(()=>setState((){}));
+
+      colorAnimation = new ColorTween(begin: Color(0xFF4285f4), end: Color(0xFFea4335))
+        .animate(CurvedAnimation(curve: Curves.fastOutSlowIn, parent: animationController));
     }
       
     @override
     Widget build(BuildContext context) {
       save_recipes = [];
       setPrefs();
-      _fabs = [/*
-        Navigator.push(
-          context, 
-          MaterialPageRoute(builder: (context)=> NewRecipe())
-        );
-      */
+      _fabs = [
           SpeedDial(
-            animatedIcon: AnimatedIcons.menu_close,
+            child: new AnimatedBuilder(
+              animation: animationController,              
+              child: Icon(Icons.add, color: Colors.white),
+              builder: (BuildContext context, Widget _widget) {
+                return new Transform.rotate(
+                  angle: animationController.value * 0.75,
+                  child: _widget,
+                );
+              },
+            ),           
             animatedIconTheme: IconThemeData(size: 22.0),
-            curve: Curves.linear,
+            curve: Curves.fastOutSlowIn,
+            backgroundColor: colorAnimation.value,
             children: [
               SpeedDialChild(
                 child: Icon(Icons.create, color: Colors.white),
@@ -133,9 +149,15 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
                 )
               )
             ],
+            onOpen: (){
+              animationController.forward();
+            },
+            onClose: (){
+              animationController.reverse();
+            },
             visible: _dialVisible,            
           ),
-          FloatingActionButton(
+          FloatingActionButton(            
             //Add recipe
             onPressed: (){
               openTermin(context);
@@ -406,7 +428,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     Widget defaultAppBar(){ 
       return AppBar(
         actions: actionList(_currentTab),
-        backgroundColor: Color(0xFFfafafa),
+        backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0.0,
         leading: leadingWidget(_currentTab),
@@ -423,7 +445,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
   
     Widget searchAppBar(){
       return AppBar(
-        backgroundColor: Color(0xFFfafafa),
+        backgroundColor: Colors.white,
         elevation: 6.0,
         leading: IconButton(
           icon: Icon(
@@ -700,12 +722,14 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
   
       termine.terminDate = date;
       termine.notificationID = "0";
+      termine.terminIntervall = await db.getIntervallID("onetime");
       termine = await db.insertTermine(termine);
   
-      RecipeTermine recipeTermine = new RecipeTermine();
-  
+      RecipeTermine recipeTermine = new RecipeTermine();  
       recipeTermine.idRecipes = await fetchSpecRecipe(recipe);
       recipeTermine.idTermine = termine.id;
+      recipeTermine.intervallTyp = await db.getIntervallID("onetime");
+      recipeTermine.createdTimestamp = DateTime.now().toString();
       recipeTermine = await db.insertRecipeTermine(recipeTermine);
     }
   
@@ -829,9 +853,11 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     if(delete == "löschen"){
       int deleted;
       for (var i = 0; i < recipeNames.length; i++) {
+        /*
         int recipeID = await dbHelper.getRecipeID(recipeNames[i]);
         deleted = await dbHelper.deleteRecipe(recipeNames[i]);    
         await notificationsPlugin.cancel(recipeID);
+        */
       }
       if(recipeNames.length == 1) showBottomSnack(recipeNames[0]+" wurde gelöscht", ToastGravity.BOTTOM);
       else if(recipeNames.length > 1) showBottomSnack("$deleted Rezepte wurden gelöscht", ToastGravity.BOTTOM);

@@ -7,6 +7,7 @@ import 'package:Time2Eat/model/Recipe_Termine.dart';
 import 'package:Time2Eat/model/Shopping.dart';
 import 'package:Time2Eat/model/Shopping_Title.dart';
 import 'package:Time2Eat/model/Termine.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/Recipe_Steps.dart';
@@ -79,7 +80,8 @@ class DBHelper{
           "CREATE TABLE termine("+
             "id integer primary key AUTOINCREMENT, " +
             "terminDate text, " +            
-            "notificationID text "+
+            "notificationID text, " + 
+            "terminIntervall real " + //id von "intervallTyp"
           ")"
         );
 
@@ -101,6 +103,13 @@ class DBHelper{
           "CREATE TABLE listTitles("+
             "id integer primary key AUTOINCREMENT, "+
             "titleName varchar "+
+          ")"
+        );
+
+        await txn.execute(
+          "CREATE TABLE intervallTyp("+
+            "id integer primary key AUTOINCREMENT, "+
+            "intervallName varchar "+
           ")"
         );
 
@@ -128,7 +137,9 @@ class DBHelper{
           "CREATE TABLE recipeTermine(" +
             "id integer primary key AUTOINCREMENT, "+
             "idRecipes real, "+
-            "idTermine real "+
+            "idTermine real, "+
+            "intervallTyp real, " + //id von "intervallTyp"
+            "createTimestamp real " + //when the termin was created
           ")"
         );
 
@@ -151,11 +162,25 @@ class DBHelper{
         );
 
         //Insert first default shopping table
-        int insert = await txn.rawInsert(
+        int insertshopping = await txn.rawInsert(
           "INSERT INTO listTitles(titleName) VALUES(?)",
           ["Einkaufsliste"]
         );
-        print("inserted1:$insert");
+
+        await txn.rawInsert(
+          "INSERT INTO intervallTyp(intervallName) VALUES(?)",
+          ["onetime"]
+        );
+
+        await txn.rawInsert(
+          "INSERT INTO intervallTyp(intervallName) VALUES(?)",
+          ["daily"]
+        );
+
+        await txn.rawInsert(
+          "INSERT INTO intervallTyp(intervallName) VALUES(?)",
+          ["weekly"]
+        );
 
     });
     print("Created all tables");
@@ -231,7 +256,7 @@ class DBHelper{
               "WHERE shopping.id = shoppingTitles.idShopping "+
               "AND shoppingTitles.idTitles = listTitles.id "+
               "AND shopping.checked = 1 "+
-              "AND listTitles.titleName = ?"+
+              "AND listTitles.titleName = ? "+
             ")";
 
       await txn.rawDelete(sql, [listName]);
@@ -252,6 +277,67 @@ class DBHelper{
           await txn.rawDelete(sql, [items[i]]);
         }
       }
+    });
+  }
+
+  //Delete termin
+  Future deleteTermin(int recipeID, String date, int intervallID, String timestamp) async{
+    String sql;
+
+    await _db.transaction((txn) async{
+
+      sql = 
+        "SELECT termine.id as termin_id "+
+        "FROM recipeTermine, recipes, termine "+
+        "WHERE recipes.id = recipeTermine.idRecipes "+
+        "AND recipeTermine.idTermine = termine.id "+
+        "AND termine.terminDate = ? " +
+        "AND termine.terminIntervall = ? "+
+        "AND termine.terminIntervall = recipeTermine.intervallTyp " + 
+        "AND recipes.id = ? " +
+        "AND recipeTermine.createTimestamp = ?";
+
+      List<Map> list = await txn.rawQuery(sql, [date, intervallID, recipeID, timestamp]);
+      List<String> items = new List();
+      for (var i = 0; i < list.length; i++) {
+        items.add(list[i]["termin_id"].toString());
+      }
+
+      sql = 
+        "SELECT termine.notificationID as notificationID "+
+        "FROM termine WHERE id = ?";
+      FlutterLocalNotificationsPlugin localNotification = FlutterLocalNotificationsPlugin();
+      List<Map> notifications = new List();
+      String notificationID;
+
+      for (var i = 0; i < items.length; i++) {
+        notifications = await txn.rawQuery(sql, [items[i]]);
+        notificationID = notifications[i]["notificationID"];
+        
+        localNotification.cancel(int.parse(notificationID));
+      }
+
+
+      sql = 
+        "DELETE FROM recipeTermine "+
+        "WHERE idTermine IN ("+
+          "SELECT recipeTermine.idTermine "+
+          "FROM recipeTermine, recipes, termine "+
+          "WHERE  recipes.id = recipeTermine.idRecipes "+
+          "AND recipeTermine.idTermine = termine.id "+
+          "AND termine.terminDate = ? " +
+          "AND termine.terminIntervall = ? "+
+          "AND recipeTermine.intervallTyp = ? "+
+          "AND recipes.id = ? " + 
+          "AND recipeTermine.createTimestamp = ?"
+        ")";
+      await txn.rawDelete(sql, [date, intervallID, intervallID, recipeID, timestamp]);
+
+
+      sql = "DELETE FROM termine WHERE id = ?";
+      for (var i = 0; i < items.length; i++) {
+        await txn.rawDelete(sql, [items[i]]);
+      }          
     });
   }
 
@@ -437,12 +523,12 @@ class DBHelper{
     
     String sql = 
       "UPDATE shopping "+
-      "SET number = number + ?"+
+      "SET number = number + ? "+
       "WHERE id = ( "+
         "SELECT shoppingTitles.idShopping "+
         "FROM shoppingTitles, listTitles "+
         "WHERE shoppingTitles.idTitles = listTitles.id "+
-        "AND listTitles.titleName = ?"+
+        "AND listTitles.titleName = ? "+
       ") "+
       "AND item = ?";
 
@@ -468,12 +554,12 @@ class DBHelper{
 
     String updateSQL = 
       "UPDATE shopping "+
-      "SET number = number + ?"+
+      "SET number = number + ? "+
       "WHERE id = ( "+
         "SELECT shoppingTitles.idShopping "+
         "FROM shoppingTitles, listTitles "+
         "WHERE shoppingTitles.idTitles = listTitles.id "+
-        "AND listTitles.titleName = ?"+
+        "AND listTitles.titleName = ? "+
       ") "+
       "AND item = ?";
 
@@ -482,7 +568,7 @@ class DBHelper{
         "item, measure, number, checked, timestamp "+
       ") "+
       "VALUES ("+
-        "?, ?, ?, ?, ?"+
+        "?, ?, ?, ?, ? "+
       ")";
     
     if(count == 0){
@@ -501,7 +587,7 @@ class DBHelper{
       await _db.rawQuery(
         "SELECT COUNT(*) "+
         "FROM shopping, shoppingTitles, listTitles "+
-        "WHERE shopping.item = ?"+
+        "WHERE shopping.item = ? "+
         "AND shopping.id = shoppingTitles.idShopping "+
         "AND shoppingTitles.idTitles = listTitles.id "+
         "AND listTitles.titleName = ? ",
@@ -679,15 +765,19 @@ class DBHelper{
     return shopping;
   }
 
-  Future<int> getTerminID(String recipe) async{
+  Future<int> getTerminID(String recipe, int intervallID, String timestamp, String date) async{
     String sql =
       "SELECT termine.id "+
       "FROM termine, recipeTermine, recipes "+
       "WHERE termine.id = recipeTermine.idTermine "+
       "AND recipeTermine.idRecipes = recipes.id "+
-      "AND recipes.name = ?";
+      "AND recipes.name = ? "+
+      "AND recipeTermine.intervallTyp = ? "+
+      "AND recipeTermine.createTimestamp = ? "
+      "AND termine.terminIntervall = ? "+
+      "AND termine.terminDate = ? ";
 
-    int id = Sqflite.firstIntValue(await _db.rawQuery(sql, [recipe]));
+    int id = Sqflite.firstIntValue(await _db.rawQuery(sql, [recipe, intervallID, timestamp, intervallID, date]));
     return id;
   }
 
@@ -712,11 +802,11 @@ class DBHelper{
 
   //Get Termine of specific date
   Future<List> getTermine(String date) async{
-    String sql = "SELECT termine.terminDate, recipes.name, recipes.image FROM termine, recipeTermine, recipes WHERE termine.terminDate = '"+date+"' AND termine.id = recipeTermine.idTermine AND recipeTermine.idRecipes = recipes.id";
+    String sql = "SELECT recipes.id as id, termine.terminDate as termin, recipes.name  as name, recipes.image  as image, recipeTermine.createTimestamp as timestamp FROM termine, recipeTermine, recipes WHERE termine.terminDate = '"+date+"' AND termine.id = recipeTermine.idTermine AND recipeTermine.idRecipes = recipes.id";
     List<Map> list = await _db.rawQuery(sql);
     List termine = new List();
     for (int i=0; i<list.length; i++) {
-      termine.add(new RecipeTerminCombi(list[i]["termin"], list[i]["name"], list[i]["image"]));
+      termine.add(new RecipeTerminCombi(list[i]["id"].toString(), list[i]["termin"], list[i]["name"], list[i]["image"], list[i]["timestamp"]));
     }
     print("TerminAnzahl: "+termine.length.toString());
     return termine;
@@ -832,6 +922,31 @@ class DBHelper{
     return id;
   }
 
+  //Get intervall ID
+  Future<int> getIntervallID(String interval) async{
+    String sql = "SELECT id FROM intervallTyp WHERE intervallName = ?";
+    int id = Sqflite.firstIntValue(await _db.rawQuery(sql,[interval]));
+    return id;
+  }
+
+  //Get intervall
+  Future<int> getIntervall(int recipeID, String date, String timestamp) async{
+    String sql = 
+      "SELECT recipeTermine.intervallTyp as intervall_id "+ 
+      "FROM recipeTermine, recipes, termine "+
+      "WHERE recipeTermine.idRecipes = recipes.id "+
+      "AND recipeTermine.idTermine = termine.id " + 
+      "AND recipes.id = ? " +
+      "AND termine.terminDate = ? " +
+      "AND recipeTermine.createTimestamp = ?";
+
+    List<Map> list = await _db.rawQuery(sql, [recipeID, date, timestamp]);
+    int id = list[0]["intervall_id"].round();
+
+    //int id = Sqflite.firstIntValue(await _db.rawQuery(sql, [recipeID, date, timestamp]));
+    return id;
+  }
+
 
 
   //Update favorite recipe
@@ -852,10 +967,32 @@ class DBHelper{
 
 
   //Update notification id
-  Future<int> updateNotification(int terminID, String notificationID) async{
-    String sql = "UPDATE termine SET notificationID = ? WHERE termine.id = ?";
-    int count = await _db.rawUpdate(sql, [notificationID, terminID]);
-    return count;
+  Future<int> updateNotification(int terminID, int notificationID, int intervallID, String timestamp) async{
+    String sql_one = 
+      "UPDATE termine "+
+      "SET notificationID = ?, terminIntervall = ? "+
+      "WHERE id = ("+
+        "SELECT idTermine FROM recipeTermine "+
+        "WHERE createTimestamp = ?"+
+      ") "+
+      "AND id = ?";
+
+    String sql_two = 
+      "UPDATE recipeTermine "+
+      "SET intervallTyp = ? "+
+      "WHERE id = ("+
+        "SELECT id FROM termine "+
+        "WHERE id = ? "+
+      ") "+
+      "AND createTimestamp = ?";
+
+    await _db.transaction((txn) async{
+      await txn.rawQuery(sql_one, [notificationID, intervallID, timestamp, terminID]);
+
+      await txn.rawQuery(sql_two, [intervallID, terminID, timestamp]);
+    });
+
+    return 1;
   }
 
 }

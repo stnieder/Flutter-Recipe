@@ -66,6 +66,9 @@ class _NotificationDialog extends State<NotificationDialog>{
     "Täglich",
     "Wöchentlich"
   ];
+  final List<String> db_intervalle = [
+    "onetime", "daily", "weekly"
+  ];
   final List<String> intervallHint = [
     "Einmaliger Termin",
     "wird täglich wiederholt ",
@@ -228,7 +231,9 @@ class _NotificationDialog extends State<NotificationDialog>{
 
   createNotification() async{
     int id = await setNotficationTime(selectedIntervall);
-    Navigator.pop(context, id);
+    int index = intervalle.indexOf(selectedIntervall);
+    String r_interval = db_intervalle[index];
+    Navigator.pop(context, [id, r_interval]);
   }
 
   convertDate(String value) async{
@@ -268,7 +273,7 @@ class _NotificationDialog extends State<NotificationDialog>{
       );
       if(pickedTime != null){
         selectedTime = pickedTime.toString().split("(")[1].split(")")[0].toString();
-      }
+      } 
     }    
     notificationTime = TimeOfDay(
       hour: int.parse(selectedTime.toString().split(":")[0]),
@@ -284,7 +289,7 @@ class _NotificationDialog extends State<NotificationDialog>{
   }
 
   setNotficationTime(String interval) async{
-    String r_value = "";
+    int r_value;
     if(interval == intervalle[0]){
       r_value = await _oneTimeNotification();
     } else if(interval == intervalle[1]){
@@ -319,7 +324,7 @@ Future _oneTimeNotification() async {
     platformChannelSpecifics
   );
 
-  return notificationID.toString();
+  return notificationID;
 }
 
 Future _dailyNotification() async{
@@ -343,7 +348,7 @@ Future _dailyNotification() async{
     platformChannelSpecifics
   );
 
-  return notificationID.toString();
+  return notificationID;
 }
 
 Future _weeklyNotification() async{
@@ -367,7 +372,7 @@ Future _weeklyNotification() async{
     platformChannelSpecifics
   );
 
-  return notificationID.toString();
+  return notificationID;
 }
 
   Future onSelectNotification(String payload) async {

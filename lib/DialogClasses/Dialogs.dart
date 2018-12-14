@@ -14,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_permissions/simple_permissions.dart';
 
 import '../interface/CustomShowDialog.dart';
 import 'DeleteNotification.dart';
@@ -899,7 +900,7 @@ class Dialogs{
                         background: notificationBackground, 
                         textColor: notificationColor,
                         icon: sheetIcon[1],
-                      ),
+                      )
                     ],
                   ),
                 ),                            
@@ -908,6 +909,86 @@ class Dialogs{
           ),
         ],
       )
+    );
+  }
+
+  authorizeWriting(BuildContext context) async{
+
+    _request() async{
+      await SimplePermissions.requestPermission(Permission. WriteExternalStorage);
+      Navigator.pop(context);      
+    }
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return CustomAlertDialog(
+          content: Container(
+            height: 180.0,
+            width: 280.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(5.0))
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Container(
+                  child: Center(
+                    child: Icon(OMIcons.folder, color: Colors.white, size: 36.0),                    
+                  ),
+                  decoration: BoxDecoration(
+                    color: GoogleMaterialColors().primaryColor().withOpacity(0.6)
+                  ),
+                  height: 110.0,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0, bottom: 20.0),
+                  child: Container(
+                    child: Text(
+                      "Um Rezepte teilen zu können, erlaube Time2Eat den Zugriff auf deinen Speicher.",
+                      textAlign: TextAlign.justify,
+                    ),
+                    height: 30.0,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                )
+              ],
+            ),
+          ),
+          contentPadding: EdgeInsets.only(bottom: 0.0),
+          actions: <Widget>[
+            new FlatButton(
+              child: Text(
+                "Jetzt nicht",
+                style: TextStyle(
+                  color: GoogleMaterialColors().primaryColor()
+                ),
+              ),
+              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+              onPressed: (){
+                Navigator.pop(context);
+              },              
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              splashColor: Colors.transparent,
+            ),
+            new FlatButton(
+              child: Text(
+                "Weiter",
+                style: TextStyle(
+                  color: GoogleMaterialColors().primaryColor()
+                ),
+              ),
+              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+              onPressed: (){
+                _request();
+              },              
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              splashColor: Colors.transparent,
+            )
+          ],
+        );
+      }
     );
   }
 

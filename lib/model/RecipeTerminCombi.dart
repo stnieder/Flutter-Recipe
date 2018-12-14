@@ -1,5 +1,5 @@
 class RecipeTerminCombi{
-  String termin, name, image;
+  String id, termin, name, image, timestamp;
 
-  RecipeTerminCombi(this.termin, this.name, this.image);
+  RecipeTerminCombi(this.id, this.termin, this.name, this.image, this.timestamp);
 }

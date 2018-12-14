@@ -1,7 +1,6 @@
 import 'package:Time2Eat/DialogClasses/Dialogs.dart';
 import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/model/Termine.dart';
-import 'package:Time2Eat/recipe/recipebook.dart';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -37,10 +36,18 @@ class _CalendarView extends State<CalendarView>{
   final _key = GlobalKey();
 
   String selectedDate;
+  int return_intervallID;
   bool oldData;
 
   bool calendarExpandable = true;
   bool calendarExpanded;
+
+  List<String> editList = new List();
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey();
+  AnimatedList _animatedList;
+  List<String> names = new List();
+  List<String> ids = new List();
+  List<String> timestamps = new List();
 
   @override
   void initState() {
@@ -62,7 +69,7 @@ class _CalendarView extends State<CalendarView>{
                 if(DateTime.now().difference(dateTime) > Duration()) oldData = true;
                 else oldData = false;
                 selectedDate = _dateOnly(dateTime);
-                print(selectedDate);
+                editList = [];
               });
             }
           ),
@@ -72,50 +79,25 @@ class _CalendarView extends State<CalendarView>{
             builder: (context, snapshot){
               if(snapshot.hasData){
                 if(snapshot.data.length > 0){
+                  
+                  for (var i = 0; i < snapshot.data.length; i++) {
+                    ids.add(snapshot.data[i].id);
+                    names.add(snapshot.data[i].name);
+                    timestamps.add(snapshot.data[i].timestamp);
+                  }
+
                   return Flexible(
-                    child: ListView.builder(
+                    child: _createList(snapshot)
+                    
+                    /*ListView.builder(
                       addAutomaticKeepAlives: true,
                       itemBuilder: (BuildContext context, int index){
-                        return new GestureDetector(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border(bottom: BorderSide(color:  Colors.black12))
-                            ),
-                            child: ListTile(
-                                leading: CircleAvatar(
-                                  child: (snapshot.data[index].image != "no image"
-                                      ? Container(
-                                    width: 40.0,
-                                    height: 40.0,
-                                    decoration: new BoxDecoration(
-                                      image: new DecorationImage(
-                                        colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-                                        image: AssetImage(snapshot.data[index].image),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
-                                    ),
-                                  )
-                                      : Text(
-                                    snapshot.data[index].name[0].toUpperCase(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 21.0,
-                                        fontWeight: FontWeight.w400
-                                    ),
-                                  )
-                                  ),
-                                ),
-                                title: Text(snapshot.data[index].name),
-                              ),
-                          ),
-                          onTap: (){
-                            editNotification(snapshot.data[index].name);
-                          },
-                        );
+                        if(!editList.contains(snapshot.data[index].name)){
+                          return _gestureDetectorChild(snapshot.data[index].name, snapshot.data[index].image);
+                        } 
                       },
                       itemCount: snapshot.data.length,
-                    ),
+                    )*/,
                   );
                 } else {
 
@@ -157,6 +139,67 @@ class _CalendarView extends State<CalendarView>{
     );
   }
 
+  _createList(AsyncSnapshot snapshot){
+
+    _animatedList = new AnimatedList(
+      key: _listKey,
+      initialItemCount: names.length,
+      itemBuilder: (BuildContext context, int index, Animation<double> animation){
+        return _gestureDetectorChild(
+          snapshot.data[index].name,
+          snapshot.data[index].image,
+          index,
+          animation
+        );
+      },
+    );
+
+    return _animatedList;
+  }
+
+  _gestureDetectorChild(String name, String image, int index, Animation<double> animation){
+    return FadeTransition(
+      opacity: animation,
+      child: new GestureDetector(
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color:  Colors.black12))
+          ),
+          child: ListTile(
+              leading: CircleAvatar(
+                child: (image != "no image"
+                    ? Container(
+                  width: 40.0,
+                  height: 40.0,
+                  decoration: new BoxDecoration(
+                    image: new DecorationImage(
+                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                      image: AssetImage(image),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                  ),
+                )
+                    : Text(
+                  name[0].toUpperCase(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 21.0,
+                      fontWeight: FontWeight.w400
+                  ),
+                )
+                ),
+              ),
+              title: Text(name),
+            ),
+        ),
+        onTap: (){
+          editNotification(name, image, index);
+        },
+      ),
+    );
+  }
+
 
   _dateOnly(DateTime date){
     DateTime returnDate = DateTime(date.year, date.month, date.day);
@@ -170,28 +213,63 @@ class _CalendarView extends State<CalendarView>{
     await db.create();
     int recipeID = await db.getRecipeID(recipeName);
     Dialogs dialog = new Dialogs();
-    var r_value = await dialog.setNotification(context, recipeName, recipeID);
+    List r_value = await dialog.setNotification(context, recipeName, recipeID);
     if(r_value != null){
-      int terminID = await db.getTerminID(recipeName);
-      int updated = await db.updateNotification(terminID, r_value);
+      int notificationID = r_value[0];
+      String intervall = r_value[1];
+      String timestamp = timestamps[names.indexOf(recipeName)];
+      return_intervallID = await db.getIntervallID(intervall);
+      int terminID = await db.getTerminID(recipeName, return_intervallID,timestamp, selectedDate);      
+      await db.updateNotification(terminID, notificationID, return_intervallID, timestamp);
     }
     setState(() {});
   }
 
-  editNotification(String recipe) async{
+  editNotification(String recipe, String image, int index) async{
     var edit = await Dialogs().editTermin(context);
+    bool cancelFuture = false;
     if(edit == "delete"){
       SnackBar snackBar = SnackBar(
+        duration: Duration(seconds: 5),
         action: SnackBarAction(          
           label: "Rückgängig machen",
           onPressed: (){
-            print("rückgängig!");
+            setState(() {
+              editList.remove(recipe);
+              _listKey.currentState.insertItem(
+                index
+              );
+              cancelFuture = true;
+            });
           },
           textColor: GoogleMaterialColors().getLightColor(5),          
         ),
         content: Text("Termin gelöscht"),
       );
-      Scaffold.of(context).showSnackBar(snackBar);
+      setState(() {
+        editList.add(recipe);
+        _listKey.currentState.removeItem(
+          index, 
+          (BuildContext context, Animation<double> animation){
+            return FadeTransition(
+              opacity: animation,
+              child: _gestureDetectorChild(recipe, image, index, animation),
+            );
+          }
+        );
+      });
+      Scaffold.of(context).showSnackBar(snackBar);  
+      Future.delayed(Duration(seconds: 5), () async{
+        if(!cancelFuture){
+          DBHelper db = new DBHelper();
+          await db.create();
+          int recipeID = int.parse(ids[names.indexOf(recipe)]);
+          String timestamp = timestamps[names.indexOf(recipe)];
+
+          int intervallID = await db.getIntervall(recipeID, selectedDate, timestamp);
+          await db.deleteTermin(recipeID, selectedDate, intervallID, timestamp);
+        }
+      });
     } else if(edit == "notification"){
       showNotificationDialog(recipe);
     }
