@@ -5,6 +5,7 @@ import 'CircularImage.dart';
 
 class SelectedRecipe extends StatefulWidget {
   final bool hasImage;
+  final bool hasSubTitle;
   final Color backgroundColor;
   final AssetImage backgroundImage;
   final String label;
@@ -18,6 +19,7 @@ class SelectedRecipe extends StatefulWidget {
       this.backgroundColor,
       this.backgroundImage,
       @required this.label,
+      @required this.hasSubTitle,
       @required this.littleIcon,
       this.height,
       this.width
@@ -66,7 +68,7 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
             width: 40.0,
             height: 40.0,
           ),
-          (widget.label == ""
+          (widget.hasSubTitle == false
             ? Container()
             : new Text(
                 widget.label,

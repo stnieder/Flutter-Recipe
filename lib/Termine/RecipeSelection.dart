@@ -125,7 +125,10 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
                             },
                             child: ListTile(
                                 leading: (name.contains(snapshot.data[index].name)
-                                  ? returnCheckedRecipes("", convert.convertToColor(snapshot.data[index].backgroundColor), snapshot.data[index].image)
+                                  ? Padding(
+                                    padding: EdgeInsets.only(top: 10.0),
+                                    child: returnCheckedRecipes(snapshot.data[index].name, convert.convertToColor(snapshot.data[index].backgroundColor), snapshot.data[index].image),
+                                  )
                                   : (snapshot.data[index].image != "no image"
                                       ? Container(
                                     width: 40.0,
@@ -389,7 +392,7 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
     return GestureDetector(
       child: SelectedRecipe(
           hasImage: (imagePath != "no image"),
-          backgroundImage: (imagePath == null
+          backgroundImage: (imagePath == null 
               ? null
               : AssetImage(imagePath)
           ),
@@ -398,6 +401,7 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
               : backgroundColor
           ),
           label: label,
+          hasSubTitle: false,
           littleIcon: Container(
             decoration: BoxDecoration(                          
                 color: Colors.white,
@@ -412,7 +416,7 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
               ),
             ),
           ),
-          height: 45.0,
+          height: 56.0,
           width: 45.0,
       ),
       onTap: (){
@@ -434,6 +438,7 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
               ? null
               : backgroundColor
           ),
+          hasSubTitle: true,
           label: label.split(" ")[0],
           littleIcon: RotationTransition(
             turns: new AlwaysStoppedAnimation(45 / 360),
