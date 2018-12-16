@@ -1,7 +1,5 @@
-import 'dart:math';
-
 import 'package:Time2Eat/DialogClasses/Dialogs.dart';
-import 'package:Time2Eat/NotificationID.dart';
+import 'package:Time2Eat/Import/Search.dart';
 import 'package:Time2Eat/Termine/RecipeSelection.dart';
 import 'package:Time2Eat/interface/DatePicker.dart';
 import 'package:Time2Eat/model/ListTitle.dart';
@@ -140,13 +138,38 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
                 }
               ),
               SpeedDialChild(
+                child: Icon(Icons.search, color: Colors.white),
+                backgroundColor: Color(0xff8b00dd),
+                label: "Suchen",
+                labelStyle: TextStyle(
+                  fontFamily: "Google-Sans",
+                  fontWeight: FontWeight.w500
+                ),
+                onTap: (){
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (_) => ImportRecipe()
+                    )
+                  );
+                }
+              ),
+              SpeedDialChild(
                 child: Icon(Icons.save_alt, color: Colors.white),
                 backgroundColor: GoogleMaterialColors().getLightColor(5),
                 label: "Importieren",
                 labelStyle: TextStyle(
                   fontFamily: "Google-Sans",
                   fontWeight: FontWeight.w500
-                )
+                ),
+                onTap: (){
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (_) => ImportRecipe()
+                    )
+                  );
+                }
               )
             ],
             onOpen: (){
