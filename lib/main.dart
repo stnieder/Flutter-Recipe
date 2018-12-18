@@ -9,7 +9,7 @@ import 'recipe/new_recipe.dart';
 
 
 var flutterLocalNotifcations;
-final SentryClient sentry = new SentryClient(dsn: "https://e0c53c6b16ee48988496ab29cd9b5c30@sentry.io/1356228");
+final SentryClient sentry = new SentryClient(dsn: sentry_dsn);
 
 
 void main() async{
