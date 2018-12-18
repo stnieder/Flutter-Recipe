@@ -1,4 +1,4 @@
-import 'package:Time2Eat/interface/GoogleColors.dart';
+import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
 import 'package:flutter/material.dart';
 
 import 'CircularImage.dart';

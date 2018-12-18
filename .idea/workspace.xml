@@ -10,33 +10,182 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a22ccec4-2bf2-41f5-bdcd-41be8bb9e2f3" name="Default" comment="Shopping List: added check function">
-      <change afterPath="$PROJECT_DIR$/images/Sushi.flr2d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/eatSomething.flr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Flutter-Recipe.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Flutter-Recipe.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/Error_Reporting/SentryDSN.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/main_pages/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/DialogClasses/CreateNewList.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/DialogClasses/CreateNewList.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/DialogClasses/Dialogs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/DialogClasses/Dialogs.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Import/Imported.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Import/Search.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/JSON/recipes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/JSON/recipes.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/JSON/recipes.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/JSON/recipes.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Constants.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/DialogClasses/CreateNewList.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/DialogInterfaces/CreateNewList.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/DialogClasses/DeleteNotification.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/DialogInterfaces/DeleteNotification.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/DialogClasses/Dialogs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/DialogInterfaces/Dialogs.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/DialogClasses/ListTitles.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/DialogInterfaces/ListTitles.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/DialogClasses/SelectPortion.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/DialogInterfaces/SelectPortion.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/DialogClasses/ShoppingMenu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/DialogInterfaces/ShoppingMenu.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/JSON/TestPage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/JSON/recipes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Export_Import/recipes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/JSON/recipes.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Export_Import/recipes.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/NotificationID.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/CalendarTermine/NotificationID.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Splashscreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main_pages/Splashscreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Termine/RecipeSelection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/CalendarTermine/RecipeSelection.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/database/database.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/database.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/interface/DynamicBottomSheet.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/DynamicBottomSheet.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/interface/GoogleColors.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/GoogleColors.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/interface/RadialMinutes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/RadialMinutes.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/text_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/material_design/text_field.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/RecipeTerminCombi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/RecipeTerminCombi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/calendar_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/calendar_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/ActiveDrawer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/ActiveDrawer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/Calendar/calendar_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/Calendar/calendar_tile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/Calendar/flutter_calendar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/Calendar/flutter_calendar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/CircularImage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/CircularImage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/CustomListTile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/CustomListTile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/CustomShowDialog.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/CustomShowDialog.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/Custom_SideHeaderListView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/Custom_SideHeaderListView.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/DatePicker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/DatePicker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/DurationDialog.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/DurationDialog.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/DynamicBottomSheet.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/DynamicBottomSheet.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/GoogleColors.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/GoogleColors.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/HexToColor.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/HexToColor.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/MyAppBar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/MyAppBar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/MyDropDownButton.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/MyDropDownButton.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/MyExpansionTile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/MyExpansionTile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/MyListTile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/MyListTile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/MyStepper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/MyStepper.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/NotificationDialog.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/NotificationDialog.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/PreferredSizeDivider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/PreferredSizeDivider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/RadialMinutes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/RadialMinutes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/RoundCheckBox.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/RoundCheckBox.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/RoundedBottomSheet.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/RoundedBottomSheet.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/SelectableItems.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/SelectableItems.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/SelectedRecipe.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/SelectedRecipe.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/TimePicker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/TimePicker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/about.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/about.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/animated_icons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/animated_icons.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/animated_icons_data.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/animated_icons_data.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/add_event.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/add_event.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/arrow_menu.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/arrow_menu.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/close_menu.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/close_menu.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/ellipsis_search.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/ellipsis_search.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/event_add.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/event_add.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/home_menu.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/home_menu.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/list_view.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/list_view.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/menu_arrow.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/menu_arrow.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/menu_close.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/menu_close.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/menu_home.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/menu_home.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/pause_play.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/pause_play.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/play_pause.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/play_pause.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/search_ellipsis.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/search_ellipsis.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/animated_icons/data/view_list.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/animated_icons/data/view_list.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/app.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/app.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/app_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/app_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/arc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/arc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/back_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/back_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/bottom_app_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/bottom_app_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/bottom_navigation_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/bottom_navigation_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/bottom_sheet.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/bottom_sheet.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/button_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/button_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/button_theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/button_theme.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/checkbox.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/checkbox.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/checkbox_list_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/checkbox_list_tile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/chip.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/chip.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/chip_theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/chip_theme.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/circle_avatar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/circle_avatar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/color_scheme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/color_scheme.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/colors.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/colors.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/constants.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/constants.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/data_table.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/data_table.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/data_table_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/data_table_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/date_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/date_picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/debug.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/debug.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/dialog.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/dialog.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/dialog_theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/dialog_theme.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/divider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/divider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/drawer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/drawer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/drawer_header.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/drawer_header.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/dropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/dropdown.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/expand_icon.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/expand_icon.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/expansion_panel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/expansion_panel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/expansion_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/expansion_tile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/feedback.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/feedback.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/flat_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/flat_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/flexible_space_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/flexible_space_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/floating_action_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/floating_action_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/floating_action_button_location.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/floating_action_button_location.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/flutter_logo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/flutter_logo.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/grid_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/grid_tile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/grid_tile_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/grid_tile_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/icon_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/icon_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/icons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/icons.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/ink_decoration.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/ink_decoration.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/ink_highlight.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/ink_highlight.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/ink_ripple.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/ink_ripple.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/ink_splash.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/ink_splash.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/ink_well.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/ink_well.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/input_border.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/input_border.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/input_decorator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/input_decorator.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/list_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/list_tile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/material.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/material.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/material_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/material_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/material_localizations.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/material_localizations.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/mergeable_material.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/mergeable_material.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/outline_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/outline_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/page_transitions_theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/page_transitions_theme.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/paginated_data_table.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/paginated_data_table.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/popup_menu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/popup_menu.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/progress_indicator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/progress_indicator.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/radio.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/radio.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/radio_list_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/radio_list_tile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/raised_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/raised_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/refresh_indicator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/refresh_indicator.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/reorderable_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/reorderable_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/scaffold.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/scaffold.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/scrollbar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/scrollbar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/search.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/search.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/shadows.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/shadows.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/slider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/slider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/slider_theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/slider_theme.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/snack_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/snack_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/stepper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/stepper.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/switch.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/switch.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/switch_list_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/switch_list_tile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/tab_bar_theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/tab_bar_theme.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/tab_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/tab_controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/tab_indicator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/tab_indicator.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/tabs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/tabs.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/text_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/text_field.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/text_form_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/text_form_field.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/text_selection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/text_selection.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/text_theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/text_theme.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/theme.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/theme_data.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/theme_data.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/time.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/time.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/time_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/time_picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/toggleable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/toggleable.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/tooltip.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/tooltip.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/two_level_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/two_level_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/typography.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/typography.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/interface/material_design/user_accounts_drawer_header.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/customizedWidgets/material_design/user_accounts_drawer_header.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Ingredients.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/Ingredients.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Intervall.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/Intervall.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/ListTitle.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/ListTitle.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/RecipeTerminCombi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/RecipeTerminCombi.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Recipe_Ingredient.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/Recipe_Ingredient.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Recipe_Shopping.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/Recipe_Shopping.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Recipe_Steps.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/Recipe_Steps.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Recipe_Termine.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/Recipe_Termine.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Recipes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/Recipes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Shopping.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/Shopping.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Shopping_Title.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/Shopping_Title.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/StepDescription.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/StepDescription.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/Termine.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/databaseModel/Termine.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/calendar_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/CalendarTermine/calendar_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/list.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/shopping_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/shopping_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/recipe/cooking.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recipe_details/cooking.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/recipe/new_recipe.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recipe/new_recipe.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/recipe/recipeDetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recipe/recipeDetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/recipe/recipebook.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recipe/recipebook.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/recipe/recipeDetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recipe_details/recipeDetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/recipe/recipebook.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main_pages/recipebook.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/widget_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/widget_test.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -102,32 +251,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="recipebook.dart" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/recipe/recipebook.dart">
+      <file leaf-file-name="calendar_view.dart" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/pages/CalendarTermine/calendar_view.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="653">
-              <caret line="636" column="55" lean-forward="true" selection-start-line="636" selection-start-column="55" selection-end-line="636" selection-end-column="55" />
+            <state relative-caret-position="465">
+              <caret line="46" column="27" lean-forward="true" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
               <folding>
-                <element signature="e#0#22#0" expanded="true" />
+                <element signature="e#1#65#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pubspec.yaml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pubspec.yaml">
+      <file leaf-file-name="cooking.dart" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/recipe_details/cooking.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1155">
-              <caret line="77" column="24" selection-start-line="77" selection-start-column="24" selection-end-line="77" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="recipeDetails.dart" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/recipe/recipeDetails.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="412">
-              <caret line="740" column="3" lean-forward="true" selection-start-line="740" selection-start-column="3" selection-end-line="740" selection-end-column="3" />
+            <state relative-caret-position="2100">
+              <caret line="209" column="20" lean-forward="true" selection-start-line="209" selection-start-column="20" selection-end-line="209" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -157,7 +297,25 @@
       <find>Exportier</find>
       <find>getE</find>
       <find>Es wurden</find>
+      <find>Exception</find>
+      <find>/model/</find>
+      <find>/interface/</find>
+      <find>catch</find>
+      <find>//databaseModel//</find>
+      <find>package:Time2Eat</find>
+      <find>/DialogClasses/</find>
     </findStrings>
+    <replaceStrings>
+      <replace>databaseModel</replace>
+      <replace>/customizedWidgets/</replace>
+      <replace>/databaseModel/</replace>
+      <replace>..</replace>
+      <replace>/DialogInterfaces/</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/lib</dir>
+      <dir>$PROJECT_DIR$/lib/Export_Import</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -463,18 +621,25 @@
         <option value="$PROJECT_DIR$/lib/Dialogs.dart" />
         <option value="$PROJECT_DIR$/lib/interface/RoundCheckBox.dart" />
         <option value="$PROJECT_DIR$/lib/model/Shopping.dart" />
-        <option value="$PROJECT_DIR$/lib/pages/shopping_list.dart" />
         <option value="$PROJECT_DIR$/lib/interface/material_design/text_field.dart" />
         <option value="$PROJECT_DIR$/android/app/build.gradle" />
         <option value="$PROJECT_DIR$/lib/DialogClasses/Dialogs.dart" />
-        <option value="$PROJECT_DIR$/lib/database/database.dart" />
         <option value="$PROJECT_DIR$/android/app/src/main/res/xml/provider.xml" />
         <option value="$PROJECT_DIR$/lib/main.dart" />
         <option value="$PROJECT_DIR$/lib/JSON/recipes.dart" />
         <option value="$PROJECT_DIR$/lib/JSON/recipes.g.dart" />
         <option value="$PROJECT_DIR$/pubspec.yaml" />
+        <option value="$PROJECT_DIR$/lib/Termine/RecipeSelection.dart" />
+        <option value="$PROJECT_DIR$/lib/recipe/new_recipe.dart" />
+        <option value="$PROJECT_DIR$/lib/pages/shopping_list.dart" />
+        <option value="$PROJECT_DIR$/lib/DialogClasses/ListTitles.dart" />
+        <option value="$PROJECT_DIR$/lib/database/database.dart" />
+        <option value="$PROJECT_DIR$/lib/pages/calendar_view.dart" />
         <option value="$PROJECT_DIR$/lib/recipe/recipebook.dart" />
         <option value="$PROJECT_DIR$/lib/recipe/recipeDetails.dart" />
+        <option value="$PROJECT_DIR$/lib/main_pages/main.dart" />
+        <option value="$PROJECT_DIR$/lib/main_pages/recipebook.dart" />
+        <option value="$PROJECT_DIR$/lib/pages/CalendarTermine/calendar_view.dart" />
       </list>
     </option>
   </component>
@@ -484,10 +649,10 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="67" />
     <option name="y" value="27" />
-    <option name="width" value="1843" />
+    <option name="width" value="1833" />
     <option name="height" value="1053" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -499,7 +664,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -517,7 +682,7 @@
               <item name="Flutter_Recipe" type="b2602c69:ProjectViewProjectNode" />
               <item name="Flutter_Recipe" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="JSON" type="462c0819:PsiDirectoryNode" />
+              <item name="main_pages" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Flutter_Recipe" type="b2602c69:ProjectViewProjectNode" />
@@ -525,17 +690,11 @@
               <item name="lib" type="462c0819:PsiDirectoryNode" />
               <item name="recipe" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="Flutter_Recipe" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Flutter_Recipe" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="Termine" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -548,7 +707,7 @@
     <property name="format" value="PNG" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="lastFolderRoot" value="$PROJECT_DIR$/android/app/src/main/res/drawable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/Error_Reporting" />
     <property name="method" value="Automatic" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -559,12 +718,15 @@
     <property name="sourceResolution" value="XHDPI" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib/Error_Reporting" />
+      <recent name="$PROJECT_DIR$/lib/main_pages" />
+      <recent name="$PROJECT_DIR$/lib/recipe_details" />
+      <recent name="$PROJECT_DIR$/lib/pages/CalendarTermine" />
+      <recent name="$PROJECT_DIR$/lib/customizedWidgets" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/images" />
-      <recent name="$PROJECT_DIR$/android/app/src/main/res/drawable" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/android" />
       <recent name="$PROJECT_DIR$/android/app/src/main/res/drawable" />
     </key>
   </component>
@@ -588,7 +750,7 @@
       </method>
     </configuration>
     <configuration name="Flutter-Recipe" type="FlutterRunConfigurationType" factoryName="Flutter">
-      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <option name="filePath" value="$PROJECT_DIR$/lib/main_pages/main.dart" />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -652,44 +814,45 @@
     <option name="totallyTimeSpent" value="11123000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="27" width="1843" height="1053" extended-state="4" />
+    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
+      <window_info id="Build Variants" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5002767" side_tool="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Dart Analysis" order="10" weight="0.3286334" />
+      <window_info anchor="right" id="Flutter Outline" order="7" />
+      <window_info anchor="bottom" id="Logcat" order="11" weight="0.329718" />
+      <window_info id="Capture Tool" order="7" />
+      <window_info id="Designer" order="3" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Device File Explorer" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="9" />
       <window_info id="Image Layers" order="5" />
-      <window_info id="Build Variants" order="4" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5002767" side_tool="true" weight="0.329718" />
-      <window_info anchor="bottom" id="Dart Analysis" order="10" weight="0.3286334" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4997233" weight="0.3264642" />
       <window_info anchor="bottom" id="Version Control" order="12" weight="0.329718" />
       <window_info anchor="bottom" id="Terminal" order="13" weight="0.3275488" />
-      <window_info anchor="right" id="Flutter Outline" order="7" />
-      <window_info anchor="bottom" id="Logcat" order="11" weight="0.329718" />
       <window_info id="Captures" order="2" weight="0.25" />
-      <window_info id="Capture Tool" order="7" />
-      <window_info id="Designer" order="3" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22537562" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22246818" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
       <window_info anchor="right" id="Gradle" order="8" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Device File Explorer" order="6" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="10" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="right" id="Flutter Inspector" order="3" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32972974" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Preview" order="4" weight="0.3291714" />
-      <window_info id="UI Designer" order="8" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Database Changes" order="15" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="13" />
+      <window_info anchor="bottom" id="Database Changes" order="15" show_stripe_button="false" />
+      <window_info id="UI Designer" order="8" />
+      <window_info anchor="bottom" id="Messages" order="14" weight="0.3264642" />
       <window_info active="true" anchor="bottom" id="Build" order="7" visible="true" weight="0.32864866" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="Messages" order="14" weight="0.3264642" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="right" id="Palette" order="11" />
       <window_info anchor="right" id="Maven Projects" order="12" />
@@ -711,59 +874,14 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib/recipe/recipeDetails.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11460">
-          <caret line="764" column="17" lean-forward="true" selection-start-line="764" selection-start-column="17" selection-end-line="764" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/DialogClasses/Dialogs.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9885">
-          <caret line="659" column="2" selection-start-line="659" selection-start-column="2" selection-end-line="659" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/database/database.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2670">
-          <caret line="197" column="19" selection-start-line="197" selection-start-column="19" selection-end-line="197" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/JSON/recipes.g.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="49" column="6" lean-forward="true" selection-start-line="49" selection-start-column="6" selection-end-line="49" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/JSON/recipes.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="65" lean-forward="true" selection-start-line="19" selection-start-column="65" selection-end-line="19" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/recipe/recipebook.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/recipe/recipebook.dart">
+    <entry file="file://$PROJECT_DIR$/lib/main_pages/recipebook.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="19" selection-start-line="19" selection-end-line="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/recipe/recipebook.dart">
+    <entry file="file://$PROJECT_DIR$/lib/main_pages/recipebook.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1455">
           <caret line="97" column="19" selection-start-line="97" selection-start-column="19" selection-end-line="97" selection-end-column="19" />
@@ -874,18 +992,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/recipe/new_recipe.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12915">
-          <caret line="886" column="3" selection-start-line="886" selection-start-column="3" selection-end-line="886" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/pages/calendar_view.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/android/app/src/main/res/drawable/launch_background.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state />
@@ -903,14 +1009,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/RoundCheckBox.dart">
+    <entry file="file://$PROJECT_DIR$/lib/customizedWidgets/RoundCheckBox.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="13" column="16" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/model/Shopping.dart">
+    <entry file="file://$PROJECT_DIR$/lib/databaseModel/Shopping.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
           <caret line="36" column="15" lean-forward="true" selection-start-line="36" selection-start-column="15" selection-end-line="36" selection-end-column="15" />
@@ -918,14 +1024,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Dialogs.dart" />
-    <entry file="file://$PROJECT_DIR$/lib/pages/shopping_list.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="66" column="26" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/interface/material_design/text_field.dart">
+    <entry file="file://$PROJECT_DIR$/lib/customizedWidgets/material_design/text_field.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="608">
           <caret line="592" column="48" lean-forward="true" selection-start-line="592" selection-start-column="48" selection-end-line="592" selection-end-column="48" />
@@ -959,62 +1058,133 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/database/database.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="700" column="24" selection-start-line="700" selection-start-column="24" selection-end-line="700" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/DialogClasses/Dialogs.dart">
+    <entry file="file://$PROJECT_DIR$/lib/DialogInterfaces/Dialogs.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="659" column="2" selection-start-line="659" selection-start-column="2" selection-end-line="659" selection-end-column="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/main.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="547">
-          <caret line="56" column="54" selection-start-line="56" selection-start-column="54" selection-end-line="56" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/JSON/recipes.g.dart">
+    <entry file="file://$PROJECT_DIR$/lib/Export_Import/recipes.g.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="975">
           <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/JSON/recipes.dart">
+    <entry file="file://$PROJECT_DIR$/lib/pages/CalendarTermine/RecipeSelection.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="20" column="62" selection-start-line="20" selection-start-column="62" selection-end-line="20" selection-end-column="62" />
+        <state relative-caret-position="60">
+          <caret line="4" column="38" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Export_Import/recipes.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="20" column="20" lean-forward="true" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pubspec.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1155">
-          <caret line="77" column="24" selection-start-line="77" selection-start-column="24" selection-end-line="77" selection-end-column="24" />
+        <state relative-caret-position="808">
+          <caret line="77" column="22" selection-start-line="77" selection-start-column="22" selection-end-line="77" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/recipe/recipebook.dart">
+    <entry file="file://$PROJECT_DIR$/lib/pages/list.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="653">
-          <caret line="636" column="55" lean-forward="true" selection-start-line="636" selection-start-column="55" selection-end-line="636" selection-end-column="55" />
+        <state relative-caret-position="-2070">
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/recipe_details/recipeDetails.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="38" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/pages/shopping_list.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="39" selection-start-line="5" selection-start-column="39" selection-end-line="5" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/DialogInterfaces/ListTitles.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="39" selection-start-line="3" selection-start-column="39" selection-end-line="3" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/database/database.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/recipe/new_recipe.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="24" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/pages/CalendarTermine/NotificationID.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="40" column="1" lean-forward="true" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/main_pages/main.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="12" lean-forward="true" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Constants.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="46" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/recipe_details/cooking.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2100">
+          <caret line="209" column="20" lean-forward="true" selection-start-line="209" selection-start-column="20" selection-end-line="209" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/main_pages/recipebook.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="195" column="47" lean-forward="true" selection-start-line="195" selection-start-column="47" selection-end-line="195" selection-end-column="47" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/recipe/recipeDetails.dart">
+    <entry file="file://$PROJECT_DIR$/lib/pages/CalendarTermine/calendar_view.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="740" column="3" lean-forward="true" selection-start-line="740" selection-start-column="3" selection-end-line="740" selection-end-column="3" />
+        <state relative-caret-position="465">
+          <caret line="46" column="27" lean-forward="true" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
+          <folding>
+            <element signature="e#1#65#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

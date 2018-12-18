@@ -1,23 +1,10 @@
+
+//Plugins of Dart-Team
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:Time2Eat/DialogClasses/Dialogs.dart';
-import 'package:Time2Eat/Termine/RecipeSelection.dart';
-import 'package:Time2Eat/interface/DatePicker.dart';
-import 'package:Time2Eat/model/Ingredients.dart';
-import 'package:Time2Eat/model/ListTitle.dart';
-import 'package:Time2Eat/model/Recipe_Ingredient.dart';
-import 'package:Time2Eat/model/Recipe_Steps.dart';
-import 'package:Time2Eat/model/Recipe_Termine.dart';
-import 'package:Time2Eat/model/Shopping.dart';
-import 'package:Time2Eat/model/Shopping_Title.dart';
-import 'package:Time2Eat/model/StepDescription.dart';
-import 'package:Time2Eat/model/Termine.dart';
-import 'package:Time2Eat/recipe/new_recipe.dart';
-import 'package:Time2Eat/JSON/recipes.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//Plugins from Dart-Lang
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -29,18 +16,37 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
-import '../Constants.dart';
+//Plugins of Flutter-Team
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+//Own plugins
+import '../customizedWidgets/Custom_SideHeaderListView.dart';
+import '../customizedWidgets/DatePicker.dart';
+import '../customizedWidgets/GoogleColors.dart';
+import '../customizedWidgets/HexToColor.dart';
+import '../customizedWidgets/SelectableItems.dart';
 import '../database/database.dart';
-import '../interface/Custom_SideHeaderListView.dart';
-import '../interface/GoogleColors.dart';
-import '../interface/HexToColor.dart';
-import '../interface/SelectableItems.dart';
-import '../model/Recipes.dart';
-import '../pages/calendar_view.dart';
+import '../databaseModel/Ingredients.dart';
+import '../databaseModel/ListTitle.dart';
+import '../databaseModel/Recipes.dart';
+import '../databaseModel/Recipe_Ingredient.dart';
+import '../databaseModel/Recipe_Steps.dart';
+import '../databaseModel/Recipe_Termine.dart';
+import '../databaseModel/Shopping.dart';
+import '../databaseModel/Shopping_Title.dart';
+import '../databaseModel/StepDescription.dart';
+import '../databaseModel/Termine.dart';
+import '../DialogInterfaces/Dialogs.dart';
+import '../Export_Import/recipes.dart';
+import '../pages/CalendarTermine/RecipeSelection.dart';
+import '../pages/CalendarTermine/calendar_view.dart';
 import '../pages/shopping_list.dart';
+import '../recipe/new_recipe.dart';
 
 
 
+//Get all Recipes inside a List
 Future<List<Recipes>> fetchRecipes(bool searched, String recipeName) async{
   var dbHelper = DBHelper();
   await dbHelper.create();
@@ -133,7 +139,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       }
     }
 
-    Future saveRecStepsIDs(int recipeID, int stepsID, DBHelper db) async{
+    saveRecStepsIDs(int recipeID, int stepsID, DBHelper db) async{
       RecipeSteps recipeSteps = new RecipeSteps();
       recipeSteps.idRecipes = recipeID;
       recipeSteps.idSteps = stepsID;
@@ -152,7 +158,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       }
     }
 
-    Future<int> saveRecipe(RecipesModel recipe, String filePath, DBHelper db) async{
+    saveRecipe(RecipesModel recipe, String filePath, DBHelper db) async{
       String imagepath;
       if(recipe.image != "no image") {
         Uint8List image = base64.decode(recipe.image).buffer.asUint8List();
@@ -180,6 +186,8 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     }
 
     saveJsonToRecipe(RecipesModel recipe, List<ZubereitungModel> zubereitung, List<ZutatenModel> zutaten, String filePath) async{
+      bool update = false;
+
       DBHelper db = new DBHelper();
       await db.create();
       int recipeCount = await db.checkRecipe(recipe.name);
@@ -194,8 +202,8 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
         showBottomSnack("Ein Rezept mit dem Namen ${recipe.name} existiert bereits", ToastGravity.BOTTOM);
       } 
       setState(() {
-        
-      });   
+        update = true;
+      });
     }
 
     createRecipeJson(File path) async{
@@ -214,32 +222,13 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     }
 
     getPath() async{
-      try{
-        FlutterDocumentPickerParams params = FlutterDocumentPickerParams(
-          allowedFileExtensions: ['json'],
-          invalidFileNameSymbols: ['/']
-        );
-        final path = await FlutterDocumentPicker.openDocument(params: params);
-        File file = new File(path);
-        createRecipeJson(file);
-      } on PlatformException catch (error){
-        GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
-        Text snackbarText = new Text("Den Fehler bitte weiterleiten");
-        SnackBar snackBar = new SnackBar(
-          key: _key,
-          content: snackbarText,
-          action: SnackBarAction(
-            label: "Kopieren",
-            onPressed: () {
-              Clipboard.setData(ClipboardData(text: error.toString()));
-              setState(() {
-                snackbarText = Text("Kopiert");
-              });
-            },
-          ),
-        );
-        _key.currentState.showSnackBar(snackBar);
-      }
+      FlutterDocumentPickerParams params = FlutterDocumentPickerParams(
+        allowedFileExtensions: ['json'],
+        invalidFileNameSymbols: ['/']
+      );
+      final path = await FlutterDocumentPicker.openDocument(params: params);
+      File file = new File(path);
+      createRecipeJson(file);
     }
       
     @override
@@ -418,16 +407,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
           searchPerformed = false;
         });
       }
-    }  
-  
-    popUpMenu(String text){
-      if(text == Constants.listPopUp[2]){
-        setState(() {
-          longPressFlag = true;
-        });
-      }
     }
-  
   
   
     /*

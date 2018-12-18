@@ -1,13 +1,17 @@
-import 'package:Time2Eat/DialogClasses/Dialogs.dart';
-import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/interface/HexToColor.dart';
-import 'package:async/async.dart';
+
+//Own plugins
+import '../../customizedWidgets/Calendar/flutter_calendar.dart';
+import '../../customizedWidgets/GoogleColors.dart';
+import '../../customizedWidgets/HexToColor.dart';
+import '../../DialogInterfaces/Dialogs.dart';
+import '../../database/database.dart';
+
+//Plugins of Flutter-Team
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import '../interface/Calendar/flutter_calendar.dart';
-import '../interface/GoogleColors.dart';
+//Plugins of Dart-Lang
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
 Future<List> fetcheTermine(String date) async{

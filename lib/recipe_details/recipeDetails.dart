@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:Time2Eat/DialogClasses/Dialogs.dart';
-import 'package:Time2Eat/interface/RadialMinutes.dart';
-import 'package:Time2Eat/JSON/recipes.dart';
-import 'package:Time2Eat/model/Recipe_Shopping.dart';
-import 'package:Time2Eat/model/Shopping.dart';
-import 'package:Time2Eat/model/Shopping_Title.dart';
-import 'package:Time2Eat/recipe/cooking.dart';
+import 'package:Time2Eat/DialogInterfaces/Dialogs.dart';
+import 'package:Time2Eat/customizedWidgets/RadialMinutes.dart';
+import 'package:Time2Eat/Export_Import/recipes.dart';
+import 'package:Time2Eat/databaseModel/Recipe_Shopping.dart';
+import 'package:Time2Eat/databaseModel/Shopping.dart';
+import 'package:Time2Eat/databaseModel/Shopping_Title.dart';
+import 'package:Time2Eat/recipe_details/cooking.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,10 +18,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:share_extend/share_extend.dart';
 import '../database/database.dart';
-import '../interface/GoogleColors.dart';
-import '../interface/HexToColor.dart';
-import '../model/Ingredients.dart';
-import '../model/Recipes.dart';
+import '../customizedWidgets/GoogleColors.dart';
+import '../customizedWidgets/HexToColor.dart';
+import '../databaseModel/Ingredients.dart';
+import '../databaseModel/Recipes.dart';
 import '../recipe/new_recipe.dart';
 
 

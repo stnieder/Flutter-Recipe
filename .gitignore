@@ -8,4 +8,5 @@ build/
 
 .flutter-plugins
 
-lib/main.dart
+/lib/main.dart
+/lib/SentryDSN.dart

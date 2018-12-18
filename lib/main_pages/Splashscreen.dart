@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:Time2Eat/interface/GoogleColors.dart';
-import 'package:Time2Eat/recipe/recipebook.dart';
+import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
+import 'package:Time2Eat/main_pages/recipebook.dart';
 import 'package:flutter/material.dart';
 
 class Splashscreen extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/interface/CustomShowDialog.dart';
-import 'package:Time2Eat/interface/GoogleColors.dart';
-import 'package:Time2Eat/model/ListTitle.dart';
+import 'package:Time2Eat/customizedWidgets/CustomShowDialog.dart';
+import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
+import 'package:Time2Eat/databaseModel/ListTitle.dart';
 import 'package:flutter/material.dart';
 
 Future<List<ListTitle>> fetchTitles() async{

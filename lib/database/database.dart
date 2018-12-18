@@ -1,23 +1,23 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:Time2Eat/model/ListTitle.dart';
-import 'package:Time2Eat/model/RecipeTerminCombi.dart';
-import 'package:Time2Eat/model/Recipe_Shopping.dart';
-import 'package:Time2Eat/model/Recipe_Termine.dart';
-import 'package:Time2Eat/model/Shopping.dart';
-import 'package:Time2Eat/model/Shopping_Title.dart';
-import 'package:Time2Eat/model/Termine.dart';
+import 'package:Time2Eat/databaseModel/ListTitle.dart';
+import 'package:Time2Eat/databaseModel/RecipeTerminCombi.dart';
+import 'package:Time2Eat/databaseModel/Recipe_Shopping.dart';
+import 'package:Time2Eat/databaseModel/Recipe_Termine.dart';
+import 'package:Time2Eat/databaseModel/Shopping.dart';
+import 'package:Time2Eat/databaseModel/Shopping_Title.dart';
+import 'package:Time2Eat/databaseModel/Termine.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/Recipe_Steps.dart';
-import '../model/StepDescription.dart';
+import '../databaseModel/Recipe_Steps.dart';
+import '../databaseModel/StepDescription.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../model/Recipes.dart';
-import '../model/Ingredients.dart';
-import '../model/Recipe_Ingredient.dart';
+import '../databaseModel/Recipes.dart';
+import '../databaseModel/Ingredients.dart';
+import '../databaseModel/Recipe_Ingredient.dart';
 
 class DBHelper{
   static Database _db;

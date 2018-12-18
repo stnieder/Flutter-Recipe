@@ -1,7 +1,7 @@
-import 'package:Time2Eat/NotificationID.dart';
-import 'package:Time2Eat/interface/CustomShowDialog.dart';
-import 'package:Time2Eat/interface/GoogleColors.dart';
-import 'package:Time2Eat/interface/MyDropDownButton.dart';
+import 'package:Time2Eat/pages/CalendarTermine/NotificationID.dart';
+import 'package:Time2Eat/customizedWidgets/CustomShowDialog.dart';
+import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
+import 'package:Time2Eat/customizedWidgets/MyDropDownButton.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/interface/RoundCheckBox.dart';
-import 'package:Time2Eat/model/Shopping.dart';
+import 'package:Time2Eat/customizedWidgets/RoundCheckBox.dart';
+import 'package:Time2Eat/databaseModel/Shopping.dart';
 
-import '../interface/GoogleColors.dart';
-import '../interface/MyExpansionTile.dart';
+import '../customizedWidgets/GoogleColors.dart';
+import '../customizedWidgets/MyExpansionTile.dart';
 
 
 Future<List<Shopping>> fetchShoppingList() async{    

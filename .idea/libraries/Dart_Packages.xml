@@ -457,6 +457,13 @@
             </list>
           </value>
         </entry>
+        <entry key="sentry">
+          <value>
+            <list>
+              <option value="/opt/flutter/.pub-cache/hosted/pub.dartlang.org/sentry-2.1.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="share">
           <value>
             <list>
@@ -611,6 +618,13 @@
             </list>
           </value>
         </entry>
+        <entry key="usage">
+          <value>
+            <list>
+              <option value="/opt/flutter/.pub-cache/hosted/pub.dartlang.org/usage-3.4.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="utf">
           <value>
             <list>
@@ -719,6 +733,7 @@
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/pub_semver-1.4.2/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/pubspec_parse-0.1.2+3/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-2.0.1/lib" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/sentry-2.1.1/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/share-0.5.3/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/share_extend-1.0.2/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.4.3/lib" />
@@ -740,6 +755,7 @@
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/tuple-1.0.2/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/typed_data-1.1.6/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-3.0.3/lib" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/usage-3.4.1/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/utf-0.9.0+5/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.0.8/lib" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/watcher-0.9.7+10/lib" />

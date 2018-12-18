@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 import 'dart:math';
-import 'package:Time2Eat/interface/RadialMinutes.dart';
+import 'package:Time2Eat/customizedWidgets/RadialMinutes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -12,18 +12,18 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../database/database.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../interface/DurationDialog.dart'; //made by Chris Harris https://pub.dartlang.org/packages/flutter_duration_picker
+import '../customizedWidgets/DurationDialog.dart'; //made by Chris Harris https://pub.dartlang.org/packages/flutter_duration_picker
 
-import '../interface/CircularImage.dart';
-import '../interface/GoogleColors.dart';
+import '../customizedWidgets/CircularImage.dart';
+import '../customizedWidgets/GoogleColors.dart';
 
-import '../DialogClasses/Dialogs.dart';
+import '../DialogInterfaces/Dialogs.dart';
 
-import '../model/Ingredients.dart';
-import '../model/Recipe_Ingredient.dart';
-import '../model/Recipe_Steps.dart';
-import '../model/Recipes.dart';
-import '../model/StepDescription.dart';
+import '../databaseModel/Ingredients.dart';
+import '../databaseModel/Recipe_Ingredient.dart';
+import '../databaseModel/Recipe_Steps.dart';
+import '../databaseModel/Recipes.dart';
+import '../databaseModel/StepDescription.dart';
 
 class NewRecipe extends StatefulWidget{
   

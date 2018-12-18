@@ -1,4 +1,4 @@
-import 'package:Time2Eat/interface/CustomListTile.dart';
+import 'package:Time2Eat/customizedWidgets/CustomListTile.dart';
 import 'package:flutter/material.dart';
 
 class ActiveDrawer extends StatefulWidget{

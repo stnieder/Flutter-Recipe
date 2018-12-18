@@ -1,8 +1,8 @@
 import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/interface/GoogleColors.dart';
-import 'package:Time2Eat/interface/HexToColor.dart';
-import 'package:Time2Eat/interface/SelectedRecipe.dart';
-import 'package:Time2Eat/model/Recipes.dart';
+import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
+import 'package:Time2Eat/customizedWidgets/HexToColor.dart';
+import 'package:Time2Eat/customizedWidgets/SelectedRecipe.dart';
+import 'package:Time2Eat/databaseModel/Recipes.dart';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

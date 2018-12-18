@@ -1,13 +1,13 @@
-import 'package:Time2Eat/DialogClasses/CreateNewList.dart';
-import 'package:Time2Eat/DialogClasses/ListTitles.dart';
-import 'package:Time2Eat/DialogClasses/ShoppingMenu.dart';
+import 'package:Time2Eat/DialogInterfaces/CreateNewList.dart';
+import 'package:Time2Eat/DialogInterfaces/ListTitles.dart';
+import 'package:Time2Eat/DialogInterfaces/ShoppingMenu.dart';
 import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/interface/DynamicBottomSheet.dart';
-import 'package:Time2Eat/interface/GoogleColors.dart';
-import 'package:Time2Eat/interface/MyListTile.dart';
-import 'package:Time2Eat/interface/NotificationDialog.dart';
-import 'package:Time2Eat/interface/RoundedBottomSheet.dart';
-import 'package:Time2Eat/recipe/recipebook.dart';
+import 'package:Time2Eat/customizedWidgets/DynamicBottomSheet.dart';
+import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
+import 'package:Time2Eat/customizedWidgets/MyListTile.dart';
+import 'package:Time2Eat/customizedWidgets/NotificationDialog.dart';
+import 'package:Time2Eat/customizedWidgets/RoundedBottomSheet.dart';
+import 'package:Time2Eat/main_pages/recipebook.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +16,7 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 
-import '../interface/CustomShowDialog.dart';
+import '../customizedWidgets/CustomShowDialog.dart';
 import 'DeleteNotification.dart';
 
 double _kShoppingMenuHeight = 100.0;
