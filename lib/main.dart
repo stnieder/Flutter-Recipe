@@ -1,24 +1,27 @@
 import 'package:Time2Eat/Splashscreen.dart';
-import 'package:Time2Eat/database/database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:simple_permissions/simple_permissions.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sentry/sentry.dart';
 
-import 'recipe/recipebook.dart';
 import 'recipe/new_recipe.dart';
 
 
 var flutterLocalNotifcations;
+final SentryClient sentry = new SentryClient(dsn: "https://e0c53c6b16ee48988496ab29cd9b5c30@sentry.io/1356228");
 
 
 void main() async{
   flutterLocalNotifcations = new FlutterLocalNotificationsPlugin();
-  runApp(new Recipe());
+  try{
+    runApp(new Recipe());
+  } catch(error, stackTrace){
+    await sentry.captureException(
+      exception: error,
+      stackTrace: stackTrace
+    );
+  }
 }
 
 class Recipe extends StatelessWidget {

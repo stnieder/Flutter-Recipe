@@ -42,6 +42,7 @@ dependencies:
   share_extend: ^1.0.2
   flutter_document_picker: ^1.2.0
   flare_flutter: ^1.0.4
+  sentry: any
 
 dev_dependencies:
   flutter_test:
