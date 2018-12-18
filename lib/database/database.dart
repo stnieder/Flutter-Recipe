@@ -198,7 +198,7 @@ class DBHelper{
   //Delete a recipe
   Future<int> deleteRecipe(String recipeName) async{
     String sql = "DELETE FROM recipes WHERE name = ?";
-    int count = await _db.rawDelete(sql, [recipeName]);    
+    int count = await _db.rawDelete(sql, [recipeName]);
     return count;
   }
 
@@ -802,11 +802,11 @@ class DBHelper{
 
   //Get Termine of specific date
   Future<List> getTermine(String date) async{
-    String sql = "SELECT recipes.id as id, termine.terminDate as termin, recipes.name  as name, recipes.image  as image, recipeTermine.createTimestamp as timestamp FROM termine, recipeTermine, recipes WHERE termine.terminDate = '"+date+"' AND termine.id = recipeTermine.idTermine AND recipeTermine.idRecipes = recipes.id";
+    String sql = "SELECT recipes.id as id, termine.terminDate as termin, recipes.name  as name, recipes.image  as image, recipeTermine.createTimestamp as timestamp,recipes.backgroundColor as backgroundColor FROM termine, recipeTermine, recipes WHERE termine.terminDate = '"+date+"' AND termine.id = recipeTermine.idTermine AND recipeTermine.idRecipes = recipes.id";
     List<Map> list = await _db.rawQuery(sql);
     List termine = new List();
     for (int i=0; i<list.length; i++) {
-      termine.add(new RecipeTerminCombi(list[i]["id"].toString(), list[i]["termin"], list[i]["name"], list[i]["image"], list[i]["timestamp"]));
+      termine.add(new RecipeTerminCombi(list[i]["id"].toString(), list[i]["termin"], list[i]["name"], list[i]["image"], list[i]["timestamp"], list[i]["backgroundColor"]));
     }
     print("TerminAnzahl: "+termine.length.toString());
     return termine;

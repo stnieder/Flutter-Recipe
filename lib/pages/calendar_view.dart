@@ -1,5 +1,6 @@
 import 'package:Time2Eat/DialogClasses/Dialogs.dart';
 import 'package:Time2Eat/database/database.dart';
+import 'package:Time2Eat/interface/HexToColor.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -148,6 +149,7 @@ class _CalendarView extends State<CalendarView>{
         return _gestureDetectorChild(
           snapshot.data[index].name,
           snapshot.data[index].image,
+          snapshot.data[index].backgroundColor,
           index,
           animation
         );
@@ -157,7 +159,7 @@ class _CalendarView extends State<CalendarView>{
     return _animatedList;
   }
 
-  _gestureDetectorChild(String name, String image, int index, Animation<double> animation){
+  _gestureDetectorChild(String name, String image, String backgroundColor, int index, Animation<double> animation){
     return FadeTransition(
       opacity: animation,
       child: new GestureDetector(
@@ -167,6 +169,7 @@ class _CalendarView extends State<CalendarView>{
           ),
           child: ListTile(
               leading: CircleAvatar(
+                backgroundColor: ConvertColor().convertToColor(backgroundColor),
                 child: (image != "no image"
                     ? Container(
                   width: 40.0,
@@ -194,7 +197,7 @@ class _CalendarView extends State<CalendarView>{
             ),
         ),
         onTap: (){
-          editNotification(name, image, index);
+          editNotification(name, image, backgroundColor, index);
         },
       ),
     );
@@ -225,7 +228,7 @@ class _CalendarView extends State<CalendarView>{
     setState(() {});
   }
 
-  editNotification(String recipe, String image, int index) async{
+  editNotification(String recipe, String image, String backgroundColor, int index) async{
     var edit = await Dialogs().editTermin(context);
     bool cancelFuture = false;
     if(edit == "delete"){
@@ -253,7 +256,7 @@ class _CalendarView extends State<CalendarView>{
           (BuildContext context, Animation<double> animation){
             return FadeTransition(
               opacity: animation,
-              child: _gestureDetectorChild(recipe, image, index, animation),
+              child: _gestureDetectorChild(recipe, image, backgroundColor, index, animation),
             );
           }
         );

@@ -586,6 +586,7 @@ class _TextFieldState extends State<TextField> with AutomaticKeepAliveClientMixi
     Widget child = RepaintBoundary(
       child: EditableText(
         key: _editableTextKey,
+        backgroundCursorColor: widget.cursorColor,
         controller: controller,
         focusNode: focusNode,
         keyboardType: widget.keyboardType,

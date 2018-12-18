@@ -101,6 +101,9 @@ class _NewRecipe extends State<NewRecipe>{
   final TextEditingController recipeName = new TextEditingController();
   final TextEditingController recipeDescription = new TextEditingController();  
   FocusNode nameFocus = new FocusNode();
+  final ScrollController bodyScroll = new ScrollController();
+  double appBarElevation = 0.0;
+  final GlobalKey<State<AppBar>> appBarKey = new GlobalKey<State<AppBar>>();
 
   //Zutaten
   double ingredientHeight = 0.0;
@@ -121,7 +124,7 @@ class _NewRecipe extends State<NewRecipe>{
   final TextEditingController stepDescriptionController = new TextEditingController();
   GlobalKey<FormState> stepDescriptionKey = new GlobalKey<FormState>();  
   int descriptionCounter = 0;
-  List<String> stepDescription = new List();
+  List<String> stepDescription;
 
 
   @override
@@ -131,6 +134,7 @@ class _NewRecipe extends State<NewRecipe>{
     if(widget.name == null){
       Random random = new Random();
       usedColor = materialColors.getLightColor(random.nextInt(5));
+      stepDescription = new List();
     } else if(widget.name != null){
       oldRecipe = widget.name;
 
@@ -152,21 +156,34 @@ class _NewRecipe extends State<NewRecipe>{
       zMass = widget.measureList;
       zNamen = widget.nameList;      
       stepDescription = widget.stepsList; 
+      descriptionHeight = 56.0 * stepDescription.length;
       personenAnzahl = widget.personenAnzahl;
       edit = true;
-      setState(() {
-        print("Description: $stepDescription")     ;
-      });
     }    
+
+    bodyScroll.addListener(_scrollListener);
+  }
+
+  _scrollListener(){
+    if(bodyScroll.offset > bodyScroll.initialScrollOffset){
+      appBarKey.currentState.setState((){
+        appBarElevation = 4.0;
+      });
+    } else {
+      appBarKey.currentState.setState((){
+        appBarElevation = 0.0;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) { 
-    return Scaffold(
+    return Scaffold(      
       key: _scaffoldKey,
       appBar: PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, 56.0),
         child: StatefulBuilder(
+          key: appBarKey,
           builder: (context, update){
             return AppBar(
               actions: <Widget>[
@@ -181,6 +198,7 @@ class _NewRecipe extends State<NewRecipe>{
                 ),
               ],
               backgroundColor: Colors.white,
+              elevation: appBarElevation,
               leading: IconButton(
                 onPressed: () async{
                   String title;
@@ -208,6 +226,7 @@ class _NewRecipe extends State<NewRecipe>{
         ),
       ),
       body: ListView(
+        controller: bodyScroll,
         children: <Widget>[
           StatefulBuilder(
             builder: (BuildContext context, StateSetter update){
@@ -215,7 +234,7 @@ class _NewRecipe extends State<NewRecipe>{
                 padding: EdgeInsets.only(top: 10.0, bottom: 20.0, left: 179.0, right: 179.0),
                 child: GestureDetector(
                   child: Container(
-                    child: (_image == null
+                    child: ((_image == "no image" || _image == null)
                         ? CircleAvatar(child: Icon(OMIcons.addAPhoto))
                         : CircularImage(_image)
                     ),
@@ -240,7 +259,7 @@ class _NewRecipe extends State<NewRecipe>{
               StatefulBuilder(
                 builder: (BuildContext context, StateSetter update){
                   return Container(
-                    height: 40.0,
+                    height: 43.0,
                     width: 40.0,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10.0),
@@ -307,7 +326,10 @@ class _NewRecipe extends State<NewRecipe>{
                           minutes: double.parse(preperation_minutes.toString()),
                           radius: 65.0,
                           center:Text(
-                            preperation_minutes.toString()+" Min.",
+                            (preperation_minutes == 0.0 || preperation_minutes == null
+                              ? "-"
+                              : preperation_minutes.toString()+" Min."
+                            ),
                             style: TextStyle(
                               fontFamily: "Google-Sans",
                               fontSize: 15.0,
@@ -348,7 +370,10 @@ class _NewRecipe extends State<NewRecipe>{
                           minutes: double.parse(creation_minutes.toString()),
                           radius: 65.0,
                           center: Text(
-                            creation_minutes.toString()+" Min.",
+                            (creation_minutes == 0.0 || creation_minutes == null
+                              ? "-"
+                              : creation_minutes.toString()+" Min."
+                            ),
                             style: TextStyle(
                               fontFamily: "Google-Sans",
                               fontSize: 15.0,
@@ -389,7 +414,10 @@ class _NewRecipe extends State<NewRecipe>{
                           minutes: double.parse(resting_minutes.toString()),
                           radius: 65.0,
                           center:Text(
-                            resting_minutes.toString()+" Min.",
+                            (resting_minutes == 0.0 || resting_minutes == null
+                              ? "-"
+                              : resting_minutes.toString()+" Min."
+                            ),
                             style: TextStyle(
                               fontFamily: "Google-Sans",
                               fontSize: 15.0,
@@ -602,6 +630,10 @@ class _NewRecipe extends State<NewRecipe>{
                       return Container(
                         height: ingredientHeight,
                         child:ListView.builder(
+                          physics: (zNamen.length == 1
+                            ? NeverScrollableScrollPhysics()
+                            : ScrollPhysics()
+                          ),
                           scrollDirection: Axis.vertical,
                           itemCount: zNamen.length,
                           itemBuilder: (BuildContext ctxt, int index){
@@ -700,7 +732,11 @@ class _NewRecipe extends State<NewRecipe>{
                             child: ListTile(
                               leading: IconButton(
                                 icon: Icon(Icons.clear),
-                                onPressed: (){},
+                                onPressed: (){
+                                  update(() {
+                                    stepDescriptionController.text = "";
+                                  });
+                                },
                               ),
                               title: TextFormField(
                                 controller: stepDescriptionController,
@@ -744,6 +780,10 @@ class _NewRecipe extends State<NewRecipe>{
                           Container(
                             height: descriptionHeight,
                             child: ListView.builder(
+                              physics: (stepDescription.length == 1
+                                ? NeverScrollableScrollPhysics()
+                                : ScrollPhysics()
+                              ),
                               itemCount: stepDescription.length,
                               itemBuilder: (ctxt, index){
                                 final step = stepDescription[index];
@@ -1019,7 +1059,7 @@ class _NewRecipe extends State<NewRecipe>{
       recipe.timestamp = DateTime.now().toString();
       recipe.favorite = 0;      
       
-      if(_image != null){
+      if(_image != null){ 
         Directory directory = await getApplicationDocumentsDirectory();
         String path = directory.path.replaceAll(new RegExp(r"\s+\b|\b\s"), String.fromCharCode(95)); //95 from ASCII is '_'
         String image = (recipeName.text).replaceAll(new RegExp(r"\s+\b|\b\s"), String.fromCharCode(95));

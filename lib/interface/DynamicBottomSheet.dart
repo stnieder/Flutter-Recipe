@@ -28,11 +28,11 @@ Future<T> showDynamicBottomSheet<T> ({
               if(maxHeight == null){
                 if(position > minHeight){
                   controller.add(position);
-                } else if(position.isNegative) Navigator.pop(context);
+                } else if(position < minHeight) Navigator.pop(context);
               } else {
                 if(position > minHeight && position < maxHeight){
                   controller.add(position);
-                } else if(position.isNegative) Navigator.pop(context);
+                } else if(position < minHeight) Navigator.pop(context);
               }
             },
             behavior: HitTestBehavior.translucent,

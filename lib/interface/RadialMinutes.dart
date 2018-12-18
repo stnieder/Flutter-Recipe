@@ -60,13 +60,15 @@ class MyPainter extends CustomPainter{
     double hours = minutes / 60;
     double rest = minutes % 60;
 
-    if(hours>0){
-      List<Color> combination = GoogleMaterialColors().getColorCombination();
-      lineColor = combination[0];
-      completeColor = combination[1];
+    if(hours >= 1){
+      double opacity = hours/10;
+      if(opacity >= 0.7) hours = hours / 100;
+      lineColor = completeColor.withOpacity(opacity);
+      completeColor = completeColor.withOpacity(opacity+0.3);
 
       minutes = rest;
-    }
+    } 
+
     Paint line = new Paint()
       ..color = lineColor
       ..strokeCap = StrokeCap.round

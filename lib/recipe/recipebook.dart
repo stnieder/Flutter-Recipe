@@ -1,22 +1,33 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:Time2Eat/DialogClasses/Dialogs.dart';
-import 'package:Time2Eat/Import/Search.dart';
 import 'package:Time2Eat/Termine/RecipeSelection.dart';
 import 'package:Time2Eat/interface/DatePicker.dart';
+import 'package:Time2Eat/model/Ingredients.dart';
 import 'package:Time2Eat/model/ListTitle.dart';
+import 'package:Time2Eat/model/Recipe_Ingredient.dart';
+import 'package:Time2Eat/model/Recipe_Steps.dart';
 import 'package:Time2Eat/model/Recipe_Termine.dart';
 import 'package:Time2Eat/model/Shopping.dart';
 import 'package:Time2Eat/model/Shopping_Title.dart';
+import 'package:Time2Eat/model/StepDescription.dart';
 import 'package:Time2Eat/model/Termine.dart';
 import 'package:Time2Eat/recipe/new_recipe.dart';
+import 'package:Time2Eat/JSON/recipes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:flutter_document_picker/flutter_document_picker.dart';
+import 'package:flare_flutter/flare_actor.dart';
 
 import '../Constants.dart';
 import '../database/database.dart';
@@ -99,7 +110,136 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
         ..addStatusListener((status){})..addListener(()=>setState((){}));
 
       colorAnimation = new ColorTween(begin: Color(0xFF4285f4), end: Color(0xFFea4335))
-        .animate(CurvedAnimation(curve: Curves.fastOutSlowIn, parent: animationController));
+        .animate(CurvedAnimation(curve: Curves.linear, parent: animationController));
+    }
+
+    Future saveRecIngreIDs(int recipeID, int ingredientID, DBHelper db) async{
+      RecIngre recIngre = new RecIngre();
+      recIngre.idRecipes = recipeID;
+      recIngre.idIngredients = ingredientID;
+
+      await db.insertRecIngre(recIngre);
+    }
+
+    saveZutaten(List<ZutatenModel> zutaten, int recipeID, DBHelper db) async{
+      IngredientsDB ingredients = new IngredientsDB();
+      for(int i=0; i < zutaten.length; i++){
+        ingredients.number = zutaten[i].number;
+        ingredients.measure = zutaten[i].measure;
+        ingredients.name = zutaten[i].zutat;
+
+        ingredients = await db.insertIngre(ingredients);
+        await saveRecIngreIDs(recipeID, ingredients.id, db);
+      }
+    }
+
+    Future saveRecStepsIDs(int recipeID, int stepsID, DBHelper db) async{
+      RecipeSteps recipeSteps = new RecipeSteps();
+      recipeSteps.idRecipes = recipeID;
+      recipeSteps.idSteps = stepsID;
+
+      recipeSteps = await db.insertRecipeSteps(recipeSteps);
+    }
+
+    saveZubereitung(List<ZubereitungModel> zubereitung, int recipeID, DBHelper db) async{
+      StepsDB steps = new StepsDB();
+      for(int i=0; i < zubereitung.length; i++){
+        steps.number = int.parse(zubereitung[i].number);
+        steps.description = zubereitung[i].steps;
+
+        steps = await db.insertSteps(steps);
+        await saveRecStepsIDs(recipeID, steps.id, db);
+      }
+    }
+
+    Future<int> saveRecipe(RecipesModel recipe, String filePath, DBHelper db) async{
+      String imagepath;
+      if(recipe.image != "no image") {
+        Uint8List image = base64.decode(recipe.image).buffer.asUint8List();
+        Directory directory = await getApplicationDocumentsDirectory();
+        final file = await new File(directory.path+"/${recipe.name}.png").create();
+        await file.writeAsBytes(image);
+        imagepath = directory.path+"/${recipe.name}.png";
+      } else {
+        imagepath = recipe.image;
+      }
+
+      RecipesDB recipes = new RecipesDB();
+      recipes.name = recipe.name;
+      recipes.image = imagepath;
+      recipes.definition = recipe.description;
+      recipes.timestamp = DateTime.now().toString();
+      recipes.pre_duration = recipe.preperation;
+      recipes.cre_duration = recipe.creation;
+      recipes.resting_time= recipe.resting;
+      recipes.people = recipe.people;
+      recipes.backgroundColor = recipe.backgroundColor;
+      recipes.favorite = recipe.favorite; 
+
+      recipes = await db.insertRecipe(recipes);
+    }
+
+    saveJsonToRecipe(RecipesModel recipe, List<ZubereitungModel> zubereitung, List<ZutatenModel> zutaten, String filePath) async{
+      DBHelper db = new DBHelper();
+      await db.create();
+      int recipeCount = await db.checkRecipe(recipe.name);
+
+      if(recipeCount == 0){
+        await saveRecipe(recipe, filePath, db);
+        int recipeID = await db.getRecipeID(recipe.name);
+        await saveZubereitung(zubereitung, recipeID, db);
+        await saveZutaten(zutaten, recipeID, db);
+        showBottomSnack("Rezept wurde erfolgreich importiert", ToastGravity.BOTTOM);
+      } else {
+        showBottomSnack("Ein Rezept mit dem Namen ${recipe.name} existiert bereits", ToastGravity.BOTTOM);
+      } 
+      setState(() {
+        
+      });   
+    }
+
+    createRecipeJson(File path) async{
+      FlutterDocumentPickerParams params = FlutterDocumentPickerParams(
+          allowedFileExtensions: ['json'],
+          invalidFileNameSymbols: ['/']
+      );
+      final path = await FlutterDocumentPicker.openDocument(params: params);
+      File file = new File(path);
+      Map<String,dynamic> jSON = json.decode(file.readAsStringSync());      
+      var recipe = RecipesModel.fromJson(jSON);
+      var zubereitungJSON = recipe.zubereitung;
+      var zutatenJSON = recipe.zutaten;    
+      await saveJsonToRecipe(recipe, zubereitungJSON, zutatenJSON, path);
+      setState(() {});
+    }
+
+    getPath() async{
+      try{
+        FlutterDocumentPickerParams params = FlutterDocumentPickerParams(
+          allowedFileExtensions: ['json'],
+          invalidFileNameSymbols: ['/']
+        );
+        final path = await FlutterDocumentPicker.openDocument(params: params);
+        File file = new File(path);
+        createRecipeJson(file);
+      } on PlatformException catch (error){
+        GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
+        Text snackbarText = new Text("Den Fehler bitte weiterleiten");
+        SnackBar snackBar = new SnackBar(
+          key: _key,
+          content: snackbarText,
+          action: SnackBarAction(
+            label: "Kopieren",
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: error.toString()));
+              setState(() {
+                snackbarText = Text("Kopiert");
+              });
+            },
+          ),
+        );
+        _key.currentState.showSnackBar(snackBar);
+      }
     }
       
     @override
@@ -138,23 +278,6 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
                 }
               ),
               SpeedDialChild(
-                child: Icon(Icons.search, color: Colors.white),
-                backgroundColor: Color(0xff8b00dd),
-                label: "Suchen",
-                labelStyle: TextStyle(
-                  fontFamily: "Google-Sans",
-                  fontWeight: FontWeight.w500
-                ),
-                onTap: (){
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(
-                      builder: (_) => ImportRecipe()
-                    )
-                  );
-                }
-              ),
-              SpeedDialChild(
                 child: Icon(Icons.save_alt, color: Colors.white),
                 backgroundColor: GoogleMaterialColors().getLightColor(5),
                 label: "Importieren",
@@ -163,12 +286,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
                   fontWeight: FontWeight.w500
                 ),
                 onTap: (){
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(
-                      builder: (_) => ImportRecipe()
-                    )
-                  );
+                  getPath();
                 }
               )
             ],
@@ -451,6 +569,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     Widget defaultAppBar(){ 
       return AppBar(
         actions: actionList(_currentTab),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0.0,
@@ -579,24 +698,20 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
             if(snapshot.hasData){
               if(snapshot.data.length == 0){
                 return Center(
-                    child:Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                            width: 200.0,
-                            height: 200.0,
-                            child: Image.asset("images/nothingFound.png"),
-                        ),
-                        Container(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 75.0),
-                            child: Text("Es wurden keine Rezepte gefunden."),
-                          ),
-                          width: 300.0,
-                        )
-                      ],
-                    )
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                          child: FlareActor(
+                            "images/Sushi.flr",
+                            alignment: Alignment.center,
+                            fit: BoxFit.contain,
+                            animation: 'Sushi Bounce',
+                          )
+                      )
+                    ],
+                  )
                 );
               } 
               return changeList(snapshot);
@@ -876,11 +991,11 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     if(delete == "löschen"){
       int deleted;
       for (var i = 0; i < recipeNames.length; i++) {
-        /*
+
         int recipeID = await dbHelper.getRecipeID(recipeNames[i]);
         deleted = await dbHelper.deleteRecipe(recipeNames[i]);    
         await notificationsPlugin.cancel(recipeID);
-        */
+
       }
       if(recipeNames.length == 1) showBottomSnack(recipeNames[0]+" wurde gelöscht", ToastGravity.BOTTOM);
       else if(recipeNames.length > 1) showBottomSnack("$deleted Rezepte wurden gelöscht", ToastGravity.BOTTOM);

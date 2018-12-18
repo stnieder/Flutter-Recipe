@@ -1,10 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:json_annotation/json_annotation.dart';
 part 'recipes.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(nullable: false)
 class RecipesModel {
+  String name, description, timestamp, preperation, creation, resting, people, backgroundColor;
+  String image;
   int favorite; //0 = false; 1 = true
-  String name, image, description, timestamp, preperation, creation, resting, people, backgroundColor;
   List<ZutatenModel> zutaten;
   List<ZubereitungModel> zubereitung;
 
@@ -12,12 +15,15 @@ class RecipesModel {
   RecipesModel recipeModel;
 
   RecipesModel(
-    this.name, this.image, this.description, this.favorite, this.timestamp, this.preperation, this.creation, this.resting, this.people, this.backgroundColor,
+    this.name, this.image, this.description, this.timestamp, this.preperation, this.creation, this.resting, this.people, this.backgroundColor,
+    this.favorite,
     this.zutaten,
     this.zubereitung
   );
 
-  factory RecipesModel.fromJson(Map<String, dynamic> json) => _$RecipesModelFromJson(json);
+  factory RecipesModel.fromJson(Map<String, dynamic> json) {
+    return _$RecipesModelFromJson(json);
+  }
 
   Map<String, dynamic> toJson() => _$RecipesModelToJson(this);
 }

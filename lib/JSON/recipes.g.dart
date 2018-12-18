@@ -11,32 +11,24 @@ RecipesModel _$RecipesModelFromJson(Map<String, dynamic> json) {
       json['name'] as String,
       json['image'] as String,
       json['description'] as String,
-      json['favorite'] as int,
       json['timestamp'] as String,
       json['preperation'] as String,
       json['creation'] as String,
       json['resting'] as String,
       json['people'] as String,
       json['backgroundColor'] as String,
+      json['favorite'] as int,
       (json['zutaten'] as List)
-          ?.map((e) => e == null
-              ? null
-              : ZutatenModel.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
+          .map((e) => ZutatenModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       (json['zubereitung'] as List)
-          ?.map((e) => e == null
-              ? null
-              : ZubereitungModel.fromJson(e as Map<String, dynamic>))
-          ?.toList())
-    ..recipeModel =
-        RecipesModel.fromJson(json['recipeModel'] as Map<String, dynamic>);
+          .map((e) => ZubereitungModel.fromJson(e as Map<String, dynamic>))
+          .toList());
 }
 
 Map<String, dynamic> _$RecipesModelToJson(RecipesModel instance) =>
     <String, dynamic>{
-      'favorite': instance.favorite,
       'name': instance.name,
-      'image': instance.image,
       'description': instance.description,
       'timestamp': instance.timestamp,
       'preperation': instance.preperation,
@@ -44,6 +36,8 @@ Map<String, dynamic> _$RecipesModelToJson(RecipesModel instance) =>
       'resting': instance.resting,
       'people': instance.people,
       'backgroundColor': instance.backgroundColor,
+      'image': instance.image,
+      'favorite': instance.favorite,
       'zutaten': instance.zutaten,
       'zubereitung': instance.zubereitung,
       'recipeModel': instance.recipeModel

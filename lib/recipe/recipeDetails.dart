@@ -16,6 +16,7 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:simple_permissions/simple_permissions.dart';
+import 'package:share_extend/share_extend.dart';
 import '../database/database.dart';
 import '../interface/GoogleColors.dart';
 import '../interface/HexToColor.dart';
@@ -45,6 +46,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
   Map<String,dynamic> jsonMap;
   String filename; //name created in initState((){})
   bool fileExists = false;
+  static const String authorities = "com.vendetta.recipe.fileprovider";
 
   //Appbar
   GlobalKey<State<PopupMenuButton>> _buttonKey = new GlobalKey<State<PopupMenuButton>>();
@@ -555,7 +557,10 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
     var permissions = await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
 
     if(permissions) recipeToJson();
-    else Dialogs().authorizeWriting(context);
+    else {
+      var dialog = await Dialogs().authorizeWriting(context);
+      if(dialog != null) recipeToJson();
+    }
   }
 
   _radialText(String value){
@@ -727,13 +732,15 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       if(fileExists){
         this.setState((){
           jsonMap = json.decode(jsonFile.readAsStringSync());
+          showBottomSnack("Eine Datei mit diesem Namen existiert bereits", ToastGravity.BOTTOM);
         });
+      } else {
+        writeFile();
       }
-    });
-    writeFile();
+    });    
   }
 
-  void writeFile(){
+  void writeFile() async{
     List<ZutatenModel> zutaten = [];
     List<ZubereitungModel> zubereitungen = [];
 
@@ -756,17 +763,25 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       );
     }
 
+    var image;
+    if(imagePath != "no image"){
+      int count = imagePath.split("/").length;
+      var file = new File(imagePath);
+      var bytes = file.readAsBytesSync();      
+      image = base64Encode(bytes);
+    } else image = imagePath;
+
     RecipesModel recipe = new RecipesModel(
-      widget.recipeName, 
-      imagePath, 
-      description, 
-      favorite, 
+      widget.recipeName,
+      image, 
+      description,
       timestamp, 
       preperation_minutes.toString(), 
       creation_minutes.toString(), 
       resting_minutes.toString(), 
       peopleDB.toString(), 
-      backgroundColor.toString(), 
+      backgroundColor.toString(),
+      favorite,
       zutaten, 
       zubereitungen
     );
@@ -783,7 +798,6 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       jsonFile.writeAsStringSync(json.encode(jsonString));
     }
 
-    print(jsonFile.path);
-    showBottomSnack("Gespeichert nach ${jsonFile.path}", ToastGravity.BOTTOM);
+    await ShareExtend.share(jsonFile.path, "file", authorities);
   }
 }

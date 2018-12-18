@@ -2,11 +2,18 @@
   <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
     <CLASSES>
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_statusbarcolor-0.1.1" />
-      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-0.4.2" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-0.4.1" />
       <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.4.10" />
-      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-2.1.1" />
-      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-0.12.2+1" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-0.13.0" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/simple_permissions-0.1.9" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-2.1.5" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.4.3" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-3.0.3" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/share_extend-1.0.2" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_picker-1.0.5" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-0.4.2+1" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/share-0.5.3" />
+      <root url="file:///opt/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_document_picker-1.2.0" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

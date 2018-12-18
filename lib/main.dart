@@ -22,10 +22,8 @@ void main() async{
 }
 
 class Recipe extends StatelessWidget {
-
   @override
-  Widget build(BuildContext context) {  
-    changeStatusColor(); 
+  Widget build(BuildContext context) {
     setPrefs();
     return new MaterialApp(    
       builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child),  
@@ -33,7 +31,7 @@ class Recipe extends StatelessWidget {
       theme: new ThemeData(        
         backgroundColor: Colors.white,
         canvasColor: Colors.white,
-        primarySwatch: Colors.blue,        
+        primarySwatch: Colors.blue,
         iconTheme: IconThemeData(
           color: Colors.black54          
         ),
@@ -52,37 +50,11 @@ class Recipe extends StatelessWidget {
     );
   }
 
-  showBottomSnack(String value, ToastGravity toastGravity){
-    Fluttertoast.showToast(
-      msg: value,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: toastGravity,
-      timeInSecForIos: 2,            
-    );
-  }
-
   setPrefs() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    DBHelper db = new DBHelper();
-    await db.create();
-    List title = await db.getListTitles();
-    if(prefs.getString("shopping") == null) await prefs.setString("currentList", title[0].titleName);    
-  }
-
-  getPermission() async{
-    var permissions = await SimplePermissions.requestPermission(Permission. WriteExternalStorage);
-    if(permissions == PermissionStatus.denied || permissions == PermissionStatus.deniedNeverAsk){
-      showBottomSnack("Ohne diese Berechtigung können sie keine Rezepte teilen.", ToastGravity.CENTER);
-    }
-  }
-
-  changeStatusColor() async{
-    try {
-      await FlutterStatusbarcolor.setStatusBarColor(Colors.white);
-      FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-      FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
-    } on PlatformException catch (e) {
-      debugPrint(e.toString());
+    String list = prefs.getString("currentList");
+    if(list == null || list == "") {
+      prefs.setString("currentList", "Einkaufsliste");
     }
   }
 }

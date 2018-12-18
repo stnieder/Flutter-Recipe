@@ -13,12 +13,12 @@ class _CreateNewListState extends State<CreateNewList> {
   TextEditingController controller = new TextEditingController();
     DBHelper db = new DBHelper();
 
-    bool _titleTaken = false;
+    bool _titleTaken = true;
 
     _checkList<bool>(String title){
       db.create().then((nothing){
         db.checkListTitle(title).then((val){
-          if(val > 0){
+          if(val > 0 && controller.text.trim().isNotEmpty){
             setState(() {
               _titleTaken = true;
             });

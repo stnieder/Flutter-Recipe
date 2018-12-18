@@ -16,24 +16,27 @@ class GoogleMaterialColors{
   ];
 
   static List<Color> darkList = [
-    Color(0xFF34a853), //Green
-    Color(0xFF4285f4), //Blue
-    Color(0xFF0047ab), //Cobalt blue
+    Color(0xFFf96167), //Red
+    Color(0xFFf9d342), //Yellow
+    Color(0xFFdf678c), //Pink
+    Color(0xFFccf381),  //Green
+    Color(0xFF4a274f)   //Purple
   ];
 
   static List<Color> lightList = [
-    Color(0xFFfbbc04), //Yellow
-    Color(0xFFea4335), //Red
-    Color(0xFFffa700), //Orange
+    Color(0xFFfce77d), //Yellow
+    Color(0xFF292826), //Black
+    Color(0xFF3d155f), //Purple
+    Color(0xFF3642c6),  //Blue
+    Color(0xFFf0a07c)  //Orange
   ];
 
   Color getLightColor(int number) {
     return colorList[number];
   }
 
-  List<Color> getColorCombination(){
-    int random = new Random().nextInt(3);
-    List<Color> value = [darkList[random], lightList[random]];
+  List<Color> getColorCombination(double combination){
+    List<Color> value = [darkList[combination.round()], lightList[combination.round()]];
     return value;
   }
 

@@ -273,8 +273,11 @@ class Dialogs{
     String prefsOrder = prefs.getString("order");
     String prefsList = prefs.getString("currentList");
 
-    //Count amount of list titles
+    
     DBHelper db = new DBHelper();
+
+    //Count amount of list titles
+    int countList = await db.countAllTitles();
 
     //Count checked list items
     int countItems = await db.countCheckedItems(prefsOrder, prefsList);
@@ -371,7 +374,7 @@ class Dialogs{
             ),
             Divider(),
             _item(context, choices[2], true),
-            _item(context, choices[3], await checkListItems()),
+            _item(context, choices[3], countList > 1),
             _item(context, choices[4], countItems > 0)
           ],
         ),
@@ -706,10 +709,7 @@ class Dialogs{
               ),
               highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),
               onPressed: (){
-                if(length == 1) {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Recipebook()));
-                }
-                else Navigator.pop(context, "löschen");
+                Navigator.pop(context, "löschen");
               },
               shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
             )
