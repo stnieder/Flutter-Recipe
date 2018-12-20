@@ -8,5 +8,5 @@ build/
 
 .flutter-plugins
 
-/lib/main.dart
-/lib/SentryDSN.dart
+android/key.properties
+android/app/proguard-rules.pro

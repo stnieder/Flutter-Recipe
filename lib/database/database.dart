@@ -181,11 +181,9 @@ class DBHelper{
           "INSERT INTO intervallTyp(intervallName) VALUES(?)",
           ["weekly"]
         );
-
     });
     print("Created all tables");
   }
-
 
   /*
   * Delete latest record
@@ -454,9 +452,7 @@ class DBHelper{
   }
 
   Future<StepsDB> insertSteps(StepsDB steps) async{
-    var count;
-    if(steps.id == null) count = 0;
-    else count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM steps, recipes, recipeSteps WHERE steps.id = ? AND steps.id = recipeSteps.idSteps AND recipeSteps.idRecipes = recipes.id"));
+    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM steps, recipes, recipeSteps WHERE steps.id = ? AND steps.id = recipeSteps.idSteps AND recipeSteps.idRecipes = recipes.id AND steps.description = ?", [steps.description]));
     if(count == 0){
       steps.id = await _db.insert("steps", steps.toMap());
     } else {
@@ -994,5 +990,4 @@ class DBHelper{
 
     return 1;
   }
-
 }

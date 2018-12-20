@@ -21,6 +21,10 @@ Future<List<Recipes>> fetchRecipes(bool searched, String recipeName) async{
 
 
 class RecipeSelection extends StatefulWidget {
+  final int recipeCount;
+
+  RecipeSelection({this.recipeCount});
+
   @override
   _RecipeSelection createState() => _RecipeSelection();
 }
@@ -78,17 +82,22 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            width: 200.0,
-                            height: 200.0,
-                            child: Text("hier kommt ein bild hinein")//Image.asset("images/nothingFound.png"),
+                            child: Text(
+                              "Es wurden leider keine Rezepte gefunden.",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontFamily: "Google-Sans",
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold
+                              ),
+                            )
                           ),
                           Container(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 75.0),
-                              child: Text("Es wurden keine Rezepte gefunden."),
+                            child: Image.asset(
+                              "images/recipe_not_found.png",
+                              width: MediaQuery.of(context).size.width,
                             ),
-                            width: 300.0,
-                          )
+                          ),                          
                         ],
                       )
                     );
@@ -232,15 +241,32 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
         icon: Icon(Icons.close, color: Colors.black45),
         onPressed: () => Navigator.pop(context),
       ),
-      title: Text(
-        "Rezept auswählen...",
-        style: TextStyle(
-            color: Colors.black,
-            fontFamily: "Google-Sans",
-            fontSize: 18,
-            fontWeight: FontWeight.w400
+      title: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "Neuer Termin",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: "Google-Sans",
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400
+              ),
+            ),
+            Text(
+              "${name.length} von ${widget.recipeCount} ausgewählt",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: "Google-Sans",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400
+              )
+            )
+          ],
         ),
-      ),
+      ),      
     );
   }
 

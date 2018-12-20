@@ -7,9 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sentry/sentry.dart';
-import '../Error_Reporting/SentryDSN.dart';
+import 'Error_Reporting/SentryDSN.dart';
 
-import '../recipe/new_recipe.dart';
+import 'recipe/new_recipe.dart';
 
 
 var flutterLocalNotifcations;
@@ -109,8 +109,12 @@ class Recipe extends StatelessWidget {
   setPrefs() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String list = prefs.getString("currentList");
+    String start = prefs.getString("firstStart");
     if(list == null || list == "") {
       prefs.setString("currentList", "Einkaufsliste");
     }
+    if(start == null || start == ""){
+      prefs.setString("firstStart", "true");
+    } else if(start == "true") prefs.setString("firstStart", "false");
   }
 }

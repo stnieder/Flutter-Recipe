@@ -121,8 +121,18 @@ class _ShoppingPage extends State<ShoppingPage>{
                   );
                 }              
               } else if(snapshot.data.length == 0){
-                return new Center(
-                  child: Text("Keine Daten gefunden."),
+                return new Center(                  
+                  child: Padding(
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/8),
+                    child: Column(
+                      children: <Widget>[
+                        Text("Es wurden keine Einkaufsartikel gefunden"),
+                        Image.asset(
+                          "images/empty_shopping.png"
+                        )
+                      ],
+                    ),
+                  )
                 );
               }
             } else if(snapshot.hasError){

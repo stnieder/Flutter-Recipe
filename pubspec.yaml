@@ -52,7 +52,7 @@ dev_dependencies:
 
 
 flutter_icons:
-  image_path: "images/time2eat.png"
+  image_path: "images/launcher_icon.png"
   android: true
   ios: true
 
@@ -70,12 +70,15 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/allDone.png
-    - images/nothingFound.png
     - images/no_orders.png
-    - images/relaxNow.png
-    - images/somethingWentWrong.png
     - images/time2eat.png
     - images/Sushi.flr
+    - images/launcher_icon.png
+    - images/nothing_to_see_here.png
+    - images/recipe_not_found.png
+    - images/empty_shopping.png
+
+    - start_recipe/Thunfischfilet.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

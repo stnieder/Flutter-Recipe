@@ -9,6 +9,7 @@ class SelectableItems extends StatefulWidget {
   final VoidCallback callback;
   final String name;
   final Widget title;
+  final Widget trailing;
   final Color color;
   final String image;
 
@@ -21,6 +22,7 @@ class SelectableItems extends StatefulWidget {
       this.callback, 
       this.name, 
       this.title,
+      this.trailing,
       this.color,
       this.image
     }
@@ -114,6 +116,7 @@ class StateSelectableItem extends State<SelectableItems> {
               ],
             ),
           ),
+          trailing: widget.trailing,
         ),
       );
   }

@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
 import 'package:Time2Eat/main_pages/recipebook.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +18,6 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-
       backgroundColor: Colors.white,
       body: Padding(        
         padding: EdgeInsets.only(

@@ -109,7 +109,7 @@ class _NewRecipe extends State<NewRecipe>{
   double ingredientHeight = 0.0;
   final TextEditingController zNumberController = new TextEditingController();
   final TextEditingController zNamenController = new TextEditingController();
-  List<String> masses = ["Stk.", "kg", "g", "l", "mg", "TL", "EL"];
+  List<String> masses = ["Stk.", "Handvoll", "Prise" "kg", "g", "l", "mg", "TL", "EL"];
   List<double> zNumber = [];
   List<String> zMass = [];
   List<String> zNamen = [];

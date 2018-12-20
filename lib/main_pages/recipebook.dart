@@ -130,6 +130,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     saveZutaten(List<ZutatenModel> zutaten, int recipeID, DBHelper db) async{
       IngredientsDB ingredients = new IngredientsDB();
       for(int i=0; i < zutaten.length; i++){
+        ingredients.id = null;
         ingredients.number = zutaten[i].number;
         ingredients.measure = zutaten[i].measure;
         ingredients.name = zutaten[i].zutat;
@@ -150,7 +151,8 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     saveZubereitung(List<ZubereitungModel> zubereitung, int recipeID, DBHelper db) async{
       StepsDB steps = new StepsDB();
       for(int i=0; i < zubereitung.length; i++){
-        steps.number = int.parse(zubereitung[i].number);
+        steps.id = null;
+        steps.number = i;
         steps.description = zubereitung[i].steps;
 
         steps = await db.insertSteps(steps);
@@ -163,9 +165,10 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       if(recipe.image != "no image") {
         Uint8List image = base64.decode(recipe.image).buffer.asUint8List();
         Directory directory = await getApplicationDocumentsDirectory();
-        final file = await new File(directory.path+"/${recipe.name}.png").create();
+        String imageName = recipe.name.replaceAll(new RegExp(r"\s+\b|\b\s"), "_");
+        final file = await new File(directory.path+"/$imageName.png").create();
         await file.writeAsBytes(image);
-        imagepath = directory.path+"/${recipe.name}.png";
+        imagepath = directory.path+"/$imageName.png";
       } else {
         imagepath = recipe.image;
       }
@@ -192,12 +195,19 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       await db.create();
       int recipeCount = await db.checkRecipe(recipe.name);
 
+      print("ZubereitungLength: ${zubereitung.length}");
+      print("ZutatenLength: ${zutaten.length}");
+
       if(recipeCount == 0){
         await saveRecipe(recipe, filePath, db);
         int recipeID = await db.getRecipeID(recipe.name);
         await saveZubereitung(zubereitung, recipeID, db);
         await saveZutaten(zutaten, recipeID, db);
-        showBottomSnack("Rezept wurde erfolgreich importiert", ToastGravity.BOTTOM);
+        if(prefs.getString("firstStart") == "false"){
+          showBottomSnack("Rezept wurde erfolgreich importiert", ToastGravity.BOTTOM);
+        } else {
+          prefs.setString("firstStart", "false");
+        }
       } else {
         showBottomSnack("Ein Rezept mit dem Namen ${recipe.name} existiert bereits", ToastGravity.BOTTOM);
       } 
@@ -207,23 +217,22 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     }
 
     createRecipeJson(File path) async{
-      FlutterDocumentPickerParams params = FlutterDocumentPickerParams(
-          allowedFileExtensions: ['json'],
-          invalidFileNameSymbols: ['/']
-      );
-      final path = await FlutterDocumentPicker.openDocument(params: params);
-      File file = new File(path);
-      Map<String,dynamic> jSON = json.decode(file.readAsStringSync());      
+      Map<String,dynamic> jSON;
+      if(prefs.getString("firstStart") == "true") {
+        jSON = json.decode(await rootBundle.loadString("start_recipe/Thunfischfilet.json"));              
+      } else {
+        jSON = json.decode(path.readAsStringSync());      
+      }
       var recipe = RecipesModel.fromJson(jSON);
       var zubereitungJSON = recipe.zubereitung;
       var zutatenJSON = recipe.zutaten;    
-      await saveJsonToRecipe(recipe, zubereitungJSON, zutatenJSON, path);
+      await saveJsonToRecipe(recipe, zubereitungJSON, zutatenJSON, path.path);
       setState(() {});
     }
 
     getPath() async{
       FlutterDocumentPickerParams params = FlutterDocumentPickerParams(
-        allowedFileExtensions: ['json'],
+        allowedFileExtensions: ['recipe'],
         invalidFileNameSymbols: ['/']
       );
       final path = await FlutterDocumentPicker.openDocument(params: params);
@@ -234,7 +243,6 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     @override
     Widget build(BuildContext context) {
       save_recipes = [];
-      setPrefs();
       _fabs = [
           SpeedDial(
             child: new AnimatedBuilder(
@@ -779,6 +787,13 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);
       String image = snapshot.data[index].image;
 
+      Widget favorite;
+      if(snapshot.data[index].favorite == 1) {
+        favorite = Icon(Icons.star, color: googleMaterialColors.getLightColor(1));
+      } else {
+        favorite = Container();
+      }
+
       key = new GlobalKey<StateSelectableItem>();
 
       map.putIfAbsent(index, () => key);
@@ -808,25 +823,30 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
   
   
     openTermin(BuildContext context)async {
-      var returned = await Navigator.push(
-          context,
-          MaterialPageRoute(builder:  (context)=>RecipeSelection())
-      );
-      if(returned != null){
-        DateTime _date = DateTime.now();
-        final DateTime picked = await showMyDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(DateTime.now().year-2),
-            lastDate: DateTime(DateTime.now().year+50)
+      DBHelper db = new DBHelper();
+      var recipeCount = await db.countRecipes();
+      if(recipeCount == 0) showBottomSnack("Um diese Aktion durchzuführen, müssen Rezepte vorhanden sein.", ToastGravity.BOTTOM);
+      else {
+        var returned = await Navigator.push(
+            context,
+            MaterialPageRoute(builder:  (context)=>RecipeSelection(recipeCount: recipeCount))
         );
-  
-        if(picked != null && picked !=  _date){
-          final dateFormat = new DateFormat('dd-MM-yyyy');
-          for(int i=0; i<returned.length; i++){
-            await saveTermin(returned[i], dateFormat.format(picked));
+        if(returned != null){
+          DateTime _date = DateTime.now();
+          final DateTime picked = await showMyDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(DateTime.now().year-2),
+              lastDate: DateTime(DateTime.now().year+50)
+          );
+    
+          if(picked != null && picked !=  _date){
+            final dateFormat = new DateFormat('dd-MM-yyyy');
+            for(int i=0; i<returned.length; i++){
+              await saveTermin(returned[i], dateFormat.format(picked));
+            }
+            showBottomSnack("Termin wurde erfolgreich gespeichert", ToastGravity.BOTTOM);
           }
-          showBottomSnack("Termin wurde erfolgreich gespeichert", ToastGravity.BOTTOM);
         }
       }
     }
@@ -911,6 +931,10 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
   setPrefs() async{
     prefs = await SharedPreferences.getInstance();
     _tabTitle[2] = prefs.getString("currentList");
+    String startUp = prefs.getString("firstStart");
+    if(startUp == "true") {
+      createRecipeJson(File("start_recipe/Thunfisch.json"));      
+    }
   }
 
 

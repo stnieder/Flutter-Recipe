@@ -94,7 +94,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
     void initState() {
       super.initState();      
       recipeName = widget.recipeName;
-      filename = recipeName+".json";
+      filename = recipeName+".recipe";
 
       // Get all data of specific recipe
       getRecipeData();
@@ -270,13 +270,17 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: 15.0, left: 5.0),
-                child: Text(
-                  recipeName,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Google-Sans",
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.w300
+                child: Container(
+                  width: MediaQuery.of(context).size.width/1.05,
+                  child: Text(
+                    recipeName,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: "Google-Sans",
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.w300
+                    ),
                   ),
                 ),
               )
@@ -391,7 +395,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
             ),
             padding: EdgeInsets.only(top: 15.0),
           ),
-          StatefulBuilder(
+          StatefulBuilder(            
             builder: (context, update){
               return Column(
                 children: <Widget>[
@@ -445,28 +449,25 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                       future: fetchIngredients(),
                       initialData: [],
                       builder: (BuildContext context, AsyncSnapshot snapshot){
-                        if(snapshot.hasData){
-                          
-                          return Column(
+                        if(snapshot.hasData){                            
+                          return Column(                              
                             children: <Widget>[
-                              NotificationListener<OverscrollIndicatorNotification>(
-                                onNotification: (overscroll){
-                                  overscroll.disallowGlow();
-                                },
-                                child: Container(
-                                  height: snapshot.data.length * 40.0,
-                                  child: ListView.builder(
-                                    itemCount: snapshot.data.length,
-                                    itemBuilder: (BuildContext context, int index){
-                                      double number = double.parse(snapshot.data[index].number);
-                                      String measure = snapshot.data[index].measure;
-                                      String name = snapshot.data[index].name;
+                              Builder(
+                                builder: (BuildContext context){
+                                  List<Widget> items = new List();
 
-                                      nameList.add(name);
-                                      numberList.add(number);
-                                      measureList.add(measure);
+                                  for (var i = 0; i < snapshot.data.length; i++) {
 
-                                      return Padding(
+                                    double number = double.parse(snapshot.data[i].number);
+                                    String measure = snapshot.data[i].measure;
+                                    String name = snapshot.data[i].name;
+
+                                    nameList.add(name);
+                                    numberList.add(number);
+                                    measureList.add(measure);
+
+                                    items.add(
+                                      Padding(
                                         padding: EdgeInsets.all(8.0),
                                         child: Row(
                                           children: <Widget>[
@@ -477,11 +478,42 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                                             )
                                           ],
                                         ),
-                                      );
-                                    },
-                                  ),
-                                ),
+                                      )
+                                    );
+                                  }
+                                  return Container(
+                                    child: Column(
+                                      children: items,
+                                    ),
+                                  );
+                                },
                               ),
+                              /*ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (BuildContext context, int index){
+                                  double number = double.parse(snapshot.data[index].number);
+                                  String measure = snapshot.data[index].measure;
+                                  String name = snapshot.data[index].name;
+
+                                  nameList.add(name);
+                                  numberList.add(number);
+                                  measureList.add(measure);
+
+                                  return Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text("${number*peopleDB} $measure"),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 12.0),
+                                          child: Text("$name"),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),*/
                               StatefulBuilder(
                                 builder: (context, update){
                                   return GestureDetector(
@@ -532,6 +564,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
             },
           )
         ],
+        physics: AlwaysScrollableScrollPhysics(),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: googleMaterialColors.primaryColor(),
@@ -728,15 +761,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
     await getApplicationDocumentsDirectory().then((Directory dir){
       directory = dir;
       jsonFile = new File(directory.path+"/"+filename);
-      fileExists = jsonFile.existsSync();
-      if(fileExists){
-        this.setState((){
-          jsonMap = json.decode(jsonFile.readAsStringSync());
-          showBottomSnack("Eine Datei mit diesem Namen existiert bereits", ToastGravity.BOTTOM);
-        });
-      } else {
-        writeFile();
-      }
+      writeFile();
     });    
   }
 
