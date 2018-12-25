@@ -80,7 +80,7 @@ class MyDialogClass extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(minWidth: 280.0),
             child: Material(
-              color: backgroundColor ?? dialogTheme.backgroundColor ?? Theme.of(context).dialogBackgroundColor,
+              color: Theme.of(context).dialogBackgroundColor,
               elevation: _defaultElevation,
               shape: _defaultDialogShape,
               type: MaterialType.card,
@@ -262,7 +262,7 @@ class AlertDialog extends StatelessWidget {
         child: dialogChild
       );
 
-    return Dialog(
+    return MyDialogClass(
       elevation: elevation,
       shape: shape,
       child: dialogChild,
@@ -532,7 +532,7 @@ class SimpleDialog extends StatelessWidget {
         label: label,
         child: dialogChild,
       );
-    return Dialog(
+    return MyDialogClass(
       backgroundColor: backgroundColor,
       elevation: elevation,
       shape: shape,
