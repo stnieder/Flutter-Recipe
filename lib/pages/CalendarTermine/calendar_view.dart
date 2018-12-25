@@ -138,7 +138,7 @@ class _CalendarView extends State<CalendarView>{
 
     _animatedList = new AnimatedList(
       key: _listKey,
-      initialItemCount: names.length,
+      initialItemCount: snapshot.data.length,
       itemBuilder: (BuildContext context, int index, Animation<double> animation){
         return _gestureDetectorChild(
           snapshot.data[index].name,
@@ -191,7 +191,9 @@ class _CalendarView extends State<CalendarView>{
             ),
         ),
         onTap: (){
-          editNotification(name, image, backgroundColor, index);
+          setState(() {
+            editNotification(name, image, backgroundColor, index);
+          });
         },
       ),
     );
@@ -243,20 +245,18 @@ class _CalendarView extends State<CalendarView>{
         ),
         content: Text("Termin gelöscht"),
       );
-      setState(() {
-        editList.add(recipe);
-        _listKey.currentState.removeItem(
-          index, 
-          (BuildContext context, Animation<double> animation){
-            return FadeTransition(
-              opacity: animation,
-              child: _gestureDetectorChild(recipe, image, backgroundColor, index, animation),
-            );
-          }
-        );
-      });
+      editList.add(recipe);
+      _listKey.currentState.removeItem(
+        index, 
+        (BuildContext context, Animation<double> animation){
+          return FadeTransition(
+            opacity: animation,
+            child: _gestureDetectorChild(recipe, image, backgroundColor, index, animation),
+          );
+        }
+      );      
       Scaffold.of(context).showSnackBar(snackBar);  
-      Future.delayed(Duration(seconds: 5), () async{
+      Future.delayed(Duration(seconds: 3), () async{
         if(!cancelFuture){
           DBHelper db = new DBHelper();
           await db.create();
@@ -265,10 +265,11 @@ class _CalendarView extends State<CalendarView>{
 
           int intervallID = await db.getIntervall(recipeID, selectedDate, timestamp);
           await db.deleteTermin(recipeID, selectedDate, intervallID, timestamp);
+          cancelFuture = true;
         }
       });
     } else if(edit == "notification"){
-      showNotificationDialog(recipe);
+        showNotificationDialog(recipe);
     }
   }
 }

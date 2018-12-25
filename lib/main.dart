@@ -79,6 +79,9 @@ Future<Null> _reportError(dynamic error, dynamic stackTrace) async{
 class Recipe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
     setPrefs();
     return new MaterialApp( 
       key: _mainKey,

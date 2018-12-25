@@ -3,6 +3,7 @@ import 'package:Time2Eat/customizedWidgets/CustomShowDialog.dart';
 import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
 import 'package:Time2Eat/customizedWidgets/MyDropDownButton.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
@@ -230,11 +231,24 @@ class _NotificationDialog extends State<NotificationDialog>{
   }
 
   createNotification() async{
-    int id = await setNotficationTime(selectedIntervall);
-    int index = intervalle.indexOf(selectedIntervall);
-    String r_interval = db_intervalle[index];
-    Navigator.pop(context, [id, r_interval]);
+    if(DateTime.now().isAfter(selectedDateTime) || DateTime.now().isAtSameMomentAs(selectedDateTime)){
+      showBottomSnack("Es ist nicht möglich Erinnerungen in der Vergangenheit festzulegen.", ToastGravity.BOTTOM);
+    } else {
+      int id = await setNotficationTime(selectedIntervall);
+      int index = intervalle.indexOf(selectedIntervall);
+      String r_interval = db_intervalle[index];    
+      Navigator.pop(context, [id, r_interval]);
+    }
   }
+
+  showBottomSnack(String value, ToastGravity toastGravity){
+      Fluttertoast.showToast(
+        msg: value,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: toastGravity,
+        timeInSecForIos: 2,            
+      );
+    }
 
   convertDate(String value) async{
     if(value == date[0]){

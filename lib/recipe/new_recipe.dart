@@ -496,8 +496,7 @@ class _NewRecipe extends State<NewRecipe>{
                           ),
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
-                          maxLength: 75,
-                          validator: (String text){},
+                          maxLength: 150
                         ),
                       )
                     ],
@@ -1051,7 +1050,8 @@ class _NewRecipe extends State<NewRecipe>{
       await db.create();
       RecipesDB recipe = new RecipesDB();
       recipe.name = recipeName.text;
-      recipe.definition = recipeDescription.text;
+      if(recipeDescription.text.trim().isEmpty) recipe.definition = "nothing";
+      else recipe.definition = recipeDescription.text;
       recipe.pre_duration = prepDuration.inMinutes.toString();
       recipe.cre_duration = creaDuration.inMinutes.toString();
       recipe.resting_time = restDuration.inMinutes.toString();

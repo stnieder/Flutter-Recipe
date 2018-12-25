@@ -12,6 +12,7 @@ import 'package:Time2Eat/recipe_details/cooking.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
@@ -207,7 +208,12 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                               PopupMenuItem(
                                 child: Row(
                                   children: <Widget>[
-                                    Icon(OMIcons.delete, color: Colors.black54),
+                                    SvgPicture.asset(
+                                      "images/trash.svg",
+                                      color: Colors.black54,
+                                      height: 24.0,
+                                      width: 24.0,
+                                    ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 10.0),
                                       child: Text("Löschen"),
@@ -285,6 +291,21 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                 ),
               )
             ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10.0, left: 15.0, right: 15.0, bottom: 5.0),
+            child: Text(
+              (description == "nothing"
+                ? "Du hast diesem Rezept leider keine Beschreibung gegeben."
+                : description
+              ),
+              style: TextStyle(
+                color: Colors.black.withOpacity(0.3),
+                fontFamily: "Google-Sans",
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500
+              ),
+            ),
           ),
           Container(            
             decoration: BoxDecoration(

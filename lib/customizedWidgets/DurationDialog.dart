@@ -6,6 +6,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import 'MyDialogClass.dart' as dialogs;
+
 const Duration _kDialAnimateDuration = const Duration(milliseconds: 200);
 
 const double _kDurationPickerWidthPortrait = 328.0;
@@ -26,7 +28,7 @@ class _DialPainter extends CustomPainter {
     @required this.context,
     @required this.labels,
     @required this.backgroundColor,
-    @required this.accentColor,
+    this.accentColor = Colors.amber,
     @required this.theta,
     @required this.textDirection,
     @required this.selectedValue,
@@ -64,7 +66,7 @@ class _DialPainter extends CustomPainter {
     // Draw a translucent circle for every hour
     for (int i = 0; i < multiplier; i = i + 1) {
       canvas.drawCircle(centerPoint, radius,
-          new Paint()..color = accentColor.withOpacity((i == 0) ? 0.3 : 0.1));
+          new Paint()..color = Colors.amber.withOpacity((i == 0) ? 0.3 : 0.1));
     }
 
     // Draw the inner background circle
@@ -401,8 +403,8 @@ class _DialState extends State<_Dial> with SingleTickerProviderStateMixin {
             context: context,
             selectedValue: selectedDialValue,
             labels: _buildMinutes(theme.textTheme),
-            backgroundColor: backgroundColor,
-            accentColor: themeData.accentColor,
+            backgroundColor: Colors.grey[200],
+            accentColor: Colors.amber,
             theta: _theta.value,
             textDirection: Directionality.of(context),
           ),
@@ -506,10 +508,14 @@ class _DurationPickerDialogState extends State<_DurationPickerDialog> {
           ),
         ]));
 
-    final Dialog dialog = new Dialog(child: new OrientationBuilder(
+    final dialogs.MyDialogClass dialog = new dialogs.MyDialogClass(      
+      child: new OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
           final Widget pickerAndActions = new Container(
-            color: theme.dialogBackgroundColor,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              color: theme.dialogBackgroundColor,
+            ),
             child: new Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -520,7 +526,6 @@ class _DurationPickerDialogState extends State<_DurationPickerDialog> {
               ],
             ),
           );
-
           assert(orientation != null);
           switch (orientation) {
             case Orientation.portrait:

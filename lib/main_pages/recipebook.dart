@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
 //Plugins of Flutter-Team
@@ -175,6 +176,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
             onClose: (){
               animationController.reverse();
             },
+            tooltip: "Neues Rezept",
             visible: _dialVisible,            
           ),
           FloatingActionButton(            
@@ -185,6 +187,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
             child: Icon(
               Icons.add
             ),
+            tooltip: "Neuer Termin",
           ),
           FloatingActionButton(
             onPressed: (){
@@ -193,6 +196,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
             child: Icon(
               Icons.add
             ),
+            tooltip: "Neuer Artikel",
           )
         ];
   
@@ -489,7 +493,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       }
   
       wholeName = Row(
-          children: letters
+        children: letters
       );
   
       return wholeName;
@@ -632,19 +636,27 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     Widget longPressedAppBar(){
       return AppBar(
         actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.delete_outline,
-              color: Colors.black54,
+          Tooltip(
+            message: "Löschen",
+            child: Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                child: SvgPicture.asset(
+                  "images/trash.svg",
+                  color: Colors.black54,
+                  height: 24.0,
+                  width: 24.0,
+                ),
+                onTap: () => deleteDialog(indexList),
+              ),
             ),
-            onPressed: (){
-              deleteDialog(indexList);
-            },
           )
         ],
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          icon: Icon(            
             Icons.close, 
             color: Colors.black54
           ),
@@ -656,6 +668,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
               searchController = new TextEditingController();
             });
           },
+          tooltip: "Abbrechen",
         ),
         title: Text(
           (popup && indexList.isEmpty
@@ -822,7 +835,13 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
         color: usedColor,
         name: snapshot.data[index].name,
         title: (searchController.text.isEmpty
-          ? Text(snapshot.data[index].name)
+          ? Container(
+            width: 300.0,
+            child: Text(
+              snapshot.data[index].name,
+              overflow: TextOverflow.ellipsis,
+            ),
+          )
           : recipeName(searchCondition, snapshot.data[index].name)
         ),
         index: index,
@@ -855,11 +874,11 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
           final DateTime picked = await showMyDatePicker(
               context: context,
               initialDate: DateTime.now(),
-              firstDate: DateTime(DateTime.now().year-2),
+              firstDate: DateTime(DateTime.now().day),
               lastDate: DateTime(DateTime.now().year+50)
           );
     
-          if(picked != null && picked !=  _date){
+          if(picked != null && picked !=  _date && picked.isAfter(DateTime.now())){
             final dateFormat = new DateFormat('dd-MM-yyyy');
             for(int i=0; i<returned.length; i++){
               await saveTermin(returned[i], dateFormat.format(picked));

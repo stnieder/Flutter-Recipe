@@ -5,11 +5,13 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'MyDialogClass.dart' as myDialog;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 /// Initial display mode of the date picker dialog.
 ///
@@ -72,28 +74,10 @@ class _DatePickerHeader extends StatelessWidget {
     final TextTheme headerTextTheme = themeData.primaryTextTheme;
     Color dayColor;
     Color yearColor;
-    switch (themeData.primaryColorBrightness) {
-      case Brightness.light:
-        dayColor = mode == DatePickerMode.day ? Colors.black87 : Colors.black54;
-        yearColor = mode == DatePickerMode.year ? Colors.black87 : Colors.black54;
-        break;
-      case Brightness.dark:
-        dayColor = mode == DatePickerMode.day ? Colors.white : Colors.white70;
-        yearColor = mode == DatePickerMode.year ? Colors.white : Colors.white70;
-        break;
-    }
-    final TextStyle dayStyle = headerTextTheme.display1.copyWith(color: dayColor, height: 1.4);
-    final TextStyle yearStyle = headerTextTheme.subhead.copyWith(color: yearColor, height: 1.4);
+    final TextStyle dayStyle = headerTextTheme.display1.copyWith(color: Colors.black, fontWeight: FontWeight.w500, height: 1.4);
+    final TextStyle yearStyle = headerTextTheme.subhead.copyWith(color: Colors.grey[600],fontWeight: FontWeight.w700, height: 1.4);
 
-    Color backgroundColor;
-    switch (themeData.brightness) {
-      case Brightness.light:
-        backgroundColor = themeData.primaryColor;
-        break;
-      case Brightness.dark:
-        backgroundColor = themeData.backgroundColor;
-        break;
-    }
+    Color backgroundColor = Colors.white;
 
     double width;
     double height;
@@ -102,7 +86,7 @@ class _DatePickerHeader extends StatelessWidget {
     switch (orientation) {
       case Orientation.portrait:
         height = _kDatePickerHeaderPortraitHeight;
-        padding = const EdgeInsets.symmetric(horizontal: 16.0);
+        padding = const EdgeInsets.symmetric(horizontal: 14.0);
         mainAxisAlignment = MainAxisAlignment.center;
         break;
       case Orientation.landscape:
@@ -133,11 +117,14 @@ class _DatePickerHeader extends StatelessWidget {
       width: width,
       height: height,
       padding: padding,
-      color: backgroundColor,
       child: new Column(
-        mainAxisAlignment: mainAxisAlignment,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[yearButton, dayButton],
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[yearButton, dayButton]
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        color: backgroundColor
       ),
     );
   }
@@ -611,38 +598,41 @@ class _MonthPickerState extends State<MonthPicker> {
   Widget build(BuildContext context) {
     final TextDirection textDirection = Directionality.of(context);
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-    return new SizedBox(
-      width: _kMonthPickerPortraitWidth,
-      height: _kMaxDayPickerHeight,
-      child: new Stack(
-        children: <Widget>[
-          new PageView.builder(
-            key: new ValueKey<DateTime>(widget.selectedDate),
-            controller: _dayPickerController,
-            scrollDirection: Axis.horizontal,
-            itemCount: _monthDelta(widget.firstDate, widget.lastDate) + 1,
-            itemBuilder: _buildItems,
-            onPageChanged: _handleMonthPageChanged,
-          ),
-          new PositionedDirectional(
-            top: 0.0,
-            start: 8.0,
-            child: new IconButton(
-              icon: _getPreviousMonthIcon(textDirection),
-              tooltip: localizations.previousMonthTooltip,
-              onPressed: _isDisplayingFirstMonth ? null : _handlePreviousMonth,
+    return new Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(100.0))
+      ),
+      child: SizedBox(      
+        width: _kMonthPickerPortraitWidth,
+        height: _kMaxDayPickerHeight,
+        child: new Stack(
+          children: <Widget>[
+            new PageView.builder(
+              key: new ValueKey<DateTime>(widget.selectedDate),
+              controller: _dayPickerController,
+              scrollDirection: Axis.horizontal,
+              itemCount: _monthDelta(widget.firstDate, widget.lastDate) + 1,
+              itemBuilder: _buildItems,
+              onPageChanged: _handleMonthPageChanged,
             ),
-          ),
-          new PositionedDirectional(
-            top: 0.0,
-            end: 8.0,
-            child: new IconButton(
-              icon: _getNextMonthIcon(textDirection),
-              tooltip: localizations.nextMonthTooltip,
-              onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
+            new PositionedDirectional(
+              top: 0.0,
+              start: 8.0,
+              child: new IconButton(
+                icon: _getPreviousMonthIcon(textDirection),
+                onPressed: _isDisplayingFirstMonth ? null : _handlePreviousMonth,
+              ),
             ),
-          ),
-        ],
+            new PositionedDirectional(
+              top: 0.0,
+              end: 8.0,
+              child: new IconButton(
+                icon: _getNextMonthIcon(textDirection),
+                onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -813,8 +803,21 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
   }
 
   void _handleOk() {
-    Navigator.pop(context, _selectedDate);
+    if(_selectedDate.isAfter(DateTime.now())){
+      Navigator.pop(context, _selectedDate);
+    } else {
+      showBottomSnack("Ein Eintrag in der Vergangenheit ist nicht möglich", ToastGravity.CENTER);
+    }
   }
+
+  void showBottomSnack(String value, ToastGravity toastGravity){
+      Fluttertoast.showToast(
+        msg: value,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: toastGravity,
+        timeInSecForIos: 2,            
+      );
+    }
 
   void _handleMonthHeaderTap() {
     _handleModeChanged(DatePickerMode.year);
@@ -868,7 +871,7 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
         ],
       ),
     );
-    return new Dialog(
+    return new myDialog.MyDialogClass(
         child: new OrientationBuilder(
             builder: (BuildContext context, Orientation orientation) {
               final Widget header = new _DatePickerHeader(
@@ -880,16 +883,16 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
               assert(orientation != null);
               switch (orientation) {
                 case Orientation.portrait:
-                  return new SizedBox(
+                  return SizedBox(
                     width: _kMonthPickerPortraitWidth,
                     child: new Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[header, picker, actions],
+                      children: <Widget>[header, Divider(), picker, actions],
                     ),
                   );
                 case Orientation.landscape:
-                  return new SizedBox(
+                  return new SizedBox(                      
                     height: _kDatePickerLandscapeHeight,
                     child: new Row(
                       mainAxisSize: MainAxisSize.min,
@@ -902,7 +905,7 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
                             child: new Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[picker, actions],
+                              children: <Widget>[picker, Divider(), actions],
                             ),
                           ),
                         ),
@@ -989,8 +992,9 @@ Future<DateTime> showMyDatePicker({
     );
   }
 
-  return await showDialog<DateTime>(
+
+  return await showDialog(
     context: context,
-    child: child,
+    child: child
   );
 }

@@ -34,7 +34,6 @@ dependencies:
   url_launcher: ^3.0.3
   flutter_picker: ^1.0.5
   share: any
-  flutter_launcher_icons: ^0.7.0
   flutter_speed_dial: ^1.0.9
   json_annotation: ^2.0.0
   simple_permissions: ^0.1.9
@@ -43,18 +42,19 @@ dependencies:
   flutter_document_picker: ^1.2.0
   flare_flutter: ^1.0.4
   sentry: any
+  flutter_svg: ^0.8.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^1.0.0
   json_serializable: ^2.0.0
-
+  flutter_launcher_icons: ^0.7.0
 
 flutter_icons:
-  image_path: "images/launcher_icon.png"
-  android: true
   ios: true
+  android: true
+  image_path: "images/launcher_icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -77,6 +77,8 @@ flutter:
     - images/nothing_to_see_here.png
     - images/recipe_not_found.png
     - images/empty_shopping.png
+    - images/trash.svg
+    - images/start.svg
 
     - start_recipe/Thunfischfilet.json
 
