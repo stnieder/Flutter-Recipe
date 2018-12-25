@@ -227,6 +227,98 @@ class DBHelper{
     });
   }
 
+  //Delete a step
+  Future<int> deleteSteps(recipe) async{
+    int count;
+    await _db.transaction((txn)async{
+      String sql = 
+        "SELECT steps.id FROM steps, recipeSteps, recipes "+
+        "WHERE steps.id = recipeSteps.idSteps "+
+        "AND recipeSteps.idRecipes = recipes.id "+
+        "AND recipes.name = ?";
+      List<Map> list = await txn.rawQuery(sql, [recipe]);
+      List<String> items = new List();
+      for (var i = 0; i < list.length; i++) {
+        items.add(list[i]["id"].toString());
+      }
+
+      sql = 
+        "SELECT recipeSteps.id FROM steps, recipeSteps, recipes "+
+        "WHERE steps.id = recipeSteps.idSteps "+
+        "AND recipeSteps.idRecipes = recipes.id "+
+        "AND recipes.name = ?";
+      List<Map> listZwischen = await txn.rawQuery(sql, [recipe]);
+      List<String> zwischenTabelle = new List();
+      for (var i = 0; i < list.length; i++) {
+        zwischenTabelle.add(listZwischen[i]["id"].toString());
+      }
+      
+
+      sql = 
+        "DELETE FROM steps "+
+        "WHERE id = ?";
+      for (var i = 0; i < items.length; i++) {
+        await txn.rawDelete(sql, [items[i]]);
+      }
+
+      sql = 
+        "DELETE FROM recipeSteps "+
+        "WHERE id = ?";
+      for (var i = 0; i < zwischenTabelle.length; i++) {
+        await txn.rawDelete(sql, [zwischenTabelle[i]]);
+      }
+      count = items.length + zwischenTabelle.length;
+      print("Items deleted: $count");
+    });    
+    return count;
+  }
+
+  //Delete an ingredient
+  Future<int> deleteIngre(String recipe) async{
+    int count;
+    await _db.transaction((txn)async{
+      String sql = 
+        "SELECT ingredients.id FROM ingredients, recipeIngredients, recipes "+
+        "WHERE ingredients.id = recipeIngredients.idIngredients "+
+        "AND recipeIngredients.idRecipes = recipes.id "+
+        "AND recipes.name = ?";
+      List<Map> list = await txn.rawQuery(sql, [recipe]);
+      List<String> items = new List();
+      for (var i = 0; i < list.length; i++) {
+        items.add(list[i]["id"].toString());
+      }
+
+      sql = 
+        "SELECT recipeIngredients.id FROM ingredients, recipeIngredients, recipes "+
+        "WHERE ingredients.id = recipeIngredients.idIngredients "+
+        "AND recipeIngredients.idRecipes = recipes.id "+
+        "AND recipes.name = ?";
+      List<Map> listZwischen = await txn.rawQuery(sql, [recipe]);
+      List<String> zwischenTabelle = new List();
+      for (var i = 0; i < list.length; i++) {
+        zwischenTabelle.add(listZwischen[i]["id"].toString());
+      }
+      
+
+      sql = 
+        "DELETE FROM ingredients "+
+        "WHERE id = ?";
+      for (var i = 0; i < items.length; i++) {
+        await txn.rawDelete(sql, [items[i]]);
+      }
+
+      sql = 
+        "DELETE FROM recipeIngredients "+
+        "WHERE id = ?";
+      for (var i = 0; i < zwischenTabelle.length; i++) {
+        await txn.rawDelete(sql, [zwischenTabelle[i]]);
+      }
+      count = items.length + zwischenTabelle.length;
+      print("Items deleted: $count");
+    });    
+    return count;
+  }
+
   //Delete checked items
   Future deleteCheckedItems(String listName) async{
     await _db.transaction((txn) async{
@@ -406,51 +498,6 @@ class DBHelper{
     return ingre;
   }
 
-  Future<int> deleteIngre(String recipe) async{
-    int count;
-    await _db.transaction((txn)async{
-      String sql = 
-        "SELECT ingredients.id FROM ingredients, recipeIngredients, recipes "+
-        "WHERE ingredients.id = recipeIngredients.idIngredients "+
-        "AND recipeIngredients.idRecipes = recipes.id "+
-        "AND recipes.name = ?";
-      List<Map> list = await txn.rawQuery(sql, [recipe]);
-      List<String> items = new List();
-      for (var i = 0; i < list.length; i++) {
-        items.add(list[i]["id"].toString());
-      }
-
-      sql = 
-        "SELECT recipeIngredients.id FROM ingredients, recipeIngredients, recipes "+
-        "WHERE ingredients.id = recipeIngredients.idIngredients "+
-        "AND recipeIngredients.idRecipes = recipes.id "+
-        "AND recipes.name = ?";
-      List<Map> listZwischen = await txn.rawQuery(sql, [recipe]);
-      List<String> zwischenTabelle = new List();
-      for (var i = 0; i < list.length; i++) {
-        zwischenTabelle.add(listZwischen[i]["id"].toString());
-      }
-      
-
-      sql = 
-        "DELETE FROM ingredients "+
-        "WHERE id = ?";
-      for (var i = 0; i < items.length; i++) {
-        await txn.rawDelete(sql, [items[i]]);
-      }
-
-      sql = 
-        "DELETE FROM recipeIngredients "+
-        "WHERE id = ?";
-      for (var i = 0; i < zwischenTabelle.length; i++) {
-        await txn.rawDelete(sql, [zwischenTabelle[i]]);
-      }
-      count = items.length + zwischenTabelle.length;
-      print("Items deleted: $count");
-    });    
-    return count;
-  }
-
   Future<StepsDB> insertSteps(StepsDB steps) async{
     var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM steps, recipes, recipeSteps WHERE steps.id = ? AND steps.id = recipeSteps.idSteps AND recipeSteps.idRecipes = recipes.id AND steps.description = ?", [steps.description]));
     if(count == 0){
@@ -459,51 +506,6 @@ class DBHelper{
       await _db.update("steps", steps.toMap(), where: "id = ?", whereArgs: [steps.id]);
     }
     return steps;
-  }
-
-  Future<int> deleteSteps(recipe) async{
-    int count;
-    await _db.transaction((txn)async{
-      String sql = 
-        "SELECT steps.id FROM steps, recipeSteps, recipes "+
-        "WHERE steps.id = recipeSteps.idSteps "+
-        "AND recipeSteps.idRecipes = recipes.id "+
-        "AND recipes.name = ?";
-      List<Map> list = await txn.rawQuery(sql, [recipe]);
-      List<String> items = new List();
-      for (var i = 0; i < list.length; i++) {
-        items.add(list[i]["id"].toString());
-      }
-
-      sql = 
-        "SELECT recipeSteps.id FROM steps, recipeSteps, recipes "+
-        "WHERE steps.id = recipeSteps.idSteps "+
-        "AND recipeSteps.idRecipes = recipes.id "+
-        "AND recipes.name = ?";
-      List<Map> listZwischen = await txn.rawQuery(sql, [recipe]);
-      List<String> zwischenTabelle = new List();
-      for (var i = 0; i < list.length; i++) {
-        zwischenTabelle.add(listZwischen[i]["id"].toString());
-      }
-      
-
-      sql = 
-        "DELETE FROM steps "+
-        "WHERE id = ?";
-      for (var i = 0; i < items.length; i++) {
-        await txn.rawDelete(sql, [items[i]]);
-      }
-
-      sql = 
-        "DELETE FROM recipeSteps "+
-        "WHERE id = ?";
-      for (var i = 0; i < zwischenTabelle.length; i++) {
-        await txn.rawDelete(sql, [zwischenTabelle[i]]);
-      }
-      count = items.length + zwischenTabelle.length;
-      print("Items deleted: $count");
-    });    
-    return count;
   }
 
   
@@ -685,7 +687,7 @@ class DBHelper{
 
   //Get all Recipes
   Future<List<Recipes>> getRecipes() async{
-    List<Map> list = await _db.rawQuery("SELECT * FROM recipes ORDER BY name DESC");
+    List<Map> list = await _db.rawQuery("SELECT * FROM recipes ORDER BY name, favorite DESC");
     List<Recipes> recipes = new List();
     for(int i =0; i < list.length; i++){
       recipes.add(new Recipes(id: list[i]["id"],name: list[i]["name"],definition: list[i]["definition"], pre_duration: list[i]["pre_duration"], cre_duration: list[i]["cre_duration"], resting_time: list[i]["resting_time"], people: list[i]["people"].toString(), favorite:  list[i]["favorite"], timestamp: list[i]["timestamp"], image: list[i]["image"],backgroundColor: list[i]["backgroundColor"]));
@@ -825,6 +827,13 @@ class DBHelper{
     List<Map> list = await _db.rawQuery(sql);
     String title = list[0]["titleName"];
     return title;
+  }
+
+  //Count favorite recipes
+  Future<int> countFavorites() async{
+    String sql = "SELECT COUNT(*) FROM recipes WHERE favorite = 1";
+    int count = Sqflite.firstIntValue(await _db.rawQuery(sql));
+    return count;
   }
 
   //Count list titles

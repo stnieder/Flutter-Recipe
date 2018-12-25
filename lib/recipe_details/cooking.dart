@@ -143,75 +143,78 @@ class CheckCardsState extends State<CheckCards> with SingleTickerProviderStateMi
     List<Widget> cards = new List();
     for (var i = 0; i < widget.itemCount; i++) {
       cards.add(
-        AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child){
-            return Card( 
-              color: (checkedList[i] == false
-                ? Colors.white
-                : Colors.grey[300]
-              ),         
-              elevation: 2.0,
-              shape: new RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-              ),
-              child: ListTile(
-                onTap: (){
-                  setState(() {
-                    checkedList[i] = !checkedList[i];
-                    if(checkedList[i] == true){
-                      for(int j=i-1; j > -1; j--){
-                        checkedList[j] = true;
-                      }
-                    } else if(checkedList[i] == false){
-                      for(int j=i+1; j < widget.itemCount; j++){
-                        checkedList[j] = false;
-                      }
-                    }
-                  });
-                },
-                leading: Text(
-                  "${i+1}",
-                  style: TextStyle(
-                    color: (checkedList[i] == false
-                      ? Colors.amber
-                      : Colors.black.withOpacity(0.5)
-                    ),
-                    fontFamily: "Google-Sans",
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold
-                  ),
+        Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Colors.grey[300])
+            )
+          ),
+          child: AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child){
+              return Container( 
+                color: (checkedList[i] == false
+                  ? Colors.white
+                  : Colors.grey[300]
                 ),
-                title: widget.titles[i],
-                trailing: AnimatedCrossFade(
-                  firstChild: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black26,
-                            width: 2.0
-                          ),
-                          shape: BoxShape.circle
+                child: ListTile(
+                  onTap: (){
+                    setState(() {
+                      checkedList[i] = !checkedList[i];
+                      if(checkedList[i] == true){
+                        for(int j=i-1; j > -1; j--){
+                          checkedList[j] = true;
+                        }
+                      } else if(checkedList[i] == false){
+                        for(int j=i+1; j < widget.itemCount; j++){
+                          checkedList[j] = false;
+                        }
+                      }
+                    });
+                  },
+                  leading: Text(
+                    "${i+1}",
+                    style: TextStyle(
+                      color: (checkedList[i] == false
+                        ? Colors.amber
+                        : Colors.black.withOpacity(0.5)
                       ),
-                      child: Text(""),
-                      height: 24.0,
-                      width: 24.0
-                  ),
-                  secondChild: Container(                
-                    child: Icon(Icons.check, color:  Colors.white),
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      shape: BoxShape.circle
+                      fontFamily: "Google-Sans",
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
-                  duration: Duration(milliseconds: 200),
-                  crossFadeState: (checkedList[i]
-                    ? CrossFadeState.showSecond
-                    : CrossFadeState.showFirst
+                  title: widget.titles[i],
+                  trailing: AnimatedCrossFade(
+                    firstChild: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black26,
+                              width: 2.0
+                            ),
+                            shape: BoxShape.circle
+                        ),
+                        child: Text(""),
+                        height: 24.0,
+                        width: 24.0
+                    ),
+                    secondChild: Container(                
+                      child: Icon(Icons.check, color:  Colors.white),
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+                        shape: BoxShape.circle
+                      ),
+                    ),
+                    duration: Duration(milliseconds: 200),
+                    crossFadeState: (checkedList[i]
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         )
       );
     }

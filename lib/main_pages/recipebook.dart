@@ -44,6 +44,7 @@ import '../pages/CalendarTermine/calendar_view.dart';
 import '../pages/shopping_list.dart';
 import '../recipe/new_recipe.dart';
 
+int favoriteCount = 0;
 
 
 //Get all Recipes inside a List
@@ -53,6 +54,8 @@ Future<List<Recipes>> fetchRecipes(bool searched, String recipeName) async{
   Future<List<Recipes>> recipes;
   if(searched) recipes = dbHelper.filterRecipes(recipeName);
   else recipes = dbHelper.getRecipes();
+
+  favoriteCount = await dbHelper.countFavorites();
 
   return recipes;
 }
@@ -117,127 +120,6 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
 
       colorAnimation = new ColorTween(begin: Color(0xFF4285f4), end: Color(0xFFea4335))
         .animate(CurvedAnimation(curve: Curves.linear, parent: animationController));
-    }
-
-    Future saveRecIngreIDs(int recipeID, int ingredientID, DBHelper db) async{
-      RecIngre recIngre = new RecIngre();
-      recIngre.idRecipes = recipeID;
-      recIngre.idIngredients = ingredientID;
-
-      await db.insertRecIngre(recIngre);
-    }
-
-    saveZutaten(List<ZutatenModel> zutaten, int recipeID, DBHelper db) async{
-      IngredientsDB ingredients = new IngredientsDB();
-      for(int i=0; i < zutaten.length; i++){
-        ingredients.id = null;
-        ingredients.number = zutaten[i].number;
-        ingredients.measure = zutaten[i].measure;
-        ingredients.name = zutaten[i].zutat;
-
-        ingredients = await db.insertIngre(ingredients);
-        await saveRecIngreIDs(recipeID, ingredients.id, db);
-      }
-    }
-
-    saveRecStepsIDs(int recipeID, int stepsID, DBHelper db) async{
-      RecipeSteps recipeSteps = new RecipeSteps();
-      recipeSteps.idRecipes = recipeID;
-      recipeSteps.idSteps = stepsID;
-
-      recipeSteps = await db.insertRecipeSteps(recipeSteps);
-    }
-
-    saveZubereitung(List<ZubereitungModel> zubereitung, int recipeID, DBHelper db) async{
-      StepsDB steps = new StepsDB();
-      for(int i=0; i < zubereitung.length; i++){
-        steps.id = null;
-        steps.number = i;
-        steps.description = zubereitung[i].steps;
-
-        steps = await db.insertSteps(steps);
-        await saveRecStepsIDs(recipeID, steps.id, db);
-      }
-    }
-
-    saveRecipe(RecipesModel recipe, String filePath, DBHelper db) async{
-      String imagepath;
-      if(recipe.image != "no image") {
-        Uint8List image = base64.decode(recipe.image).buffer.asUint8List();
-        Directory directory = await getApplicationDocumentsDirectory();
-        String imageName = recipe.name.replaceAll(new RegExp(r"\s+\b|\b\s"), "_");
-        final file = await new File(directory.path+"/$imageName.png").create();
-        await file.writeAsBytes(image);
-        imagepath = directory.path+"/$imageName.png";
-      } else {
-        imagepath = recipe.image;
-      }
-
-      RecipesDB recipes = new RecipesDB();
-      recipes.name = recipe.name;
-      recipes.image = imagepath;
-      recipes.definition = recipe.description;
-      recipes.timestamp = DateTime.now().toString();
-      recipes.pre_duration = recipe.preperation;
-      recipes.cre_duration = recipe.creation;
-      recipes.resting_time= recipe.resting;
-      recipes.people = recipe.people;
-      recipes.backgroundColor = recipe.backgroundColor;
-      recipes.favorite = recipe.favorite; 
-
-      recipes = await db.insertRecipe(recipes);
-    }
-
-    saveJsonToRecipe(RecipesModel recipe, List<ZubereitungModel> zubereitung, List<ZutatenModel> zutaten, String filePath) async{
-      bool update = false;
-
-      DBHelper db = new DBHelper();
-      await db.create();
-      int recipeCount = await db.checkRecipe(recipe.name);
-
-      print("ZubereitungLength: ${zubereitung.length}");
-      print("ZutatenLength: ${zutaten.length}");
-
-      if(recipeCount == 0){
-        await saveRecipe(recipe, filePath, db);
-        int recipeID = await db.getRecipeID(recipe.name);
-        await saveZubereitung(zubereitung, recipeID, db);
-        await saveZutaten(zutaten, recipeID, db);
-        if(prefs.getString("firstStart") == "false"){
-          showBottomSnack("Rezept wurde erfolgreich importiert", ToastGravity.BOTTOM);
-        } else {
-          prefs.setString("firstStart", "false");
-        }
-      } else {
-        showBottomSnack("Ein Rezept mit dem Namen ${recipe.name} existiert bereits", ToastGravity.BOTTOM);
-      } 
-      setState(() {
-        update = true;
-      });
-    }
-
-    createRecipeJson(File path) async{
-      Map<String,dynamic> jSON;
-      if(prefs.getString("firstStart") == "true") {
-        jSON = json.decode(await rootBundle.loadString("start_recipe/Thunfischfilet.json"));              
-      } else {
-        jSON = json.decode(path.readAsStringSync());      
-      }
-      var recipe = RecipesModel.fromJson(jSON);
-      var zubereitungJSON = recipe.zubereitung;
-      var zutatenJSON = recipe.zutaten;    
-      await saveJsonToRecipe(recipe, zubereitungJSON, zutatenJSON, path.path);
-      setState(() {});
-    }
-
-    getPath() async{
-      FlutterDocumentPickerParams params = FlutterDocumentPickerParams(
-        allowedFileExtensions: ['recipe'],
-        invalidFileNameSymbols: ['/']
-      );
-      final path = await FlutterDocumentPicker.openDocument(params: params);
-      File file = new File(path);
-      createRecipeJson(file);
     }
       
     @override
@@ -367,6 +249,131 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
         ),
         floatingActionButton: _fabs[_currentTab],        
       );
+    }
+
+
+    /*
+     * Save json file to app 
+     */
+    Future saveRecIngreIDs(int recipeID, int ingredientID, DBHelper db) async{
+      RecIngre recIngre = new RecIngre();
+      recIngre.idRecipes = recipeID;
+      recIngre.idIngredients = ingredientID;
+
+      await db.insertRecIngre(recIngre);
+    }
+
+    saveZutaten(List<ZutatenModel> zutaten, int recipeID, DBHelper db) async{
+      IngredientsDB ingredients = new IngredientsDB();
+      for(int i=0; i < zutaten.length; i++){
+        ingredients.id = null;
+        ingredients.number = zutaten[i].number;
+        ingredients.measure = zutaten[i].measure;
+        ingredients.name = zutaten[i].zutat;
+
+        ingredients = await db.insertIngre(ingredients);
+        await saveRecIngreIDs(recipeID, ingredients.id, db);
+      }
+    }
+
+    saveRecStepsIDs(int recipeID, int stepsID, DBHelper db) async{
+      RecipeSteps recipeSteps = new RecipeSteps();
+      recipeSteps.idRecipes = recipeID;
+      recipeSteps.idSteps = stepsID;
+
+      recipeSteps = await db.insertRecipeSteps(recipeSteps);
+    }
+
+    saveZubereitung(List<ZubereitungModel> zubereitung, int recipeID, DBHelper db) async{
+      StepsDB steps = new StepsDB();
+      for(int i=0; i < zubereitung.length; i++){
+        steps.id = null;
+        steps.number = i;
+        steps.description = zubereitung[i].steps;
+
+        steps = await db.insertSteps(steps);
+        await saveRecStepsIDs(recipeID, steps.id, db);
+      }
+    }
+
+    saveRecipe(RecipesModel recipe, String filePath, DBHelper db) async{
+      String imagepath;
+      if(recipe.image != "no image") {
+        Uint8List image = base64.decode(recipe.image).buffer.asUint8List();
+        Directory directory = await getApplicationDocumentsDirectory();
+        String imageName = recipe.name.replaceAll(new RegExp(r"\s+\b|\b\s"), "_");
+        final file = await new File(directory.path+"/$imageName.png").create();
+        await file.writeAsBytes(image);
+        imagepath = directory.path+"/$imageName.png";
+      } else {
+        imagepath = recipe.image;
+      }
+
+      RecipesDB recipes = new RecipesDB();
+      recipes.name = recipe.name;
+      recipes.image = imagepath;
+      recipes.definition = recipe.description;
+      recipes.timestamp = DateTime.now().toString();
+      recipes.pre_duration = recipe.preperation;
+      recipes.cre_duration = recipe.creation;
+      recipes.resting_time= recipe.resting;
+      recipes.people = recipe.people;
+      recipes.backgroundColor = recipe.backgroundColor;
+      recipes.favorite = recipe.favorite; 
+
+      recipes = await db.insertRecipe(recipes);
+    }
+
+    saveJsonToRecipe(RecipesModel recipe, List<ZubereitungModel> zubereitung, List<ZutatenModel> zutaten, String filePath) async{
+      bool update = false;
+
+      DBHelper db = new DBHelper();
+      await db.create();
+      int recipeCount = await db.checkRecipe(recipe.name);
+
+      print("ZubereitungLength: ${zubereitung.length}");
+      print("ZutatenLength: ${zutaten.length}");
+
+      if(recipeCount == 0){
+        await saveRecipe(recipe, filePath, db);
+        int recipeID = await db.getRecipeID(recipe.name);
+        await saveZubereitung(zubereitung, recipeID, db);
+        await saveZutaten(zutaten, recipeID, db);
+        if(prefs.getString("firstStart") == "false"){
+          showBottomSnack("Rezept wurde erfolgreich importiert", ToastGravity.BOTTOM);
+        } else {
+          prefs.setString("firstStart", "false");
+        }
+      } else {
+        showBottomSnack("Ein Rezept mit dem Namen ${recipe.name} existiert bereits", ToastGravity.BOTTOM);
+      } 
+      setState(() {
+        update = true;
+      });
+    }
+
+    createRecipeJson(File path) async{
+      Map<String,dynamic> jSON;
+      if(prefs.getString("firstStart") == "true") {
+        jSON = json.decode(await rootBundle.loadString("start_recipe/Thunfischfilet.json"));              
+      } else {
+        jSON = json.decode(path.readAsStringSync());      
+      }
+      var recipe = RecipesModel.fromJson(jSON);
+      var zubereitungJSON = recipe.zubereitung;
+      var zutatenJSON = recipe.zutaten;    
+      await saveJsonToRecipe(recipe, zubereitungJSON, zutatenJSON, path.path);
+      setState(() {});
+    }
+
+    getPath() async{
+      FlutterDocumentPickerParams params = FlutterDocumentPickerParams(
+        allowedFileExtensions: ['recipe'],
+        invalidFileNameSymbols: ['/']
+      );
+      final path = await FlutterDocumentPicker.openDocument(params: params);
+      File file = new File(path);
+      createRecipeJson(file);
     }
   
   
@@ -750,34 +757,46 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
 
     sideHeaderList(AsyncSnapshot snapshot){
       return SideHeaderListView(
-          hasSameHeader: (int a, int b){
-            if(!searchActive) return snapshot.data[a].name[0] == snapshot.data[b].name[0];
-            else return false;
-          },
-          itemCount: snapshot.data.length,
-          headerBuilder: (BuildContext context, int index){
-              return new Padding(
-                padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
-                child: Container(
-                  width: 10.0,
-                  child: Text(
-                    snapshot.data[index].name[0].toUpperCase(),
-                    style: TextStyle(
-                        color: googleMaterialColors.primaryColor().withGreen(120),
-                        fontFamily: "Google-Sans",
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w600
-                    ),
+        hasSameHeader: (int a, int b){
+          if(!searchActive) {
+            return snapshot.data[a].name[0] == snapshot.data[b].name[0];
+          }
+          else return false;
+        },
+        itemCount: snapshot.data.length,
+        headerBuilder: (BuildContext context, int index){
+          if(snapshot.data[index].favorite == 1) {
+            return Padding(
+              padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
+              child: Icon(
+                Icons.star,
+                color: googleMaterialColors.primaryColor(),
+              ),
+            );
+          } else {
+            return new Padding(
+              padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 25.0),
+              child: Container(
+                width: 10.0,
+                child: Text(
+                  snapshot.data[index].name[0].toUpperCase(),
+                  style: TextStyle(
+                      color: googleMaterialColors.primaryColor().withGreen(120),
+                      fontFamily: "Google-Sans",
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w600
                   ),
                 ),
-              );
-          },
-          itemExtend: 70.0,
-          itemBuilder: (BuildContext context, int index){
+              ),
+            );
+          }
+        },
+        itemExtend: 70.0,
+        itemBuilder: (BuildContext context, int index){
 
-            return _selectableItems(snapshot, index);
-          },
-        );
+          return _selectableItems(snapshot, index);
+        },
+      );
     }
 
     _selectableItems(AsyncSnapshot snapshot, int index) {

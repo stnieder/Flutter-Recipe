@@ -93,16 +93,6 @@ class _CalendarView extends State<CalendarView>{
 
                   return Flexible(
                     child: _createList(snapshot)
-                    
-                    /*ListView.builder(
-                      addAutomaticKeepAlives: true,
-                      itemBuilder: (BuildContext context, int index){
-                        if(!editList.contains(snapshot.data[index].name)){
-                          return _gestureDetectorChild(snapshot.data[index].name, snapshot.data[index].image);
-                        } 
-                      },
-                      itemCount: snapshot.data.length,
-                    )*/,
                   );
                 } else {
 
