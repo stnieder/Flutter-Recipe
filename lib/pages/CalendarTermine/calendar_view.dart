@@ -1,5 +1,7 @@
 
 //Own plugins
+import 'dart:async';
+
 import '../../customizedWidgets/Calendar/flutter_calendar.dart';
 import '../../customizedWidgets/GoogleColors.dart';
 import '../../customizedWidgets/HexToColor.dart';
@@ -21,10 +23,6 @@ Future<List> fetcheTermine(String date) async{
   Future<List> termine = dbHelper.getTermine(date);
   print("Terminanzahl: "+termine.toString());
   return termine;
-}
-
-deleteTermin(String date, String recipeName) async{
-
 }
 
 
@@ -255,9 +253,11 @@ class _CalendarView extends State<CalendarView>{
           );
         }
       );      
-      Scaffold.of(context).showSnackBar(snackBar);  
-      Future.delayed(Duration(seconds: 3), () async{
-        if(!cancelFuture){
+      Scaffold.of(context).showSnackBar(snackBar);
+      Timer(
+        Duration(seconds: 3),
+        () async{
+          if(!cancelFuture){
           DBHelper db = new DBHelper();
           await db.create();
           int recipeID = int.parse(ids[names.indexOf(recipe)]);
@@ -267,7 +267,8 @@ class _CalendarView extends State<CalendarView>{
           await db.deleteTermin(recipeID, selectedDate, intervallID, timestamp);
           cancelFuture = true;
         }
-      });
+        }
+      );
     } else if(edit == "notification"){
         showNotificationDialog(recipe);
     }
