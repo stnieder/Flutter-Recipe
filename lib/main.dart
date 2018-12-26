@@ -17,7 +17,7 @@ final SentryClient _sentry = new SentryClient(dsn: returnSentryDSN());
 GlobalKey<NavigatorState> _mainKey = new GlobalKey<NavigatorState>();
 
 
-void main() async{
+Future<Null> main() async{
   FlutterError.onError = (FlutterErrorDetails details) async{
     if(isInDebugMode){
       FlutterError.dumpErrorToConsole(details);
@@ -25,7 +25,7 @@ void main() async{
       Zone.current.handleUncaughtError(details.exception, details.stack);
     }
   };
-  runZoned<Future<Null>>(()async{
+  runZoned<Future<void>>(()async{
     flutterLocalNotifcations = new FlutterLocalNotificationsPlugin();
     runApp(new Recipe());
   }, onError: (error, stackTrace) async{
@@ -86,7 +86,7 @@ class Recipe extends StatelessWidget {
     return new MaterialApp( 
       key: _mainKey,
       builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child),  
-      title: 'Rezeptbuch',
+      title: "Rezeptbuch",
       theme: new ThemeData(        
         backgroundColor: Colors.white,
         canvasColor: Colors.white,
