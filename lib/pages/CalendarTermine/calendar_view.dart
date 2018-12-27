@@ -2,6 +2,8 @@
 //Own plugins
 import 'dart:async';
 
+import 'package:Time2Eat/pages/CalendarTermine/SelectedDate.dart';
+
 import '../../customizedWidgets/Calendar/flutter_calendar.dart';
 import '../../customizedWidgets/GoogleColors.dart';
 import '../../customizedWidgets/HexToColor.dart';
@@ -29,11 +31,11 @@ Future<List> fetcheTermine(String date) async{
 class CalendarView extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-    return _CalendarView();
+    return CalendarViewState();
   }
 }
 
-class _CalendarView extends State<CalendarView>{
+class CalendarViewState extends State<CalendarView>{
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
   final _key = GlobalKey();
@@ -72,6 +74,8 @@ class _CalendarView extends State<CalendarView>{
                 if(DateTime.now().difference(dateTime) > Duration()) oldData = true;
                 else oldData = false;
                 selectedDate = _dateOnly(dateTime);
+                SelectedDate selection = new SelectedDate();
+                selection.setSelected(dateTime);
                 editList = [];
               });
             }
@@ -206,11 +210,13 @@ class _CalendarView extends State<CalendarView>{
   }
 
   showNotificationDialog(String recipeName) async{
-    DBHelper db = new DBHelper();
+    DBHelper db = new DBHelper(); 
     await db.create();
     int recipeID = await db.getRecipeID(recipeName);
     Dialogs dialog = new Dialogs();
-    List r_value = await dialog.setNotification(context, recipeName, recipeID);
+    SelectedDate selection = new SelectedDate();
+    var currentDate = selection.getSelected();
+    List r_value = await dialog.setNotification(context, recipeName, recipeID, currentDate);
     if(r_value != null){
       int notificationID = r_value[0];
       String intervall = r_value[1];

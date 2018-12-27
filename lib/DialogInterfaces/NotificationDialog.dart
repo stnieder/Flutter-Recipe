@@ -2,6 +2,7 @@ import 'package:Time2Eat/pages/CalendarTermine/NotificationID.dart';
 import 'package:Time2Eat/customizedWidgets/CustomShowDialog.dart';
 import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
 import 'package:Time2Eat/customizedWidgets/MyDropDownButton.dart';
+import 'package:Time2Eat/recipe_details/recipeDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -13,7 +14,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class NotificationDialog extends StatefulWidget{
   final String recipe;
   final int recipeID;
-  NotificationDialog(this.recipe, this.recipeID);
+  final DateTime selectedDate;
+  NotificationDialog(this.recipe, this.recipeID, this.selectedDate);
 
   @override
   State<StatefulWidget> createState() {
@@ -231,7 +233,7 @@ class _NotificationDialog extends State<NotificationDialog>{
   }
 
   createNotification() async{
-    if(DateTime.now().isAfter(selectedDateTime) || DateTime.now().isAtSameMomentAs(selectedDateTime)){
+    if(DateTime.now().isBefore(selectedDateTime) || DateTime.now().isAtSameMomentAs(selectedDateTime)){
       showBottomSnack("Es ist nicht möglich Erinnerungen in der Vergangenheit festzulegen.", ToastGravity.BOTTOM);
     } else {
       int id = await setNotficationTime(selectedIntervall);
@@ -252,22 +254,22 @@ class _NotificationDialog extends State<NotificationDialog>{
 
   convertDate(String value) async{
     if(value == date[0]){
-       selectedDate = dateFormat.format(DateTime.now());
-       selectedDateTime = DateTime.now();
+       selectedDate = dateFormat.format(widget.selectedDate);
+       selectedDateTime = widget.selectedDate;
     } else if(value == date[1]){
-      var newFormat = dateFormat.format(DateTime.now().add(Duration(days: 1)));
+      var newFormat = dateFormat.format(widget.selectedDate.add(Duration(days: 1)));
       selectedDate = newFormat;
-      selectedDateTime = DateTime.now().add(Duration(days: 1));
+      selectedDateTime = widget.selectedDate.add(Duration(days: 1));
     } else if(value == date[2]){
-      var newFormat = dateFormat.format(DateTime.now().add(Duration(days: 7)));
+      var newFormat = dateFormat.format(widget.selectedDate.add(Duration(days: 7)));
       selectedDate = newFormat;
-      selectedDateTime = DateTime.now().add(Duration(days: 7));
+      selectedDateTime = widget.selectedDate.add(Duration(days: 7));
     } else if(value == date[3]){
       var selectDialog = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(DateTime.now().year-1),
-        lastDate: DateTime(DateTime.now().year+2)
+        initialDate: widget.selectedDate,
+        firstDate: DateTime(widget.selectedDate.year-1),
+        lastDate: DateTime(widget.selectedDate.year+2)
       );
       if(selectDialog != null) {
         selectedDateTime = selectDialog;
@@ -393,9 +395,8 @@ Future _weeklyNotification() async{
     showDialog(
       context: context,
       builder: (_) {
-        return new AlertDialog(
-          title: Text("PayLoad"),
-          content: Text("Payload : $payload"),
+        return new RecipeDetails(
+          payload
         );
       },
     );
@@ -427,7 +428,7 @@ Future _weeklyNotification() async{
 
       selectedDay = DateTime.now().day;
 
-      var initializeAndroid = new AndroidInitializationSettings('time2eat');
+      var initializeAndroid = new AndroidInitializationSettings('@drawable/logo_transparent');
       var initializeIOS = new IOSInitializationSettings();
       var initializeSettings = new InitializationSettings(initializeAndroid, initializeIOS);
       flutterLocalNotifications.initialize(
@@ -437,7 +438,6 @@ Future _weeklyNotification() async{
 
       channelName = widget.recipe;
     }
-
 
   @override
   Widget build(BuildContext context) {

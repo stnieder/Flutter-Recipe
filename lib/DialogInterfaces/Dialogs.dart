@@ -5,9 +5,7 @@ import 'package:Time2Eat/database/database.dart';
 import 'package:Time2Eat/customizedWidgets/DynamicBottomSheet.dart';
 import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
 import 'package:Time2Eat/customizedWidgets/MyListTile.dart';
-import 'package:Time2Eat/customizedWidgets/NotificationDialog.dart';
 import 'package:Time2Eat/customizedWidgets/RoundedBottomSheet.dart';
-import 'package:Time2Eat/main_pages/recipebook.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +16,7 @@ import 'package:simple_permissions/simple_permissions.dart';
 
 import '../customizedWidgets/CustomShowDialog.dart';
 import 'DeleteNotification.dart';
+import 'NotificationDialog.dart';
 
 double _kShoppingMenuHeight = 100.0;
 
@@ -251,10 +250,10 @@ class Dialogs{
     );
   }
 
-  setNotification(BuildContext context, String name, int id) async{
+  setNotification(BuildContext context, String name, int id, DateTime selectedDate) async{
     return showDialog(
       context: context,
-      builder: (_) => NotificationDialog(name, id)
+      builder: (_) => NotificationDialog(name, id, selectedDate)
     );
   }
 

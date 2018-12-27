@@ -803,11 +803,7 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
   }
 
   void _handleOk() {
-    if(_selectedDate.isAfter(DateTime.now())){
-      Navigator.pop(context, _selectedDate);
-    } else {
-      showBottomSnack("Ein Eintrag in der Vergangenheit ist nicht möglich", ToastGravity.CENTER);
-    }
+    Navigator.pop(context, _selectedDate);
   }
 
   void showBottomSnack(String value, ToastGravity toastGravity){

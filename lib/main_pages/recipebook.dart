@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 //Plugins from Dart-Lang
+import 'package:Time2Eat/pages/CalendarTermine/SelectedDate.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -510,7 +511,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
                 searchActive = true;
               });
             },
-            tooltip: "Search",
+            tooltip: "Suchen",
           ),
           PopupMenuButton(
             key: _buttonKey,
@@ -518,6 +519,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
             itemBuilder: (_){
               return _popUpMenu();
             },
+            tooltip: "Menü anzeigen",
             onSelected: (value){
               switch(value){
                 case "einzeln":
@@ -558,7 +560,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
             onPressed: (){
               asyncHamMenu();
             },
-            tooltip: "Select all",
+            tooltip: "Liste bearbeiten",
           ) 
         ];
       }
@@ -864,12 +866,12 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       DBHelper db = new DBHelper();
       var recipeCount = await db.countRecipes();
       if(recipeCount == 0) showBottomSnack("Um diese Aktion durchzuführen, müssen Rezepte vorhanden sein.", ToastGravity.BOTTOM);
-      else {
+      else { 
         var returned = await Navigator.push(
             context,
             MaterialPageRoute(builder:  (context)=>RecipeSelection(recipeCount: recipeCount))
         );
-        if(returned != null){
+        if(returned != null){          
           DateTime _date = DateTime.now();
           final DateTime picked = await showMyDatePicker(
               context: context,
@@ -878,7 +880,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
               lastDate: DateTime(DateTime.now().year+50)
           );
     
-          if(picked != null && picked !=  _date && picked.isAfter(DateTime.now())){
+          if(picked != null && picked !=  _date && picked.isBefore(DateTime.now())){
             final dateFormat = new DateFormat('dd-MM-yyyy');
             for(int i=0; i<returned.length; i++){
               await saveTermin(returned[i], dateFormat.format(picked));
@@ -984,6 +986,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
           onPressed: (){
             asyncBottomSheet();
           },
+          tooltip: "Menü anzeigen",
         );
         break;
     }

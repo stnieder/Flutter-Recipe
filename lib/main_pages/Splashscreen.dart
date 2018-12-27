@@ -27,7 +27,7 @@ class _SplashscreenState extends State<Splashscreen> {
         child: Stack(
           children: <Widget>[
             new Image.asset(
-              'images/time2eat.png',
+              'images/logo_transparent.png',
               height: 175.0,
               width: 175.0,
             ),
