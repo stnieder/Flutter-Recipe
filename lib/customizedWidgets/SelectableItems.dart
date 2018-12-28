@@ -97,7 +97,7 @@ class StateSelectableItem extends State<SelectableItems> {
         },
         child: ListTile(
           leading: Hero(
-            tag: "picture",
+            tag: widget.name,
             child: GestureDetector(
               onTap: (){
                 if(widget.onImagePressed != null) widget.onImagePressed();

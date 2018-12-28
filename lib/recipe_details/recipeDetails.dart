@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:Time2Eat/DialogInterfaces/Dialogs.dart';
+import 'package:Time2Eat/Export_Import/RecipeToJson.dart';
 import 'package:Time2Eat/customizedWidgets/RadialMinutes.dart';
 import 'package:Time2Eat/Export_Import/recipes.dart';
 import 'package:Time2Eat/databaseModel/Recipe_Shopping.dart';
@@ -39,15 +40,7 @@ class RecipeDetails extends StatefulWidget{
 class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
   ConvertColor convertColor = new ConvertColor();
-
-
-  //Json export
-  File jsonFile;
-  Directory directory;
-  Map<String,dynamic> jsonMap;
-  String filename; //name created in initState((){})
-  bool fileExists = false;
-  static const String authorities = "com.vendetta.recipe.fileprovider";
+  ExportRecipe recipeToJson;
 
   //Appbar
   GlobalKey<State<PopupMenuButton>> _buttonKey = new GlobalKey<State<PopupMenuButton>>();
@@ -95,7 +88,6 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
     void initState() {
       super.initState();      
       recipeName = widget.recipeName;
-      filename = recipeName+".recipe";
 
       // Get all data of specific recipe
       getRecipeData();
@@ -242,7 +234,8 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                             } else if(value == "bearbeiten"){
                               editRecipe();
                             } else if(value == "exportieren"){
-                              getPermission();
+                              recipeToJson = ExportRecipe();
+                              recipeToJson.exportOneRecipe(recipeName, true, context);
                             }
                           },
                         )
@@ -607,16 +600,6 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
     );
   }
 
-  getPermission() async{
-    var permissions = await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
-
-    if(permissions) recipeToJson();
-    else {
-      var dialog = await Dialogs().authorizeWriting(context);
-      if(dialog != null) recipeToJson();
-    }
-  }
-
   _radialText(String value){
     return Padding(
       padding: EdgeInsets.only(top: 10.0),
@@ -776,74 +759,5 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
       gravity: toastGravity,
       timeInSecForIos: 2,
     );
-  }
-
-  void recipeToJson() async{
-    await getApplicationDocumentsDirectory().then((Directory dir){
-      directory = dir;
-      jsonFile = new File(directory.path+"/"+filename);
-      writeFile();
-    });    
-  }
-
-  void writeFile() async{
-    List<ZutatenModel> zutaten = [];
-    List<ZubereitungModel> zubereitungen = [];
-
-    for (var i = 0; i < nameList.length; i++) {
-      zutaten.add(
-        ZutatenModel(
-          nameList[i],
-          numberList[i].toString(),
-          measureList[i]
-        )
-      );
-    }
-
-    for (var i = 0; i < stepsList.length; i++) {
-      zubereitungen.add(
-        ZubereitungModel(
-          i.toString(),
-          stepsList[i]
-        )
-      );
-    }
-
-    var image;
-    if(imagePath != "no image"){
-      int count = imagePath.split("/").length;
-      var file = new File(imagePath);
-      var bytes = file.readAsBytesSync();      
-      image = base64Encode(bytes);
-    } else image = imagePath;
-
-    RecipesModel recipe = new RecipesModel(
-      widget.recipeName,
-      image, 
-      description,
-      timestamp, 
-      preperation_minutes.toString(), 
-      creation_minutes.toString(), 
-      resting_minutes.toString(), 
-      peopleDB.toString(), 
-      backgroundColor.toString(),
-      favorite,
-      zutaten, 
-      zubereitungen
-    );
-
-    final jsonString = recipe.toJson();
-
-    if(fileExists) {
-      Map<String,dynamic> fileContent = json.decode(jsonFile.readAsStringSync());
-      fileContent.addAll(jsonString);
-      jsonFile.writeAsStringSync(json.encode(fileContent));
-    } else {
-      jsonFile.createSync();
-      fileExists = true;
-      jsonFile.writeAsStringSync(json.encode(jsonString));
-    }
-
-    await ShareExtend.share(jsonFile.path, "file", authorities);
   }
 }

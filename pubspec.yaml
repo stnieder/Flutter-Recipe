@@ -43,6 +43,8 @@ dependencies:
   flare_flutter: ^1.0.4
   sentry: any
   flutter_svg: ^0.8.2
+  flutter_markdown: ^0.2.0
+  archive: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -75,7 +77,6 @@ flutter:
     - images/ios_logo.png
     - images/android_logo.png
     - images/logo_transparent.png
-    - images/nothing_to_see_here.png
     - images/recipe_not_found.png
     - images/empty_shopping.png
     - images/trash.svg

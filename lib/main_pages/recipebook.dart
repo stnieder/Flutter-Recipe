@@ -6,7 +6,7 @@ import 'dart:typed_data';
 
 //Plugins from Dart-Lang
 import 'package:Time2Eat/customizedWidgets/DialogHero.dart';
-import 'package:Time2Eat/pages/CalendarTermine/SelectedDate.dart';
+import 'package:Time2Eat/thanksTo/References.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +18,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+
 
 //Plugins of Flutter-Team
 import 'package:flutter/material.dart';
@@ -42,6 +44,7 @@ import '../databaseModel/StepDescription.dart';
 import '../databaseModel/Termine.dart';
 import '../DialogInterfaces/Dialogs.dart';
 import '../Export_Import/recipes.dart';
+import '../Export_Import/RecipeToJson.dart';
 import '../pages/CalendarTermine/RecipeSelection.dart';
 import '../pages/CalendarTermine/calendar_view.dart';
 import '../pages/shopping_list.dart';
@@ -436,10 +439,9 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     /*
       Different important widgets
     */
-    Widget recipeName(String searchCondition, String name){
+    String searchRecipe(String searchCondition, String name){
   
-      Widget wholeName;
-      List<Widget> letters = [];
+      String letters;
   
       //Save name
       String oldName = name;
@@ -452,55 +454,24 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
         int start = name.indexOf(searchCondition);
         int end = start + searchCondition.length;
   
-        if(start != 0){
-          //undo the case insensitive
-          Text firstPart = Text(
-              oldName.substring(0, start)
-          );
-          letters.add(firstPart);
-  
-          Text searchedFor = Text(
-              oldName.substring(start,end),
-              style: TextStyle(
-                color: googleMaterialColors.primaryColor(),
-                fontWeight: FontWeight.bold,
-              )
-          );
-          letters.add(searchedFor);
-  
-          Text endPart = Text(
-              oldName.substring(end, name.length)
-          );
-          letters.add(endPart);
-        } else {
-          Text firstPart = Text(
-              oldName[0],
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              )
-          );
-          letters.add(firstPart);
-  
-          Text middlePart = Text(
-              oldName.substring(1, end),
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              )
-          );
-          letters.add(middlePart);
-  
-          Text endPart = Text(
-              oldName.substring(end, name.length)
-          );
-          letters.add(endPart);
+        if(start != 0){          
+          letters = oldName.substring(0, start);  
+          letters += "**"+oldName.substring(start,end)+"**";  
+          letters += oldName.substring(end, name.length);
+
+        } else if(searchCondition.length == 1 && start == 0){
+
+          letters = "**"+oldName[0]+"**";
+          letters += oldName.substring(1, name.length);
+
+        } else {  
+
+          letters = "**"+oldName.substring(start, end)+"**";  
+          letters += oldName.substring(end, name.length);
         }
       }
   
-      wholeName = Row(
-        children: letters
-      );
-  
-      return wholeName;
+      return letters;
     }
   
     List<Widget> actionList(int currentPage){
@@ -641,6 +612,19 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     Widget longPressedAppBar(){
       return AppBar(
         actions: <Widget>[
+          Tooltip(
+            message: "Löschen",
+            child: Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                child: Icon(
+                  OMIcons.share,
+                  color: Colors.black54,
+                ),
+                onTap: () => shareRecipes(indexList),
+              ),
+            ),
+          ),
           Tooltip(
             message: "Löschen",
             child: Padding(
@@ -821,6 +805,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       if(!save_recipes.contains(snapshot.data[index].name)){
         save_recipes.add(snapshot.data[index].name);
       }
+
       Color usedColor;
       if(snapshot.data[index].image == "no image"){
         usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);
@@ -853,19 +838,26 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
               overflow: TextOverflow.ellipsis,
             ),
           )
-          : recipeName(searchCondition, snapshot.data[index].name)
+          : Container(
+              width: 300.0,
+              child: MarkdownBody(
+                data: searchRecipe(searchCondition, snapshot.data[index].name)                
+              ),
+            )
         ),
         index: index,
         image: image,
         onImagePressed: (){
-          Navigator.push(
-            context, 
-            HeroDialogRoute(
-              builder: (BuildContext context){
-                return Dialogs().showImage(context, image, snapshot.data[index].name);
-              }
-            )
-          );
+          if(image != "no image") {
+            Navigator.push(
+              context, 
+              HeroDialogRoute(
+                builder: (BuildContext context){
+                  return Dialogs().showImage(context, image, snapshot.data[index].name);
+                }
+              )
+            );
+          }
         },
         isSelected: indexList.contains(snapshot.data[index].name),
         longPressEnabled: longPressFlag,
@@ -1028,6 +1020,13 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       }
     } else if(returnStatement == "feedback"){
       returnStatement = await _launchMail();
+    } else if(returnStatement == "references"){
+      Navigator.push(
+        context, 
+        MaterialPageRoute(
+          builder: (_) => References()
+        )
+      );
     } else if(returnStatement != null){      
       setState(() {
         prefs.setString("currentList", returnStatement);
@@ -1047,6 +1046,12 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     } else {
       throw "Konnte Email leider nicht starten";
     }
+  }
+
+  shareRecipes(List<String> recipeNames) async{
+    ExportRecipe recipeToJson = new ExportRecipe();
+    if(recipeNames.length == 1) recipeToJson.exportOneRecipe(recipeNames[0], true, context);
+    else if(recipeNames.length > 1) recipeToJson.exportToZip(recipeNames, false, context);
   }
 
   deleteDialog(List<String> recipeNames) async{

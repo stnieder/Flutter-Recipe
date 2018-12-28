@@ -63,7 +63,7 @@ class Dialogs{
               Stack(
                 children: <Widget>[
                   Hero(
-                    tag: "picture",
+                    tag: recipeName,
                     child: Image.asset(asset),
                   ),
                   Container(
@@ -605,7 +605,7 @@ class Dialogs{
     await _list();
     return showDynamicBottomSheet(
       minHeight: 200.0,
-      maxHeight: 200.0 + (items.length * 30.0),
+      maxHeight: 250.0 + (items.length * 30.0),
       context: context,
       child: ShoppingMenu(
         title: _title("Ihre Listen"),
@@ -1020,8 +1020,8 @@ class Dialogs{
   authorizeWriting(BuildContext context) async{
 
     _request() async{
-      await SimplePermissions.requestPermission(Permission. WriteExternalStorage);
-      Navigator.pop(context);      
+      var request = await SimplePermissions.requestPermission(Permission. WriteExternalStorage);
+      Navigator.pop(context, request);      
     }
 
     return showDialog(
