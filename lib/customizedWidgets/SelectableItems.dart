@@ -7,6 +7,7 @@ class SelectableItems extends StatefulWidget {
   final bool longPressEnabled;
   final bool isSelected;
   final VoidCallback callback;
+  final VoidCallback onImagePressed;
   final String name;
   final Widget title;
   final Widget trailing;
@@ -20,6 +21,7 @@ class SelectableItems extends StatefulWidget {
       this.longPressEnabled,
       this.isSelected = false,
       this.callback, 
+      this.onImagePressed,
       this.name, 
       this.title,
       this.trailing,
@@ -94,18 +96,26 @@ class StateSelectableItem extends State<SelectableItems> {
           }
         },
         child: ListTile(
-          leading: CircleAvatar(
-            child: (isSelected
-              ? Icon(
-                  Icons.check,
-                  color: Colors.white,
+          leading: Hero(
+            tag: "picture",
+            child: GestureDetector(
+              onTap: (){
+                if(widget.onImagePressed != null) widget.onImagePressed();
+              },
+              child: CircleAvatar(            
+                child: (isSelected
+                  ? Icon(
+                      Icons.check,
+                      color: Colors.white,
+                    )
+                  : leadingWidget
+                ),
+                backgroundColor: (isSelected
+                  ? googleMaterialColors.primaryColor()
+                  : widget.color
                 )
-              : leadingWidget
+              ),
             ),
-            backgroundColor: (isSelected
-              ? googleMaterialColors.primaryColor()
-              : widget.color
-            )
           ),
           title: Padding(
             padding: EdgeInsets.only(top: 25.0),

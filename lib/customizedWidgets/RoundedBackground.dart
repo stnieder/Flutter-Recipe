@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class RoundedBackground extends StatefulWidget {
   final String text;
   final Color textColor;
   final Color background;
-  final IconData icon;
+  final String svgAsset;
   RoundedBackground(
     {
       this.text,
       this.textColor,
       this.background,
-      this.icon
+      this.svgAsset
     }
   );
 
@@ -39,13 +40,15 @@ class _RoundedBackgroundState extends State<RoundedBackground> {
               ),              
               Padding(
                 padding: EdgeInsets.only(right: 20.0),
-                child: Icon(
-                  widget.icon,
+                child: SvgPicture.asset(
+                  widget.svgAsset,
                   color: (enabled
                     ? widget.textColor
                     : Colors.black54
                   ),
-                ),
+                  height: 24.0,
+                  width: 24.0,
+                )
               ),
               Text(
                 widget.text,

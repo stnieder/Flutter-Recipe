@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Time2Eat/DialogInterfaces/CreateNewList.dart';
 import 'package:Time2Eat/DialogInterfaces/ListTitles.dart';
 import 'package:Time2Eat/DialogInterfaces/ShoppingMenu.dart';
@@ -6,16 +8,19 @@ import 'package:Time2Eat/customizedWidgets/DynamicBottomSheet.dart';
 import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
 import 'package:Time2Eat/customizedWidgets/MyListTile.dart';
 import 'package:Time2Eat/customizedWidgets/RoundedBottomSheet.dart';
+import 'package:Time2Eat/recipe_details/recipeDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_extend/share_extend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 
-import '../customizedWidgets/CustomShowDialog.dart';
-import 'DeleteNotification.dart';
+import '../customizedWidgets/CustomShowDialog.dart' as custom;
+import '../customizedWidgets/RoundedBackground.dart';
 import 'NotificationDialog.dart';
 
 double _kShoppingMenuHeight = 100.0;
@@ -24,11 +29,112 @@ class Dialogs{
   final personenAnzahlController = new TextEditingController();
   GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
 
+
+  showImage(BuildContext context, String asset, String recipeName) {
+    const String authorities = "com.vendetta.recipe.fileprovider";
+
+    sharePicture() async{
+      var permissions = await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
+      if(permissions) {
+        await ShareExtend.share(asset, "image", authorities);
+        Navigator.pop(context);
+      } else {
+        var granted = await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
+        sharePicture();
+      }
+    }
+
+    openRecipePage() async{
+      Navigator.pushReplacement(
+        context, 
+        MaterialPageRoute(
+          builder: (_) => RecipeDetails(recipeName)
+        )
+      );
+    }
+
+    return Dialog(                
+      child: Material(
+        child: Container(
+          height: 225.0,
+          width: 200.0,
+          child: Column(
+            children: <Widget>[
+              Stack(
+                children: <Widget>[
+                  Hero(
+                    tag: "picture",
+                    child: Image.asset(asset),
+                  ),
+                  Container(
+                    color: Colors.black.withOpacity(0.4),
+                    child: Text(
+                      recipeName,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "Google-Sans",
+                        fontSize: 14.0
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Container(
+                height: 35.0,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Colors.black45
+                    )
+                  )
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: 50.0),
+                      child: IconButton(
+                        icon: Icon(
+                          OMIcons.share,
+                          color: googleMaterialColors.primaryColor(),
+                        ),
+                        tooltip: "Bild teilen",
+                        onPressed: (){
+                          //Share the recipe picture
+                          sharePicture();
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 50.0),
+                      child: IconButton(
+                        icon: Icon(
+                          OMIcons.info,
+                          color: googleMaterialColors.primaryColor(),
+                        ),
+                        tooltip: "Rezept anzeigen",
+                        onPressed: (){
+                          //Open the recipe
+                          openRecipePage();
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   closeDialog(BuildContext context, String title){
     return showDialog(
         context: context,
         builder: (BuildContext context){
-          return CustomAlertDialog(
+          return custom.CustomAlertDialog(
             content: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
@@ -71,7 +177,7 @@ class Dialogs{
       context: context,
       barrierDismissible: true,
       builder: (BuildContext ctxt){
-        return CustomAlertDialog(
+        return custom.CustomAlertDialog(
           title: Text("Portionen"),
           content: Container(
             height: 78.0,
@@ -138,7 +244,7 @@ class Dialogs{
         context: context,
         barrierDismissible: true,
         builder: (BuildContext ctxt){
-          return CustomAlertDialog(
+          return custom.CustomAlertDialog(
             title: Text("Arbeitszeit: "),
             content: Container(
               child: DurationPicker(
@@ -198,7 +304,7 @@ class Dialogs{
       context: context,
       barrierDismissible: false,
       builder: (BuildContext ctxt){
-        return CustomAlertDialog(
+        return custom.CustomAlertDialog(
           title: Text("Foto ändern"),
           content: Container(
             height: 78.0,
@@ -390,7 +496,7 @@ class Dialogs{
     return showDialog(
       context: context,
       builder: (BuildContext context){
-        return CustomAlertDialog(
+        return custom.CustomAlertDialog(
           content: Container(
             height: 100.0,
             decoration: BoxDecoration(
@@ -660,7 +766,7 @@ class Dialogs{
     return showDialog(
       context: context,
       builder: (BuildContext context){
-        return CustomAlertDialog(
+        return custom.CustomAlertDialog(
           content: Container(
             height: 50.0,
             decoration: BoxDecoration(
@@ -727,7 +833,7 @@ class Dialogs{
     return showDialog(
       context: context,
       builder: (BuildContext context){
-        return CustomAlertDialog(
+        return custom.CustomAlertDialog(
           content: Container(
             height: 100.0,
             decoration: BoxDecoration(
@@ -867,9 +973,9 @@ class Dialogs{
       "Benachrichtigung hinzufügen"
     ];
     
-    List<IconData> sheetIcon = [
-      OMIcons.delete,
-      OMIcons.notificationsActive
+    List<String> sheetIcon = [
+      "images/trash.svg",
+      "images/reminder.svg"
     ];
 
 
@@ -892,13 +998,13 @@ class Dialogs{
                         text: sheetText[0], 
                         background: deleteBackground, 
                         textColor: deleteColor,
-                        icon: sheetIcon[0],
+                        svgAsset: sheetIcon[0],
                       ),
                       RoundedBackground(
                         text: sheetText[1], 
                         background: notificationBackground, 
                         textColor: notificationColor,
-                        icon: sheetIcon[1],
+                        svgAsset: sheetIcon[1],
                       )
                     ],
                   ),
@@ -921,7 +1027,7 @@ class Dialogs{
     return showDialog(
       context: context,
       builder: (BuildContext context){
-        return CustomAlertDialog(
+        return custom.CustomAlertDialog(
           content: Container(
             height: 180.0,
             width: 280.0,
@@ -996,7 +1102,7 @@ class Dialogs{
     return showDialog(
       context: context,
       builder: (BuildContext context){
-        return CustomAlertDialog(
+        return custom.CustomAlertDialog(
           content: Container(
             height: 100.0,
             decoration: BoxDecoration(

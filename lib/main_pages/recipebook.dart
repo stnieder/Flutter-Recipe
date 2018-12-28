@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 //Plugins from Dart-Lang
+import 'package:Time2Eat/customizedWidgets/DialogHero.dart';
 import 'package:Time2Eat/pages/CalendarTermine/SelectedDate.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -120,7 +121,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       animationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 200))
         ..addStatusListener((status){})..addListener(()=>setState((){}));
 
-      colorAnimation = new ColorTween(begin: Color(0xFF4285f4), end: Color(0xFFea4335))
+      colorAnimation = new ColorTween(begin: googleMaterialColors.primaryColor(), end: Color(0xFFea4335))
         .animate(CurvedAnimation(curve: Curves.linear, parent: animationController));
     }
       
@@ -134,7 +135,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
               child: Icon(Icons.add, color: Colors.white),
               builder: (BuildContext context, Widget _widget) {
                 return new Transform.rotate(
-                  angle: animationController.value * 0.75,
+                  angle: animationController.value * 0.75,                  
                   child: _widget,
                 );
               },
@@ -145,7 +146,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
             children: [
               SpeedDialChild(
                 child: Icon(Icons.create, color: Colors.white),
-                backgroundColor: GoogleMaterialColors().getLightColor(0),
+                backgroundColor: googleMaterialColors.getLightColor(0),
                 label: "Erstellen",
                 labelStyle: TextStyle(
                   fontFamily: "Google-Sans",
@@ -185,6 +186,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
             onPressed: (){
               openTermin(context);
             },
+            backgroundColor: googleMaterialColors.primaryColor(),
             child: Icon(
               Icons.add
             ),
@@ -194,6 +196,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
             onPressed: (){
               newShoppingItem();
             },
+            backgroundColor: googleMaterialColors.primaryColor(),
             child: Icon(
               Icons.add
             ),
@@ -818,7 +821,13 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       if(!save_recipes.contains(snapshot.data[index].name)){
         save_recipes.add(snapshot.data[index].name);
       }
-      Color usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);
+      Color usedColor;
+      if(snapshot.data[index].image == "no image"){
+        usedColor = convertColor.convertToColor(snapshot.data[index].backgroundColor);
+      } else {
+        usedColor = Colors.transparent;
+      }
+      
       String image = snapshot.data[index].image;
 
       Widget favorite;
@@ -848,6 +857,16 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
         ),
         index: index,
         image: image,
+        onImagePressed: (){
+          Navigator.push(
+            context, 
+            HeroDialogRoute(
+              builder: (BuildContext context){
+                return Dialogs().showImage(context, image, snapshot.data[index].name);
+              }
+            )
+          );
+        },
         isSelected: indexList.contains(snapshot.data[index].name),
         longPressEnabled: longPressFlag,
         callback: () {

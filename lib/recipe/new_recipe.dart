@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:dragable_flutter_list/dragable_flutter_list.dart';
 
 import '../database/database.dart';
 import 'package:path_provider/path_provider.dart';
@@ -477,7 +478,7 @@ class _NewRecipe extends State<NewRecipe>{
                               hintText: "* Name",
                             ),
                             focusNode: nameFocus,
-                            maxLength: 30,
+                            maxLength: 50,
                             maxLengthEnforced: true,
                             validator: (value) => checkRecipe(value, update) 
                               ? (edit ? null : "Dieser Name ist schon vergeben")
@@ -778,15 +779,30 @@ class _NewRecipe extends State<NewRecipe>{
                           ),
                           Container(
                             height: descriptionHeight,
-                            child: ListView.builder(
-                              physics: (stepDescription.length == 1
-                                ? NeverScrollableScrollPhysics()
-                                : ScrollPhysics()
-                              ),
-                              itemCount: stepDescription.length,
-                              itemBuilder: (ctxt, index){
+                            child: DragAndDropList(
+                              stepDescription.length,
+                              itemBuilder: (BuildContext context, index){
                                 final step = stepDescription[index];
-                                return new SizedBox(                                 
+                                return new Container( 
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,                                    
+                                    border: Border(                                      
+                                      top: BorderSide(
+                                        width: .08,
+                                        color: (index == 0
+                                          ? Colors.white
+                                          : Colors.black54
+                                        )
+                                      ),
+                                      bottom: BorderSide(
+                                        width: .08,
+                                        color: (index == stepDescription.length-1
+                                          ? Colors.white
+                                          : Colors.black54
+                                        )
+                                      )
+                                    )
+                                  ),                                      
                                   child: new Dismissible(
                                     key: Key(index.toString()),
                                     background: Container(
@@ -829,7 +845,17 @@ class _NewRecipe extends State<NewRecipe>{
                                     ),
                                   ),
                                 );
-                              }
+                              },
+                              onDragFinish: (before, after){
+                                String data = stepDescription[before];
+                                stepDescription.removeAt(before);
+                                stepDescription.insert(after, data);
+                              },
+                              canDrag: (index){
+                                return true;
+                              },
+                              canBeDraggedTo: (one, two) => true,
+                              dragElevation: 4.0,
                             ),
                           )
                         ],

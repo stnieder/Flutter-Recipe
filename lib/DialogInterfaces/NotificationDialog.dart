@@ -428,7 +428,7 @@ Future _weeklyNotification() async{
 
       selectedDay = DateTime.now().day;
 
-      var initializeAndroid = new AndroidInitializationSettings('@drawable/logo_transparent');
+      var initializeAndroid = new AndroidInitializationSettings('logo_transparent');
       var initializeIOS = new IOSInitializationSettings();
       var initializeSettings = new InitializationSettings(initializeAndroid, initializeIOS);
       flutterLocalNotifications.initialize(
