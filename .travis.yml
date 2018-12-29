@@ -1,34 +1,6 @@
 matrix:
-
-  fast_finish: true
-
-  #Nicht auf ipa/apk-Build warten
-  allow_failures:
-    - env: JOB=APK
-    - env: JOB=IPA
-
   include:
-    # Testlauf ohne Emulatoren
-    - env: JOB=PR
-      os: linux
-      language: generic
-      sudo: false
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - libstdc++6
-            - fonts-droid
-      before_script:
-        - git clone https://github.com/flutter/flutter.git --depth 1
-      script:
-        - ./flutter/bin/flutter test
-
-
-    # Erstellt apk-Datei
-    - env: JOB=APK
-      os: linux
+    - os: linux
       language: android
       licenses:
         - 'android-sdk-preview-license-.+'
@@ -48,8 +20,9 @@ matrix:
       sudo: false
       addons:
         apt:
+          # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
           sources:
-            - ubuntu-toolchain-r-test
+            - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
           packages:
             - libstdc++6
             - fonts-droid
@@ -58,19 +31,15 @@ matrix:
         - unzip -qq gradle-3.5-bin.zip
         - export GRADLE_HOME=$PWD/gradle-3.5
         - export PATH=$GRADLE_HOME/bin:$PATH
-        - git clone https://github.com/flutter/flutter.git --depth 1
+        - git clone https://github.com/flutter/flutter.git -b alpha --depth 1
       script:
         - ./flutter/bin/flutter -v build apk
 
-      cache:
-        directories:
-          - $HOME/.pub-cache
-    
-    - env: JOB=IPA
-      os: osx
+    - os: osx
       language: generic
       osx_image: xcode8.3
       before_script:
+        - pip install six
         - brew update
         - brew install --HEAD libimobiledevice
         - brew install ideviceinstaller
@@ -81,4 +50,4 @@ matrix:
 
 cache:
   directories:
-    - $HOME/.pub-cache
+- $HOME/.pub-cache
