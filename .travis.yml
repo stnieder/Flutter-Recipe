@@ -21,7 +21,7 @@ matrix:
             - libstdc++6
             - fonts-droid
       before_script:
-        - git clone https://github.com/flutter/flutter.git -b alpha --depth 1
+        - git clone https://github.com/flutter/flutter.git  -b beta
       script:
         - ./flutter/bin/flutter test
 
