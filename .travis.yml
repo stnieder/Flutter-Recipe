@@ -7,7 +7,7 @@ matrix:
     - env: JOB=APK
     - env: JOB=IPA
 
-  include:
+  include: 
     # Testlauf ohne Emulatoren
     - env: JOB=PR
       os: linux
