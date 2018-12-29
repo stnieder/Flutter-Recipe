@@ -1,5 +1,31 @@
 matrix:
+  
+  fast_finish: true
+  
+  allow_failures:
+    - env: JOB=APK
+    - env: JOB=IPA
+
+
   include:
+    # Testlauf ohne Emulatoren
+    - env: JOB=PR
+      os: linux
+      language: generic
+      sudo: false
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - libstdc++6
+            - fonts-droid
+      before_script:
+        - git clone https://github.com/flutter/flutter.git --depth 1
+      script:
+        - ./flutter/bin/flutter test
+  
+  
     - os: linux
       language: android
       licenses:
