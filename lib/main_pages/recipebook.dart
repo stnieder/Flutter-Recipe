@@ -6,7 +6,6 @@ import 'dart:typed_data';
 
 //Plugins from Dart-Lang
 import 'package:Time2Eat/customizedWidgets/DialogHero.dart';
-import 'package:Time2Eat/thanksTo/References.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -1020,13 +1019,6 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
       }
     } else if(returnStatement == "feedback"){
       returnStatement = await _launchMail();
-    } else if(returnStatement == "references"){
-      Navigator.push(
-        context, 
-        MaterialPageRoute(
-          builder: (_) => References()
-        )
-      );
     } else if(returnStatement != null){      
       setState(() {
         prefs.setString("currentList", returnStatement);

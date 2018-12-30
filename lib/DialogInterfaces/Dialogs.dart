@@ -605,7 +605,7 @@ class Dialogs{
     await _list();
     return showDynamicBottomSheet(
       minHeight: 200.0,
-      maxHeight: 250.0 + (items.length * 30.0),
+      maxHeight: 200.0 + (items.length * 30.0),
       context: context,
       child: ShoppingMenu(
         title: _title("Ihre Listen"),

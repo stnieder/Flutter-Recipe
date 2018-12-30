@@ -102,22 +102,6 @@ class _ShoppingMenuState extends State<ShoppingMenu> {
                     onTap: (){
                       Navigator.pop(context, "feedback");
                     },
-                  ),
-                  GestureDetector(
-                    child: ListTile(
-                      leading: Icon(OMIcons.image, color: Colors.black54),
-                      title: Text(
-                        "Referenzen für Bilder",
-                        style: TextStyle(
-                          fontFamily: "Google-Sans",
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),            
-                    onTap: (){
-                      Navigator.pop(context, "references");
-                    },
                   )
                 ],
               ),
