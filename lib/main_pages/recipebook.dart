@@ -710,7 +710,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
                       color: googleMaterialColors.primaryColor(),
                       size: 152.0,
                     ),
-                    Text("Ihre Rezepte werden hier angezeigt.")
+                    Text("Ihre Rezepte werden hier angezeigt")
                   ];
                 }
                 return Center(
@@ -890,7 +890,8 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
             context,
             MaterialPageRoute(builder:  (context)=>RecipeSelection(recipeCount: recipeCount))
         );
-        if(returned != null){          
+        if(returned != null){ 
+          bool changed = false;         
           DateTime _date = DateTime.now();
           final DateTime picked = await showMyDatePicker(
               context: context,
@@ -906,6 +907,10 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
             }
             showBottomSnack("Termin wurde erfolgreich gespeichert", ToastGravity.BOTTOM);
           }
+
+          setState(() {
+            changed = true;
+          });
         }
       }
     }

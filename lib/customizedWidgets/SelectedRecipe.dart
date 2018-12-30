@@ -13,6 +13,8 @@ class SelectedRecipe extends StatefulWidget {
   final double height;
   final double width;
 
+  final bool showIcon;
+
   SelectedRecipe(
     {
       @required this.hasImage,
@@ -22,7 +24,8 @@ class SelectedRecipe extends StatefulWidget {
       @required this.hasSubTitle,
       @required this.littleIcon,
       this.height,
-      this.width
+      this.width,
+      @required this.showIcon
     }
   );
 
@@ -30,7 +33,10 @@ class SelectedRecipe extends StatefulWidget {
   _SelectedRecipeState createState() => _SelectedRecipeState();
 }
 
-class _SelectedRecipeState extends State<SelectedRecipe> {
+class _SelectedRecipeState extends State<SelectedRecipe>{
+
+
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,11 +62,21 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
                       ),
                     )
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 25.0, top: 20.0),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: widget.littleIcon,
+                Container(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle
+                        ),
+                        width: 50.0,
+                        height: 50.0,
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: widget.littleIcon,
+                      )
+                    ],
                   ),
                 )
               ],

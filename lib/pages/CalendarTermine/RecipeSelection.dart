@@ -6,6 +6,7 @@ import 'package:Time2Eat/databaseModel/Recipes.dart';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 
 
@@ -81,23 +82,12 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Container(
-                            child: Text(
-                              "Es wurden leider keine Rezepte gefunden.",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontFamily: "Google-Sans",
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold
-                              ),
-                            )
+                          Icon(
+                            OMIcons.collectionsBookmark,
+                            color: googleMaterialColors.primaryColor(),
+                            size: 152.0,
                           ),
-                          Container(
-                            child: Image.asset(
-                              "images/recipe_not_found.png",
-                              width: MediaQuery.of(context).size.width,
-                            ),
-                          ),                          
+                          Text("Ihre Rezepte werden hier angezeigt.")                         
                         ],
                       )
                     );
@@ -133,49 +123,98 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
                               }
                             },
                             child: ListTile(
-                                leading: (name.contains(snapshot.data[index].name)
+                              leading: Container(
+                                width: 40.0,
+                                child: (name.contains(snapshot.data[index].name)
+                                  ? Padding(
+                                      padding: EdgeInsets.only(top: 14.0),
+                                      child: returnCheckedRecipes(snapshot.data[index].name, convert.convertToColor(snapshot.data[index].backgroundColor), snapshot.data[index].image),
+                                    )
+                                  : Padding(
+                                    padding: EdgeInsets.only(left: 0.0, bottom: 1.5),
+                                    child: (snapshot.data[index].image != "no image"
+                                      ? Container(
+                                          width: 40.0,
+                                          height: 40.0,
+                                          decoration: new BoxDecoration(
+                                            image: new DecorationImage(
+                                              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                                              image: AssetImage(snapshot.data[index].image),
+                                              fit: BoxFit.cover,
+                                            ),
+                                            borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                                          ),
+                                        )
+                                      : CircleAvatar(
+                                          child: Text(
+                                            snapshot.data[index].name[0].toUpperCase(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 21.0,
+                                                fontWeight: FontWeight.w400
+                                            ),
+                                          ),
+                                          backgroundColor: convert.convertToColor(snapshot.data[index].backgroundColor),
+                                        )   
+                                    ),
+                                  )                           
+                                ),
+                              ),
+                              /*leading: CrossF(
+                                crossFadeState: (name.contains(snapshot.data[index].name)
+                                  ? CrossFadeState.showFirst
+                                  : CrossFadeState.showSecond
+                                ),
+                                duration: Duration(milliseconds: 300),
+                                firstChild: Padding(
+                                  padding: EdgeInsets.only(top: 10.0),
+                                  child: returnCheckedRecipes(snapshot.data[index].name, convert.convertToColor(snapshot.data[index].backgroundColor), snapshot.data[index].image),
+                                ),
+                                secondChild: (name.contains(snapshot.data[index].name)
                                   ? Padding(
                                     padding: EdgeInsets.only(top: 10.0),
                                     child: returnCheckedRecipes(snapshot.data[index].name, convert.convertToColor(snapshot.data[index].backgroundColor), snapshot.data[index].image),
                                   )
                                   : (snapshot.data[index].image != "no image"
-                                      ? Container(
-                                    width: 40.0,
-                                    height: 40.0,
-                                    decoration: new BoxDecoration(
-                                      image: new DecorationImage(
-                                        colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-                                        image: AssetImage(snapshot.data[index].image),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
-                                    ),
-                                  )
-                                      : CircleAvatar(
-                                    child: Text(
-                                      snapshot.data[index].name[0].toUpperCase(),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 21.0,
-                                          fontWeight: FontWeight.w400
-                                      ),
-                                    ),
-                                    backgroundColor: convert.convertToColor(snapshot.data[index].backgroundColor),
-                                  ))
-                                ),
-                                  title: Padding(
-                                    padding: EdgeInsets.only(top: 0.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        ( searchController.text.isEmpty
-                                            ? Text(snapshot.data[index].name)
-                                            : recipeName(searchCondition, snapshot.data[index].name)
-                                        )
-                                      ],
-                                    ),
+                                    ? Container(
+                                        width: 40.0,
+                                        height: 40.0,
+                                        decoration: new BoxDecoration(
+                                          image: new DecorationImage(
+                                            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                                            image: AssetImage(snapshot.data[index].image),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                                        ),
+                                      )
+                                    : CircleAvatar(
+                                        child: Text(
+                                          snapshot.data[index].name[0].toUpperCase(),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 21.0,
+                                              fontWeight: FontWeight.w400
+                                          ),
+                                        ),
+                                        backgroundColor: convert.convertToColor(snapshot.data[index].backgroundColor),
+                                      )
+                                  )    
+                                )                          
+                              ),*/
+                                title: Padding(
+                                  padding: EdgeInsets.only(top: 0.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      ( searchController.text.isEmpty
+                                          ? Text(snapshot.data[index].name)
+                                          : recipeName(searchCondition, snapshot.data[index].name)
+                                      )
+                                    ],
                                   ),
-                                )                        
+                                ),
+                              )                        
                           );
                         },
                       ),
@@ -433,21 +472,20 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
                 color: Colors.white,
                 shape: BoxShape.circle
             ),
-            child: Padding(
-              padding: EdgeInsets.only(top: 2.0),
-              child: Icon(
-                Icons.check_circle,
-                size: 18.0,
-                color: Colors.green,
-              ),
+            child: Icon(
+              Icons.check_circle,
+              size: 18.0,
+              color: googleMaterialColors.getLightColor(0),
             ),
           ),
+          showIcon: name.contains(label),
           height: 56.0,
           width: 45.0,
       ),
       onTap: (){
-          searchController.text = "";
-          changeBool();
+        removeAnimatedListItem(label, backgroundColor, imagePath);
+        searchController.text = "";
+        changeBool();        
       },      
     );
   }
@@ -479,28 +517,33 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
               ),
             ),
           ),
+          showIcon: name.contains(label),
       ),
       onTap: (){
-        if(name.contains(label)){
-          int index = name.indexOf(label);          
-          _listKey.currentState.removeItem(
-            index,
-            (BuildContext context, Animation<double> animation){
-              return ScaleTransition(
-                alignment: Alignment.center,
-                scale: animation,
-                child: returnCheckedRecipes(label, backgroundColor, imagePath),
-              );
-            },
-            duration: Duration(milliseconds: 100)
-          );
-          name.removeAt(index);
-          color.removeAt(index);
-          image.removeAt(index);
-          searchController.text = "";
-          changeBool();
-        }
+        removeAnimatedListItem(label, backgroundColor, imagePath);
       },
     );
+  }
+
+  removeAnimatedListItem(String label, Color backgroundColor, String imagePath){
+    if(name.contains(label)){
+      int index = name.indexOf(label);          
+      _listKey.currentState.removeItem(
+        index,
+        (BuildContext context, Animation<double> animation){
+          return ScaleTransition(
+            alignment: Alignment.center,
+            scale: animation,
+            child: returnCheckedRecipes(label, backgroundColor, imagePath),
+          );
+        },
+        duration: Duration(milliseconds: 100)
+      );
+      name.removeAt(index);
+      color.removeAt(index);
+      image.removeAt(index);
+      searchController.text = "";
+      changeBool();
+    }
   }
 }
