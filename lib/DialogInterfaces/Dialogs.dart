@@ -36,7 +36,7 @@ class Dialogs{
     sharePicture() async{
       var permissions = await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
       if(permissions) {
-        await ShareExtend.share(asset, "image", authorities);
+        await ShareExtend.share(asset, "image");
         Navigator.pop(context);
       } else {
         var granted = await SimplePermissions.requestPermission(Permission.WriteExternalStorage);

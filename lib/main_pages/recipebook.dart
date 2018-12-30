@@ -16,7 +16,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 
@@ -438,9 +437,9 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     /*
       Different important widgets
     */
-    String searchRecipe(String searchCondition, String name){
+    Widget searchRecipe(String searchCondition, String name){
   
-      String letters;
+      String letters = searchCondition;
   
       //Save name
       String oldName = name;
@@ -470,7 +469,9 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
         }
       }
   
-      return letters;
+      return MarkdownBody(
+        data: letters,
+      );
     }
   
     List<Widget> actionList(int currentPage){
@@ -688,25 +689,35 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
     Widget listPage(){
       return new Container(
         child: new FutureBuilder<List<Recipes>>(
-          initialData: [],
           future: fetchRecipes(searchPerformed, searchCondition),
           builder: (context, snapshot) {
             if(snapshot.hasData){
               if(snapshot.data.length == 0){
+                List<Widget> emptyList = new List();
+                if(searchActive){
+                  emptyList = [
+                    Icon(
+                      OMIcons.search,
+                      color: googleMaterialColors.primaryColor(),
+                      size: 152.0,
+                    ),
+                    Text("Keine passenden Rezepte")
+                  ];
+                } else {
+                  emptyList = [
+                    Icon(
+                      OMIcons.collectionsBookmark,
+                      color: googleMaterialColors.primaryColor(),
+                      size: 152.0,
+                    ),
+                    Text("Ihre Rezepte werden hier angezeigt.")
+                  ];
+                }
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                          child: FlareActor(
-                            "images/Sushi.flr",
-                            alignment: Alignment.center,
-                            fit: BoxFit.contain,
-                            animation: 'Sushi Bounce',
-                          )
-                      )
-                    ],
+                    children: emptyList,
                   )
                 );
               } 
@@ -839,9 +850,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
           )
           : Container(
               width: 300.0,
-              child: MarkdownBody(
-                data: searchRecipe(searchCondition, snapshot.data[index].name)                
-              ),
+              child: searchRecipe(searchCondition, snapshot.data[index].name),
             )
         ),
         index: index,

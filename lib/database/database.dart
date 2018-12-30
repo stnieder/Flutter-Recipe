@@ -876,7 +876,7 @@ class DBHelper{
 
   //Filter with recipe name
   Future<List<Recipes>> filterRecipes(String recipe) async{
-    String sql = "SELECT * FROM recipes WHERE name LIKE '%"+recipe+"%'";
+    String sql = "SELECT * FROM recipes WHERE name LIKE '%"+recipe+"%' ORDER BY name, favorite DESC";
     List<Map> list = await _db.rawQuery(sql);
     List<Recipes> recipes = new List();
     for(int i =0; i < list.length; i++){

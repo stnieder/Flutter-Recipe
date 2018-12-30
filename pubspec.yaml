@@ -38,7 +38,7 @@ dependencies:
   json_annotation: ^2.0.0
   simple_permissions: ^0.1.9
   http: ^0.12.0
-  share_extend: ^1.0.2
+  share_extend: ^1.0.3
   flutter_document_picker: ^1.2.0
   flare_flutter: ^1.0.4
   sentry: any

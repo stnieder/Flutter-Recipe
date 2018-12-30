@@ -56,7 +56,7 @@ class MultipleRecipes{
       }
       createZip.close();
 
-      if(share && Platform.isAndroid) await ShareExtend.share(createZip.zip_path, "file", authorities);
+      if(share && Platform.isAndroid) await ShareExtend.share(createZip.zip_path, "file");
       else showBottomSnack("Die komprimierte Datei wurde nach ${createZip.zip_path} exportiert", ToastGravity.BOTTOM, context);
     }
   }

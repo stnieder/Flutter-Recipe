@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:Time2Eat/database/database.dart';
@@ -123,12 +124,16 @@ class _ShoppingPage extends State<ShoppingPage>{
               } else if(snapshot.data.length == 0){
                 return new Center(                  
                   child: Padding(
-                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/8),
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/4, right: 20.0),
                     child: Column(
                       children: <Widget>[
-                        Text("Es wurden keine Einkaufsartikel gefunden"),
-                        Image.asset(
-                          "images/empty_shopping.png"
+                        Icon(
+                          OMIcons.list,
+                          color: googleMaterialColors.primaryColor(),
+                          size: 102.0,
+                        ),
+                        Text(
+                          "Ihre Einkaufsliste wird hier angezeigt"
                         )
                       ],
                     ),

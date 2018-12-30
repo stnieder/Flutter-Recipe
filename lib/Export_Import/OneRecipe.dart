@@ -39,7 +39,7 @@ class OneRecipe {
       await getRecipeDetails();
 
       File newFile = await createFile();
-      if(share && Platform.isAndroid) await ShareExtend.share(newFile.path, "file", authorities);
+      if(share && Platform.isAndroid) await ShareExtend.share(newFile.path, "file");
       else showBottomSnack("Die Datei wurde nach ${newFile.path} exportiert.", ToastGravity.BOTTOM, context);
     }
   }

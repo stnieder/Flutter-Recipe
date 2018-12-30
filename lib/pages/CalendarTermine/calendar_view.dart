@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:Time2Eat/pages/CalendarTermine/SelectedDate.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../../customizedWidgets/Calendar/flutter_calendar.dart';
 import '../../customizedWidgets/GoogleColors.dart';
@@ -98,25 +99,20 @@ class CalendarViewState extends State<CalendarView>{
                   );
                 } else {
 
-                  return new Column(
-                    children: <Widget>[
-                      Image.asset(
-                        'images/allDone.png',
-
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 3.0),
-                        child: Text(
-                          "Gut gemacht",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold
-                          ),
+                  return new Padding(
+                    padding: EdgeInsets.only(top: 100.0, right: 20.0),
+                    child: Column(
+                      children: <Widget>[
+                        Icon(
+                          OMIcons.calendarToday,
+                          color: googleMaterialColors.primaryColor(),
+                          size: 102
                         ),
-                      ),
-                      Text(
-                        "Sie haben sich eindeutig eine Pause verdient."
-                      ),
-                    ],
+                        Text(
+                          "Ihre Termine werden hier angezeigt"
+                        )
+                      ],
+                    ),
                   );
                 }
               } else if(snapshot.hasError){
