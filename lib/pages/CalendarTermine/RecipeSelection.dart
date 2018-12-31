@@ -160,48 +160,6 @@ class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMi
                                   )                           
                                 ),
                               ),
-                              /*leading: CrossF(
-                                crossFadeState: (name.contains(snapshot.data[index].name)
-                                  ? CrossFadeState.showFirst
-                                  : CrossFadeState.showSecond
-                                ),
-                                duration: Duration(milliseconds: 300),
-                                firstChild: Padding(
-                                  padding: EdgeInsets.only(top: 10.0),
-                                  child: returnCheckedRecipes(snapshot.data[index].name, convert.convertToColor(snapshot.data[index].backgroundColor), snapshot.data[index].image),
-                                ),
-                                secondChild: (name.contains(snapshot.data[index].name)
-                                  ? Padding(
-                                    padding: EdgeInsets.only(top: 10.0),
-                                    child: returnCheckedRecipes(snapshot.data[index].name, convert.convertToColor(snapshot.data[index].backgroundColor), snapshot.data[index].image),
-                                  )
-                                  : (snapshot.data[index].image != "no image"
-                                    ? Container(
-                                        width: 40.0,
-                                        height: 40.0,
-                                        decoration: new BoxDecoration(
-                                          image: new DecorationImage(
-                                            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-                                            image: AssetImage(snapshot.data[index].image),
-                                            fit: BoxFit.cover,
-                                          ),
-                                          borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
-                                        ),
-                                      )
-                                    : CircleAvatar(
-                                        child: Text(
-                                          snapshot.data[index].name[0].toUpperCase(),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 21.0,
-                                              fontWeight: FontWeight.w400
-                                          ),
-                                        ),
-                                        backgroundColor: convert.convertToColor(snapshot.data[index].backgroundColor),
-                                      )
-                                  )    
-                                )                          
-                              ),*/
                                 title: Padding(
                                   padding: EdgeInsets.only(top: 0.0),
                                   child: Column(
