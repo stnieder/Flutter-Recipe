@@ -1,8 +1,8 @@
-import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/customizedWidgets/Colors.dart';
-import 'package:Time2Eat/customizedWidgets/HexToColor.dart';
-import 'package:Time2Eat/customizedWidgets/SelectedRecipe.dart';
-import 'package:Time2Eat/databaseModel/Recipes.dart';
+import 'package:TimeEater/database/database.dart';
+import 'package:TimeEater/customizedWidgets/Colors.dart';
+import 'package:TimeEater/customizedWidgets/HexToColor.dart';
+import 'package:TimeEater/customizedWidgets/SelectedRecipe.dart';
+import 'package:TimeEater/databaseModel/Recipes.dart';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

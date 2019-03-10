@@ -5,7 +5,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 //Plugins from Dart-Lang
-import 'package:Time2Eat/customizedWidgets/DialogHero.dart';
+import 'package:TimeEater/customizedWidgets/DialogHero.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';

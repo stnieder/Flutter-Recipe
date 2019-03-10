@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/customizedWidgets/RoundCheckBox.dart';
-import 'package:Time2Eat/databaseModel/Shopping.dart';
+import 'package:TimeEater/database/database.dart';
+import 'package:TimeEater/customizedWidgets/RoundCheckBox.dart';
+import 'package:TimeEater/databaseModel/Shopping.dart';
 
 import '../customizedWidgets/Colors.dart';
 import '../customizedWidgets/MyExpansionTile.dart';

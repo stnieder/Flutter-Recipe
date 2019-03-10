@@ -2,7 +2,7 @@
 //Own plugins
 import 'dart:async';
 
-import 'package:Time2Eat/pages/CalendarTermine/SelectedDate.dart';
+import 'package:TimeEater/pages/CalendarTermine/SelectedDate.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../../customizedWidgets/Calendar/flutter_calendar.dart';

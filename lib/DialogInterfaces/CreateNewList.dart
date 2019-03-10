@@ -1,6 +1,6 @@
-import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/customizedWidgets/CustomShowDialog.dart';
-import 'package:Time2Eat/customizedWidgets/Colors.dart';
+import 'package:TimeEater/database/database.dart';
+import 'package:TimeEater/customizedWidgets/CustomShowDialog.dart';
+import 'package:TimeEater/customizedWidgets/Colors.dart';
 import 'package:flutter/material.dart';
 
 class CreateNewList extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Time2Eat/main_pages/Splashscreen.dart';
+import 'package:TimeEater/main_pages/Splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

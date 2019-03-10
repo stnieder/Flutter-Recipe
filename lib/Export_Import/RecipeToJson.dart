@@ -1,8 +1,8 @@
 
 
 
-import 'package:Time2Eat/Export_Import/MultipleRecipes.dart';
-import 'package:Time2Eat/Export_Import/OneRecipe.dart';
+import 'package:TimeEater/Export_Import/MultipleRecipes.dart';
+import 'package:TimeEater/Export_Import/OneRecipe.dart';
 import 'package:flutter/material.dart';
 
 class ExportRecipe {

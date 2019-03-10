@@ -1,12 +1,12 @@
-import 'package:Time2Eat/DialogInterfaces/CreateNewList.dart';
-import 'package:Time2Eat/DialogInterfaces/ListTitles.dart';
-import 'package:Time2Eat/DialogInterfaces/ShoppingMenu.dart';
-import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/customizedWidgets/DynamicBottomSheet.dart';
-import 'package:Time2Eat/customizedWidgets/Colors.dart';
-import 'package:Time2Eat/customizedWidgets/MyListTile.dart';
-import 'package:Time2Eat/customizedWidgets/RoundedBottomSheet.dart';
-import 'package:Time2Eat/recipe_details/recipeDetails.dart';
+import 'package:TimeEater/DialogInterfaces/CreateNewList.dart';
+import 'package:TimeEater/DialogInterfaces/ListTitles.dart';
+import 'package:TimeEater/DialogInterfaces/ShoppingMenu.dart';
+import 'package:TimeEater/database/database.dart';
+import 'package:TimeEater/customizedWidgets/DynamicBottomSheet.dart';
+import 'package:TimeEater/customizedWidgets/Colors.dart';
+import 'package:TimeEater/customizedWidgets/MyListTile.dart';
+import 'package:TimeEater/customizedWidgets/RoundedBottomSheet.dart';
+import 'package:TimeEater/recipe_details/recipeDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -1048,7 +1048,7 @@ class Dialogs{
                   padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0, bottom: 20.0),
                   child: Container(
                     child: Text(
-                      "Um Rezepte teilen zu können, erlaube Time2Eat den Zugriff auf deinen Speicher.",
+                      "Um Rezepte teilen zu können, erlaube TimeEater den Zugriff auf deinen Speicher.",
                       textAlign: TextAlign.justify,
                     ),
                     height: 30.0,

@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:Time2Eat/DialogInterfaces/Dialogs.dart';
-import 'package:Time2Eat/Export_Import/recipes.dart';
-import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/databaseModel/Ingredients.dart';
-import 'package:Time2Eat/databaseModel/Recipes.dart';
-import 'package:Time2Eat/databaseModel/StepDescription.dart';
+import 'package:TimeEater/DialogInterfaces/Dialogs.dart';
+import 'package:TimeEater/Export_Import/recipes.dart';
+import 'package:TimeEater/database/database.dart';
+import 'package:TimeEater/databaseModel/Ingredients.dart';
+import 'package:TimeEater/databaseModel/Recipes.dart';
+import 'package:TimeEater/databaseModel/StepDescription.dart';
 import 'package:archive/archive_io.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';

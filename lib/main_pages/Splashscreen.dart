@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:Time2Eat/main_pages/recipebook.dart';
+import 'package:TimeEater/main_pages/recipebook.dart';
 import 'package:flutter/material.dart';
 
 class Splashscreen extends StatefulWidget {

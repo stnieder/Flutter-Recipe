@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 import 'dart:math';
-import 'package:Time2Eat/customizedWidgets/RadialMinutes.dart';
+import 'package:TimeEater/customizedWidgets/RadialMinutes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';

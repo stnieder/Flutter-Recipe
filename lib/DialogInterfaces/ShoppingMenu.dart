@@ -1,4 +1,4 @@
-import 'package:Time2Eat/database/database.dart';
+import 'package:TimeEater/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';

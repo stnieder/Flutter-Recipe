@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:Time2Eat/DialogInterfaces/Dialogs.dart';
-import 'package:Time2Eat/Export_Import/RecipeToJson.dart';
-import 'package:Time2Eat/customizedWidgets/RadialMinutes.dart';
-import 'package:Time2Eat/databaseModel/Recipe_Shopping.dart';
-import 'package:Time2Eat/databaseModel/Shopping.dart';
-import 'package:Time2Eat/databaseModel/Shopping_Title.dart';
-import 'package:Time2Eat/recipe_details/cooking.dart';
+import 'package:TimeEater/DialogInterfaces/Dialogs.dart';
+import 'package:TimeEater/Export_Import/RecipeToJson.dart';
+import 'package:TimeEater/customizedWidgets/RadialMinutes.dart';
+import 'package:TimeEater/databaseModel/Recipe_Shopping.dart';
+import 'package:TimeEater/databaseModel/Shopping.dart';
+import 'package:TimeEater/databaseModel/Shopping_Title.dart';
+import 'package:TimeEater/recipe_details/cooking.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';

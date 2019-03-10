@@ -1,8 +1,8 @@
-import 'package:Time2Eat/pages/CalendarTermine/NotificationID.dart';
-import 'package:Time2Eat/customizedWidgets/CustomShowDialog.dart';
-import 'package:Time2Eat/customizedWidgets/Colors.dart';
-import 'package:Time2Eat/customizedWidgets/MyDropDownButton.dart';
-import 'package:Time2Eat/recipe_details/recipeDetails.dart';
+import 'package:TimeEater/pages/CalendarTermine/NotificationID.dart';
+import 'package:TimeEater/customizedWidgets/CustomShowDialog.dart';
+import 'package:TimeEater/customizedWidgets/Colors.dart';
+import 'package:TimeEater/customizedWidgets/MyDropDownButton.dart';
+import 'package:TimeEater/recipe_details/recipeDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -28,7 +28,7 @@ class _NotificationDialog extends State<NotificationDialog>{
 
   //FlutterNotificationsPlugin
   FlutterLocalNotificationsPlugin flutterLocalNotifications = new FlutterLocalNotificationsPlugin();
-  String channelID = "Time2Eat";
+  String channelID = "TimeEater";
   String channelName = "channel name";
   String channelDescription = "It's time to eat something amazing!";
 

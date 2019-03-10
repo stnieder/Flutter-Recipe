@@ -1,4 +1,4 @@
-import 'package:Time2Eat/customizedWidgets/Colors.dart';
+import 'package:TimeEater/customizedWidgets/Colors.dart';
 import 'package:flutter/material.dart';
 
 import 'CircularImage.dart';

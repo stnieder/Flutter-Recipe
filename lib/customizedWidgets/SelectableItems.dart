@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../customizedWidgets/Colors.dart';
-import 'package:Time2Eat/recipe_details/recipeDetails.dart';
+import 'package:TimeEater/recipe_details/recipeDetails.dart';
 
 class SelectableItems extends StatefulWidget {
   final int index;
