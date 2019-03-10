@@ -19,7 +19,7 @@
     <application
         android:debuggable="true"
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Time2Eat"
+        android:label="Time Eater"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
     <provider

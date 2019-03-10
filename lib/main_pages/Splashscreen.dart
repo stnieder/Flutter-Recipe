@@ -27,7 +27,7 @@ class _SplashscreenState extends State<Splashscreen> {
         child: Stack(
           children: <Widget>[
             new Image.asset(
-              'images/logo_transparent.png',
+              'images/ic_logo.png',
               height: 175.0,
               width: 175.0,
             ),
@@ -37,7 +37,7 @@ class _SplashscreenState extends State<Splashscreen> {
                 left: 45.0
               ),
               child: Text(
-                "Vendetta",
+                "Time Eater",
                 style: TextStyle(
                   color: Colors.grey.withOpacity(0.45),
                   fontFamily: "Google-Sans",
