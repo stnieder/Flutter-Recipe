@@ -16,7 +16,7 @@ import 'package:path_provider/path_provider.dart';
 import '../customizedWidgets/DurationDialog.dart'; //made by Chris Harris https://pub.dartlang.org/packages/flutter_duration_picker
 
 import '../customizedWidgets/CircularImage.dart';
-import '../customizedWidgets/GoogleColors.dart';
+import '../customizedWidgets/Colors.dart';
 
 import '../DialogInterfaces/Dialogs.dart';
 
@@ -72,7 +72,7 @@ class NewRecipe extends StatefulWidget{
 class _NewRecipe extends State<NewRecipe>{
   Dialogs dialogs = new Dialogs();
   DBHelper db = new DBHelper();
-  GoogleMaterialColors materialColors = new GoogleMaterialColors();
+  MaterialColors materialColors = new MaterialColors();
   Color usedColor;
   bool edit = false;
   String oldRecipe;

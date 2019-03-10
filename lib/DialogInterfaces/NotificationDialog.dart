@@ -1,6 +1,6 @@
 import 'package:Time2Eat/pages/CalendarTermine/NotificationID.dart';
 import 'package:Time2Eat/customizedWidgets/CustomShowDialog.dart';
-import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
+import 'package:Time2Eat/customizedWidgets/Colors.dart';
 import 'package:Time2Eat/customizedWidgets/MyDropDownButton.dart';
 import 'package:Time2Eat/recipe_details/recipeDetails.dart';
 import 'package:flutter/material.dart';
@@ -200,7 +200,7 @@ class _NotificationDialog extends State<NotificationDialog>{
                     fontFamily: "Google-Sans"
                   ),
                 ),
-                highlightColor: GoogleMaterialColors().getLightColor(7).withOpacity(0.1),
+                highlightColor: MaterialColors().getLightColor(7).withOpacity(0.1),
                 onPressed: (){
                   Navigator.pop(context);
                 },
@@ -216,9 +216,9 @@ class _NotificationDialog extends State<NotificationDialog>{
                   fontFamily: "Google-Sans"
                 ),
               ), 
-              color: GoogleMaterialColors().primaryColor().withOpacity(0.15),   
+              color: MaterialColors().primaryColor().withOpacity(0.15),   
               elevation: 0.0,         
-              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.15),
+              highlightColor: MaterialColors().primaryColor().withOpacity(0.15),
               highlightElevation: 2.0,
               onPressed: (){
                 createNotification();

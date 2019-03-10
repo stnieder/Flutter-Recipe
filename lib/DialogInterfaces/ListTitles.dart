@@ -1,6 +1,6 @@
 import 'package:Time2Eat/database/database.dart';
 import 'package:Time2Eat/customizedWidgets/CustomShowDialog.dart';
-import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
+import 'package:Time2Eat/customizedWidgets/Colors.dart';
 import 'package:Time2Eat/databaseModel/ListTitle.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +31,7 @@ class _ListTitlesState extends State<ListTitles> {
                 color: Colors.black
               ),
             ),
-            highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+            highlightColor: MaterialColors().primaryColor().withOpacity(0.2),              
             onPressed: (){
               Navigator.pop(context, 'abbrechen');
             },              
@@ -45,7 +45,7 @@ class _ListTitlesState extends State<ListTitles> {
                 color: Colors.white
               ),
             ),
-            color: GoogleMaterialColors().primaryColor(),            
+            color: MaterialColors().primaryColor(),            
             onPressed: (){
               if(selected.trim() != "" && selected.trim() != null){
                 Navigator.pop(context, selected);
@@ -129,7 +129,7 @@ class _ListTitlesState extends State<ListTitles> {
                             ? BoxDecoration(
                                 border: Border.all(color: Colors.black26),
                                 borderRadius: BorderRadius.all(Radius.circular(5.0)),                                
-                                color: GoogleMaterialColors().primaryColor().withOpacity(0.2)
+                                color: MaterialColors().primaryColor().withOpacity(0.2)
                               )
                             : new BoxDecoration()
                           ),

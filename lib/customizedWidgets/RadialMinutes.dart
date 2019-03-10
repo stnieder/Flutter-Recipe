@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
 import 'package:flutter/material.dart';
 
 class RadialMinutes extends StatefulWidget {

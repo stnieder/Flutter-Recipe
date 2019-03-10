@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:Time2Eat/DialogInterfaces/Dialogs.dart';
 import 'package:Time2Eat/Export_Import/RecipeToJson.dart';
 import 'package:Time2Eat/customizedWidgets/RadialMinutes.dart';
-import 'package:Time2Eat/Export_Import/recipes.dart';
 import 'package:Time2Eat/databaseModel/Recipe_Shopping.dart';
 import 'package:Time2Eat/databaseModel/Shopping.dart';
 import 'package:Time2Eat/databaseModel/Shopping_Title.dart';
@@ -16,11 +13,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:simple_permissions/simple_permissions.dart';
-import 'package:share_extend/share_extend.dart';
 import '../database/database.dart';
-import '../customizedWidgets/GoogleColors.dart';
+import '../customizedWidgets/Colors.dart';
 import '../customizedWidgets/HexToColor.dart';
 import '../databaseModel/Ingredients.dart';
 import '../databaseModel/Recipes.dart';
@@ -38,7 +32,7 @@ class RecipeDetails extends StatefulWidget{
 }
 
 class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
-  GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
+  MaterialColors googleMaterialColors = new MaterialColors();
   ConvertColor convertColor = new ConvertColor();
   ExportRecipe recipeToJson;
 
@@ -431,7 +425,7 @@ class _RecipeDetails extends State<RecipeDetails> with TickerProviderStateMixin{
                                 child: Text(
                                   "$peopleDB",
                                   style: TextStyle(
-                                    color: GoogleMaterialColors().primaryColor().withOpacity(0.9),
+                                    color: MaterialColors().primaryColor().withOpacity(0.9),
                                     fontSize: 15.0
                                   ),
                                 ),

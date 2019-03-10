@@ -6,7 +6,7 @@ import 'package:Time2Eat/pages/CalendarTermine/SelectedDate.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../../customizedWidgets/Calendar/flutter_calendar.dart';
-import '../../customizedWidgets/GoogleColors.dart';
+import '../../customizedWidgets/Colors.dart';
 import '../../customizedWidgets/HexToColor.dart';
 import '../../DialogInterfaces/Dialogs.dart';
 import '../../database/database.dart';
@@ -37,7 +37,7 @@ class CalendarView extends StatefulWidget{
 }
 
 class CalendarViewState extends State<CalendarView>{
-  GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
+  MaterialColors googleMaterialColors = new MaterialColors();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
   final _key = GlobalKey();
 
@@ -241,7 +241,7 @@ class CalendarViewState extends State<CalendarView>{
               cancelFuture = true;
             });
           },
-          textColor: GoogleMaterialColors().getLightColor(5),          
+          textColor: MaterialColors().getLightColor(5),          
         ),
         content: Text("Termin gelöscht"),
       );

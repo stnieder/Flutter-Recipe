@@ -1,4 +1,4 @@
-import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
+import 'package:Time2Eat/customizedWidgets/Colors.dart';
 import 'package:flutter/material.dart';
 
 import 'CircularImage.dart';
@@ -49,7 +49,7 @@ class _SelectedRecipeState extends State<SelectedRecipe>{
                     ? CircularImage(widget.backgroundImage.assetName)
                     : CircleAvatar(
                       backgroundColor: (widget.backgroundColor == null
-                          ? new GoogleMaterialColors().primaryColor().withOpacity(0.9)
+                          ? new MaterialColors().primaryColor().withOpacity(0.9)
                           : widget.backgroundColor
                       ),
                       child: Text(

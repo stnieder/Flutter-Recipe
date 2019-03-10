@@ -1,5 +1,5 @@
 import 'package:Time2Eat/database/database.dart';
-import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
+import 'package:Time2Eat/customizedWidgets/Colors.dart';
 import 'package:Time2Eat/customizedWidgets/HexToColor.dart';
 import 'package:Time2Eat/customizedWidgets/SelectedRecipe.dart';
 import 'package:Time2Eat/databaseModel/Recipes.dart';
@@ -32,7 +32,7 @@ class RecipeSelection extends StatefulWidget {
 
 class _RecipeSelection extends State<RecipeSelection> with TickerProviderStateMixin{
   final GlobalKey<AnimatedListState> _listKey = GlobalKey();
-  GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
+  MaterialColors googleMaterialColors = new MaterialColors();
   ConvertColor convert = new ConvertColor();
 
   bool searchActive = false;

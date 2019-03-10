@@ -26,7 +26,7 @@ import 'package:flutter/services.dart';
 //Own plugins
 import '../customizedWidgets/Custom_SideHeaderListView.dart';
 import '../customizedWidgets/DatePicker.dart';
-import '../customizedWidgets/GoogleColors.dart';
+import '../customizedWidgets/Colors.dart';
 import '../customizedWidgets/HexToColor.dart';
 import '../customizedWidgets/SelectableItems.dart';
 import '../database/database.dart';
@@ -74,7 +74,7 @@ class Recipebook extends StatefulWidget{
 
 class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
   var dbHelper = new DBHelper();
-  var googleMaterialColors = new GoogleMaterialColors();
+  var googleMaterialColors = new MaterialColors();
   final GlobalKey<ScaffoldState> _drawerKey = new GlobalKey<ScaffoldState>();
   SharedPreferences prefs;
   GlobalKey<State<PopupMenuButton>> _buttonKey = new GlobalKey<State<PopupMenuButton>>();
@@ -162,7 +162,7 @@ class RecipebookState extends State<Recipebook> with TickerProviderStateMixin{
               ),
               SpeedDialChild(
                 child: Icon(Icons.save_alt, color: Colors.white),
-                backgroundColor: GoogleMaterialColors().getLightColor(5),
+                backgroundColor: MaterialColors().getLightColor(5),
                 label: "Importieren",
                 labelStyle: TextStyle(
                   fontFamily: "Google-Sans",

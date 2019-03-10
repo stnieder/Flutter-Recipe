@@ -1,6 +1,6 @@
 import 'package:Time2Eat/database/database.dart';
 import 'package:Time2Eat/customizedWidgets/CustomShowDialog.dart';
-import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
+import 'package:Time2Eat/customizedWidgets/Colors.dart';
 import 'package:flutter/material.dart';
 
 class CreateNewList extends StatefulWidget {
@@ -91,7 +91,7 @@ class _CreateNewListState extends State<CreateNewList> {
               color: Colors.black
             ),
           ),
-          highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+          highlightColor: MaterialColors().primaryColor().withOpacity(0.2),              
           onPressed: (){
             Navigator.pop(context, 'abbrechen');
           },              
@@ -105,7 +105,7 @@ class _CreateNewListState extends State<CreateNewList> {
               color: Colors.white
             ),
           ),
-          color: GoogleMaterialColors().primaryColor(),
+          color: MaterialColors().primaryColor(),
           onPressed: (){
             if(controller.text.trim().isNotEmpty && !_titleTaken) {
               Navigator.pop(context, controller.text.trim());

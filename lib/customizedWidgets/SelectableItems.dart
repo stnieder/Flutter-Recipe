@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../customizedWidgets/GoogleColors.dart';
+import '../customizedWidgets/Colors.dart';
 import 'package:Time2Eat/recipe_details/recipeDetails.dart';
 
 class SelectableItems extends StatefulWidget {
@@ -38,7 +38,7 @@ class SelectableItems extends StatefulWidget {
 
 class StateSelectableItem extends State<SelectableItems> {
   bool isSelected = false;
-  GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
+  MaterialColors googleMaterialColors = new MaterialColors();
 
   Widget leadingWidget;
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:date_utils/date_utils.dart';
-import '../GoogleColors.dart';
+import '../Colors.dart';
 
 class CalendarTile extends StatelessWidget {
   final VoidCallback onDateSelected;
@@ -45,7 +45,7 @@ class CalendarTile extends StatelessWidget {
           decoration: isSelected
               ? new BoxDecoration(
             shape: BoxShape.circle,
-            color: new GoogleMaterialColors().primaryColor() //Google Logo --> Blue
+            color: new MaterialColors().primaryColor() //Google Logo --> Blue
           )
               : new BoxDecoration(),
           alignment: Alignment.center,

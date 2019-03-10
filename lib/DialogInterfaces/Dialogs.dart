@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:Time2Eat/DialogInterfaces/CreateNewList.dart';
 import 'package:Time2Eat/DialogInterfaces/ListTitles.dart';
 import 'package:Time2Eat/DialogInterfaces/ShoppingMenu.dart';
 import 'package:Time2Eat/database/database.dart';
 import 'package:Time2Eat/customizedWidgets/DynamicBottomSheet.dart';
-import 'package:Time2Eat/customizedWidgets/GoogleColors.dart';
+import 'package:Time2Eat/customizedWidgets/Colors.dart';
 import 'package:Time2Eat/customizedWidgets/MyListTile.dart';
 import 'package:Time2Eat/customizedWidgets/RoundedBottomSheet.dart';
 import 'package:Time2Eat/recipe_details/recipeDetails.dart';
@@ -14,7 +12,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_extend/share_extend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_permissions/simple_permissions.dart';
@@ -27,7 +24,7 @@ double _kShoppingMenuHeight = 100.0;
 
 class Dialogs{
   final personenAnzahlController = new TextEditingController();
-  GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
+  MaterialColors googleMaterialColors = new MaterialColors();
 
 
   showImage(BuildContext context, String asset, String recipeName) {
@@ -535,7 +532,7 @@ class Dialogs{
                   color: Colors.black
                 ),
               ),
-              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+              highlightColor: MaterialColors().primaryColor().withOpacity(0.2),              
               onPressed: (){
                 Navigator.pop(context, 'abbrechen');
               },              
@@ -549,7 +546,7 @@ class Dialogs{
                   color: Colors.white
                 ),
               ),
-              color: GoogleMaterialColors().primaryColor(),
+              color: MaterialColors().primaryColor(),
               onPressed: (){
                 if(controller.text.isNotEmpty) Navigator.pop(context, [oldTitle, controller.text]);                
               },
@@ -583,7 +580,7 @@ class Dialogs{
     
     _items(String text){
       return MyListTileText(
-        backgroundColor: GoogleMaterialColors().primaryColor().withOpacity(0.4),
+        backgroundColor: MaterialColors().primaryColor().withOpacity(0.4),
         enabled: currentTitle == text,
         childText: text,        
         onTap: (){            
@@ -653,10 +650,10 @@ class Dialogs{
           child: Text(
             "Abbrechen",
             style: TextStyle(
-              color: GoogleMaterialColors().primaryColor()
+              color: MaterialColors().primaryColor()
             ),
           ),
-          highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+          highlightColor: MaterialColors().primaryColor().withOpacity(0.2),              
           onPressed: (){
             Navigator.pop(context, 'abbrechen');
           },              
@@ -667,10 +664,10 @@ class Dialogs{
           child: Text(
             "Löschen",
             style: TextStyle(
-              color: GoogleMaterialColors().primaryColor()
+              color: MaterialColors().primaryColor()
             ),
           ),
-          highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),
+          highlightColor: MaterialColors().primaryColor().withOpacity(0.2),
           onPressed: (){
             Navigator.pop(context, "löschen");
           },
@@ -795,10 +792,10 @@ class Dialogs{
               child: Text(
                 "Abbrechen",
                 style: TextStyle(
-                  color: GoogleMaterialColors().primaryColor()
+                  color: MaterialColors().primaryColor()
                 ),
               ),
-              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+              highlightColor: MaterialColors().primaryColor().withOpacity(0.2),              
               onPressed: (){
                 Navigator.pop(context, 'abbrechen');
               },              
@@ -809,10 +806,10 @@ class Dialogs{
               child: Text(
                 "Löschen",
                 style: TextStyle(
-                  color: GoogleMaterialColors().primaryColor()
+                  color: MaterialColors().primaryColor()
                 ),
               ),
-              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),
+              highlightColor: MaterialColors().primaryColor().withOpacity(0.2),
               onPressed: (){
                 Navigator.pop(context, "löschen");
               },
@@ -935,7 +932,7 @@ class Dialogs{
                   color: Colors.black
                 ),
               ),
-              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+              highlightColor: MaterialColors().primaryColor().withOpacity(0.2),              
               onPressed: (){
                 Navigator.pop(context, 'abbrechen');
               },              
@@ -949,7 +946,7 @@ class Dialogs{
                   color: Colors.white
                 ),
               ),
-              color: GoogleMaterialColors().primaryColor(),
+              color: MaterialColors().primaryColor(),
               onPressed: (){
                 if(namecontroller.text.isNotEmpty && numberController.text.isNotEmpty && selectedMass != null) Navigator.pop(context, [namecontroller.text, numberController.text, selectedMass]);                
               },
@@ -962,11 +959,11 @@ class Dialogs{
   }
 
   editTermin(BuildContext context) async{
-    Color deleteBackground = GoogleMaterialColors().getLightColor(2).withOpacity(0.2);
-    Color deleteColor = GoogleMaterialColors().getLightColor(2);
+    Color deleteBackground = MaterialColors().getLightColor(2).withOpacity(0.2);
+    Color deleteColor = MaterialColors().getLightColor(2);
 
-    Color notificationBackground = GoogleMaterialColors().getLightColor(0).withOpacity(0.2);
-    Color notificationColor = GoogleMaterialColors().getLightColor(0);
+    Color notificationBackground = MaterialColors().getLightColor(0).withOpacity(0.2);
+    Color notificationColor = MaterialColors().getLightColor(0);
 
     List<String> sheetText = [
       "Termin löschen",
@@ -1043,7 +1040,7 @@ class Dialogs{
                     child: Icon(OMIcons.folder, color: Colors.white, size: 36.0),                    
                   ),
                   decoration: BoxDecoration(
-                    color: GoogleMaterialColors().primaryColor().withOpacity(0.6)
+                    color: MaterialColors().primaryColor().withOpacity(0.6)
                   ),
                   height: 110.0,
                 ),
@@ -1067,10 +1064,10 @@ class Dialogs{
               child: Text(
                 "Jetzt nicht",
                 style: TextStyle(
-                  color: GoogleMaterialColors().primaryColor()
+                  color: MaterialColors().primaryColor()
                 ),
               ),
-              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+              highlightColor: MaterialColors().primaryColor().withOpacity(0.2),              
               onPressed: (){
                 Navigator.pop(context);
               },              
@@ -1081,10 +1078,10 @@ class Dialogs{
               child: Text(
                 "Weiter",
                 style: TextStyle(
-                  color: GoogleMaterialColors().primaryColor()
+                  color: MaterialColors().primaryColor()
                 ),
               ),
-              highlightColor: GoogleMaterialColors().primaryColor().withOpacity(0.2),              
+              highlightColor: MaterialColors().primaryColor().withOpacity(0.2),              
               onPressed: (){
                 _request();
               },              

@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
-class GoogleMaterialColors{
+class MaterialColors{
 
   static List<Color> colorList = [
     Color(0xFF34a853), //Green

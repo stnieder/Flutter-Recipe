@@ -6,7 +6,7 @@ import 'package:Time2Eat/database/database.dart';
 import 'package:Time2Eat/customizedWidgets/RoundCheckBox.dart';
 import 'package:Time2Eat/databaseModel/Shopping.dart';
 
-import '../customizedWidgets/GoogleColors.dart';
+import '../customizedWidgets/Colors.dart';
 import '../customizedWidgets/MyExpansionTile.dart';
 
 
@@ -35,7 +35,7 @@ class ShoppingPage extends StatefulWidget{
 }
 
 class _ShoppingPage extends State<ShoppingPage>{
-  GoogleMaterialColors googleMaterialColors = new GoogleMaterialColors();
+  MaterialColors googleMaterialColors = new MaterialColors();
   
   SharedPreferences prefs;
   final GlobalKey<MyExpansionTileState> expansionTile = new GlobalKey();
